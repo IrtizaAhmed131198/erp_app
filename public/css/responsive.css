@@ -1,0 +1,44 @@
+@media (min-width: 1400px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 1758px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 1440px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+        max-width: 1140px;
+    }
+
+    .upload-profile-pic {
+        width: 88%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .weekly-section .parent-table {
+        padding-right: 3rem;
+    }
+
+    .weekly-section.data-center .parent-table {
+        padding-right: 12rem;
+    }
+}
+
+@media (max-width: 1199px) {
+}
+
+@media (max-width: 991px) {
+}
+
+@media (max-width: 767px) {
+}
