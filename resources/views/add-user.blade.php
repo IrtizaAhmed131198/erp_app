@@ -30,11 +30,12 @@
                     <div class="card mb-4">
                         <div class="card-header highlighted">Account Details</div>
                         <div class="card-body">
-                            <form>
+                            <form action="{{ route('signin') }}" method="post">
+                                @csrf
                                 <!-- Form Group (username)-->
 
                                 <!-- Form Row-->
-                                <div class="row gx-3 mb-3">
+                                {{-- <div class="row gx-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputUsername">Username (how your name will appear to
                                             other users on the site)</label>
@@ -47,69 +48,83 @@
                                         <input class="form-control" id="inputUID" type="text" name="UID"
                                             placeholder="Enter your UID" value="">
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <!-- Form Row-->
                                 <div class="row gx-3 mb-3">
                                     <!-- Form Group (first name)-->
                                     <div class="col-md-6">
-                                        <label class="mb-1" for="inputFirstName">First name</label>
-                                        <input class="form-control" id="inputFirstName" type="text"
-                                            placeholder="Enter your first name" value="">
+                                        <label class="mb-1" for="inputFirstName">name</label>
+                                        <input class="form-control" id="inputFirstName" type="text" name="name"
+                                            placeholder="Enter your first name" value="" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="mb-1" for="inputEmailAddress">Email address</label>
+                                        <input class="form-control" id="inputEmailAddress" type="email" name="email"
+                                            placeholder="Enter your email address" value="" required>
                                     </div>
                                     <!-- Form Group (last name)-->
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label class="mb-1" for="inputLastName">Last name</label>
                                         <input class="form-control" id="inputLastName" type="text"
                                             placeholder="Enter your last name" value="">
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <!-- Form Row        -->
                                 <div class="row gx-3 mb-3">
                                     <!-- Form Group (organization name)-->
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputOrgName">Department</label>
-                                        <select class="custom-select form-control">
+                                        <select class="custom-select form-control" name="department" required>
                                             <option selected disabled>Select Department</option>
-                                            <option value="1">EXTENSION</option>
-                                            <option value="2">MULTI SLIDE</option>
-                                            <option value="3">PRESS DEPT</option>
-                                            <option value="3">PURCHASED</option>
-                                            <option value="3">SLIDES</option>
-                                            <option value="3">STOCK</option>
-                                            <option value="3">TORSION</option>
-                                            <option value="3">WIREFORM</option>
+                                            <option value="EXTENSION"
+                                                {{ old('department') == 'EXTENSION' || (isset($department) && $department == 'EXTENSION') ? 'selected' : '' }}>
+                                                EXTENSION</option>
+                                            <option value="MULTI SLIDE"
+                                                {{ old('department') == 'MULTI SLIDE' || (isset($department) && $department == 'MULTI SLIDE') ? 'selected' : '' }}>
+                                                MULTI SLIDE</option>
+                                            <option value="PRESS DEPT"
+                                                {{ old('department') == 'PRESS DEPT' || (isset($department) && $department == 'PRESS DEPT') ? 'selected' : '' }}>
+                                                PRESS DEPT</option>
+                                            <option value="PURCHASED"
+                                                {{ old('department') == 'PURCHASED' || (isset($department) && $department == 'PURCHASED') ? 'selected' : '' }}>
+                                                PURCHASED</option>
+                                            <option value="SLIDES"
+                                                {{ old('department') == 'SLIDES' || (isset($department) && $department == 'SLIDES') ? 'selected' : '' }}>
+                                                SLIDES</option>
+                                            <option value="STOCK"
+                                                {{ old('department') == 'STOCK' || (isset($department) && $department == 'STOCK') ? 'selected' : '' }}>
+                                                STOCK</option>
+                                            <option value="TORSION"
+                                                {{ old('department') == 'TORSION' || (isset($department) && $department == 'TORSION') ? 'selected' : '' }}>
+                                                TORSION</option>
+                                            <option value="WIREFORM"
+                                                {{ old('department') == 'WIREFORM' || (isset($department) && $department == 'WIREFORM') ? 'selected' : '' }}>
+                                                WIREFORM</option>
                                         </select>
                                     </div>
                                     <!-- Form Group (phone number)-->
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-control" id="inputPhone" type="tel"
-                                            placeholder="Enter your phone number" value="">
+                                        <input class="form-control" id="inputPhone" type="tel" name="phone"
+                                            placeholder="Enter your phone number" value="" required>
                                     </div>
                                 </div>
                                 <!-- Form Group (email address)-->
                                 <div class="row gx-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label class="mb-1" for="inputEmailAddress">Email address</label>
-                                        <input class="form-control" id="inputEmailAddress" type="email"
-                                            placeholder="Enter your email address" value="">
-                                    </div>
+
                                     <!-- Form Row-->
-
-
-
                                     <!-- Form Group (location)-->
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputpassword">Password</label>
-                                        <input class="form-control" id="inputpassword" type="text"
-                                            placeholder="Enter your password" value="">
+                                        <input class="form-control" id="inputpassword" type="text" name="password"
+                                            placeholder="Enter your password" value="" required>
                                     </div>
                                 </div>
                                 <!-- Save changes button-->
 
                                 <!-- Form Row        -->
-                                <div class="row gx-3 mb-3">
+                                {{-- <div class="row gx-3 mb-3">
                                     <!-- Form Group (organization name)-->
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputOrgName">Roles</label>
@@ -121,7 +136,7 @@
                                         </select>
                                     </div>
                                     <!-- Form Group (phone number)-->
-                                </div>
+                                </div> --}}
 
                                 <div class="card-body border-top px-9 py-9">
                                     <h5>
@@ -130,7 +145,7 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
+                                        <input class="form-check-input me-3" type="checkbox" name="successful_payments"
                                             value="1">
                                         <!--end::Input-->
 
@@ -150,8 +165,7 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
-                                            checked="checked" value="1">
+                                        <input class="form-check-input me-3" type="checkbox" name="payouts" value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
@@ -170,7 +184,7 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
+                                        <input class="form-check-input me-3" type="checkbox" name="fee_collection"
                                             value="1">
                                         <!--end::Input-->
 
@@ -191,8 +205,8 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
-                                            checked="checked" value="1">
+                                        <input class="form-check-input me-3" type="checkbox"
+                                            name="customer_payment_dispute" value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
@@ -212,7 +226,7 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
+                                        <input class="form-check-input me-3" type="checkbox" name="refund_alerts"
                                             value="1">
                                         <!--end::Input-->
 
@@ -232,8 +246,8 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
-                                            checked="checked" value="1">
+                                        <input class="form-check-input me-3" type="checkbox" name="invoice_payments"
+                                            value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
@@ -252,7 +266,7 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="email-preferences[]"
+                                        <input class="form-check-input me-3" type="checkbox" name="webhook_api_endpoints"
                                             value="1">
                                         <!--end::Input-->
 
@@ -268,7 +282,7 @@
 
                                 </div>
 
-                                <button class="btn btn-primary" type="button">Save changes</button>
+                                <button class="btn btn-primary" type="submit">Save changes</button>
                             </form>
                         </div>
                     </div>

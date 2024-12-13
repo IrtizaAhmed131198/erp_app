@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -10,6 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('welcome');
+
     }
 
     public function data_center()
@@ -48,6 +50,10 @@ class HomeController extends Controller
 
     public function add_user()
     {
-        return view('add-user');
+        if (auth()->user()->role == 1) {
+            return view('add-user');
+        }
+        return redirect()->route('index');
     }
 }
+

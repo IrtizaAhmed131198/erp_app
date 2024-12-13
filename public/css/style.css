@@ -1083,3 +1083,8 @@ span.icon {
     align-items: baseline;
     gap: 6px;
 }
+
+label.form-check.form-check-custom.form-check-solid.align-items-start {
+    display: inline-block;
+    cursor: pointer;
+}

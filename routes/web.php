@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,17 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('data-center', [HomeController::class, 'data_center'])->name('data_center');
+    Route::get('calender', [HomeController::class, 'calender'])->name('calender');
+    Route::get('input-screen', [HomeController::class, 'input_screen'])->name('input_screen');
+    Route::get('Notifications', [HomeController::class, 'notifications'])->name('notifications');
+    Route::get('visual-queue-screen', [HomeController::class, 'visual_screen'])->name('visual_screen');
+    Route::get('visual-queue-screen-1', [HomeController::class, 'visual_screen_1'])->name('visual_screen_1');
+    Route::get('visual-queue-screen-2', [HomeController::class, 'visual_screen_2'])->name('visual_screen_2');
+    Route::get('add-user', [HomeController::class, 'add_user'])->name('add_user');
 
-Route::get('/', [HomeController::class, 'index'])->name('index');
-Route::get('data-center', [HomeController::class, 'data_center'])->name('data_center');
-Route::get('calender', [HomeController::class, 'calender'])->name('calender');
-Route::get('input-screen', [HomeController::class, 'input_screen'])->name('input_screen');
-Route::get('Notifications', [HomeController::class, 'notifications'])->name('notifications');
-Route::get('visual-queue-screen', [HomeController::class, 'visual_screen'])->name('visual_screen');
-Route::get('visual-queue-screen-1', [HomeController::class, 'visual_screen_1'])->name('visual_screen_1');
-Route::get('visual-queue-screen-2', [HomeController::class, 'visual_screen_2'])->name('visual_screen_2');
-Route::get('add-user', [HomeController::class, 'add_user'])->name('add_user');
-
+});
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');
-Route::get('loginuser', [LoginController::class, 'loginuser'])->name('loginuser');
+Route::post('loginuser', [LoginController::class, 'loginuser'])->name('loginuser');
+Route::post('signin', [LoginController::class, 'signin'])->name('signin');
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+
+

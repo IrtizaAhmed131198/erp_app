@@ -21,6 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'department',
+        'phone',
+        'successful_payments',
+        'payouts',
+        'fee_collection',
+        'customer_payment_dispute',
+        'refund_alerts',
+        'invoice_payments',
+        'webhook_api_endpoints',
     ];
 
     /**
@@ -42,4 +52,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user');
+    }
+    public function hasPermission($key)
+    {
+        return $this->permissions()->where('key', $key)->exists();
+    }
+
+    public function syncPermissions(array $permissions)
+    {
+        $permissionIds = Permission::whereIn('key', $permissions)->pluck('id');
+        $this->permissions()->sync($permissionIds);
+    }
 }

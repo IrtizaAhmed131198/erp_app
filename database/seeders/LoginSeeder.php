@@ -18,7 +18,7 @@ class LoginSeeder extends Seeder
             User::create([
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
-                'password' => Hash::make('password'), // Use a stronger password
+                'password' => 'password',
                 'role' => '1',
             ]);
         }

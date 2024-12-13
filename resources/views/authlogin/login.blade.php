@@ -40,7 +40,8 @@
                             <p>Please enter your information here to view details</p>
                         </div>
                         <div class="log-in-foam">
-                            <form action="{{ route('loginuser') }}">
+                            <form action="{{ route('loginuser') }}" method="post">
+                                @csrf
                                 <div class="cridentials">
                                     <label for="exampleInputEmail1" class="form-label">E-Email</label>
                                     <input type="email" class="form-control" placeholder="Enter your email address"
