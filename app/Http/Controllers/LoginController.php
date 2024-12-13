@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class LoginController extends Controller
 {
@@ -17,7 +18,14 @@ class LoginController extends Controller
             'password' => 'required|min:6',
             'department' => 'required',
             'phone' => 'required',
+            'user_img' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('user_img')) {
+            $image = $request->file('user_img');
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imagename);
+        }
 
         $user = User::create([
             'name' => $request->input('name'),
@@ -25,6 +33,7 @@ class LoginController extends Controller
             'password' => $request->password,
             'department' => $request->input('department'),
             'phone' => $request->input('phone'),
+            'user_img' => $imagename,
             'successful_payments' => $request->filled('successful_payments') ? 1 : 0,
             'payouts' => $request->filled('payouts') ? 1 : 0,
             'fee_collection' => $request->filled('fee_collection') ? 1 : 0,
@@ -33,12 +42,9 @@ class LoginController extends Controller
             'invoice_payments' => $request->filled('invoice_payments') ? 1 : 0,
             'webhook_api_endpoints' => $request->filled('webhook_api_endpoints') ? 1 : 0,
         ]);
-
         // dd($user);
-
-        auth()->login($user);
-
-        return redirect()->route('index');
+        // auth()->login($user);
+        return redirect()->back()->with('success', 'User added!');
     }
 
 
@@ -64,7 +70,7 @@ class LoginController extends Controller
         }
 
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'You Login successfully!');
     }
 
 
@@ -76,15 +82,7 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
-    }
-
-
-    public function addimg(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-
-
+        return redirect()->route('login')->with('error', 'You Logout successfully!');
     }
 }
 

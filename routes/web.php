@@ -35,3 +35,4 @@ Route::post('signin', [LoginController::class, 'signin'])->name('signin');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 
+Route::post('addimg', [LoginController::class, 'addimg'])->name('addimg');

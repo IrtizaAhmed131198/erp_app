@@ -9,34 +9,35 @@
                 <a class="nav-link" href="{{ route('notifications') }}">Notifications</a>
             </nav>
             <hr class="mt-0 mb-4">
-            <div class="row">
-                <div class="col-xl-4">
-                    <!-- Profile picture card-->
-                    <div class="card mb-4 mb-xl-0">
-                        <div class="card-header highlighted">Profile Picture</div>
-                        <div class="card-body text-center">
-                            <!-- Profile picture image-->
-                            <form action="" method="">
-                                @csrf
-                                <img class="img-account-profile rounded-circle mb-2 preview_image"
+            <form action="{{ route('signin') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="row">
+                    <div class="col-xl-4">
+                        <!-- Profile picture card-->
+                        <div class="card mb-4 mb-xl-0">
+                            <div class="card-header highlighted">Profile Picture</div>
+                            <div class="card-body text-center">
+                                <!-- Profile picture image-->
+                                <img class="img-account-profile rounded-circle mb-2 preview_image img-fluid"
                                     src="{{ asset('images/profile-1.png') }}" alt="">
-                                <input id="user_profile_image_path" type="file" name="user_img"
-                                    class="btn btn-primary mb-3" value="" class="hidden">
+                                <input id="user_profile_image_path" type="file" name="user_img" class="d-none"
+                                    accept="image/*" required>
+                                <!-- Custom file label and file name display -->
+                                <label for="user_profile_image_path" class="file-label">Upload Image</label>
+                                <span id="fileName" class="file-name">No file chosen</span>
                                 <!-- Profile picture help block-->
                                 {{-- <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div> --}}
                                 <!-- Profile picture upload button-->
-                                <button class="btn btn-primary" type="submit">Upload new image</button>
-                            </form>
+                                {{-- <button class="btn btn-primary" type="submit"></button> --}}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-8">
-                    <!-- Account details card-->
-                    <div class="card mb-4">
-                        <div class="card-header highlighted">Account Details</div>
-                        <div class="card-body">
-                            <form action="{{ route('signin') }}" method="post">
-                                @csrf
+                    <div class="col-xl-8">
+                        <!-- Account details card-->
+                        <div class="card mb-4">
+                            <div class="card-header highlighted">Account Details</div>
+                            <div class="card-body">
+
                                 <!-- Form Group (username)-->
 
                                 <!-- Form Row-->
@@ -288,11 +289,12 @@
                                 </div>
 
                                 <button class="btn btn-primary" type="submit">Save changes</button>
-                            </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </section>
 @endsection

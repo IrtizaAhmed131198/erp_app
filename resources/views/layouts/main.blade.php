@@ -113,14 +113,29 @@
     </script>
 
     <script>
-        $('#user_profile_image_path').on('change', function() {
+        document.getElementById('user_profile_image_path').addEventListener('change', function() {
             const file = this.files[0];
             if (!file) return;
+
             const reader = new FileReader();
-            reader.onload = e => $('.preview_image').attr('src', e.target.result).show();
+            reader.onload = (e) => {
+                document.querySelector('.preview_image').src = e.target.result;
+            };
             reader.readAsDataURL(file);
+
+            // Update file name display
+            document.getElementById('fileName').textContent = file.name;
         });
     </script>
+
+
+    @if (session()->has('success'))
+        toastr.success('{{ session()->get('success') }}');
+    @endif
+    @if (session()->has('error'))
+        toastr.error('{{ session()->get('error') }}');
+    @endif
+
 
 </body>
 
