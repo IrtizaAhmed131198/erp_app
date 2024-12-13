@@ -78,6 +78,14 @@ class LoginController extends Controller
 
         return redirect()->route('login');
     }
+
+
+    public function addimg(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+
+    }
 }
 
 

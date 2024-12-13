@@ -31,6 +31,7 @@ class User extends Authenticatable
         'refund_alerts',
         'invoice_payments',
         'webhook_api_endpoints',
+        'user_img'
     ];
 
     /**

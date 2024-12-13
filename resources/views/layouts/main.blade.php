@@ -112,6 +112,16 @@
         });
     </script>
 
+    <script>
+        $('#user_profile_image_path').on('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => $('.preview_image').attr('src', e.target.result).show();
+            reader.readAsDataURL(file);
+        });
+    </script>
+
 </body>
 
 </html>

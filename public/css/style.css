@@ -1088,3 +1088,7 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
     display: inline-block;
     cursor: pointer;
 }
+
+.card-body input::file-selector-button {
+    display: none;
+}

@@ -16,12 +16,17 @@
                         <div class="card-header highlighted">Profile Picture</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
-                            <img class="img-account-profile rounded-circle mb-2" src="{{ asset('images/profile-1.png') }}"
-                                alt="">
-                            <!-- Profile picture help block-->
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                            <!-- Profile picture upload button-->
-                            <button class="btn btn-primary" type="button">Upload new image</button>
+                            <form action="" method="">
+                                @csrf
+                                <img class="img-account-profile rounded-circle mb-2 preview_image"
+                                    src="{{ asset('images/profile-1.png') }}" alt="">
+                                <input id="user_profile_image_path" type="file" name="user_img"
+                                    class="btn btn-primary mb-3" value="" class="hidden">
+                                <!-- Profile picture help block-->
+                                {{-- <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div> --}}
+                                <!-- Profile picture upload button-->
+                                <button class="btn btn-primary" type="submit">Upload new image</button>
+                            </form>
                         </div>
                     </div>
                 </div>
