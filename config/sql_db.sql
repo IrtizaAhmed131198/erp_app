@@ -1,0 +1,17 @@
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343092','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343093','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343094','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343095','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343096','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343097','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343098','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343099','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343100','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343101','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343102','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343103','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343104','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00343105','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00361772','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('00361958','');
+INSERT INTO `phyicalcount`(`Serial_No`, `CountDate`) VALUES('120324-1','');

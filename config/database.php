@@ -93,6 +93,13 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'odbc' => [
+            'driver' => 'odbc',
+            'dsn' => env('DB_DSN'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+        ],
+
     ],
 
     /*
