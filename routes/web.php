@@ -27,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('visual-queue-screen-2', [HomeController::class, 'visual_screen_2'])->name('visual_screen_2');
     Route::get('add-user', [HomeController::class, 'add_user'])->name('add_user');
 
+    Route::post('post-data-center', [HomeController::class, 'post_data_center'])->name('post_data_center');
+    Route::post('manual-imput', [HomeController::class, 'manual_imput'])->name('manual_imput');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');

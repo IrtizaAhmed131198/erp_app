@@ -151,15 +151,15 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="successful_payments"
+                                        <input class="form-check-input me-3" type="checkbox" name="status_column"
                                             value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Successful Payments</span>
-                                            <span class="text-muted fs-6">Receive a notification for every successful
-                                                payment.</span>
+                                            <span class="fs-6 mb-0">Status Coulmns</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification for every successful
+                                                payment.</span> --}}
                                         </span>
                                         <!--end::Label-->
                                     </label>
@@ -171,14 +171,14 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="payouts" value="1">
+                                        <input class="form-check-input me-3" type="checkbox" name="stock_finished_column" value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Payouts</span>
-                                            <span class="text-muted fs-6">Receive a notification for every initiated
-                                                payout.</span>
+                                            <span class="fs-6 mb-0">Stock Finished Column</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification for every initiated
+                                                payout.</span> --}}
                                         </span>
                                         <!--end::Label-->
                                     </label>
@@ -190,16 +190,16 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="fee_collection"
+                                        <input class="form-check-input me-3" type="checkbox" name="part_number_column"
                                             value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Fee Collection</span>
-                                            <span class="text-muted fs-6">Receive a notification each time you collect a
+                                            <span class="fs-6 mb-0">Part Number Section</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification each time you collect a
                                                 fee
-                                                from sales</span>
+                                                from sales</span> --}}
                                         </span>
                                         <!--end::Label-->
                                     </label>
@@ -212,79 +212,21 @@
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
                                         <input class="form-check-input me-3" type="checkbox"
-                                            name="customer_payment_dispute" value="1">
+                                            name="calendar_column" value="0">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Customer Payment Dispute</span>
-                                            <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                            <span class="fs-6 mb-0">Calendar Section</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
                                                 by
-                                                a customer and for dispute purposes.</span>
+                                                a customer and for dispute purposes.</span> --}}
                                         </span>
                                         <!--end::Label-->
                                     </label>
                                     <!--end::Option-->
 
-                                    <!--begin::Option-->
-                                    <div class="separator separator-dashed my-6"></div>
-                                    <!--end::Option-->
-                                    <!--begin::Option-->
-                                    <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="refund_alerts"
-                                            value="1">
-                                        <!--end::Input-->
 
-                                        <!--begin::Label-->
-                                        <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Refund Alerts</span>
-                                            <span class="text-muted fs-6">Receive a notification if a payment is stated as
-                                                risk by the Finance Department.</span>
-                                        </span>
-                                        <!--end::Label-->
-                                    </label>
-                                    <!--end::Option-->
-
-                                    <!--begin::Option-->
-                                    <div class="separator separator-dashed my-6"></div>
-                                    <!--end::Option-->
-                                    <!--begin::Option-->
-                                    <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="invoice_payments"
-                                            value="1">
-                                        <!--end::Input-->
-
-                                        <!--begin::Label-->
-                                        <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Invoice Payments</span>
-                                            <span class="text-muted fs-6">Receive a notification if a customer sends an
-                                                incorrect amount to pay their invoice.</span>
-                                        </span>
-                                        <!--end::Label-->
-                                    </label>
-                                    <!--end::Option-->
-
-                                    <!--begin::Option-->
-                                    <div class="separator separator-dashed my-6"></div>
-                                    <!--end::Option-->
-                                    <!--begin::Option-->
-                                    <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="webhook_api_endpoints"
-                                            value="1">
-                                        <!--end::Input-->
-
-                                        <!--begin::Label-->
-                                        <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Webhook API Endpoints</span>
-                                            <span class="text-muted fs-6">Receive notifications for consistently failing
-                                                webhook API endpoints.</span>
-                                        </span>
-                                        <!--end::Label-->
-                                    </label>
-                                    <!--end::Option-->
 
                                 </div>
 

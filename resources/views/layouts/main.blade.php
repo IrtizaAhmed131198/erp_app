@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
@@ -22,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    @yield('css');
 </head>
 
 <body>
@@ -67,7 +69,7 @@
                                     <li class="nav-item dropdown profile-drop-down">
                                         <a class="nav-link dropdown-toggle" href="javascript:;" role="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                            Kevin Mauris
+                                            {{ Auth::user()->name }}
                                         </a>
                                         <ul class="dropdown-menu">
                                             @if (auth()->check())
@@ -100,10 +102,16 @@
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @yield('js');
 
     <script>
         $(document).ready(function() {
             $(".js-select2").select2({
+                closeOnSelect: true
+            });
+            $(".js-select21").select2({
                 closeOnSelect: true
             });
             $(".js-select2-multi").select2({
@@ -128,14 +136,29 @@
         });
     </script>
 
-
-    @if (session()->has('success'))
-        toastr.success('{{ session()->get('success') }}');
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            window.location.href = "{{ url()->previous() }}"; // Redirect back
+        });
+    </script>
     @endif
-    @if (session()->has('error'))
-        toastr.error('{{ session()->get('error') }}');
-    @endif
 
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
 
 </body>
 

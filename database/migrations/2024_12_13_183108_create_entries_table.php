@@ -28,6 +28,15 @@ return new class extends Migration {
             $table->string('outside_processing_2')->nullable();
             $table->string('outside_processing_3')->nullable();
             $table->string('outside_processing_4')->nullable();
+            $table->string('material')->nullable();
+            $table->string('pc_weight')->nullable();
+            $table->string('safety_shock')->nullable();
+            $table->string('moq')->nullable();
+            $table->string('order_notes')->nullable();
+            $table->string('part_notes')->nullable();
+            $table->string('future_raw')->nullable();
+            $table->string('price')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }
