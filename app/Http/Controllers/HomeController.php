@@ -60,13 +60,14 @@ class HomeController extends Controller
     public function data_center()
     {
         $parts = Parts::all();
-        return view('data-center', compact('parts'));
+        $customer = DB::table('customers')->get();
+        return view('data-center', compact('parts', 'customer'));
     }
 
     public function post_data_center(Request $request)
     {
         $validatedData = $request->validate([
-            'part_number' => 'required',
+            'part_number' => 'required|unique:entries,part_number',
             'customer' => 'required|string|max:255',
             'revision' => 'required|string|max:255',
             'ids' => 'required|string|max:255',
@@ -94,6 +95,13 @@ class HomeController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $existingEntry = Entries::where('customer', $validatedData['customer'])
+            ->where('part_number', $validatedData['part_number'])
+            ->first();
+
+        if ($existingEntry) {
+            return redirect()->back()->with('error', 'This Part Number already exists.');
+        }
         try {
             Entries::create($validatedData);
             return redirect()->back()->with('success', 'Part created successfully!');
