@@ -13,6 +13,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        // return $data = DB::connection('sqlsrv')->table('Users')->get();
         $query = Entries::query();
 
         // Apply department filter
