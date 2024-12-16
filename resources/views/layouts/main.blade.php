@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-    @yield('css');
+    @yield('css')
 </head>
 
 <body>
@@ -55,13 +55,13 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                                     <button class="bell-icon" type="submit">
-                                        <a href="notifications.php">
+                                        <a href="{{ route('notifications') }}">
                                             <img src="{{ asset('images/notification-icon.png') }}" class="img-fluid"
                                                 alt="">
                                         </a>
                                     </button>
                                     <div class="profile-detail">
-                                        <a href="add-user.php">
+                                        <a href="javascript:;">
                                             <img src="{{ asset('images/profile-pic.png') }}" class="img-fluid"
                                                 alt="">
                                         </a>
@@ -73,6 +73,20 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             @if (auth()->check())
+                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Data center</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="{{ route('calender') }}">Calender</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="{{ route('input_screen') }}">Input screen</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="{{ route('visual_screen') }}">Visual screen</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="{{ route('visual_screen_1') }}">Visual screen 1</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="{{ route('visual_screen_2') }}">Visual screen 2</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="{{ route('add_user') }}">Add user</a>
+                                                </li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                                 </li>
                                             @else
@@ -136,28 +150,28 @@
         });
     </script>
 
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            title: 'Success!',
-            text: '{{ session('success') }}',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            window.location.href = "{{ url()->previous() }}"; // Redirect back
-        });
-    </script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = "{{ url()->previous() }}"; // Redirect back
+            });
+        </script>
     @endif
 
-    @if(session('error'))
-    <script>
-        Swal.fire({
-            title: 'Error!',
-            text: '{{ session('error') }}',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-    </script>
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </script>
     @endif
 
 </body>
