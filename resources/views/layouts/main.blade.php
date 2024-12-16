@@ -73,7 +73,12 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             @if (auth()->check())
-                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Data center</a>
+                                                <li><a class="dropdown-item" href="{{ route('index') }}">Home</a>
+                                                </li>
+                                                @if(Auth::user()->role == 1)
+                                                <li><a class="dropdown-item" href="{{ route('add_user') }}">Add user</a>
+                                                </li>
+                                                @endif
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('calender') }}">Calender</a>
                                                 </li>
@@ -85,7 +90,7 @@
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('visual_screen_2') }}">Visual screen 2</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="{{ route('add_user') }}">Add user</a>
+                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Data center</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                                 </li>
