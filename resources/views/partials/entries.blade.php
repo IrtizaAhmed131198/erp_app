@@ -1,13 +1,8 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
     <tr>
-        @if ($loop->first)
-            <td rowspan="{{ count($entries) }}" class="vertical-text highlighted">
-                <div class="parent-hightlighted">
-                    <span>Details</span>
-                </div>
-            </td>
-        @endif
+        <td  class="vertical-text highlighted">
+        </td>
         <td class="toggleable toggle-department">{{ $data->department }}</td>
         <td class="toggleable toggle-work-center">COM 1</td>
         @if(Auth::user()->status_column == 1)
@@ -38,26 +33,29 @@
         <td class="toggleable">{{ $data->customer }}</td>
         <td class="toggleable">A00</td>
         <td class="toggleable">C (Superior)</td>
-        @if ($loop->first)
-            <td rowspan="{{ count($entries) }}" class="vertical-text highlighted">
-                <div class="parent-hightlighted">
-                    <span>INVENTORY</span>
-                </div>
-            </td>
-        @endif
+        <td  class="vertical-text highlighted">
+        </td>
         <td class="toggleable-1">0</td>
         <td class="toggleable-1">30,000 </td>
         <td class="toggleable-1">30,000 </td>
-        <td class="toggleable-1"><input value="30,000" type="text" name="" id=""></td>
+        <td class="toggleable-1">
+            @if(Auth::user()->stock_finished_column == 1)
+                <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"
+                    value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('in_stock_finish', this.value)">
+            @else
+                {{ $data->in_stock_finish ?? '' }}
+            @endif
+        </td>
         <td class="toggleable-1"></td>
         @if(Auth::user()->stock_finished_column == 1)
             <td class="toggleable-1">
-                <input type="text" name="in_stock_finish" id="in_stock_finish"
-                    value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('in_stock_finish', this.value)">
+                <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"
+                    value="{{ $data->live_inventory_wip ?? '' }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('live_inventory_wip', this.value)">
             </td>
             <td class="toggleable-1">
-                <input type="text" name="in_process_outside" id="in_process_outside"
+                <input type="number" step="any" name="in_process_outside" id="in_process_outside"
                     value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
                     onkeyup="sendAjaxRequest('in_process_outside', this.value)">
             </td>
@@ -78,13 +76,8 @@
         <td class="toggleable-1">25,000</td>
         <td class="toggleable-1">{{ $data->order_notes }}</td>
         <td class="toggleable-1">{{ $data->part_notes }}</td>
-        @if ($loop->first)
-            <td rowspan="{{ count($entries) }}" class="vertical-text highlighted">
-                <div class="parent-hightlighted">
-                    <span>CALENDER</span>
-                </div>
-            </td>
-        @endif
+        <td  class="vertical-text highlighted">
+        </td>
         <td class="toggleable-2"></td>
         <td class="toggleable-2"></td>
         <td class="toggleable-2"></td>

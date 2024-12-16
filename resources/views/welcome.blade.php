@@ -37,14 +37,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="parent-table">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover table-bordered" id="myTable">
                             <thead>
                                 <tr class="colored-table-row">
                                     <th scope="col" class="highlighted toggle-header">
                                         <span class="icon">▼</span>
                                     </th>
-                                    <th scope="col" class="toggleable toggle-header-department">DEPARTMENT <span
-                                            class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">DEPARTMENT</th>
                                     <th scope="col" class="toggleable toggle-header-work-center">WORK CENTER </th>
                                     <th scope="col" class="toggleable toggle-header-planning">PLANNING (QUEUE) </th>
                                     <th scope="col" class="toggleable">STATUS</th>
@@ -99,65 +98,132 @@
                                     <th scope="col" class="toggleable-2">NOTES</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tbody id="entries-table-body">
-                                    @include('partials.entries', ['entries' => $entries])
-                                </tbody>
-
+                            <tbody id="entries-table-body">
+                                @include('partials.entries', ['entries' => $entries])
+                                {{-- <tr>
+                                    <td rowspan="1000" class="vertical-text highlighted">
+                                        <div class="parent-hightlighted"><span>Details</span> <span>Details</span>
+                                            <span>Details</span> <span>Details</span> <span>Details</span>
+                                            <span>Details</span>
+                                        </div>
+                                    </td>
+                                    <td class="toggleable toggle-department">COMPRESSION</td>
+                                    <td class="toggleable toggle-work-center">COM 1</td>
+                                    <td class="toggleable toggle-planning"><input type="text" name="" id=""></td>
+                                    <td class="toggleable"><input type="text" name="" id=""></td>
+                                    <td class="toggleable"><input type="text" name="" id=""></td>
+                                    <td class="toggleable"><input type="text" name="" id=""></td>
+                                    <td class="toggleable"></td>
+                                    <td class="toggleable">DRESDEN - RG</td>
+                                    <td class="toggleable">1000460</td>
+                                    <td class="toggleable">A00</td>
+                                    <td class="toggleable">C (Superior)</td>
+                                    <td rowspan="1000" class="vertical-text highlighted">
+                                        <div class="parent-hightlighted"><span>INVENTORY</span> <span>INVENTORY</span>
+                                            <span>INVENTORY</span> <span>INVENTORY</span> <span>INVENTORY</span>
+                                            <span>INVENTORY</span>
+                                        </div>
+                                    </td>
+                                    <td class="toggleable-1">0</td>
+                                    <td class="toggleable-1">30,000 </td>
+                                    <td class="toggleable-1">30,000 </td>
+                                    <td class="toggleable-1"><input value="30,000" type="text" name="" id=""></td>
+                                    <td class="toggleable-1"></td>
+                                    <td class="toggleable-1"><input type="text" name="" id=""></td>
+                                    <td class="toggleable-1"><input type="text" name="" id=""></td>
+                                    <td class="toggleable-1"><input type="text" name="" id=""></td>
+                                    <td class="toggleable-1"></td>
+                                    <td class="toggleable-1">8.000</td>
+                                    <td class="toggleable-1">MWB-0.045 / MWB-0.047</td>
+                                    <td class="toggleable-1">0</td>
+                                    <td class="toggleable-1"></td>
+                                    <td class="toggleable-1">25,000</td>
+                                    <td class="toggleable-1"></td>
+                                    <td class="toggleable-1">SUPERIOR .025EACH - MIN $200, CERT $20</td>
+                                    <td rowspan="1000" class="vertical-text highlighted">
+                                        <div class="parent-hightlighted"><span>CALENDER</span> <span>CALENDER</span>
+                                            <span>CALENDER</span> <span>CALENDER</span> <span>CALENDER</span>
+                                            <span>CALENDER</span>
+                                        </div>
+                                    </td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2">30,000</td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2"></td>
+                                    <td class="toggleable-2">$0.1404</td>
+                                    <td class="toggleable-2">SUPERIOR PLATINGS: .025EACH - MIN $200, CERT $20</td>
+                                </tr> --}}
                                 <?php
 
-                                // for ($i = 1; $i <= 100; $i++) {
+                                // for($i = 1; $i <= 100; $i++){
                                 //     echo '
-                                //                                                                                                 <tr>
-                                //                                                                                                     <td class="toggleable toggle-department">COMPRESSION</td>
-                                //                                                                                                     <td class="toggleable toggle-work-center">COM 1</td>
-                                //                                                                                                     <td class="toggleable toggle-planning"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable"></td>
-                                //                                                                                                     <td class="toggleable">DRESDEN - RG</td>
-                                //                                                                                                     <td class="toggleable">1000460</td>
-                                //                                                                                                     <td class="toggleable">A00</td>
-                                //                                                                                                     <td class="toggleable">C (Superior)</td>
-                                //                                                                                                     <!-- <td rowspan="1000" class="vertical-text highlighted"><span>INVENTORY</span> <span>INVENTORY</span> <span>INVENTORY</span></td> -->
-                                //                                                                                                     <td class="toggleable-1">0</td>
-                                //                                                                                                     <td class="toggleable-1">30,000 </td>
-                                //                                                                                                     <td class="toggleable-1">30,000 </td>
-                                //                                                                                                     <td class="toggleable-1"><input value="30,000" type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable-1"></td>
-                                //                                                                                                     <td class="toggleable-1"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable-1"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable-1"><input type="text" name="" id=""></td>
-                                //                                                                                                     <td class="toggleable-1"></td>
-                                //                                                                                                     <td class="toggleable-1">8.000</td>
-                                //                                                                                                     <td class="toggleable-1">MWB-0.045 / MWB-0.047</td>
-                                //                                                                                                     <td class="toggleable-1">0</td>
-                                //                                                                                                     <td class="toggleable-1"></td>
-                                //                                                                                                     <td class="toggleable-1">25,000</td>
-                                //                                                                                                     <td class="toggleable-1"></td>
-                                //                                                                                                     <td class="toggleable-1">SUPERIOR .025EACH - MIN $200, CERT $20</td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2">30,000</td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2"></td>
-                                //                                                                                                     <td class="toggleable-2">$0.1404</td>
-                                //                                                                                                     <td class="toggleable-2">SUPERIOR PLATINGS: .025EACH - MIN $200, CERT $20</td>
-                                //                                                                                                 </tr>
-                                //                                                                                                 ';
-                                // } ?>
+                                // <tr>
+                                //     <td hidden></td>
+                                //     <td class="toggleable toggle-department">COMPRESSION</td>
+                                //     <td class="toggleable toggle-work-center">COM 1</td>
+                                //     <td class="toggleable toggle-planning"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable"></td>
+                                //     <td class="toggleable">DRESDEN - RG</td>
+                                //     <td class="toggleable">1000460</td>
+                                //     <td class="toggleable">A00</td>
+                                //     <td class="toggleable">C (Superior)</td>
+                                //     <td hidden></td>
+                                //     <!-- <td rowspan="1000" class="vertical-text highlighted"><span>INVENTORY</span> <span>INVENTORY</span> <span>INVENTORY</span></td> -->
+                                //     <td class="toggleable-1">0</td>
+                                //     <td class="toggleable-1">30,000 </td>
+                                //     <td class="toggleable-1">30,000 </td>
+                                //     <td class="toggleable-1"><input value="30,000" type="text" name="" id=""></td>
+                                //     <td class="toggleable-1"></td>
+                                //     <td class="toggleable-1"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable-1"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable-1"><input type="text" name="" id=""></td>
+                                //     <td class="toggleable-1"></td>
+                                //     <td class="toggleable-1">8.000</td>
+                                //     <td class="toggleable-1">MWB-0.045 / MWB-0.047</td>
+                                //     <td class="toggleable-1">0</td>
+                                //     <td class="toggleable-1"></td>
+                                //     <td class="toggleable-1">25,000</td>
+                                //     <td class="toggleable-1"></td>
+                                //     <td class="toggleable-1">SUPERIOR .025EACH - MIN $200, CERT $20</td>
+                                //     <td hidden></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2">30,000</td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2"></td>
+                                //     <td class="toggleable-2">$0.1404</td>
+                                //     <td class="toggleable-2">SUPERIOR PLATINGS: .025EACH - MIN $200, CERT $20</td>
+                                // </tr>
+                                // ';
+
+                                // }
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -169,6 +235,20 @@
 
 @section('js')
 <script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            // Configuration options
+            paging: false,         // Enable pagination
+            searching: false,      // Enable searching
+            ordering: true,       // Enable sorting
+            order: [[0, 'asc']],  // Default sorting on the first column
+            responsive: true,     // Make table responsive
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": [ 0, 12, 29 ] },
+            ]
+        });
+
+    });
     function sendAjaxRequest(field, value) {
         var inputElement = event.target;
         var dataId = inputElement.getAttribute('data-id');

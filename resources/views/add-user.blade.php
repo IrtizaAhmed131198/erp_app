@@ -240,3 +240,21 @@
         </div>
     </section>
 @endsection
+
+@section('js')
+<script>
+    document.getElementById('user_profile_image_path').addEventListener('change', function() {
+        const file = this.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.querySelector('.preview_image').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        // Update file name display
+        document.getElementById('fileName').textContent = file.name;
+    });
+</script>
+@endsection
