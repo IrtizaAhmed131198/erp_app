@@ -11,9 +11,29 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $entries = Entries::all();
+        $query = Entries::query();
+
+        // Apply department filter
+        if ($request->has('department') && $request->department != 'All') {
+            $query->where('department', $request->department);
+        }
+
+        // Apply status filter
+        if ($request->has('status') && $request->status != 'All') {
+            $query->where('status', $request->status);
+        }
+
+        $entries = $query->get();
+
+        // Check if the request is AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partials.entries', compact('entries'))->render()
+            ]);
+        }
+
         return view('welcome', compact('entries'));
     }
 
