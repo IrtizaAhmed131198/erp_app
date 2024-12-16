@@ -10,22 +10,29 @@
         @endif
         <td class="toggleable toggle-department">{{ $data->department }}</td>
         <td class="toggleable toggle-work-center">COM 1</td>
-        <td class="toggleable toggle-planning">
-            <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
-                data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value)">
-        </td>
-        <td class="toggleable">
-            <input type="text" name="status" id="status" value="{{ $data->status ?? '' }}"
-                data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('status', this.value)">
-        </td>
-        <td class="toggleable">
-            <input type="text" name="job" id="job" value="{{ $data->job ?? '' }}"
-                data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('job', this.value)">
-        </td>
-        <td class="toggleable">
-            <input type="text" name="lot" id="lot" value="{{ $data->lot ?? '' }}"
-                data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('lot', this.value)">
-        </td>
+        @if(Auth::user()->status_column == 1)
+            <td class="toggleable toggle-planning">
+                <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
+                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value)">
+            </td>
+            <td class="toggleable">
+                <input type="text" name="status" id="status" value="{{ $data->status ?? '' }}"
+                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('status', this.value)">
+            </td>
+            <td class="toggleable">
+                <input type="text" name="job" id="job" value="{{ $data->job ?? '' }}"
+                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('job', this.value)">
+            </td>
+            <td class="toggleable">
+                <input type="text" name="lot" id="lot" value="{{ $data->lot ?? '' }}"
+                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('lot', this.value)">
+            </td>
+        @else
+            <td class="toggleable-1">{{ $data->planning }}</td>
+            <td class="toggleable-1">{{ $data->status }}</td>
+            <td class="toggleable-1">{{ $data->job }}</td>
+            <td class="toggleable-1">{{ $data->lot }}</td>
+        @endif
         <td class="toggleable"></td>
         <td class="toggleable">{{ $data->part_number }}</td>
         <td class="toggleable">{{ $data->customer }}</td>
@@ -43,20 +50,26 @@
         <td class="toggleable-1">30,000 </td>
         <td class="toggleable-1"><input value="30,000" type="text" name="" id=""></td>
         <td class="toggleable-1"></td>
-        <td class="toggleable-1">
-            <input type="text" name="in_stock_finish" id="in_stock_finish"
-                value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
-                onkeyup="sendAjaxRequest('in_stock_finish', this.value)">
-        </td>
-        <td class="toggleable-1">
-            <input type="text" name="in_process_outside" id="in_process_outside"
-                value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
-                onkeyup="sendAjaxRequest('in_process_outside', this.value)">
-        </td>
-        <td class="toggleable-1">
-            <input type="text" name="raw_mat" id="raw_mat" value="{{ $data->raw_mat ?? '' }}"
-                data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('raw_mat', this.value)">
-        </td>
+        @if(Auth::user()->stock_finished_column == 1)
+            <td class="toggleable-1">
+                <input type="text" name="in_stock_finish" id="in_stock_finish"
+                    value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('in_stock_finish', this.value)">
+            </td>
+            <td class="toggleable-1">
+                <input type="text" name="in_process_outside" id="in_process_outside"
+                    value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('in_process_outside', this.value)">
+            </td>
+            <td class="toggleable-1">
+                <input type="text" name="raw_mat" id="raw_mat" value="{{ $data->raw_mat ?? '' }}"
+                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('raw_mat', this.value)">
+            </td>
+        @else
+            <td class="toggleable-1">{{ $data->in_stock_finish }}</td>
+            <td class="toggleable-1">{{ $data->in_process_outside }}</td>
+            <td class="toggleable-1">{{ $data->raw_mat }}</td>
+        @endif
         <td class="toggleable-1"></td>
         <td class="toggleable-1">8.000</td>
         <td class="toggleable-1">MWB-0.045 / MWB-0.047</td>
