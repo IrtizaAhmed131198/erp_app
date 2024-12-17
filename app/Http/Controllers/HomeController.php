@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Parts;
 use App\Models\Entries;
+use App\Models\Weeks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -113,7 +115,13 @@ class HomeController extends Controller
 
     public function calender()
     {
-        return view('calender');
+        $parts = Parts::all();
+        $weeks = [
+            'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8',
+            'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13', 'Week 14', 'Week 15', 'Week 16',
+            'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'
+        ];
+        return view('calender', compact('parts', 'weeks'));
     }
 
     public function input_screen()
@@ -147,6 +155,64 @@ class HomeController extends Controller
             return view('add-user');
         }
         return redirect()->route('index');
+    }
+
+    public function get_part_no_detail(Request $request)
+    {
+        $partNumber = $request->get('part_number');
+
+        $entries = DB::table('entries')->where('part_number', $partNumber)->where('user_id', Auth::user()->id)->first();
+
+        if (!$entries) {
+            return response()->json(['message' => 'No entry found for the provided part number.']);
+        }
+
+        return response()->json([
+            'existing_amount' => $entries->in_stock_finish
+        ]);
+    }
+
+    public function update_production_total(Request $request)
+    {
+        $existingAmount = $request->input('existing_amount');
+        $addProduction = $request->input('add_production');
+        $newTotal = $request->input('new_total');
+        $part_no = $request->input('part_no');
+
+        $data = Entries::where('part_number', $part_no)->where('user_id', Auth::user()->id)->first();
+
+        $data->in_stock_finish = $newTotal;
+        $data->save();
+
+        return response()->json([
+            'message' => 'Production total updated successfully!',
+            'new_total' => $newTotal
+        ]);
+    }
+
+    public function create_order(Request $request)
+    {
+        $request->validate([
+            'weeks' => 'required|array',
+            'weeks.*' => 'nullable|string',
+            'part_number' => 'required'
+        ]);
+
+        $exist_data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        if($exist_data){
+            return response()->json(['error' => true, 'message' => 'This part number order already exist']);
+        }
+
+        $data = new Weeks();
+        $data->user_id = Auth::user()->id;
+        $data->part_number = $request->part_number;
+
+        foreach ($request->weeks as $key => $value) {
+            $data->$key = $value;
+        }
+        $data->save();
+
+        return response()->json(['message' => 'Shipment Order Created']);
     }
 }
 

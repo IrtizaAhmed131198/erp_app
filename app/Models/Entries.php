@@ -38,5 +38,6 @@ class Entries extends Model
         'future_raw',
         'price',
         'notes',
+        'in_stock_finish',
     ];
 }
