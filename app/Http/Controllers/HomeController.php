@@ -9,6 +9,7 @@ use App\Models\Weeks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -207,12 +208,134 @@ class HomeController extends Controller
         $data->user_id = Auth::user()->id;
         $data->part_number = $request->part_number;
 
+        $temp = $this->getWeekArr(date('Y-m-d'));
+
         foreach ($request->weeks as $key => $value) {
             $data->$key = $value;
+            $data->{$key.'_date'} = $temp[$key];
         }
         $data->save();
 
-        return response()->json(['message' => 'Shipment Order Created']);
+        return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
+    }
+
+    public function add_shipment(Request $request)
+    {
+        $request->validate([
+            'weeks' => 'required|array',
+            'weeks.*' => 'nullable|string',
+            'part_number' => 'required'
+        ]);
+
+        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+
+        foreach ($request->weeks as $key => $value) {
+            if($value != '' && $value != null){
+                $data->$key = $value;
+            }
+        }
+        $data->save();
+
+        return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
+    }
+
+    public function get_weeks(Request $request)
+    {
+        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+
+        $Arr = [
+            "week_1" => $data->week_1,
+            "week_2" => $data->week_2,
+            "week_3" => $data->week_3,
+            "week_4" => $data->week_4,
+            "week_5" => $data->week_5,
+            "week_6" => $data->week_6,
+            "week_7" => $data->week_7,
+            "week_8" => $data->week_8,
+            "week_9" => $data->week_9,
+            "week_10" => $data->week_10,
+            "week_11" => $data->week_11,
+            "week_12" => $data->week_12,
+            "week_13" => $data->week_13,
+            "week_14" => $data->week_14,
+            "week_15" => $data->week_15,
+            "week_16" => $data->week_16,
+            "month_5" => $data->month_5,
+            "month_6" => $data->month_6,
+            "month_7" => $data->month_7,
+            "month_8" => $data->month_8,
+            "month_9" => $data->month_9,
+            "month_10" => $data->month_10,
+            "month_11" => $data->month_11,
+            "month_12" => $data->month_12,
+        ];
+
+        return response()->json(['message' => 'Get Weeks', 'in_stock_finish' => $entries->in_stock_finish, 'data' => $Arr]);
+    }
+
+    public function update_past_due(Request $request)
+    {
+        // Validate input
+        $validatedData = $request->validate([
+            'dates_array' => 'required|array',
+            'part_number' => 'required|string',
+        ]);
+
+        $datesArray = $validatedData['dates_array']; // Dates array containing week and month dates
+        $partNumber = $validatedData['part_number'];
+
+        // Fetch the record's data
+        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $partNumber)->first();
+
+        // Update weeks
+
+        foreach ($datesArray as $key => $value) {
+            $dateKey = str_replace('_', '_date_', $key);
+
+            if ($value->$dateKey != $data->$dateKey) {
+                $nextWeekKey = str_replace('week_', 'week_', $key);
+                $nextWeekDateKey = str_replace('week_', 'week_', $dateKey);
+
+                $data->$key = $data->$nextWeekKey;
+                $data->$dateKey = $value->$nextWeekDateKey;
+            }
+        }
+
+        // Save the changes
+        $data->save();
+
+        return response()->json(['message' => 'Weeks and months updated successfully.']);
+    }
+
+    private function getWeekArr($recordDate)
+    {
+        $today = $recordDate;
+        $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+        $mondayOfWeek = date('Y-m-d', strtotime('-'.$dayOfWeek.' days', strtotime($today)));
+        $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+
+        // Calculate the end date of week 16
+        $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+
+        // Initialize an array to store week and month start dates
+        $datesArray = [];
+
+        // Calculate week start dates and store in array
+        for ($week = 1; $week <= 16; $week++) {
+            $startOfWeek = date('Y-m-d', strtotime('+'.(($week - 1) * 7).' days', strtotime($mondayOfWeek)));
+            $datesArray["week_$week"] = $startOfWeek;
+        }
+
+        // Calculate month start dates and store in array
+        $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+        for ($month = 5; $month <= 12; $month++) {
+            $endOfMonth = date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate)));
+            $datesArray["month_$month"] = $month5StartDate;
+            $month5StartDate = date('Y-m-d', strtotime('+31 days', strtotime($month5StartDate)));
+        }
+
+        return $datesArray;
     }
 }
 

@@ -36,7 +36,7 @@
                             data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             Add Production
                         </button>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        <button class="btn btn-primary" id="btn-add-shipment" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                             Add Shipment
                         </button>
@@ -143,47 +143,77 @@
                                                 <td>Past Due</td>
                                                 <td></td>
                                                 <td>
-                                                <input type="text" name="" id="">
+                                                <input type="text" name="past_due" id="past_due">
                                                 </td>
                                             </tr>
                                             {{-- @php
                                                 $data = App\Models\Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
                                             @endphp --}}
-                                            @for($week = 1; $week <= 16; $week++)
+                                            @php
+                                            $datesArray = [];
+
+                                            // Calculate the start date of week 16
+                                            $today = '2024-12-30';
+                                            $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+                                            $mondayOfWeek = date('Y-m-d', strtotime('-'.$dayOfWeek.' days', strtotime($today)));
+                                            $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+
+                                            // Calculate the end date of week 16
+                                            $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+
+                                            // Calculate the start date of month 5 (the day after week 16 ends)
+                                            $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+
+                                            @endphp
+
+                                            @for ($week = 1; $week <= 16; $week++)
+                                                @php
+                                                    $startOfWeek = date('Y-m-d', strtotime('+'.(($week - 1) * 7).' days', strtotime($mondayOfWeek)));
+                                                    $endOfWeek = date('Y-m-d', strtotime('+6 days', strtotime($startOfWeek)));
+                                                    $datesArray["week_$week"] = $startOfWeek;
+                                                @endphp
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Week {{ $week }} </span>
+                                                            <span>Week {{ $week }} ({{ $startOfWeek }} - {{ $endOfWeek }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type='number' class='existing' data-week='week_{{ $week }}' name='existing[week_{{ $week }}]' id='week_{{ $week }}'>
+                                                        <input type='number' class='edit_existing' name='edit_existing[week_{{ $week }}]' id='edit_week_{{ $week }}'>
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="" id="">
+                                                        <input type="number" class='change-amount' data-week-change='week_{{ $week }}' name="change_amount[week_{{ $week }}]" id="change_week_{{ $week }}">
                                                     </td>
                                                 </tr>
                                             @endfor
 
-                                            @for($month = 5; $month <= 12; $month++)
+                                            @for ($month = 5; $month <= 12; $month++)
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Month {{ $month }} </span>
+                                                            <span>Month {{ $month }} ({{ $month5StartDate }} - {{ date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate))) }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type='number' class='change-amount' data-week='month_{{ $month }}' name='change_amount[month_{{ $month }}]' id='month_{{ $month }}'>
+                                                        <input type='number' class='edit_existing' name='edit_existing[month_{{ $month }}]' id='edit_month_{{ $month }}'>
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="" id="">
+                                                        <input type="number" class='change-amount' data-week-change='month_{{ $month }}' name="change_amount[month_{{ $month }}]" id="change_month_{{ $month }}">
                                                     </td>
                                                 </tr>
+                                                @php
+                                                    $datesArray["month_$month"] = $month5StartDate;
+                                                    $month5StartDate = date('Y-m-d', strtotime('+31 days', strtotime($month5StartDate)));
+                                                @endphp
                                             @endfor
+                                            {{-- @dump($datesArray); --}}
 
 
                                         </tbody>
                                     </table>
+                                    <div class="btn-custom-btn text-ceneter mt-5">
+                                        <button type="button" id="add-shipment" class="btn custom-btn">Submit</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -195,6 +225,70 @@
 @endsection
 @section('js')
     <script>
+        $('#btn-add-shipment').on('click', function() {
+            let partNumber = $('#part_no').val();
+            $.ajax({
+                url: "{{ route('get_weeks') }}", // Replace with your backend route
+                method: 'POST',
+                data: {
+                    part_number: partNumber
+                },
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    if (response.data) {
+                        let weeksData = {};
+                        let data = response.data;
+                        let temp = @json($datesArray);
+                        let temp1 = @json($datesArray);
+                        // Iterate through the response data object
+                        for (let key in data) {
+                            let value = data[key];
+
+                            $(`#edit_${key}`).val(value);
+                            weeksData[`${key}`] = value;
+                            temp[`${key}`] = value;
+                            temp[`${key}_date`] = temp1[`${key}`];
+                        }
+
+                        $('#past_due').val(response.in_stock_finish);
+
+
+
+                        // $('.change-amount').each(function () {
+                        //     const weekKey = $(this).data('week-change');
+                        //     const weekValue = $(this).val();
+                        //     console.log(weekKey, weekValue);
+                        //     weeksData[`${weekKey}`] = weekValue;
+                        // });
+
+                        $.ajax({
+                            url: "{{ route('update_past_due') }}",
+                            method: 'POST',
+                            data: {
+                                weeks: weeksData,
+                                part_number: partNumber,
+                                current_date: '2024-12-22',
+                                dates_array: temp
+                            },
+                            headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                            success: function (response) {
+                                console.log('Total Past Value:', response.totalPastValue);
+                                alert(response.message);
+                            },
+                            error: function (xhr) {
+                                console.error("Error updating shipment: ", xhr.responseText);
+                            }
+                        });
+                    } else {
+                        console.error("No data found in the response");
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Error updating shipment: ", xhr.responseText);
+                }
+            });
+        });
+
         $(document).ready(function() {
             $('.btn[data-bs-toggle="collapse"]').prop('disabled', true);
 
@@ -223,6 +317,7 @@
                                     title: 'No Data Found',
                                     text: response.message ?? 'No entry found for the provided part number.',
                                 });
+                                $('.btn[data-bs-toggle="collapse"]').prop('disabled', true);
                             }
                         },
                         error: function(xhr) {
@@ -295,11 +390,13 @@
                     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                     success: function(response) {
                         if(response.error){
+
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Shipment Order',
                                 text: response.message,
                             });
+
                         }else{
                             Swal.fire({
                                 icon: 'success',
@@ -318,6 +415,143 @@
                     }
                 });
             });
+
+
+
+            $('#add-shipment').on('click', function() {
+                let weeksData = {};
+
+                $('.change-amount').each(function() {
+                    const weekKey = $(this).data('week-change');
+                    const weekValue = $(this).val();
+                    weeksData[`${weekKey}`] = weekValue;
+                });
+
+                let partNumber = $('#part_no').val();
+
+                // Optionally, send updated data to the server via AJAX
+                $.ajax({
+                    url: "{{ route('add_shipment') }}", // Replace with your backend route
+                    method: 'POST',
+                    data: {
+                        weeks: weeksData,
+                        part_number: partNumber
+                    },
+                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(response) {
+                        if(response.error){
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Shipment Order',
+                                text: response.message,
+                            });
+
+                        }else{
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Shipment Order Change',
+                                text: response.message ?? 'Shipment Order Change.',
+                            });
+
+                            let data = response.data;
+                            // Iterate through the response data object
+                            for (let key in data) {
+                                let value = data[key];
+
+                                $(`#edit_${key}`).val(value);
+                            }
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error updating shipment: ", xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Shipment Order Failed',
+                            text: 'An error occurred while updating the shipment amount. Please try again.',
+                        });
+                    }
+                });
+            });
+
+            $(document).on('click', '.add-shipment-amount .btn', function () {
+                let shippedAmount = parseFloat($('.add-shipment-amount input').val()); // Get the shipment amount entered
+                if (isNaN(shippedAmount) || shippedAmount <= 0) {
+                    alert("Please enter a valid shipment amount.");
+                    return;
+                }
+
+                // Select only the input fields with names starting with 'edit_existing'
+                let fields = $("input[name^='edit_existing']");
+
+                fields.each(function () {
+                    if (shippedAmount <= 0) return false; // Stop iteration if shipment amount is distributed
+
+                    let $field = $(this);
+                    let currentValue = parseFloat($field.val()) || 0; // Get the current value of the field (default to 0)
+
+                    if (currentValue > 0) {
+                        if (currentValue >= shippedAmount) {
+                            $field.val(currentValue - shippedAmount); // Deduct shippedAmount from current field
+                            shippedAmount = 0; // Fully distributed
+                        } else {
+                            $field.val(0); // Zero out the current field
+                            shippedAmount -= currentValue; // Deduct current field value from shippedAmount
+                        }
+                    }
+                });
+
+                // If any amount remains undistributed, alert the user
+                if (shippedAmount > 0) {
+                    alert("Remaining shipment amount: " + shippedAmount);
+                } else {
+                    alert("Shipment amount distributed successfully.");
+                }
+            });
+
+            // function updatePastDue(week) {
+            //     let changeAmount = $(`#change_${week}`).val();
+            //     let pastDueField = $('#past_due'); // Past Due total input field
+            //     let partNumber = $('#part_no').val();
+
+            //     if (changeAmount > 0) {
+            //         pastDueValue += parseInt(changeAmount);
+            //         pastDueInput.value = pastDueValue;
+
+            //         // Send AJAX request to update the past due in Laravel
+            //         $.ajax({
+            //             url: "{{ route('update_past_due') }}", // Replace with your backend route
+            //             method: 'POST',
+            //             data: {
+            //                 week: week,
+            //                 pastDue: pastDueValue,
+            //                 part_number: partNumber
+            //             },
+            //             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            //             success: function(response) {
+
+            //                 if (response.success) {
+            //                     alert(response.message);
+
+            //                     // Update the Past Due field
+            //                     pastDueField.val(response.past_due_total);
+            //                 } else {
+            //                     alert(response.message);
+            //                 }
+
+            //             },
+            //             error: function(xhr) {
+            //                 console.error("Error updating shipment: ", xhr.responseText);
+            //             }
+            //         });
+            //     }
+            // }
+
         });
+
+        $(document).ready(function () {
+
+        });
+
     </script>
 @endsection

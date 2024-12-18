@@ -32,6 +32,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get-part-no-detail', [HomeController::class, 'get_part_no_detail'])->name('get_part_no_detail');
     Route::post('update-production-total', [HomeController::class, 'update_production_total'])->name('update_production_total');
     Route::post('create-order', [HomeController::class, 'create_order'])->name('create_order');
+    Route::post('get-weeks', [HomeController::class, 'get_weeks'])->name('get_weeks');
+    Route::post('add-shipment', [HomeController::class, 'add_shipment'])->name('add_shipment');
+    Route::post('update-past-due', [HomeController::class, 'update_past_due'])->name('update_past_due');
 
 });
 #login route
