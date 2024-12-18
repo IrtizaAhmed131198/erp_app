@@ -286,24 +286,170 @@ class HomeController extends Controller
         $partNumber = $validatedData['part_number'];
 
         // Fetch the record's data
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $partNumber)->first();
+        // $array_1 = Weeks::where('user_id', Auth::user()->id)->where('part_number', $partNumber)->first();
 
-        // Update weeks
+        // $array_2 = [];
+        // foreach ($datesArray as $key => $value) {
+        //     if (strpos($key, '_date') === false) {
+        //         $date_key = $key . '_date';
+        //         $array_2[$key] = $value;
+        //         if (isset($datesArray[$date_key])) {
+        //             $array_2[$date_key] = $datesArray[$date_key];
+        //         }
+        //     }
+        // }
 
-        foreach ($datesArray as $key => $value) {
-            $dateKey = str_replace('_', '_date_', $key);
+        // $keys_to_remove = ['id', 'user_id', 'part_number', 'created_at', 'updated_at'];
 
-            if ($value->$dateKey != $data->$dateKey) {
-                $nextWeekKey = str_replace('week_', 'week_', $key);
-                $nextWeekDateKey = str_replace('week_', 'week_', $dateKey);
+        // foreach ($keys_to_remove as $key) {
+        //     unset($array_1[$key]);
+        // }
+        // return $array_2;
+        $array_1 = [
+            "week_1" => "1000",
+            "week_1_date" => "2024-12-15",
+            "week_2" => "1000",
+            "week_2_date" => "2024-12-22",
+            "week_3" => "100",
+            "week_3_date" => "2024-12-29",
+            "week_4" => "10000",
+            "week_4_date" => "2025-01-05",
+            "week_5" => "156465",
+            "week_5_date" => "2025-01-12",
+            "week_6" => "32131",
+            "week_6_date" => "2025-01-19",
+            "week_7" => "465",
+            "week_7_date" => "2025-01-26",
+            "week_8" => "54",
+            "week_8_date" => "2025-02-02",
+            "week_9" => "321",
+            "week_9_date" => "2025-02-09",
+            "week_10" => "684",
+            "week_10_date" => "2025-02-16",
+            "week_11" => "321",
+            "week_11_date" => "2025-02-23",
+            "week_12" => "684",
+            "week_12_date" => "2025-03-02",
+            "week_13" => "345",
+            "week_13_date" => "2025-03-09",
+            "week_14" => "897",
+            "week_14_date" => "2025-03-16",
+            "week_15" => "100",
+            "week_15_date" => "2025-03-23",
+            "week_16" => "520",
+            "week_16_date" => "2025-03-30",
+            "month_5" => "215",
+            "month_5_date" => "2025-04-06",
+            "month_6" => "2500",
+            "month_6_date" => "2025-05-07",
+            "month_7" => "22250",
+            "month_7_date" => "2025-06-07",
+            "month_8" => "451",
+            "month_8_date" => "2025-07-08",
+            "month_9" => "21",
+            "month_9_date" => "2025-08-08",
+            "month_10" => "102",
+            "month_10_date" => "2025-09-08",
+            "month_11" => "120",
+            "month_11_date" => "2025-10-09",
+            "month_12" => "12",
+            "month_12_date" => "2025-11-09"
+        ];
 
-                $data->$key = $data->$nextWeekKey;
-                $data->$dateKey = $value->$nextWeekDateKey;
+        $array_2 = [
+            "week_1" => "1000",
+            "week_1_date" => "2024-12-22",
+            "week_2" => "1000",
+            "week_2_date" => "2024-12-29",
+            "week_3" => "100",
+            "week_3_date" => "2025-01-05",
+            "week_4" => "10000",
+            "week_4_date" => "2025-01-12",
+            "week_5" => "156465",
+            "week_5_date" => "2025-01-19",
+            "week_6" => "32131",
+            "week_6_date" => "2025-01-26",
+            "week_7" => "465",
+            "week_7_date" => "2025-02-02",
+            "week_8" => "54",
+            "week_8_date" => "2025-02-09",
+            "week_9" => "321",
+            "week_9_date" => "2025-02-16",
+            "week_10" => "684",
+            "week_10_date" => "2025-02-23",
+            "week_11" => "321",
+            "week_11_date" => "2025-03-02",
+            "week_12" => "684",
+            "week_12_date" => "2025-03-09",
+            "week_13" => "345",
+            "week_13_date" => "2025-03-16",
+            "week_14" => "897",
+            "week_14_date" => "2025-03-23",
+            "week_15" => "100",
+            "week_15_date" => "2025-03-30",
+            "week_16" => "520",
+            "week_16_date" => "2025-04-06",
+            "month_5" => "215",
+            "month_5_date" => "2025-04-13",
+            "month_6" => "2500",
+            "month_6_date" => "2025-05-14",
+            "month_7" => "22250",
+            "month_7_date" => "2025-06-14",
+            "month_8" => "451",
+            "month_8_date" => "2025-07-15",
+            "month_9" => "21",
+            "month_9_date" => "2025-08-15",
+            "month_10" => "102",
+            "month_10_date" => "2025-09-15",
+            "month_11" => "120",
+            "month_11_date" => "2025-10-16",
+            "month_12" => "12",
+            "month_12_date" => "2025-11-16"
+        ];
+
+        foreach ($array_1 as $key => $value) {
+            if (strpos($key, '_date') !== false) { // Check if the key ends with '_date'
+                $base_key = str_replace('_date', '', $key); // Get the base key (e.g., 'week_1' or 'month_5')
+                if (isset($array_2[$key]) && $value !== $array_2[$key]) { // Compare dates
+                    // Calculate the next key
+                    preg_match('/(\d+)/', $base_key, $matches);
+                    $next_key = preg_replace('/\d+/', $matches[1] + 1, $base_key);
+
+                    // Update $array_1's value or set to null if not found in $array_2
+                    $array_1[$base_key] = $array_2[$next_key] ?? null;
+
+                    // Update the _date value in array_1 with the corresponding value in array_2
+                    $array_1[$key] = $array_2[$key];
+                }
             }
         }
 
-        // Save the changes
-        $data->save();
+        $array_1['month_12'] = null;
+
+        return $array_1;
+
+
+        // Update weeks
+        // echo '<pre>';
+        // echo $data;
+        // echo '</pre>';
+
+        // foreach ($datesArray as $key => $value) {
+        //     echo $key;
+        //     echo $dateKey = str_replace('_', '_date_', $key);
+
+        //     if ($value->$dateKey != $data->$dateKey) {
+        //         $nextWeekKey = str_replace('week_', 'week_', $key);
+        //         $nextWeekDateKey = str_replace('week_', 'week_', $dateKey);
+
+        //         $data->$key = $data->$nextWeekKey;
+        //         $data->$dateKey = $value->$nextWeekDateKey;
+        //     }
+        // }
+        // return 213;
+
+        // // Save the changes
+        // $data->save();
 
         return response()->json(['message' => 'Weeks and months updated successfully.']);
     }

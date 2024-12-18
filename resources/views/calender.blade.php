@@ -153,7 +153,7 @@
                                             $datesArray = [];
 
                                             // Calculate the start date of week 16
-                                            $today = '2024-12-30';
+                                            $today = '2024-12-22';
                                             $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
                                             $mondayOfWeek = date('Y-m-d', strtotime('-'.$dayOfWeek.' days', strtotime($today)));
                                             $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
