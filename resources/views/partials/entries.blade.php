@@ -64,8 +64,8 @@
 
         <td class="toggleable-1">{{ $sumWeeks1To6 }}</td>
         <td class="toggleable-1">{{ $sumWeeks7To12 }}</td>
-        <td class="toggleable-1">{{ $sumWeeks1To6 + $sumWeeks7To12 }}</td>
-        <td class="toggleable-1">
+        <td class="toggleable-1 schedule_total">{{ $sumWeeks1To6 + $sumWeeks7To12 }}</td>
+        <td class="toggleable-1 in_stock_finish">
             @if(Auth::user()->stock_finished_column == 1)
                 <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"
                     value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"

@@ -7,7 +7,7 @@
                 <div class="col-lg-12">
                     <div class="parent-table">
                         <div class="accordion" id="accordionExample">
-                            @if(!empty($com1))
+                        @if(!empty($com1))
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -398,7 +398,7 @@
 @section('js')
 <script>
     $(document).ready(function () {
-        $('.submit-table-data-1').on('click', function (e) {
+        $('.submit-table-data-1-one').on('click', function (e) {
             e.preventDefault();
 
             let tableData = [];
@@ -421,6 +421,202 @@
                 method: "POST",
                 data: {
                     entries: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-1-two').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseTwo tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data') }}",
+                method: "POST",
+                data: {
+                    entries: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-1-three').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseThree tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data') }}",
+                method: "POST",
+                data: {
+                    entries: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+
+        $('.submit-table-data-2-one').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseFour tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data_2') }}",
+                method: "POST",
+                data: {
+                    entries_data: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-2-two').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseFifth tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data_2') }}",
+                method: "POST",
+                data: {
+                    entries_data: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.s').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseSix tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data_2') }}",
+                method: "POST",
+                data: {
+                    entries_data: tableData
                 },
                 headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
                 success: function (response) {
