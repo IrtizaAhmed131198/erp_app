@@ -379,7 +379,7 @@ class HomeController extends Controller
         $data->save();
 
         $part = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $part->filter = 'prd';
+        $part->filter = 'pending';
         $part->save();
 
         $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.']);
