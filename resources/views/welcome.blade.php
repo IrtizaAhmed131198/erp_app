@@ -27,7 +27,7 @@
                         <select class="js-select2" id="filter2">
                             <option selected="">All</option>
                             <option value="pending">Pending orders</option>
-                            <option value="prd">Parets req PRD</option>
+                            <option value="prd">Parts req for PRD</option>
                         </select>
                     </div>
                 </div>
@@ -61,48 +61,48 @@
                                     </th>
                                     <th scope="col" class="toggleable toggle-header-department ">DEPARTMENT <span
                                         class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-work-center">WORK CENTER </th>
-                                    <th scope="col" class="toggleable toggle-header-planning">PLANNING (QUEUE) </th>
-                                    <th scope="col" class="toggleable">STATUS</th>
-                                    <th scope="col" class="toggleable">JOB #</th>
-                                    <th scope="col" class="toggleable">LOT #</th>
-                                    <th scope="col" class="toggleable">ID</th>
-                                    <th scope="col" class="toggleable">PART NO.</th>
-                                    <th scope="col" class="toggleable">CUSTOMER</th>
-                                    <th scope="col" class="toggleable">REV</th>
-                                    <th scope="col" class="toggleable">PROCESS</th>
+                                    <th scope="col" class="toggleable toggle-header-department">WORK CENTER  <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">PLANNING (QUEUE)  <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">STATUS <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">JOB # <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">LOT # <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">ID <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">PART NO. <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">CUSTOMER <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">REV <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span class="icon">▼</span></th>
                                     <th scope="col" class="highlighted toggle-header-1">
                                         <span class="icon">▼
                                         </span>
-                                    </th>
-                                    <th scope="col" class="toggleable-1">REQ 1-6 WEEKS</th>
-                                    <th scope="col" class="toggleable-1">REQ 7-12 WEEKS</th>
-                                    <th scope="col" class="toggleable-1">SCHED'L TOTAL</th>
-                                    <th scope="col" class="toggleable-1">IN STOCK FINISHED</th>
-                                    <th scope="col" class="toggleable-1"> LIVE INVENTORY F</th>
-                                    <th scope="col" class="toggleable-1"> LIVE INVENTORY WIP</th>
-                                    <th scope="col" class="toggleable-1"> IN PROCESS OUT SIDE</th>
-                                    <th scope="col" class="toggleable-1"> ON ORDER RAW MAT'L</th>
-                                    <th scope="col" class="toggleable-1"> IN STOCK LIVE</th>
-                                    <th scope="col" class="toggleable-1"> WT/PC</th>
-                                    <th scope="col" class="toggleable-1"> MATERIAL (SORT)</th>
-                                    <th scope="col" class="toggleable-1"> Wt Req'd</th>
-                                    <th scope="col" class="toggleable-1"> SAFTY</th>
-                                    <th scope="col" class="toggleable-1"> Min Ship</th>
-                                    <th scope="col" class="toggleable-1"> Order Notes</th>
-                                    <th scope="col" class="toggleable-1"> Part Notes </th>
+                                     </th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department">SCHED'L TOTAL <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department">IN STOCK FINISHED <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY F <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY WIP <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN PROCESS OUT SIDE <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> ON ORDER RAW MAT'L <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes  <span class="icon">▼</span></th>
                                     <th scope="col" class="highlighted toggle-header-2">
                                         <span class="icon">▼
                                         </span>
                                     </th>
-                                    <th scope="col" class="toggleable-2">PAST DUE</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">PAST DUE <span class="icon">▼</span></th>
                                     @for ($week = 1; $week <= 16; $week++)
-                                        <th scope="col" class="toggleable-2">
+                                        <th scope="col" class="toggleable-2 toggle-header-department">
                                             {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
                                         </th>
                                     @endfor
                                     @for ($month = 5; $month <= 12; $month++)
-                                        <th scope="col" class="toggleable-2">{{ $month5StartDate }}</th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department">{{ $month5StartDate }}</th>
                                         @php
                                             $month5StartDate = date(
                                                 'j-M',
@@ -110,23 +110,23 @@
                                             );
                                         @endphp
                                     @endfor
-                                    {{-- <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th> --}}
-                                    <th scope="col" class="toggleable-2">FUTURE RAW</th>
-                                    <th scope="col" class="toggleable-2">PRICE</th>
-                                    <th scope="col" class="toggleable-2">NOTES</th>
+                                    {{-- <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">3-Jun</th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">10-Jun</th> --}}
+                                    <th scope="col" class="toggleable-2 toggle-header-department">FUTURE RAW <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">PRICE <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-2 toggle-header-department">NOTES <span class="icon">▼</span></th>
                                 </tr>
                             </thead>
                             <tbody id="entries-table-body">
@@ -138,15 +138,15 @@
                                             <span>Details</span>
                                         </div>
                                     </td>
-                                    <td class="toggleable toggle-department">COMPRESSION</td>
-                                    <td class="toggleable toggle-work-center">COM 1</td>
-                                    <td class="toggleable toggle-planning"><input type="text" name="" id=""></td>
-                                    <td class="toggleable"><input type="text" name="" id=""></td>
-                                    <td class="toggleable"><input type="text" name="" id=""></td>
-                                    <td class="toggleable"><input type="text" name="" id=""></td>
-                                    <td class="toggleable"></td>
-                                    <td class="toggleable">DRESDEN - RG</td>
-                                    <td class="toggleable">1000460</td>
+                                    <td class="toggleable t toggle-header-departmentoggle-department">COMPRESSION</td>
+                                    <td class="toggleable t toggle-header-departmentoggle-work-center">COM 1</td>
+                                    <td class="toggleable t toggle-header-departmentoggle-planning"><input type="text" name="" id=""></td>
+                                    <td class="toggleable"> toggle-header-department<input type="text" name="" id=""></td>
+                                    <td class="toggleable"> toggle-header-department<input type="text" name="" id=""></td>
+                                    <td class="toggleable"> toggle-header-department<input type="text" name="" id=""></td>
+                                    <td class="toggleable"> toggle-header-department</td>
+                                    <td class="toggleable"> toggle-header-departmentDRESDEN - RG</td>
+                                    <td class="toggleable"> toggle-header-department1000460</td>
                                     <td class="toggleable">A00</td>
                                     <td class="toggleable">C (Superior)</td>
                                     <td rowspan="1000" class="vertical-text highlighted">

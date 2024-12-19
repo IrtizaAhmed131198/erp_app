@@ -34,11 +34,7 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($com1 as $entry)
-                                                    @if (isset($entry['entries']) &&
-                                                        isset($entry['entries']['status'], $entry['entries']['job'], $entry['entries']['lot']) &&
-                                                        $entry['entries']['status'] !== null &&
-                                                        $entry['entries']['job'] !== null &&
-                                                        $entry['entries']['lot'] !== null)
+                                                    @if ($entry['entries']['status'] !== null && $entry['entries']['job'] !== null && $entry['entries']['lot'] !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">

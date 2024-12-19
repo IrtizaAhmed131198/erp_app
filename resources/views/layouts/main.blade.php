@@ -77,6 +77,8 @@
                                                 <li><a class="dropdown-item" href="{{ route('index') }}">Home</a>
                                                 </li>
                                                 @if(Auth::user()->role == 1)
+                                                <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
+                                                </li>
                                                 <li><a class="dropdown-item" href="{{ route('add_user') }}">Add user</a>
                                                 </li>
                                                 @endif

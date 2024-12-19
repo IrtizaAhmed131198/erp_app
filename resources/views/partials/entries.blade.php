@@ -10,7 +10,7 @@
                 <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
                     data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value)">
             </td>
-            <td class="toggleable">
+            <td class="toggleable toggle-department">
                 <select name="status" id="status"
                         data-id="{{ $data->id }}"
                         onchange="sendAjaxRequest('status', this.value)">
@@ -21,19 +21,19 @@
                     <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}>Closed</option>
                 </select>
             </td>
-            <td class="toggleable">
+            <td class="toggleable toggle-department">
                 <input type="text" name="job" id="job" value="{{ $data->job ?? '' }}"
                     data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('job', this.value)">
             </td>
-            <td class="toggleable">
+            <td class="toggleable toggle-department">
                 <input type="text" name="lot" id="lot" value="{{ $data->lot ?? '' }}"
                     data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('lot', this.value)">
             </td>
         @else
-            <td class="toggleable-1">{{ $data->planning }}</td>
-            <td class="toggleable-1">{{ $data->status }}</td>
-            <td class="toggleable-1">{{ $data->job }}</td>
-            <td class="toggleable-1">{{ $data->lot }}</td>
+            <td class="toggleable-1 toggle-department">{{ $data->planning }}</td>
+            <td class="toggleable-1 toggle-department">{{ $data->status }}</td>
+            <td class="toggleable-1 toggle-department">{{ $data->job }}</td>
+            <td class="toggleable-1 toggle-department">{{ $data->lot }}</td>
         @endif
         <td class="toggleable">ID# {{ $data->id }}</td>
         <td class="toggleable">{{ $data->part_number }}</td>
