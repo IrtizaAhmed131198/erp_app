@@ -1,7 +1,7 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
     <tr>
-        <td  class="vertical-text highlighted">
+        <td class="vertical-text highlighted">
         </td>
         <td class="toggleable toggle-department">{{ $data->department }}</td>
         <td class="toggleable toggle-work-center">{{ $data->work_center_one->com ?? 'N/A'}}</td>
@@ -35,11 +35,11 @@
             <td class="toggleable-1">{{ $data->job }}</td>
             <td class="toggleable-1">{{ $data->lot }}</td>
         @endif
-        <td class="toggleable"></td>
+        <td class="toggleable">ID# {{ $data->id }}</td>
         <td class="toggleable">{{ $data->part_number }}</td>
         <td class="toggleable">{{ $data->customer }}</td>
-        <td class="toggleable">A00</td>
-        <td class="toggleable">C (Superior)</td>
+        <td class="toggleable">{{ $data->rev }}</td>
+        <td class="toggleable">{{ $data->process }}</td>
         <td  class="vertical-text highlighted">
         </td>
 
@@ -51,11 +51,20 @@
             } else {
                 $sumWeeks1To6 = $sumWeeks7To12 = 0;
             }
+
+            $in_stock_finish = $data->in_stock_finish ?? 0;
+            $wt_pc = $data->wt_pc ?? 0;
+
+            if($sumWeeks1To6 != 0 && $sumWeeks7To12 != 0){
+                $WT_RQ = max((($sumWeeks1To6 + $sumWeeks7To12) - $in_stock_finish) * $wt_pc, 0);
+            }else{
+                $WT_RQ = 0;
+            }
         @endphp
 
         <td class="toggleable-1">{{ $sumWeeks1To6 }}</td>
         <td class="toggleable-1">{{ $sumWeeks7To12 }}</td>
-        <td class="toggleable-1">30,000 </td>
+        <td class="toggleable-1">{{ $sumWeeks1To6 + $sumWeeks7To12 }}</td>
         <td class="toggleable-1">
             @if(Auth::user()->stock_finished_column == 1)
                 <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"
@@ -70,8 +79,22 @@
         $live_inventory_wip = \DB::table('inventory')->where('Part_No', $data->part_number)->whereIn('status', ['new', 'returned'])->where('location', '=', 'WIP')->sum('container_qty');
         $in_stock_live = \DB::table('inventory')->where('Part_No', $data->part_number)->sum('weight');
         @endphp
-        <td class="toggleable-1">{{ $live_inventory_finish ?? 0 }}</td>
-        <td class="toggleable-1">{{ $live_inventory_wip ?? 0 }}</td>
+        @if(Auth::user()->role == 1)
+            <td class="toggleable-1">
+                <input type="number" step="any" name="live_inventory_finish" id="live_inventory_finish"
+                    value="{{ $data->live_inventory_finish }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('live_inventory_finish', this.value)">
+            </td>
+            <td class="toggleable-1">
+                <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"
+                    value="{{ $data->live_inventory_wip }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('live_inventory_wip', this.value)">
+            </td>
+        @else
+            <td class="toggleable-1">{{ $data->live_inventory_finish }}</td>
+            <td class="toggleable-1">{{ $data->live_inventory_wip }}</td>
+        @endif
+
         @if(Auth::user()->stock_finished_column == 1)
             {{-- <td class="toggleable-1">
                 <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"
@@ -91,12 +114,20 @@
             <td class="toggleable-1">{{ $data->in_process_outside }}</td>
             <td class="toggleable-1">{{ $data->raw_mat }}</td>
         @endif
-        <td class="toggleable-1">{{ $in_stock_live ?? 0 }}</td>
-        <td class="toggleable-1">8.000</td>
+        @if(Auth::user()->role == 1)
+            <td class="toggleable-1">
+                <input type="number" step="any" name="in_stock_live" id="in_stock_live"
+                    value="{{ $data->in_stock_live }}" data-id="{{ $data->id }}"
+                    onkeyup="sendAjaxRequest('in_stock_live', this.value)">
+            </td>
+        @else
+            <td class="toggleable-1">{{ $data->in_stock_live }}</td>
+        @endif
+        <td class="toggleable-1">{{ $data->wt_pc }}</td>
         <td class="toggleable-1">{{ $data->material }}</td>
-        <td class="toggleable-1">0</td>
-        <td class="toggleable-1"></td>
-        <td class="toggleable-1">25,000</td>
+        <td class="toggleable-1">{{ (($data->wt_pc / 1000) * $sumWeeks1To6) }}</td>
+        <td class="toggleable-1">{{ $data->safety }}</td>
+        <td class="toggleable-1">{{ $data->min_ship }}</td>
         <td class="toggleable-1">{{ $data->order_notes }}</td>
         <td class="toggleable-1">{{ $data->part_notes }}</td>
         <td  class="vertical-text highlighted">

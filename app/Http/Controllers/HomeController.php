@@ -109,6 +109,11 @@ class HomeController extends Controller
             'future_raw' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
             'notes' => 'nullable|string',
+            'rev' => 'nullable',
+            'wet_reqd' => 'nullable',
+            'safety' => 'nullable',
+            'min_ship' => 'nullable',
+            'wt_pc' => 'required',
         ]);
 
         $existingEntry = Entries::where('customer', $validatedData['customer'])
@@ -700,4 +705,3 @@ class HomeController extends Controller
     }
 
 }
-

@@ -44,6 +44,11 @@ class Entries extends Model
         'job',
         'lot',
         'raw_mat',
+        'rev',
+        'wet_reqd',
+        'safety',
+        'min_ship',
+        'wt_pc',
     ];
 
     public function weeks_months()

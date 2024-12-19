@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update-week-or-month', [HomeController::class, 'update_week_or_month'])->name('update_week_or_month');
     Route::post('save-table-data', [HomeController::class, 'save_table_data'])->name('save_table_data');
     Route::post('save-table-data-2', [HomeController::class, 'save_table_data_2'])->name('save_table_data_2');
+
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('users-update', [UserController::class, 'update'])->name('users.update');
+    Route::get('users-delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    // Route::get('users', [HomeController::class, 'users'])->name('users.index');
+    // Route::get('users', [HomeController::class, 'users'])->name('users.index');
 
 });
 #login route

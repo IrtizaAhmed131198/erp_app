@@ -222,9 +222,33 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Notes</td>
+                                        <td>REV</td>
                                         <td>
-                                            <textarea name="notes" id="">{{ old('notes') }}</textarea>
+                                            <input type="text" name="rev" id="rev" value="{{ old('rev') }}">
+                                        </td>
+                                    </tr>
+                                    {{-- <tr>
+                                        <td>Wt Req'd</td>
+                                        <td>
+                                            <input type="number" step="any" name="wet_reqd" id="wet_reqd" value="{{ old('wet_reqd') }}">
+                                        </td>
+                                    </tr> --}}
+                                    <tr>
+                                        <td>Safety</td>
+                                        <td>
+                                            <input type="text" name="safety" id="safety" value="{{ old('safety') }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Minship</td>
+                                        <td>
+                                            <input type="number" name="min_ship" id="min_ship" value="{{ old('min_ship') }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>WT/PC</td>
+                                        <td>
+                                            <input type="number" name="wt_pc" id="wt_pc" value="{{ old('wt_pc') }}">
                                         </td>
                                     </tr>
                                 </tbody>

@@ -18,7 +18,7 @@ class LoginController extends Controller
             'password' => 'required|min:6',
             'department' => 'required',
             'phone' => 'required',
-            'user_img' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'user_img' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('user_img')) {
@@ -30,17 +30,14 @@ class LoginController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->password,
+            'password' => bcrypt($request->input('password')),
             'department' => $request->input('department'),
             'phone' => $request->input('phone'),
-            'user_img' => $imagename,
-            'successful_payments' => $request->filled('successful_payments') ? 1 : 0,
-            'payouts' => $request->filled('payouts') ? 1 : 0,
-            'fee_collection' => $request->filled('fee_collection') ? 1 : 0,
-            'customer_payment_dispute' => $request->filled('customer_payment_dispute') ? 1 : 0,
-            'refund_alerts' => $request->filled('refund_alerts') ? 1 : 0,
-            'invoice_payments' => $request->filled('invoice_payments') ? 1 : 0,
-            'webhook_api_endpoints' => $request->filled('webhook_api_endpoints') ? 1 : 0,
+            'user_img' => $imagename ?? null,
+            'status_column' => $request->filled('status_column') ? 1 : 0,
+            'stock_finished_column' => $request->filled('stock_finished_column') ? 1 : 0,
+            'part_number_column' => $request->filled('part_number_column') ? 1 : 0,
+            'calendar_column' => $request->filled('calendar_column') ? 1 : 0,
         ]);
         // dd($user);
         // auth()->login($user);

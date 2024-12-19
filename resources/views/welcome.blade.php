@@ -39,7 +39,7 @@
                 // Calculate the start date of week 16
                 $today = date('Y-m-d');
                 $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-                $mondayOfWeek = date('Y-m-d', strtotime('-'.$dayOfWeek.' days', strtotime($today)));
+                $mondayOfWeek = date('Y-m-d', strtotime('-' . $dayOfWeek . ' days', strtotime($today)));
                 $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
                 // Calculate the end date of week 16
@@ -96,12 +96,17 @@
                                     </th>
                                     <th scope="col" class="toggleable-2">PAST DUE</th>
                                     @for ($week = 1; $week <= 16; $week++)
-                                        <th scope="col" class="toggleable-2">{{ date('j-M', strtotime('+'.(($week - 1) * 7).' days', strtotime($mondayOfWeek))) }}</th>
+                                        <th scope="col" class="toggleable-2">
+                                            {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
+                                        </th>
                                     @endfor
                                     @for ($month = 5; $month <= 12; $month++)
                                         <th scope="col" class="toggleable-2">{{ $month5StartDate }}</th>
                                         @php
-                                            $month5StartDate = date('j-M', strtotime('+31 days', strtotime($month5StartDate)));
+                                            $month5StartDate = date(
+                                                'j-M',
+                                                strtotime('+31 days', strtotime($month5StartDate)),
+                                            );
                                         @endphp
                                     @endfor
                                     {{-- <th scope="col" class="toggleable-2">3-Jun</th>
@@ -259,70 +264,69 @@
 @endsection
 
 @section('js')
-<script>
-    $(document).ready(function () {
-        $('#myTable').DataTable({
-            // Configuration options
-            paging: false,         // Enable pagination
-            searching: false,      // Enable searching
-            ordering: true,       // Enable sorting
-            order: [[0, 'asc']],  // Default sorting on the first column
-            responsive: true,     // Make table responsive
-            "aoColumnDefs": [
-                { "bSortable": false, "aTargets": [ 0, 12, 29 ] },
-            ]
-        });
+    <script>
+        // $(document).ready(function () {
+        //     $('#myTable').DataTable({
+        //         // Configuration options
+        //         paging: false,         // Enable pagination
+        //         searching: false,      // Enable searching
+        //         ordering: true,       // Enable sorting
+        //         order: [[0, 'asc']],  // Default sorting on the first column
+        //         responsive: true,     // Make table responsive
+        //         "aoColumnDefs": [
+        //             { "bSortable": false, "aTargets": [ 0, 12, 29 ] },
+        //         ]
+        //     });
 
-    });
-    function sendAjaxRequest(field, value) {
-        var inputElement = event.target;
-        var dataId = inputElement.getAttribute('data-id');
-        var data = {
-            id: dataId,
-            field: field,
-            value: value
-        };
+        // });
+        function sendAjaxRequest(field, value) {
+            var inputElement = event.target;
+            var dataId = inputElement.getAttribute('data-id');
+            var data = {
+                id: dataId,
+                field: field,
+                value: value
+            };
 
-        $.ajax({
-            url: "{{ route('manual_imput') }}",
-            method: 'POST',
-            data: data,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                console.log('Success:', response);
-            },
-            error: function(error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        // Handle filter changes
-        $('#filter1, #filter2').on('change', function () {
-            let department = $('#filter1').val();
-            let filter = $('#filter2').val();
-
-            // Send AJAX request
             $.ajax({
-                url: '{{ route("index") }}',
-                type: 'GET',
-                data: {
-                    department: department,
-                    filter: filter
+                url: "{{ route('manual_imput') }}",
+                method: 'POST',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
-                    // Replace table content with new data
-                    $('#entries-table-body').html(response.html);
+                success: function(response) {
+                    console.log('Success:', response);
                 },
-                error: function (xhr) {
-                    console.error(xhr.responseText);
+                error: function(error) {
+                    console.error('Error:', error);
                 }
             });
-        });
-    });
+        }
 
-</script>
+        $(document).ready(function() {
+            // Handle filter changes
+            $('#filter1, #filter2').on('change', function() {
+                let department = $('#filter1').val();
+                let filter = $('#filter2').val();
+
+                // Send AJAX request
+                $.ajax({
+                    url: '{{ route('index') }}',
+                    type: 'GET',
+                    data: {
+                        department: department,
+                        filter: filter
+                    },
+                    success: function(response) {
+                        // Replace table content with new data
+                        $('#entries-table-body').html(response.html);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
