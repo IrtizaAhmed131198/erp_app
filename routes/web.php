@@ -35,6 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('get-weeks', [HomeController::class, 'get_weeks'])->name('get_weeks');
     Route::post('add-shipment', [HomeController::class, 'add_shipment'])->name('add_shipment');
     Route::post('update-past-due', [HomeController::class, 'update_past_due'])->name('update_past_due');
+    Route::post('save-shipment-data', [HomeController::class, 'save_shipment_data'])->name('save_shipment_data');
+    Route::post('change-past-due', [HomeController::class, 'change_past_due'])->name('change_past_due');
+    Route::post('update-week-or-month', [HomeController::class, 'update_week_or_month'])->name('update_week_or_month');
+    Route::post('save-table-data', [HomeController::class, 'save_table_data'])->name('save_table_data');
 
 });
 #login route

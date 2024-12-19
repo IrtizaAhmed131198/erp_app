@@ -33,6 +33,22 @@
                 </div>
             </div>
 
+            @php
+                $datesArray = [];
+
+                // Calculate the start date of week 16
+                $today = date('Y-m-d');
+                $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+                $mondayOfWeek = date('Y-m-d', strtotime('-'.$dayOfWeek.' days', strtotime($today)));
+                $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+
+                // Calculate the end date of week 16
+                $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+
+                // Calculate the start date of month 5 (the day after week 16 ends)
+                $month5StartDate = date('j-M', strtotime('+1 day', strtotime($week16EndDate)));
+            @endphp
+
 
             <div class="row align-items-center">
                 <div class="col-lg-12">
@@ -79,7 +95,16 @@
                                         </span>
                                     </th>
                                     <th scope="col" class="toggleable-2">PAST DUE</th>
-                                    <th scope="col" class="toggleable-2">3-Jun</th>
+                                    @for ($week = 1; $week <= 16; $week++)
+                                        <th scope="col" class="toggleable-2">{{ date('j-M', strtotime('+'.(($week - 1) * 7).' days', strtotime($mondayOfWeek))) }}</th>
+                                    @endfor
+                                    @for ($month = 5; $month <= 12; $month++)
+                                        <th scope="col" class="toggleable-2">{{ $month5StartDate }}</th>
+                                        @php
+                                            $month5StartDate = date('j-M', strtotime('+31 days', strtotime($month5StartDate)));
+                                        @endphp
+                                    @endfor
+                                    {{-- <th scope="col" class="toggleable-2">3-Jun</th>
                                     <th scope="col" class="toggleable-2">10-Jun</th>
                                     <th scope="col" class="toggleable-2">3-Jun</th>
                                     <th scope="col" class="toggleable-2">10-Jun</th>
@@ -92,7 +117,7 @@
                                     <th scope="col" class="toggleable-2">3-Jun</th>
                                     <th scope="col" class="toggleable-2">10-Jun</th>
                                     <th scope="col" class="toggleable-2">3-Jun</th>
-                                    <th scope="col" class="toggleable-2">10-Jun</th>
+                                    <th scope="col" class="toggleable-2">10-Jun</th> --}}
                                     <th scope="col" class="toggleable-2">FUTURE RAW</th>
                                     <th scope="col" class="toggleable-2">PRICE</th>
                                     <th scope="col" class="toggleable-2">NOTES</th>

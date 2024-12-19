@@ -564,6 +564,8 @@ figure {
     border-width: 1px;
     text-transform: uppercase;
     padding: 10px 25px;
+    position: relative;
+    z-index: 0;
 }
 
 .weekly-section .parent-table tr td:last-child {
@@ -1113,4 +1115,13 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 
 .custom-data {
     padding-left: 8px;
+}
+
+.weekly-section .table > :not(caption) > * > * button {
+    position: absolute;
+    z-index: 0;
+    right: 26px;
+    font-size: 10px;
+    top: 13px;
+    background: #719ff4;
 }

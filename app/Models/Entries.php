@@ -12,6 +12,7 @@ class Entries extends Model
     protected $table = "entries";
 
     protected $fillable = [
+        'user_id',
         'part_number',
         'customer',
         'revision',
@@ -40,4 +41,19 @@ class Entries extends Model
         'notes',
         'in_stock_finish',
     ];
+
+    public function weeks_months()
+    {
+        return $this->hasOne(Weeks::class, 'part_number', 'part_number');
+    }
+
+    public function work_center()
+    {
+        return $this->hasMany(WorkCenter::class, 'entry_id', 'id');
+    }
+
+    public function out_source()
+    {
+        return $this->hasMany(OutSource::class, 'entry_id', 'id');
+    }
 }

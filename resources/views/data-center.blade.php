@@ -119,15 +119,14 @@
                                                 <select class="form-select" name="work_centre_{{ $i }}"
                                                     aria-label="Default select example">
                                                     <option selected></option>
-                                                    <option value="1"
-                                                        {{ old('work_centre_' . $i) == '1' ? 'selected' : '' }}>Option One
+                                                    <option value="COM 1"
+                                                        {{ old('work_centre_' . $i) == 'COM 1' ? 'selected' : '' }}>COM 1
                                                     </option>
-                                                    <option value="2"
-                                                        {{ old('work_centre_' . $i) == '2' ? 'selected' : '' }}>Option Two
+                                                    <option value="COM 2"
+                                                        {{ old('work_centre_' . $i) == 'COM 2' ? 'selected' : '' }}>COM 2
                                                     </option>
-                                                    <option value="3"
-                                                        {{ old('work_centre_' . $i) == '3' ? 'selected' : '' }}>Option
-                                                        Three
+                                                    <option value="COM 3"
+                                                        {{ old('work_centre_' . $i) == 'COM 3' ? 'selected' : '' }}>COM 3
                                                     </option>
                                                 </select>
                                             </td>
@@ -142,15 +141,15 @@
                                                         name="outside_processing_{{ $i }}"
                                                         aria-label="Default select example">
                                                         <option selected></option>
-                                                        <option value="1"
-                                                            {{ old('outside_processing_' . $i) == '1' ? 'selected' : '' }}>
-                                                            Option One</option>
-                                                        <option value="2"
-                                                            {{ old('outside_processing_' . $i) == '2' ? 'selected' : '' }}>
-                                                            Option Two</option>
-                                                        <option value="3"
-                                                            {{ old('outside_processing_' . $i) == '3' ? 'selected' : '' }}>
-                                                            Option Three</option>
+                                                        <option value="OUT 1"
+                                                            {{ old('outside_processing_' . $i) == 'OUT 1' ? 'selected' : '' }}>
+                                                            OUT 1</option>
+                                                        <option value="OUT 2"
+                                                            {{ old('outside_processing_' . $i) == 'OUT 2' ? 'selected' : '' }}>
+                                                            OUT 2</option>
+                                                        <option value="OUT 3"
+                                                            {{ old('outside_processing_' . $i) == 'OUT 3' ? 'selected' : '' }}>
+                                                            OUT 3</option>
                                                     </select>
                                                     <input type="text"
                                                         name="outside_processing_text_{{ $i }}"
@@ -164,11 +163,11 @@
                                         <td>
                                             <select class="form-select js-select21" name="material"
                                                 aria-label="Default select example">
-                                                <option selected disabled>Select Customer</option>
-                                                @foreach ($customer as $item)
-                                                    <option value="{{ $item->CustomerName }}"
-                                                        {{ old('customer') == $item->CustomerName ? 'selected' : '' }}>
-                                                        {{ $item->CustomerName }}
+                                                <option selected disabled>Select Material</option>
+                                                @foreach ($material as $item)
+                                                    <option value="{{ $item->Package }}"
+                                                        {{ old('customer') == $item->Package ? 'selected' : '' }}>
+                                                        {{ $item->Package }}
                                                     </option>
                                                 @endforeach
                                                 {{-- <input type="text" name="material" value="{{ old('material') }}"

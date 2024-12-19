@@ -66,26 +66,6 @@
                                         M-067-25
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        COMP 2
-                                    </td>
-                                    <td>
-                                        KSR INT
-                                    </td>
-                                    <td>
-                                        299024
-                                    </td>
-                                    <td>
-                                        100000
-                                    </td>
-                                    <td>
-                                        25411-01
-                                    </td>
-                                    <td>
-                                        MWB-076-22
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                         <table class="table table-hover table-bordered">
@@ -98,6 +78,11 @@
                                 <tr>
                                     <td>
                                         <strong>
+                                            Work Centre
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
                                             Customer
                                         </strong>
                                     </td>
@@ -111,43 +96,40 @@
                                             Quantity
                                         </strong>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>
-                                        ABC CO
+                                        <strong>
+                                            Job #
+                                        </strong>
                                     </td>
                                     <td>
-                                        1000460
-                                    </td>
-                                    <td>
-                                        25000
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        MTD
-                                    </td>
-                                    <td>
-                                        1006766
-                                    </td>
-                                    <td>
-                                        15000
+                                        <strong>
+                                            LOT #
+                                        </strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        TRILLIUM
+                                        COMP 1
                                     </td>
                                     <td>
-                                        1025343
+                                        DRESDEN
                                     </td>
                                     <td>
-                                        5000
+                                        299027
+                                    </td>
+                                    <td>
+                                        20000
+                                    </td>
+                                    <td>
+                                        12345-01
+                                    </td>
+                                    <td>
+                                        M-067-25
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="table table-hover table-bordered">
+                        {{-- <table class="table table-hover table-bordered">
                             <thead>
                                 <tr>
                                     <th class="text-center" colspan="6">PENDING #2</th>
@@ -157,6 +139,11 @@
                                 <tr>
                                     <td>
                                         <strong>
+                                            Work Centre
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
                                             Customer
                                         </strong>
                                     </td>
@@ -170,20 +157,39 @@
                                             Quantity
                                         </strong>
                                     </td>
+                                    <td>
+                                        <strong>
+                                            Job #
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            LOT #
+                                        </strong>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        VINELAND
+                                        COMP 1
                                     </td>
                                     <td>
-                                        1023858
+                                        DRESDEN
                                     </td>
                                     <td>
-                                        100
+                                        299027
+                                    </td>
+                                    <td>
+                                        20000
+                                    </td>
+                                    <td>
+                                        12345-01
+                                    </td>
+                                    <td>
+                                        M-067-25
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> --}}
                     </div>
                 </div>
             </div>

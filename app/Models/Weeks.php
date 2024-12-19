@@ -39,4 +39,9 @@ class Weeks extends Model
         "month_11",
         "month_12",
     ];
+
+    public function entries()
+    {
+        return $this->belongsTo(Entries::class, 'part_number', 'part_number');
+    }
 }
