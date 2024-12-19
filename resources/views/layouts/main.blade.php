@@ -87,10 +87,10 @@
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('visual_screen') }}">Visual screen</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="{{ route('visual_screen_1') }}">Visual screen 1</a>
+                                                {{-- <li><a class="dropdown-item" href="{{ route('visual_screen_1') }}">Visual screen 1</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('visual_screen_2') }}">Visual screen 2</a>
-                                                </li>
+                                                </li> --}}
                                                 <li><a class="dropdown-item" href="{{ route('data_center') }}">Data center</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>

@@ -4,7 +4,7 @@
         <td  class="vertical-text highlighted">
         </td>
         <td class="toggleable toggle-department">{{ $data->department }}</td>
-        <td class="toggleable toggle-work-center">COM 1</td>
+        <td class="toggleable toggle-work-center">{{ $data->work_center_one->com ?? 'N/A'}}</td>
         @if(Auth::user()->status_column == 1)
             <td class="toggleable toggle-planning">
                 <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
@@ -42,8 +42,19 @@
         <td class="toggleable">C (Superior)</td>
         <td  class="vertical-text highlighted">
         </td>
-        <td class="toggleable-1">0</td>
-        <td class="toggleable-1">30,000 </td>
+
+        @php
+            $weeksArr = $data->weeks_months;
+            if ($weeksArr) {
+                $sumWeeks1To6 = array_sum([$weeksArr['week_1'], $weeksArr['week_2'], $weeksArr['week_3'], $weeksArr['week_4'], $weeksArr['week_5'], $weeksArr['week_6']]);
+                $sumWeeks7To12 = array_sum([$weeksArr['week_7'], $weeksArr['week_8'], $weeksArr['week_9'], $weeksArr['week_10'], $weeksArr['week_11'], $weeksArr['week_12']]);
+            } else {
+                $sumWeeks1To6 = $sumWeeks7To12 = 0;
+            }
+        @endphp
+
+        <td class="toggleable-1">{{ $sumWeeks1To6 }}</td>
+        <td class="toggleable-1">{{ $sumWeeks7To12 }}</td>
         <td class="toggleable-1">30,000 </td>
         <td class="toggleable-1">
             @if(Auth::user()->stock_finished_column == 1)
@@ -82,7 +93,7 @@
         @endif
         <td class="toggleable-1">{{ $in_stock_live ?? 0 }}</td>
         <td class="toggleable-1">8.000</td>
-        <td class="toggleable-1">MWB-0.045 / MWB-0.047</td>
+        <td class="toggleable-1">{{ $data->material }}</td>
         <td class="toggleable-1">0</td>
         <td class="toggleable-1"></td>
         <td class="toggleable-1">25,000</td>
@@ -103,7 +114,7 @@
                 {{ $data->weeks_months->$monthKey ?? '' }}
             </td>
         @endfor
-        <td class="toggleable-2"></td>
+        <td class="toggleable-2">{{ $data->future_raw }}</td>
         <td class="toggleable-2">${{ $data->price }}</td>
         <td class="toggleable-2">{{ $data->notes }}</td>
     </tr>

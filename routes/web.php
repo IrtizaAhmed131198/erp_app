@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('change-past-due', [HomeController::class, 'change_past_due'])->name('change_past_due');
     Route::post('update-week-or-month', [HomeController::class, 'update_week_or_month'])->name('update_week_or_month');
     Route::post('save-table-data', [HomeController::class, 'save_table_data'])->name('save_table_data');
+    Route::post('save-table-data-2', [HomeController::class, 'save_table_data_2'])->name('save_table_data_2');
 
 });
 #login route

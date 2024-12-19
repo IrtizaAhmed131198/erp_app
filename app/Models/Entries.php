@@ -40,6 +40,10 @@ class Entries extends Model
         'price',
         'notes',
         'in_stock_finish',
+        'filter',
+        'job',
+        'lot',
+        'raw_mat',
     ];
 
     public function weeks_months()
@@ -55,5 +59,10 @@ class Entries extends Model
     public function out_source()
     {
         return $this->hasMany(OutSource::class, 'entry_id', 'id');
+    }
+
+    public function work_center_one()
+    {
+        return $this->hasOne(WorkCenter::class, 'entry_id', 'id');
     }
 }

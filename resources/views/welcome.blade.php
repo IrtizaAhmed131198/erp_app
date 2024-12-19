@@ -26,7 +26,7 @@
                     <div class="parent-filter">
                         <select class="js-select2" id="filter2">
                             <option selected="">All</option>
-                            <option value="pending_orders">Pending orders</option>
+                            <option value="pending">Pending orders</option>
                             <option value="prd">Parets req PRD</option>
                         </select>
                     </div>
@@ -303,7 +303,7 @@
         // Handle filter changes
         $('#filter1, #filter2').on('change', function () {
             let department = $('#filter1').val();
-            let status = $('#filter2').val();
+            let filter = $('#filter2').val();
 
             // Send AJAX request
             $.ajax({
@@ -311,7 +311,7 @@
                 type: 'GET',
                 data: {
                     department: department,
-                    status: status
+                    filter: filter
                 },
                 success: function (response) {
                     // Replace table content with new data

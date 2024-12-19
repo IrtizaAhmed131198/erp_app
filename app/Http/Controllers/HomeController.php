@@ -27,8 +27,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
-        // return $data = DB::connection('sqlsrv')->table('Users')->get();
-        $query = Entries::with('weeks_months');
+        $query = Entries::with('weeks_months', 'work_center_one');
 
         // Apply department filter
         if ($request->has('department') && $request->department != 'All') {
@@ -36,13 +35,12 @@ class HomeController extends Controller
         }
 
         // Apply status filter
-        if ($request->has('status') && $request->status != 'All') {
-            $query->where('status', $request->status);
+        if ($request->has('filter') && $request->filter != 'All') {
+            $query->where('filter', $request->filter);
         }
 
         $entries = $query->get();
 
-        // Check if the request is AJAX
         if ($request->ajax()) {
             return response()->json([
                 'html' => view('partials.entries', compact('entries'))->render()
@@ -91,7 +89,7 @@ class HomeController extends Controller
             'ids' => 'required|string|max:255',
             'process' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
-            'work_centre_1' => 'nullable',
+            'work_centre_1' => 'required',
             'work_centre_2' => 'nullable',
             'work_centre_3' => 'nullable',
             'work_centre_4' => 'nullable',
@@ -122,6 +120,7 @@ class HomeController extends Controller
         }
         try {
             $validatedData['user_id'] = Auth::user()->id;
+            $validatedData['filter'] = 'pending';
             $entry = Entries::create($validatedData);
 
             $work_centres = [
@@ -182,13 +181,60 @@ class HomeController extends Controller
 
     public function input_screen()
     {
-        $com1 = WorkCenter::with('entries')->where('com', 'COM 1')->get();
-        $com2 = WorkCenter::with('entries')->where('com', 'COM 2')->get();
-        $com3 = WorkCenter::with('entries')->where('com', 'COM 3')->get();
+        $com1 = WorkCenter::with('entries')
+            ->where('com', 'COM 1')
+            ->when(Auth::user()->role !== 1, function ($query) {
+                return $query->whereHas('entries', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+            })
+            ->get();
 
-        $out1 = OutSource::with('entries_data')->where('out', 'OUT 1')->get();
-        $out2 = OutSource::with('entries_data')->where('out', 'OUT 2')->get();
-        $out3 = OutSource::with('entries_data')->where('out', 'OUT 3')->get();
+        $com2 = WorkCenter::with('entries')
+            ->where('com', 'COM 2')
+            ->when(Auth::user()->role !== 1, function ($query) {
+                return $query->whereHas('entries', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+            })
+            ->get();
+
+        $com3 = WorkCenter::with('entries')
+            ->where('com', 'COM 3')
+            ->when(Auth::user()->role !== 1, function ($query) {
+                return $query->whereHas('entries', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+            })
+            ->get();
+
+        $out1 = OutSource::with('entries_data')
+            ->where('out', 'OUT 1')
+            ->when(Auth::user()->role !== 1, function ($query) {
+                return $query->whereHas('entries_data', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+            })
+            ->get();
+
+        $out2 = OutSource::with('entries_data')
+            ->where('out', 'OUT 2')
+            ->when(Auth::user()->role !== 1, function ($query) {
+                return $query->whereHas('entries_data', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+            })
+            ->get();
+
+        $out3 = OutSource::with('entries_data')
+            ->where('out', 'OUT 3')
+            ->when(Auth::user()->role !== 1, function ($query) {
+                return $query->whereHas('entries_data', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
+            })
+            ->get();
+
         return view('input-screen', compact('com1', 'com2', 'com3', 'out1', 'out2', 'out3'));
     }
 
@@ -213,6 +259,27 @@ class HomeController extends Controller
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
     }
 
+    public function save_table_data_2(Request $request)
+    {
+        $validated = $request->validate([
+            'entries_data' => 'required|array',
+            'entries_data.*.status' => 'required|string',
+            'entries_data.*.customer' => 'required|string',
+            'entries_data.*.part_number' => 'required|string',
+            'entries_data.*.quantity' => 'required|integer',
+            'entries_data.*.job' => 'required|string',
+            'entries_data.*.lot' => 'required|string',
+            'entries_data.*.type' => 'required|string',
+        ]);
+
+        foreach ($validated['entries_data'] as $entry) {
+            $entry['user_id'] = Auth::user()->id;
+            Visual::create($entry);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
+    }
+
     public function notifications()
     {
         $notifications = Notification::with('user')->where('user_id', Auth::id())
@@ -223,7 +290,12 @@ class HomeController extends Controller
 
     public function visual_screen()
     {
-        return view('visual-queue-screen');
+        if(Auth::user()->role == 1){
+            $visuals = Visual::all()->groupBy('status');
+        }else{
+            $visuals = Visual::where('user_id', Auth::user()->id)->get()->groupBy('status');
+        }
+        return view('visual-queue-screen', compact('visuals'));
     }
     public function visual_screen_1()
     {
@@ -300,6 +372,10 @@ class HomeController extends Controller
             $data->{$key.'_date'} = $temp[$key];
         }
         $data->save();
+
+        $part = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $part->filter = 'prd';
+        $part->save();
 
         $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.']);
 

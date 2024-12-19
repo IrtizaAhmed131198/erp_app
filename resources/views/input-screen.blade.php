@@ -144,7 +144,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($com2 as $entry)
+                                                    @foreach ($com3 as $entry)
                                                     @if ($entry['entries']['status'] !== null && $entry['entries']['job'] !== null && $entry['entries']['lot'] !== null)
                                                     <tr>
                                                         <td>
@@ -350,11 +350,13 @@
 @section('js')
 <script>
     $(document).ready(function () {
-        $('.submit-table-data-1').on('click', function (e) {
+        $('.submit-table-data-1, .submit-table-data-2').on('click', function (e) {
             e.preventDefault();
 
             let tableData = [];
-            $('#collapseOne tbody tr').each(function () {
+            let collapseSelector = $(this).data('target');
+            console.log(collapseSelector);
+            $(collapseSelector + ' tbody tr').each(function () {
                 let row = $(this);
                 let entry = {
                     status: row.find('select[name="status"]').val(),
@@ -367,12 +369,16 @@
                 };
                 tableData.push(entry);
             });
+            console.log(tableData);
+
+            let url = $(this).hasClass('submit-table-data-1') ? "{{ route('save_table_data') }}" : "{{ route('save_table_data_2') }}";
+            let dataKey = $(this).hasClass('submit-table-data-1') ? 'entries' : 'entries_data';
 
             $.ajax({
-                url: "{{ route('save_table_data') }}",
+                url: url,
                 method: "POST",
                 data: {
-                    entries: tableData
+                    [dataKey]: tableData
                 },
                 headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
                 success: function (response) {
