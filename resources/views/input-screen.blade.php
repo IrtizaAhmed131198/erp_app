@@ -34,21 +34,29 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($com1 as $entry)
-                                                    @if ($entry['entries']['status'] !== null && $entry['entries']['job'] !== null && $entry['entries']['lot'] !== null)
+                                                    @php
+                                                        $status = $entry['entries']['status'] ?? null;
+                                                        $customer = $entry['entries']['customer'] ?? null;
+                                                        $part_number = $entry['entries']['part_number'] ?? null;
+                                                        $in_stock_finish = $entry['entries']['in_stock_finish'] ?? null;
+                                                        $job = $entry['entries']['job'] ?? null;
+                                                        $lot = $entry['entries']['lot'] ?? null;
+                                                    @endphp
+                                                    @if ($status !== null && $job !== null && $lot !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">
-                                                                <option value="Running" {{ $entry['entries']['status'] == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                <option value="Pending Order" {{ $entry['entries']['status'] == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                <option value="Pause" {{ $entry['entries']['status'] == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                <option value="Closed" {{ $entry['entries']['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                             </select>
                                                         </td>
-                                                        <td>{{ $entry['entries']['customer'] }}</td>
-                                                        <td>{{ $entry['entries']['part_number'] }}</td>
-                                                        <td>{{ $entry['entries']['in_stock_finish'] }}</td>
-                                                        <td>{{ $entry['entries']['job'] }}</td>
-                                                        <td>{{ $entry['entries']['lot']}}</td>
+                                                        <td>{{ $customer }}</td>
+                                                        <td>{{ $part_number }}</td>
+                                                        <td>{{ $in_stock_finish }}</td>
+                                                        <td>{{ $job }}</td>
+                                                        <td>{{ $lot }}</td>
                                                         <td style="display: none">COM 1</td>
                                                     </tr>
                                                     @endif
@@ -89,22 +97,30 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($com2 as $entry)
-                                                    @if ($entry['entries']['status'] !== null && $entry['entries']['job'] !== null && $entry['entries']['lot'] !== null)
+                                                    @php
+                                                        $status = $entry['entries']['status'] ?? null;
+                                                        $customer = $entry['entries']['customer'] ?? null;
+                                                        $part_number = $entry['entries']['part_number'] ?? null;
+                                                        $in_stock_finish = $entry['entries']['in_stock_finish'] ?? null;
+                                                        $job = $entry['entries']['job'] ?? null;
+                                                        $lot = $entry['entries']['lot'] ?? null;
+                                                    @endphp
+                                                    @if ($status !== null && $job !== null && $lot !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">
-                                                                <option value="Running" {{ $entry['entries']['status'] == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                <option value="Pending Order" {{ $entry['entries']['status'] == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                <option value="Pause" {{ $entry['entries']['status'] == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                <option value="Closed" {{ $entry['entries']['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                             </select>
                                                         </td>
-                                                        <td>{{ $entry['entries']['customer'] }}</td>
-                                                        <td>{{ $entry['entries']['part_number'] }}</td>
-                                                        <td>{{ $entry['entries']['in_stock_finish'] }}</td>
-                                                        <td>{{ $entry['entries']['job'] }}</td>
-                                                        <td>{{ $entry['entries']['lot']}}</td>
-                                                        <td style="display: none">COM 2</td>
+                                                        <td>{{ $customer }}</td>
+                                                        <td>{{ $part_number }}</td>
+                                                        <td>{{ $in_stock_finish }}</td>
+                                                        <td>{{ $job }}</td>
+                                                        <td>{{ $lot }}</td>
+                                                        <td style="display: none">COM 1</td>
                                                     </tr>
                                                     @endif
                                                     @endforeach
@@ -144,23 +160,31 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($com2 as $entry)
-                                                    @if ($entry['entries']['status'] !== null && $entry['entries']['job'] !== null && $entry['entries']['lot'] !== null)
+                                                    @foreach ($com3 as $entry)
+                                                    @php
+                                                        $status = $entry['entries']['status'] ?? null;
+                                                        $customer = $entry['entries']['customer'] ?? null;
+                                                        $part_number = $entry['entries']['part_number'] ?? null;
+                                                        $in_stock_finish = $entry['entries']['in_stock_finish'] ?? null;
+                                                        $job = $entry['entries']['job'] ?? null;
+                                                        $lot = $entry['entries']['lot'] ?? null;
+                                                    @endphp
+                                                    @if ($status  !== null && $job !== null && $lot !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">
-                                                                <option value="Running" {{ $entry['entries']['status'] == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                <option value="Pending Order" {{ $entry['entries']['status'] == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                <option value="Pause" {{ $entry['entries']['status'] == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                <option value="Closed" {{ $entry['entries']['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                             </select>
                                                         </td>
-                                                        <td>{{ $entry['entries']['customer'] }}</td>
-                                                        <td>{{ $entry['entries']['part_number'] }}</td>
-                                                        <td>{{ $entry['entries']['in_stock_finish'] }}</td>
-                                                        <td>{{ $entry['entries']['job'] }}</td>
-                                                        <td>{{ $entry['entries']['lot']}}</td>
-                                                        <td style="display: none">COM 3</td>
+                                                        <td>{{ $customer }}</td>
+                                                        <td>{{ $part_number }}</td>
+                                                        <td>{{ $in_stock_finish }}</td>
+                                                        <td>{{ $job }}</td>
+                                                        <td>{{ $lot }}</td>
+                                                        <td style="display: none">COM 1</td>
                                                     </tr>
                                                     @endif
                                                     @endforeach
@@ -201,22 +225,30 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($out1 as $entry)
-                                                    @if ($entry['entries_data']['status'] !== null && $entry['entries_data']['job'] !== null && $entry['entries_data']['lot'] !== null)
+                                                    @php
+                                                        $status = $entry['entries_data']['status'] ?? null;
+                                                        $customer = $entry['entries_data']['customer'] ?? null;
+                                                        $part_number = $entry['entries_data']['part_number'] ?? null;
+                                                        $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
+                                                        $job = $entry['entries_data']['job'] ?? null;
+                                                        $lot = $entry['entries_data']['lot'] ?? null;
+                                                    @endphp
+                                                    @if ($status  !== null && $job !== null && $lot !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">
-                                                                <option value="Running" {{ $entry['entries_data']['status'] == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                <option value="Pending Order" {{ $entry['entries_data']['status'] == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                <option value="Pause" {{ $entry['entries_data']['status'] == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                <option value="Closed" {{ $entry['entries_data']['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                             </select>
                                                         </td>
-                                                        <td>{{ $entry['entries_data']['customer'] }}</td>
-                                                        <td>{{ $entry['entries_data']['part_number'] }}</td>
-                                                        <td>{{ $entry['entries_data']['in_stock_finish'] }}</td>
-                                                        <td>{{ $entry['entries_data']['job'] }}</td>
-                                                        <td>{{ $entry['entries_data']['lot']}}</td>
-                                                        <td style="display: none">OUT 1</td>
+                                                        <td>{{ $customer }}</td>
+                                                        <td>{{ $part_number }}</td>
+                                                        <td>{{ $in_stock_finish }}</td>
+                                                        <td>{{ $job }}</td>
+                                                        <td>{{ $lot }}</td>
+                                                        <td style="display: none">COM 1</td>
                                                     </tr>
                                                     @endif
                                                     @endforeach
@@ -256,22 +288,30 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($out2 as $entry)
-                                                    @if ($entry['entries_data']['status'] !== null && $entry['entries_data']['job'] !== null && $entry['entries_data']['lot'] !== null)
+                                                    @php
+                                                        $status = $entry['entries_data']['status'] ?? null;
+                                                        $customer = $entry['entries_data']['customer'] ?? null;
+                                                        $part_number = $entry['entries_data']['part_number'] ?? null;
+                                                        $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
+                                                        $job = $entry['entries_data']['job'] ?? null;
+                                                        $lot = $entry['entries_data']['lot'] ?? null;
+                                                    @endphp
+                                                    @if ($status  !== null && $job !== null && $lot !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">
-                                                                <option value="Running" {{ $entry['entries_data']['status'] == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                <option value="Pending Order" {{ $entry['entries_data']['status'] == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                <option value="Pause" {{ $entry['entries_data']['status'] == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                <option value="Closed" {{ $entry['entries_data']['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                             </select>
                                                         </td>
-                                                        <td>{{ $entry['entries_data']['customer'] }}</td>
-                                                        <td>{{ $entry['entries_data']['part_number'] }}</td>
-                                                        <td>{{ $entry['entries_data']['in_stock_finish'] }}</td>
-                                                        <td>{{ $entry['entries_data']['job'] }}</td>
-                                                        <td>{{ $entry['entries_data']['lot']}}</td>
-                                                        <td style="display: none">OUT 2</td>
+                                                        <td>{{ $customer }}</td>
+                                                        <td>{{ $part_number }}</td>
+                                                        <td>{{ $in_stock_finish }}</td>
+                                                        <td>{{ $job }}</td>
+                                                        <td>{{ $lot }}</td>
+                                                        <td style="display: none">COM 1</td>
                                                     </tr>
                                                     @endif
                                                     @endforeach
@@ -311,22 +351,30 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($out3 as $entry)
-                                                    @if ($entry['entries_data']['status'] !== null && $entry['entries_data']['job'] !== null && $entry['entries_data']['lot'] !== null)
+                                                    @php
+                                                        $status = $entry['entries_data']['status'] ?? null;
+                                                        $customer = $entry['entries_data']['customer'] ?? null;
+                                                        $part_number = $entry['entries_data']['part_number'] ?? null;
+                                                        $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
+                                                        $job = $entry['entries_data']['job'] ?? null;
+                                                        $lot = $entry['entries_data']['lot'] ?? null;
+                                                    @endphp
+                                                    @if ($status  !== null && $job !== null && $lot !== null)
                                                     <tr>
                                                         <td>
                                                             <select name="status" id="status">
-                                                                <option value="Running" {{ $entry['entries_data']['status'] == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                <option value="Pending Order" {{ $entry['entries_data']['status'] == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                <option value="Pause" {{ $entry['entries_data']['status'] == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                <option value="Closed" {{ $entry['entries_data']['status'] == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                             </select>
                                                         </td>
-                                                        <td>{{ $entry['entries_data']['customer'] }}</td>
-                                                        <td>{{ $entry['entries_data']['part_number'] }}</td>
-                                                        <td>{{ $entry['entries_data']['in_stock_finish'] }}</td>
-                                                        <td>{{ $entry['entries_data']['job'] }}</td>
-                                                        <td>{{ $entry['entries_data']['lot']}}</td>
-                                                        <td style="display: none">OUT 3</td>
+                                                        <td>{{ $customer }}</td>
+                                                        <td>{{ $part_number }}</td>
+                                                        <td>{{ $in_stock_finish }}</td>
+                                                        <td>{{ $job }}</td>
+                                                        <td>{{ $lot }}</td>
+                                                        <td style="display: none">COM 1</td>
                                                     </tr>
                                                     @endif
                                                     @endforeach
