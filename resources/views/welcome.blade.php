@@ -53,13 +53,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="parent-table">
-                        <table class="table table-hover table-bordered" id="myTable">
+                        <table class="table table-hover table-bordered">
                             <thead>
                                 <tr class="colored-table-row">
                                     <th scope="col" class="highlighted toggle-header">
                                         <span class="icon">▼</span>
                                     </th>
-                                    <th scope="col" class="toggleable toggle-header-department">DEPARTMENT</th>
+                                    <th scope="col" class="toggleable toggle-header-department ">DEPARTMENT <span
+                                        class="icon">▼</span></th>
                                     <th scope="col" class="toggleable toggle-header-work-center">WORK CENTER </th>
                                     <th scope="col" class="toggleable toggle-header-planning">PLANNING (QUEUE) </th>
                                     <th scope="col" class="toggleable">STATUS</th>
@@ -326,6 +327,85 @@
                         console.error(xhr.responseText);
                     }
                 });
+            });
+        });
+    </script>
+
+
+
+    <script>
+        // Add event listener to the column header
+        document.querySelectorAll(".toggle-header").forEach(header => {
+            header.addEventListener("click", function() {
+                const columnClass = "toggleable"; // Class of the cells in the column
+                const icon = this.querySelector(".icon"); // Dropdown icon
+
+                // Toggle the collapsible state of the column
+                const cells = document.querySelectorAll(`.${columnClass}`);
+                cells.forEach(cell => {
+                    cell.classList.toggle("collapsible");
+                });
+
+                // Toggle the icon's rotation
+                icon.classList.toggle("collapsed");
+            });
+        });
+    </script>
+
+    <script>
+        // Add event listener to the column header
+        document.querySelectorAll(".toggle-header-1").forEach(header => {
+            header.addEventListener("click", function() {
+                const columnClass = "toggleable-1"; // Class of the cells in the column
+                const icon = this.querySelector(".icon"); // Dropdown icon
+
+                // Toggle the collapsible state of the column
+                const cells = document.querySelectorAll(`.${columnClass}`);
+                cells.forEach(cell => {
+                    cell.classList.toggle("collapsible");
+                });
+
+                // Toggle the icon's rotation
+                icon.classList.toggle("collapsed");
+            });
+        });
+    </script>
+
+    <script>
+        // Add event listener to the column header
+        document.querySelectorAll(".toggle-header-2").forEach(header => {
+            header.addEventListener("click", function() {
+                const columnClass = "toggleable-2"; // Class of the cells in the column
+                const icon = this.querySelector(".icon"); // Dropdown icon
+
+                // Toggle the collapsible state of the column
+                const cells = document.querySelectorAll(`.${columnClass}`);
+                cells.forEach(cell => {
+                    cell.classList.toggle("collapsible");
+                });
+
+                // Toggle the icon's rotation
+                icon.classList.toggle("collapsed");
+            });
+        });
+
+        // Add event listener to the column header
+        document.querySelectorAll(".toggle-header-department").forEach(header => {
+            header.addEventListener("click", function() {
+                const columnClass = "toggle-department"; // Class of the cells in the column
+                const icon = this.querySelector(".icon"); // Dropdown icon
+
+                // Toggle the collapsible state of the column
+                const cells = document.querySelectorAll(`.${columnClass}`);
+                cells.forEach(cell => {
+                    cell.classList.toggle("active-td");
+                });
+
+                // Toggle the icon's rotation
+                icon.classList.toggle("collapsed");
+
+                // Add or remove the 'active' class to the header
+                this.classList.toggle("active");
             });
         });
     </script>
