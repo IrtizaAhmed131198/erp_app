@@ -7,7 +7,7 @@
                 <div class="col-lg-12">
                     <div class="parent-table">
                         <div class="accordion" id="accordionExample">
-                            @if(!empty($com1))
+                            @if(!empty($com1) && $com1->isNotEmpty())
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -57,12 +57,12 @@
                                             </table>
                                         </div>
                                         <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-1">Submit</button>
+                                            <button class="btn custom-btn submit-table-data-1-one">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             @endif
-                            @if(!empty($com2))
+                            @if(!empty($com2) && $com2->isNotEmpty())
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingTwo">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -112,12 +112,12 @@
                                             </table>
                                         </div>
                                         <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-1">Submit</button>
+                                            <button class="btn custom-btn submit-table-data-1-two">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             @endif
-                            @if(!empty($com3))
+                            @if(!empty($com3) && $com3->isNotEmpty())
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingThree">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -168,13 +168,13 @@
                                             </table>
                                         </div>
                                         <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-1">Submit</button>
+                                            <button class="btn custom-btn submit-table-data-1-three">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             @endif
 
-                            @if(!empty($out1))
+                            @if(!empty($out1) && $out1->isNotEmpty())
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingFour">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -224,12 +224,12 @@
                                             </table>
                                         </div>
                                         <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2">Submit</button>
+                                            <button class="btn custom-btn submit-table-data-2-one">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             @endif
-                            @if(!empty($out2))
+                            @if(!empty($out2) && $out2->isNotEmpty())
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingFifth">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -279,12 +279,12 @@
                                             </table>
                                         </div>
                                         <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2">Submit</button>
+                                            <button class="btn custom-btn submit-table-data-2-two">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             @endif
-                            @if(!empty($out3))
+                            @if(!empty($out3) && $out3->isNotEmpty())
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingSix">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -334,7 +334,7 @@
                                             </table>
                                         </div>
                                         <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2">Submit</button>
+                                            <button class="btn custom-btn submit-table-data-2-three">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -350,13 +350,11 @@
 @section('js')
 <script>
     $(document).ready(function () {
-        $('.submit-table-data-1, .submit-table-data-2').on('click', function (e) {
+        $('.submit-table-data-1-one').on('click', function (e) {
             e.preventDefault();
 
             let tableData = [];
-            let collapseSelector = $(this).data('target');
-            console.log(collapseSelector);
-            $(collapseSelector + ' tbody tr').each(function () {
+            $('#collapseOne tbody tr').each(function () {
                 let row = $(this);
                 let entry = {
                     status: row.find('select[name="status"]').val(),
@@ -369,16 +367,208 @@
                 };
                 tableData.push(entry);
             });
-            console.log(tableData);
-
-            let url = $(this).hasClass('submit-table-data-1') ? "{{ route('save_table_data') }}" : "{{ route('save_table_data_2') }}";
-            let dataKey = $(this).hasClass('submit-table-data-1') ? 'entries' : 'entries_data';
 
             $.ajax({
-                url: url,
+                url: "{{ route('save_table_data') }}",
                 method: "POST",
                 data: {
-                    [dataKey]: tableData
+                    entries: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-1-two').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseTwo tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data') }}",
+                method: "POST",
+                data: {
+                    entries: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-1-three').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseThree tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data') }}",
+                method: "POST",
+                data: {
+                    entries: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+
+        $('.submit-table-data-2-one').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseFour tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data_2') }}",
+                method: "POST",
+                data: {
+                    entries_data: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-2-two').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseFifth tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data_2') }}",
+                method: "POST",
+                data: {
+                    entries_data: tableData
+                },
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Failed to save data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while saving data.');
+                }
+            });
+        });
+
+        $('.submit-table-data-2-three').on('click', function (e) {
+            e.preventDefault();
+
+            let tableData = [];
+            $('#collapseSix tbody tr').each(function () {
+                let row = $(this);
+                let entry = {
+                    status: row.find('select[name="status"]').val(),
+                    customer: row.find('td:eq(1)').text().trim(),
+                    part_number: row.find('td:eq(2)').text().trim(),
+                    quantity: row.find('td:eq(3)').text().trim(),
+                    job: row.find('td:eq(4)').text().trim(),
+                    lot: row.find('td:eq(5)').text().trim(),
+                    type: row.find('td:eq(6)').text().trim()
+                };
+                tableData.push(entry);
+            });
+
+            $.ajax({
+                url: "{{ route('save_table_data_2') }}",
+                method: "POST",
+                data: {
+                    entries_data: tableData
                 },
                 headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
                 success: function (response) {
