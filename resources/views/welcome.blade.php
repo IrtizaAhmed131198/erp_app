@@ -86,7 +86,7 @@
                                     <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span class="icon">▼</span></th>
                                     <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span class="icon">▼</span></th>
                                     <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd <span class="icon">▼</span></th>
+                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd 1-12 Weeks<span class="icon">▼</span></th>
                                     <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span class="icon">▼</span></th>
                                     <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span class="icon">▼</span></th>
                                     <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span class="icon">▼</span></th>

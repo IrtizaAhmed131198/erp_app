@@ -16,6 +16,7 @@ return new class extends Migration
             $table->renameColumn('payouts', 'stock_finished_column');
             $table->renameColumn('fee_collection', 'part_number_column');
             $table->renameColumn('customer_payment_dispute', 'calendar_column');
+            $table->renameColumn('refund_alerts', 'input_screen_column');
         });
     }
 

@@ -74,6 +74,9 @@ class HomeController extends Controller
 
     public function data_center()
     {
+        if(Auth::user()->part_number_column == 0){
+            abort(403, 'You do not have permission to access this resource.');
+        }
         $parts = Parts::all();
         $customer = DB::table('customers')->get();
         $material = DB::table('package')->get();
@@ -125,7 +128,6 @@ class HomeController extends Controller
         }
         try {
             $validatedData['user_id'] = Auth::user()->id;
-            $validatedData['filter'] = 'pending';
             $entry = Entries::create($validatedData);
 
             $work_centres = [
@@ -175,6 +177,9 @@ class HomeController extends Controller
 
     public function calender()
     {
+        if(Auth::user()->calendar_column == 0){
+            abort(403, 'You do not have permission to access this resource.');
+        }
         $parts = Parts::all();
         $weeks = [
             'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8',
@@ -186,9 +191,13 @@ class HomeController extends Controller
 
     public function input_screen()
     {
+        if(Auth::user()->input_screen_column == 0){
+            abort(403, 'You do not have permission to access this resource.');
+        }
+
         $com1 = WorkCenter::with('entries')
             ->where('com', 'COM 1')
-            ->when(Auth::user()->role !== 1, function ($query) {
+            ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
                     $query->where('user_id', Auth::user()->id);
                 });
@@ -197,7 +206,7 @@ class HomeController extends Controller
 
         $com2 = WorkCenter::with('entries')
             ->where('com', 'COM 2')
-            ->when(Auth::user()->role !== 1, function ($query) {
+            ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
                     $query->where('user_id', Auth::user()->id);
                 });
@@ -206,7 +215,7 @@ class HomeController extends Controller
 
         $com3 = WorkCenter::with('entries')
             ->where('com', 'COM 3')
-            ->when(Auth::user()->role !== 1, function ($query) {
+            ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
                     $query->where('user_id', Auth::user()->id);
                 });
@@ -215,7 +224,7 @@ class HomeController extends Controller
 
         $out1 = OutSource::with('entries_data')
             ->where('out', 'OUT 1')
-            ->when(Auth::user()->role !== 1, function ($query) {
+            ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
                     $query->where('user_id', Auth::user()->id);
                 });
@@ -224,7 +233,7 @@ class HomeController extends Controller
 
         $out2 = OutSource::with('entries_data')
             ->where('out', 'OUT 2')
-            ->when(Auth::user()->role !== 1, function ($query) {
+            ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
                     $query->where('user_id', Auth::user()->id);
                 });
@@ -233,7 +242,7 @@ class HomeController extends Controller
 
         $out3 = OutSource::with('entries_data')
             ->where('out', 'OUT 3')
-            ->when(Auth::user()->role !== 1, function ($query) {
+            ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
                     $query->where('user_id', Auth::user()->id);
                 });
@@ -254,11 +263,24 @@ class HomeController extends Controller
             'entries.*.job' => 'required|string',
             'entries.*.lot' => 'required|string',
             'entries.*.type' => 'required|string',
+            'entries.*.type_id' => 'required|string',
         ]);
 
         foreach ($validated['entries'] as $entry) {
             $entry['user_id'] = Auth::user()->id;
-            Visual::create($entry);
+
+            // Check if the record exists based on unique conditions
+            $existingRecord = Visual::where([
+                ['type_id', $entry['type_id']],
+            ])->first();
+
+            if ($existingRecord) {
+                // Update only the status if the record exists
+                $existingRecord->update(['status' => $entry['status']]);
+            } else {
+                // Create a new record if it doesn't exist
+                Visual::create($entry);
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
@@ -275,11 +297,24 @@ class HomeController extends Controller
             'entries_data.*.job' => 'required|string',
             'entries_data.*.lot' => 'required|string',
             'entries_data.*.type' => 'required|string',
+            'entries_data.*.type_id' => 'required|string',
         ]);
 
         foreach ($validated['entries_data'] as $entry) {
             $entry['user_id'] = Auth::user()->id;
-            Visual::create($entry);
+
+            // Check if the record exists based on unique conditions
+            $existingRecord = Visual::where([
+                ['type_id', $entry['type_id']],
+            ])->first();
+
+            if ($existingRecord) {
+                // Update only the status if the record exists
+                $existingRecord->update(['status' => $entry['status']]);
+            } else {
+                // Create a new record if it doesn't exist
+                Visual::create($entry);
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
@@ -295,11 +330,19 @@ class HomeController extends Controller
 
     public function visual_screen()
     {
-        if(Auth::user()->role == 1){
+        if (Auth::user()->role == 1) {
             $visuals = Visual::all()->groupBy('status');
-        }else{
+        } else {
             $visuals = Visual::where('user_id', Auth::user()->id)->get()->groupBy('status');
         }
+
+        // Define the desired order
+        $desiredOrder = ['Running', 'Pending Order', 'Pause', 'Closed'];
+
+        // Sort the grouped visuals by the desired order
+        $visuals = $visuals->sortBy(function ($entries, $status) use ($desiredOrder) {
+            return array_search($status, $desiredOrder);
+        });
         return view('visual-queue-screen', compact('visuals'));
     }
     public function visual_screen_1()

@@ -143,87 +143,46 @@
                                     <h5>
                                         User Permissions
                                     </h5>
-                                    <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
                                         <input class="form-check-input me-3" type="checkbox" name="status_column"
                                             value="1">
-                                        <!--end::Input-->
-
-                                        <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
                                             <span class="fs-6 mb-0">Status Coulmns</span>
-                                            {{-- <span class="text-muted fs-6">Receive a notification for every successful
-                                                payment.</span> --}}
                                         </span>
-                                        <!--end::Label-->
                                     </label>
-                                    <!--end::Option-->
-
-                                    <!--begin::Option-->
                                     <div class="separator separator-dashed my-6"></div>
-                                    <!--end::Option-->
-                                    <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
                                         <input class="form-check-input me-3" type="checkbox" name="stock_finished_column" value="1">
-                                        <!--end::Input-->
-
-                                        <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
                                             <span class="fs-6 mb-0">Stock Finished Column</span>
-                                            {{-- <span class="text-muted fs-6">Receive a notification for every initiated
-                                                payout.</span> --}}
                                         </span>
-                                        <!--end::Label-->
                                     </label>
-                                    <!--end::Option-->
-
-                                    <!--begin::Option-->
                                     <div class="separator separator-dashed my-6"></div>
-                                    <!--end::Option-->
-                                    <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
                                         <input class="form-check-input me-3" type="checkbox" name="part_number_column"
                                             value="1">
-                                        <!--end::Input-->
-
-                                        <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
                                             <span class="fs-6 mb-0">Part Number Section</span>
-                                            {{-- <span class="text-muted fs-6">Receive a notification each time you collect a
-                                                fee
-                                                from sales</span> --}}
                                         </span>
-                                        <!--end::Label-->
                                     </label>
-                                    <!--end::Option-->
-
-                                    <!--begin::Option-->
                                     <div class="separator separator-dashed my-6"></div>
-                                    <!--end::Option-->
-                                    <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <!--begin::Input-->
                                         <input class="form-check-input me-3" type="checkbox"
                                             name="calendar_column" value="0">
-                                        <!--end::Input-->
-
-                                        <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
                                             <span class="fs-6 mb-0">Calendar Section</span>
-                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
-                                                by
-                                                a customer and for dispute purposes.</span> --}}
                                         </span>
-                                        <!--end::Label-->
                                     </label>
-                                    <!--end::Option-->
-
-
-
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox"
+                                            name="input_screen_column" value="0">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">Input Screen Section</span>
+                                        </span>
+                                    </label>
                                 </div>
+
 
                                 <button class="btn btn-primary" type="submit">Save changes</button>
 

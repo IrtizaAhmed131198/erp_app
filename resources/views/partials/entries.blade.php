@@ -60,6 +60,8 @@
             }else{
                 $WT_RQ = 0;
             }
+
+            $sum1_12 = $sumWeeks1To6 + $sumWeeks7To12;
         @endphp
 
         <td class="toggleable-1">{{ $sumWeeks1To6 }}</td>
@@ -96,11 +98,6 @@
         @endif
 
         @if(Auth::user()->stock_finished_column == 1)
-            {{-- <td class="toggleable-1">
-                <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"
-                    value="{{ $data->live_inventory_wip ?? '' }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('live_inventory_wip', this.value)">
-            </td> --}}
             <td class="toggleable-1">
                 <input type="number" step="any" name="in_process_outside" id="in_process_outside"
                     value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
@@ -125,7 +122,7 @@
         @endif
         <td class="toggleable-1">{{ $data->wt_pc }}</td>
         <td class="toggleable-1">{{ $data->material }}</td>
-        <td class="toggleable-1">{{ (($data->wt_pc / 1000) * $sumWeeks1To6) }}</td>
+        <td class="toggleable-1">{{ (($data->wt_pc / 1000) * $sum1_12) }}</td>
         <td class="toggleable-1">{{ $data->safety }}</td>
         <td class="toggleable-1">{{ $data->min_ship }}</td>
         <td class="toggleable-1">{{ $data->order_notes }}</td>

@@ -207,6 +207,27 @@
                                     </label>
                                     <!--end::Option-->
 
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox"
+                                            name="input_screen_column" value="0" {{ $data->input_screen_column == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">Input Screen Section</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
 
 
                                 </div>

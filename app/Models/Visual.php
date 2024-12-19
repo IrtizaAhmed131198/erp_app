@@ -19,6 +19,7 @@ class Visual extends Model
         "job",
         "lot",
         "type",
-        "user_id"
+        "user_id",
+        "type_id"
     ];
 }
