@@ -5,6 +5,10 @@
     div#collapseTwo table {
         width: 30%;
     }
+
+    .remove-width input{
+        width: auto !important;
+    }
 </style>
 @endsection
 
@@ -94,7 +98,7 @@
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
                                 <div class="parent-table">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover remove-width">
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Existing Amount</th>

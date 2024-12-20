@@ -22,7 +22,9 @@
                         onchange="">
                     <option value="" disabled>Select</option>
                     @foreach($work_selector as $val)
-                    <option value="{{ $val->id }}">{{ $val->name }}</option>
+                        <option value="{{ $val->id }}">
+                            {{ $val->name }}
+                        </option>
                     @endforeach
                 </select>
             </td>
