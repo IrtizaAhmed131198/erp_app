@@ -27,6 +27,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        // return $request;
         $query = Entries::with('weeks_months', 'work_center_one');
 
         // Apply department filter
@@ -35,7 +36,25 @@ class HomeController extends Controller
         }
 
         // Apply status filter
-        if ($request->has('filter') && $request->filter != 'All') {
+        if($request->has('filter') && $request->filter == 'prd'){
+            // Filter where the sum of weeks 1 to 12 is greater than `in_stock_finish`
+            $query->whereHas('weeks_months', function ($query) {
+                $query->whereRaw("
+                    (CAST(week_1 AS UNSIGNED) +
+                    CAST(week_2 AS UNSIGNED) +
+                    CAST(week_3 AS UNSIGNED) +
+                    CAST(week_4 AS UNSIGNED) +
+                    CAST(week_5 AS UNSIGNED) +
+                    CAST(week_6 AS UNSIGNED) +
+                    CAST(week_7 AS UNSIGNED) +
+                    CAST(week_8 AS UNSIGNED) +
+                    CAST(week_9 AS UNSIGNED) +
+                    CAST(week_10 AS UNSIGNED) +
+                    CAST(week_11 AS UNSIGNED) +
+                    CAST(week_12 AS UNSIGNED)) > in_stock_finish
+                ");
+            });
+        }else if($request->has('filter') && $request->filter == 'pending'){
             $query->where('filter', $request->filter);
         }
 
