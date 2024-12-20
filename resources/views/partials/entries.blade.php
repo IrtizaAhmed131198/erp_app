@@ -3,20 +3,37 @@
     <tr>
         <td class="vertical-text highlighted">
         </td>
-        <td class="toggleable toggle-department">{{ $data->department }}</td>
-        <td class="toggleable toggle-work-center">{{ $data->work_center_one->com ?? 'N/A'}}</td>
-        @if(Auth::user()->status_column == 1)
+        @if (Auth::user()->status_column == 1)
+            <td class="toggleable toggle-department">
+                <select name="status" id="status" data-id="{{ $data->id }}"
+                    onchange="sendAjaxRequest('status', this.value)">
+                    <option value="" disabled selected>Select</option>
+                    <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}>Running</option>
+                    <option value="Pending Order" {{ $data->status == 'Pending Order' ? 'selected' : '' }}>Pending Order
+                    </option>
+                    <option value="Pause" {{ $data->status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                    <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                </select>
+            </td>
+        @else
+            <td> {{ $data->department }}</td>
+        @endif
+        @if (Auth::user()->status_column == 1)
+            <td class="toggleable toggle-work-center">{{ $data->work_center_one->com ?? 'N/A' }}</td>
+        @endif
+        @if (Auth::user()->status_column == 1)
             <td class="toggleable toggle-planning">
                 <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
                     data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value)">
             </td>
             <td class="toggleable toggle-department">
-                <select name="status" id="status"
-                        data-id="{{ $data->id }}"
-                        onchange="sendAjaxRequest('status', this.value)">
+                <select name="status" id="status" data-id="{{ $data->id }}"
+                    onchange="sendAjaxRequest('status', this.value)">
                     <option value="" disabled selected>Select</option>
                     <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}>Running</option>
-                    <option value="Pending Order" {{ $data->status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                    <option value="Pending Order" {{ $data->status == 'Pending Order' ? 'selected' : '' }}>Pending
+                        Order
+                    </option>
                     <option value="Pause" {{ $data->status == 'Pause' ? 'selected' : '' }}>Pause</option>
                     <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}>Closed</option>
                 </select>
@@ -37,17 +54,50 @@
         @endif
         <td class="toggleable">ID# {{ $data->id }}</td>
         <td class="toggleable">{{ $data->part_number }}</td>
-        <td class="toggleable">{{ $data->customer }}</td>
+
+        @if (Auth::user()->status_column == 1)
+            <td>
+                <select class="form-select js-select21" name="customer" aria-label="Default select example">
+                    <option selected disabled>Select Customer</option>
+                    @foreach ($customer as $item)
+                        <option value="{{ $item->CustomerName }}"
+                            {{ old('customer') == $item->CustomerName ? 'selected' : '' }}>
+                            {{ $item->CustomerName }}
+                        </option>
+                    @endforeach
+                </select>
+                {{-- <input type="text" name="customer" value="{{ old('customer') }}"
+                id=""> --}}
+            </td>
+            <td class="toggleable">
+                {{ $data->customer }}
+            </td>
+        @endif
+
         <td class="toggleable">{{ $data->rev }}</td>
         <td class="toggleable">{{ $data->process }}</td>
-        <td  class="vertical-text highlighted">
+        <td class="vertical-text highlighted">
         </td>
 
         @php
             $weeksArr = $data->weeks_months;
             if ($weeksArr) {
-                $sumWeeks1To6 = array_sum([$weeksArr['week_1'], $weeksArr['week_2'], $weeksArr['week_3'], $weeksArr['week_4'], $weeksArr['week_5'], $weeksArr['week_6']]);
-                $sumWeeks7To12 = array_sum([$weeksArr['week_7'], $weeksArr['week_8'], $weeksArr['week_9'], $weeksArr['week_10'], $weeksArr['week_11'], $weeksArr['week_12']]);
+                $sumWeeks1To6 = array_sum([
+                    $weeksArr['week_1'],
+                    $weeksArr['week_2'],
+                    $weeksArr['week_3'],
+                    $weeksArr['week_4'],
+                    $weeksArr['week_5'],
+                    $weeksArr['week_6'],
+                ]);
+                $sumWeeks7To12 = array_sum([
+                    $weeksArr['week_7'],
+                    $weeksArr['week_8'],
+                    $weeksArr['week_9'],
+                    $weeksArr['week_10'],
+                    $weeksArr['week_11'],
+                    $weeksArr['week_12'],
+                ]);
             } else {
                 $sumWeeks1To6 = $sumWeeks7To12 = 0;
             }
@@ -55,9 +105,9 @@
             $in_stock_finish = $data->in_stock_finish ?? 0;
             $wt_pc = $data->wt_pc ?? 0;
 
-            if($sumWeeks1To6 != 0 && $sumWeeks7To12 != 0){
-                $WT_RQ = max((($sumWeeks1To6 + $sumWeeks7To12) - $in_stock_finish) * $wt_pc, 0);
-            }else{
+            if ($sumWeeks1To6 != 0 && $sumWeeks7To12 != 0) {
+                $WT_RQ = max(($sumWeeks1To6 + $sumWeeks7To12 - $in_stock_finish) * $wt_pc, 0);
+            } else {
                 $WT_RQ = 0;
             }
 
@@ -68,7 +118,7 @@
         <td class="toggleable-1">{{ $sumWeeks7To12 }}</td>
         <td class="toggleable-1 schedule_total">{{ $sumWeeks1To6 + $sumWeeks7To12 }}</td>
         <td class="toggleable-1 in_stock_finish">
-            @if(Auth::user()->stock_finished_column == 1)
+            @if (Auth::user()->stock_finished_column == 1)
                 <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"
                     value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
                     onkeyup="sendAjaxRequest('in_stock_finish', this.value)">
@@ -77,11 +127,21 @@
             @endif
         </td>
         @php
-        $live_inventory_finish = \DB::table('inventory')->where('Part_No', $data->part_number)->whereIn('status', ['new', 'returned'])->where('location', '!=', 'WIP')->sum('container_qty');
-        $live_inventory_wip = \DB::table('inventory')->where('Part_No', $data->part_number)->whereIn('status', ['new', 'returned'])->where('location', '=', 'WIP')->sum('container_qty');
-        $in_stock_live = \DB::table('inventory')->where('Part_No', $data->part_number)->sum('weight');
+            $live_inventory_finish = \DB::table('inventory')
+                ->where('Part_No', $data->part_number)
+                ->whereIn('status', ['new', 'returned'])
+                ->where('location', '!=', 'WIP')
+                ->sum('container_qty');
+            $live_inventory_wip = \DB::table('inventory')
+                ->where('Part_No', $data->part_number)
+                ->whereIn('status', ['new', 'returned'])
+                ->where('location', '=', 'WIP')
+                ->sum('container_qty');
+            $in_stock_live = \DB::table('inventory')
+                ->where('Part_No', $data->part_number)
+                ->sum('weight');
         @endphp
-        @if(Auth::user()->role == 1)
+        @if (Auth::user()->role == 1)
             <td class="toggleable-1">
                 <input type="number" step="any" name="live_inventory_finish" id="live_inventory_finish"
                     value="{{ $data->live_inventory_finish }}" data-id="{{ $data->id }}"
@@ -97,7 +157,7 @@
             <td class="toggleable-1">{{ $data->live_inventory_wip }}</td>
         @endif
 
-        @if(Auth::user()->stock_finished_column == 1)
+        @if (Auth::user()->stock_finished_column == 1)
             <td class="toggleable-1">
                 <input type="number" step="any" name="in_process_outside" id="in_process_outside"
                     value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
@@ -111,7 +171,7 @@
             <td class="toggleable-1">{{ $data->in_process_outside }}</td>
             <td class="toggleable-1">{{ $data->raw_mat }}</td>
         @endif
-        @if(Auth::user()->role == 1)
+        @if (Auth::user()->role == 1)
             <td class="toggleable-1">
                 <input type="number" step="any" name="in_stock_live" id="in_stock_live"
                     value="{{ $data->in_stock_live }}" data-id="{{ $data->id }}"
@@ -122,12 +182,12 @@
         @endif
         <td class="toggleable-1">{{ $data->wt_pc }}</td>
         <td class="toggleable-1">{{ $data->material }}</td>
-        <td class="toggleable-1">{{ (($data->wt_pc / 1000) * $sum1_12) }}</td>
+        <td class="toggleable-1">{{ ($data->wt_pc / 1000) * $sum1_12 }}</td>
         <td class="toggleable-1">{{ $data->safety }}</td>
         <td class="toggleable-1">{{ $data->min_ship }}</td>
         <td class="toggleable-1">{{ $data->order_notes }}</td>
         <td class="toggleable-1">{{ $data->part_notes }}</td>
-        <td  class="vertical-text highlighted">
+        <td class="vertical-text highlighted">
         </td>
         <td class="toggleable-2">{{ $data->weeks_months->past_due ?? '' }}</td>
         @for ($week = 1; $week <= 16; $week++)
