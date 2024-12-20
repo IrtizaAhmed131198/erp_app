@@ -305,6 +305,56 @@
             });
         }
 
+        function sendAjaxRequest2(field, value) {
+            var inputElement = event.target;
+            var dataId = inputElement.getAttribute('data-id');
+            var data = {
+                id: dataId,
+                field: field,
+                value: value
+            };
+
+            $.ajax({
+                url: "{{ route('manual_imput_work') }}",
+                method: 'POST',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    console.log('Success:', response);
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function sendAjaxRequest3(field, value) {
+            var inputElement = event.target;
+            var dataId = inputElement.getAttribute('data-id');
+            var data = {
+                id: dataId,
+                field: field,
+                value: value
+            };
+
+            $.ajax({
+                url: "{{ route('manual_imput_out') }}",
+                method: 'POST',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    console.log('Success:', response);
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
         $(document).ready(function() {
             // Handle filter changes
             $('#filter1, #filter2').on('change', function() {

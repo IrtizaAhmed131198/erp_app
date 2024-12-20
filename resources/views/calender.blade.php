@@ -17,7 +17,7 @@
                         <select class="js-select2" id="partNumberSelect">
                             <option selected disabled>Select Part Number</option>
                             @foreach ($parts as $item)
-                                <option value="{{ $item->Part_Number }}"
+                                <option value="{{ $item->id }}"
                                     {{ old('part_number') == $item->Part_Number ? 'selected' : '' }}>
                                     {{ $item->Part_Number }}
                                 </option>

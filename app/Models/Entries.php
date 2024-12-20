@@ -51,6 +51,11 @@ class Entries extends Model
         'wt_pc',
     ];
 
+    public function part()
+    {
+        return $this->hasOne(Parts::class, 'id', 'part_number');
+    }
+
     public function weeks_months()
     {
         return $this->hasOne(Weeks::class, 'part_number', 'part_number');
@@ -69,5 +74,25 @@ class Entries extends Model
     public function work_center_one()
     {
         return $this->hasOne(WorkCenter::class, 'entry_id', 'id');
+    }
+
+    public function out_source_one()
+    {
+        return $this->hasOne(OutSource::class, 'entry_id', 'id');
+    }
+
+    public function get_department()
+    {
+        return $this->hasOne(Department::class, 'id', 'department');
+    }
+
+    public function get_customer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'customer');
+    }
+
+    public function get_material()
+    {
+        return $this->hasOne(Material::class, 'id', 'material');
     }
 }

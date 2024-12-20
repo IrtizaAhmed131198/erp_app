@@ -10,6 +10,9 @@ use App\Models\Notification;
 use App\Models\WorkCenter;
 use App\Models\OutSource;
 use App\Models\Visual;
+use App\Models\Department;
+use App\Models\Customer;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +31,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // return $request;
-        $query = Entries::with('weeks_months', 'work_center_one');
+        $query = Entries::with('part', 'weeks_months', 'work_center_one', 'out_source_one',
+             'get_department', 'get_customer', 'get_material');
 
         // Apply department filter
         if ($request->has('department') && $request->department != 'All') {
@@ -60,13 +64,19 @@ class HomeController extends Controller
 
         $entries = $query->get();
 
+        $department =Department::get();
+
+        $customers =Customer::get();
+
+        $materials =Material::get();
+
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('partials.entries', compact('entries'))->render()
+                'html' => view('partials.entries', compact('entries', 'department', 'customers', 'materials'))->render()
             ]);
         }
 
-        return view('welcome', compact('entries'));
+        return view('welcome', compact('entries', 'department', 'customers', 'materials'));
     }
 
     public function manual_imput(Request $request)
@@ -91,6 +101,50 @@ class HomeController extends Controller
         }
     }
 
+    public function manual_imput_work(Request $request)
+    {
+        $dataId = $request->input('id');
+        $fieldName = $request->input('field');
+        $value = $request->input('value');
+
+        // Find the entry by its ID
+        $entry = WorkCenter::find($dataId);
+
+        if ($entry) {
+            // Update the specific field
+            $entry->{$fieldName} = $value;
+            $entry->save();
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.']);
+
+            return response()->json(['message' => 'Field updated successfully.']);
+        } else {
+            return response()->json(['message' => 'Entry not found.'], 404);
+        }
+    }
+
+    public function manual_imput_out(Request $request)
+    {
+        $dataId = $request->input('id');
+        $fieldName = $request->input('field');
+        $value = $request->input('value');
+
+        // Find the entry by its ID
+        $entry = OutSource::find($dataId);
+
+        if ($entry) {
+            // Update the specific field
+            $entry->{$fieldName} = $value;
+            $entry->save();
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.']);
+
+            return response()->json(['message' => 'Field updated successfully.']);
+        } else {
+            return response()->json(['message' => 'Entry not found.'], 404);
+        }
+    }
+
     public function data_center()
     {
         if(Auth::user()->part_number_column == 0){
@@ -99,18 +153,19 @@ class HomeController extends Controller
         $parts = Parts::all();
         $customer = DB::table('customers')->get();
         $material = DB::table('package')->get();
-        return view('data-center', compact('parts', 'customer', 'material'));
+        $department =Department::get();
+        return view('data-center', compact('parts', 'customer', 'material', 'department'));
     }
 
     public function post_data_center(Request $request)
     {
         $validatedData = $request->validate([
             'part_number' => 'required|unique:entries,part_number',
-            'customer' => 'required|string|max:255',
+            'customer' => 'required',
             'revision' => 'required|string|max:255',
-            'ids' => 'required|string|max:255',
+            // 'ids' => 'required|string|max:255',
             'process' => 'nullable|string|max:255',
-            'department' => 'nullable|string|max:255',
+            'department' => 'nullable',
             'work_centre_1' => 'required',
             'work_centre_2' => 'nullable',
             'work_centre_3' => 'nullable',
@@ -118,10 +173,14 @@ class HomeController extends Controller
             'work_centre_5' => 'nullable',
             'work_centre_6' => 'nullable',
             'work_centre_7' => 'nullable',
-            'outside_processing_1' => 'nullable',
+            'outside_processing_1' => 'required',
             'outside_processing_2' => 'nullable',
             'outside_processing_3' => 'nullable',
             'outside_processing_4' => 'nullable',
+            'outside_processing_text_1' => 'required',
+            'outside_processing_text_2' => 'nullable',
+            'outside_processing_text_3' => 'nullable',
+            'outside_processing_text_4' => 'nullable',
             'material' => 'nullable|string|max:255',
             'pc_weight' => 'nullable|numeric',
             'safety_shock' => 'nullable|numeric',
@@ -166,6 +225,13 @@ class HomeController extends Controller
                 'outside_processing_4' => $validatedData['outside_processing_4'],
             ];
 
+            $outside_processing_text = [
+                'outside_processing_text_1' => $validatedData['outside_processing_text_1'],
+                'outside_processing_text_2' => $validatedData['outside_processing_text_2'],
+                'outside_processing_text_3' => $validatedData['outside_processing_text_3'],
+                'outside_processing_text_4' => $validatedData['outside_processing_text_4'],
+            ];
+
             // Get the entry ID
             $entryId = $entry->id;
 
@@ -182,7 +248,9 @@ class HomeController extends Controller
                 if (!empty($value)) {
                     $data = new OutSource();
                     $data->entry_id = $entryId;
-                    $data->out = $value;
+                    $data->out = $value ?? 'OUT 1';
+                    $textKey = str_replace('outside_processing_', 'outside_processing_text_', $centre);
+                    $data->name = $validatedData[$textKey] ?? null;
                     $data->save();
                 }
             }
@@ -214,7 +282,7 @@ class HomeController extends Controller
             abort(403, 'You do not have permission to access this resource.');
         }
 
-        $com1 = WorkCenter::with('entries')
+        $com1 = WorkCenter::with(['entries.get_customer', 'entries.part'])
             ->where('com', 'COM 1')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
@@ -223,7 +291,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $com2 = WorkCenter::with('entries')
+        $com2 = WorkCenter::with(['entries.get_customer', 'entries.part'])
             ->where('com', 'COM 2')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
@@ -232,7 +300,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $com3 = WorkCenter::with('entries')
+        $com3 = WorkCenter::with(['entries.get_customer', 'entries.part'])
             ->where('com', 'COM 3')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
@@ -241,7 +309,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $out1 = OutSource::with('entries_data')
+        $out1 = OutSource::with(['entries_data.get_customer', 'entries_data.part'])
             ->where('out', 'OUT 1')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
@@ -250,7 +318,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $out2 = OutSource::with('entries_data')
+        $out2 = OutSource::with(['entries_data.get_customer', 'entries_data.part'])
             ->where('out', 'OUT 2')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
@@ -259,7 +327,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $out3 = OutSource::with('entries_data')
+        $out3 = OutSource::with(['entries_data.get_customer', 'entries_data.part'])
             ->where('out', 'OUT 3')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
@@ -537,110 +605,6 @@ class HomeController extends Controller
                 }
             }
         }
-
-        // return $array_2;
-        // $array_1 = [
-        //     "week_1" => "100",
-        //     "week_1_date" => "2024-12-15",
-        //     "week_2" => "1000",
-        //     "week_2_date" => "2024-12-22",
-        //     "week_3" => "100",
-        //     "week_3_date" => "2024-12-29",
-        //     "week_4" => "1000",
-        //     "week_4_date" => "2025-01-05",
-        //     "week_5" => "25646",
-        //     "week_5_date" => "2025-01-12",
-        //     "week_6" => "13489",
-        //     "week_6_date" => "2025-01-19",
-        //     "week_7" => "101",
-        //     "week_7_date" => "2025-01-26",
-        //     "week_8" => "20",
-        //     "week_8_date" => "2025-02-02",
-        //     "week_9" => "3218",
-        //     "week_9_date" => "2025-02-09",
-        //     "week_10" => "13",
-        //     "week_10_date" => "2025-02-16",
-        //     "week_11" => "2666",
-        //     "week_11_date" => "2025-02-23",
-        //     "week_12" => "900",
-        //     "week_12_date" => "2025-03-02",
-        //     "week_13" => "5500",
-        //     "week_13_date" => "2025-03-09",
-        //     "week_14" => "100",
-        //     "week_14_date" => "2025-03-16",
-        //     "week_15" => "220",
-        //     "week_15_date" => "2025-03-23",
-        //     "week_16" => "8990",
-        //     "week_16_date" => "2025-03-30",
-        //     "month_5" => "1100",
-        //     "month_5_date" => "2025-04-06",
-        //     "month_6" => "1851",
-        //     "month_6_date" => "2025-05-07",
-        //     "month_7" => "1321",
-        //     "month_7_date" => "2025-06-07",
-        //     "month_8" => "798",
-        //     "month_8_date" => "2025-07-08",
-        //     "month_9" => "2156",
-        //     "month_9_date" => "2025-08-08",
-        //     "month_10" => "1654",
-        //     "month_10_date" => "2025-09-08",
-        //     "month_11" => "3210",
-        //     "month_11_date" => "2025-10-09",
-        //     "month_12" => "100",
-        //     "month_12_date" => "2025-11-09"
-        // ];
-
-        // $array_2 = [
-        //     "week_1" => "100",
-        //     "week_1_date" => "2024-12-22",
-        //     "week_2" => "1000",
-        //     "week_2_date" => "2024-12-29",
-        //     "week_3" => "100",
-        //     "week_3_date" => "2025-01-05",
-        //     "week_4" => "1000",
-        //     "week_4_date" => "2025-01-12",
-        //     "week_5" => "25646",
-        //     "week_5_date" => "2025-01-19",
-        //     "week_6" => "13489",
-        //     "week_6_date" => "2025-01-26",
-        //     "week_7" => "101",
-        //     "week_7_date" => "2025-02-02",
-        //     "week_8" => "20",
-        //     "week_8_date" => "2025-02-09",
-        //     "week_9" => "3218",
-        //     "week_9_date" => "2025-02-16",
-        //     "week_10" => "13",
-        //     "week_10_date" => "2025-02-23",
-        //     "week_11" => "2666",
-        //     "week_11_date" => "2025-03-02",
-        //     "week_12" => "900",
-        //     "week_12_date" => "2025-03-09",
-        //     "week_13" => "5500",
-        //     "week_13_date" => "2025-03-16",
-        //     "week_14" => "100",
-        //     "week_14_date" => "2025-03-23",
-        //     "week_15" => "220",
-        //     "week_15_date" => "2025-03-30",
-        //     "week_16" => "8990",
-        //     "week_16_date" => "2025-04-06",
-        //     "month_5" => "1100",
-        //     "month_5_date" => "2025-04-13",
-        //     "month_6" => "1851",
-        //     "month_6_date" => "2025-05-14",
-        //     "month_7" => "1321",
-        //     "month_7_date" => "2025-06-14",
-        //     "month_8" => "798",
-        //     "month_8_date" => "2025-07-15",
-        //     "month_9" => "2156",
-        //     "month_9_date" => "2025-08-15",
-        //     "month_10" => "1654",
-        //     "month_10_date" => "2025-09-15",
-        //     "month_11" => "3210",
-        //     "month_11_date" => "2025-10-16",
-        //     "month_12" => "100",
-        //     "month_12_date" => "2025-11-16"
-        // ];
-
         $currentDate = $request->current_date;
 
         // Initialize new array for passed weeks

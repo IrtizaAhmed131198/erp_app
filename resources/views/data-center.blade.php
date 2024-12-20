@@ -23,9 +23,6 @@
                                 <tbody>
                                     <tr class="">
                                         <td scope="col" colspan="2"><strong>Part Number Input</strong></td>
-                                        <!-- <td scope="col">
-
-                                                                                                </td> -->
                                     </tr>
                                     <tr>
                                         <td>Part Number</td>
@@ -34,7 +31,7 @@
                                                 aria-label="Default select example">
                                                 <option selected disabled>Select Part Number</option>
                                                 @foreach ($parts as $item)
-                                                    <option value="{{ $item->Part_Number }}"
+                                                    <option value="{{ $item->id }}"
                                                         {{ old('part_number') == $item->Part_Number ? 'selected' : '' }}>
                                                         {{ $item->Part_Number }}
                                                     </option>
@@ -49,7 +46,7 @@
                                                 aria-label="Default select example">
                                                 <option selected disabled>Select Customer</option>
                                                 @foreach ($customer as $item)
-                                                    <option value="{{ $item->CustomerName }}"
+                                                    <option value="{{ $item->id }}"
                                                         {{ old('customer') == $item->CustomerName ? 'selected' : '' }}>
                                                         {{ $item->CustomerName }}
                                                     </option>
@@ -66,12 +63,12 @@
                                                 id="">
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>ID</td>
                                         <td>
                                             <input type="text" name="ids" value="{{ old('ids') }}" id="">
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td>Process</td>
                                         <td>
@@ -82,33 +79,13 @@
                                     <tr>
                                         <td>Department</td>
                                         <td>
-                                            <select class="js-select2 select2-hidden-accessible" name="department"
-                                                tabindex="-1" aria-hidden="true">
+                                            <select class="js-select2 select2-hidden-accessible" name="department" tabindex="-1" aria-hidden="true">
                                                 <option selected disabled>Select DEPARTMENT</option>
-                                                <option value="COMPRESSION"
-                                                    {{ old('department') == 'COMPRESSION' ? 'selected' : '' }}>COMPRESSION
-                                                </option>
-                                                <option value="EXTENSION"
-                                                    {{ old('department') == 'EXTENSION' ? 'selected' : '' }}>EXTENSION
-                                                </option>
-                                                <option value="MULTI SLIDE"
-                                                    {{ old('department') == 'MULTI SLIDE' ? 'selected' : '' }}>MULTI SLIDE
-                                                </option>
-                                                <option value="PRESS DEPT"
-                                                    {{ old('department') == 'PRESS DEPT' ? 'selected' : '' }}>PRESS DEPT
-                                                </option>
-                                                <option value="PURCHASED"
-                                                    {{ old('department') == 'PURCHASED' ? 'selected' : '' }}>PURCHASED
-                                                </option>
-                                                <option value="SLIDES"
-                                                    {{ old('department') == 'SLIDES' ? 'selected' : '' }}>SLIDES</option>
-                                                <option value="STOCK"
-                                                    {{ old('department') == 'STOCK' ? 'selected' : '' }}>STOCK</option>
-                                                <option value="TORSION"
-                                                    {{ old('department') == 'TORSION' ? 'selected' : '' }}>TORSION</option>
-                                                <option value="WIREFORM"
-                                                    {{ old('department') == 'WIREFORM' ? 'selected' : '' }}>WIREFORM
-                                                </option>
+                                                @foreach($department as $dept)
+                                                    <option value="{{ $dept->id }}" {{ old('department') == $dept->name ? 'selected' : '' }}>
+                                                        {{ $dept->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </td>
                                     </tr>
@@ -151,7 +128,7 @@
                                                             {{ old('outside_processing_' . $i) == 'OUT 3' ? 'selected' : '' }}>
                                                             OUT 3</option>
                                                     </select>
-                                                    <input type="text"
+                                                    <input type="number"
                                                         name="outside_processing_text_{{ $i }}"
                                                         value="{{ old('outside_processing_text_' . $i) }}" id="">
                                                 </div>
@@ -165,7 +142,7 @@
                                                 aria-label="Default select example">
                                                 <option selected disabled>Select Material</option>
                                                 @foreach ($material as $item)
-                                                    <option value="{{ $item->Package }}"
+                                                    <option value="{{ $item->id }}"
                                                         {{ old('customer') == $item->Package ? 'selected' : '' }}>
                                                         {{ $item->Package }}
                                                     </option>

@@ -37,8 +37,8 @@
                                                     @foreach ($com1 as $entry)
                                                         @php
                                                             $status = $entry['entries']['status'] ?? null;
-                                                            $customer = $entry['entries']['customer'] ?? null;
-                                                            $part_number = $entry['entries']['part_number'] ?? null;
+                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
+                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
                                                             $in_stock_finish =
                                                                 $entry['entries']['in_stock_finish'] ?? null;
                                                             $job = $entry['entries']['job'] ?? null;
@@ -112,8 +112,8 @@
                                                     @foreach ($com2 as $entry)
                                                         @php
                                                             $status = $entry['entries']['status'] ?? null;
-                                                            $customer = $entry['entries']['customer'] ?? null;
-                                                            $part_number = $entry['entries']['part_number'] ?? null;
+                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
+                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
                                                             $in_stock_finish =
                                                                 $entry['entries']['in_stock_finish'] ?? null;
                                                             $job = $entry['entries']['job'] ?? null;
@@ -188,8 +188,8 @@
                                                     @foreach ($com3 as $entry)
                                                         @php
                                                             $status = $entry['entries']['status'] ?? null;
-                                                            $customer = $entry['entries']['customer'] ?? null;
-                                                            $part_number = $entry['entries']['part_number'] ?? null;
+                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
+                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
                                                             $in_stock_finish =
                                                                 $entry['entries']['in_stock_finish'] ?? null;
                                                             $job = $entry['entries']['job'] ?? null;
@@ -265,9 +265,9 @@
                                                     @foreach ($out1 as $entry)
                                                         @php
                                                             $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['customer'] ?? null;
+                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
                                                             $part_number =
-                                                                $entry['entries_data']['part_number'] ?? null;
+                                                                $entry['entries_data']['part']['Part_Number'] ?? null;
                                                             $in_stock_finish =
                                                                 $entry['entries_data']['in_stock_finish'] ?? null;
                                                             $job = $entry['entries_data']['job'] ?? null;
@@ -342,9 +342,9 @@
                                                     @foreach ($out2 as $entry)
                                                         @php
                                                             $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['customer'] ?? null;
+                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
                                                             $part_number =
-                                                                $entry['entries_data']['part_number'] ?? null;
+                                                                $entry['entries_data']['part']['Part_Number'] ?? null;
                                                             $in_stock_finish =
                                                                 $entry['entries_data']['in_stock_finish'] ?? null;
                                                             $job = $entry['entries_data']['job'] ?? null;
@@ -419,9 +419,9 @@
                                                     @foreach ($out3 as $entry)
                                                         @php
                                                             $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['customer'] ?? null;
+                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
                                                             $part_number =
-                                                                $entry['entries_data']['part_number'] ?? null;
+                                                                $entry['entries_data']['part']['Part_Number'] ?? null;
                                                             $in_stock_finish =
                                                                 $entry['entries_data']['in_stock_finish'] ?? null;
                                                             $job = $entry['entries_data']['job'] ?? null;

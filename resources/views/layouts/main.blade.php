@@ -74,26 +74,27 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             @if (auth()->check())
-                                                <li><a class="dropdown-item" href="{{ route('index') }}">Home</a>
+                                                <li><a class="dropdown-item" href="{{ route('index') }}">Master Data</a>
                                                 </li>
                                                 @if(Auth::user()->role == 1)
                                                 <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="{{ route('add_user') }}">Add user</a>
+                                                <li><a class="dropdown-item" href="{{ route('add_user') }}">Add User</a>
                                                 </li>
                                                 @endif
                                                 </li>
-                                                <li><a class="dropdown-item" href="{{ route('calender') }}">Calender</a>
+                                                <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment And Production</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('input_screen') }}">Input screen</a>
                                                 </li>
-                                                <li><a class="dropdown-item" href="{{ route('visual_screen') }}">Visual screen</a>
+                                                <li><a class="dropdown-item" href="{{ route('visual_screen') }}">Visual Input Screen
+                                                </a>
                                                 </li>
                                                 {{-- <li><a class="dropdown-item" href="{{ route('visual_screen_1') }}">Visual screen 1</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('visual_screen_2') }}">Visual screen 2</a>
                                                 </li> --}}
-                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number</a>
+                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number Input</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                                 </li>
