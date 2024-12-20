@@ -18,15 +18,15 @@
             <div class="row align-items-center">
                 <div class="col-lg-3">
                     <div class="parent-filter">
-                        <select class="js-select2" id="partNumberSelect">
-                            <option selected disabled>Select Part Number</option>
-                            @foreach ($parts as $item)
-                                <option value="{{ $item->id }}"
-                                    {{ old('part_number') == $item->Part_Number ? 'selected' : '' }}>
-                                    {{ $item->Part_Number }}
-                                </option>
-                            @endforeach
-                        </select>
+                            <select class="js-select2" id="partNumberSelect">
+                                <option selected disabled>Select Part Number</option>
+                                @foreach ($parts as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ request('part_number') == $item->Part_Number ? 'selected' : '' }}>
+                                        {{ $item->Part_Number }}
+                                    </option>
+                                @endforeach
+                            </select>
                         <input type="hidden" name="part_no" id="part_no" value="">
                     </div>
                 </div>
@@ -347,6 +347,12 @@
                     $('.btn[data-bs-toggle="collapse"]').prop('disabled', true);
                 }
             });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const partNumberFromUrl = urlParams.get('part_number');
+            if (partNumberFromUrl) {
+                $('#partNumberSelect').val(partNumberFromUrl).trigger('change');
+            }
 
             $('#add_production').on('input', function() {
                 const existingAmount = parseFloat($('#existing_amount').val()) || 0;

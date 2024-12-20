@@ -83,7 +83,7 @@
                                                 </li>
                                                 @endif
                                                 </li>
-                                                <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment And Production</a>
+                                                <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment & Production</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('input_screen') }}">Input screen</a>
                                                 </li>

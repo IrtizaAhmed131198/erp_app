@@ -14,6 +14,7 @@ use App\Models\Department;
 use App\Models\Customer;
 use App\Models\Material;
 use App\Models\WorkCenterSelec;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -157,7 +158,24 @@ class HomeController extends Controller
         $customer = DB::table('customers')->get();
         $material = DB::table('package')->get();
         $department =Department::get();
-        return view('data-center', compact('parts', 'customer', 'material', 'department'));
+        $work_center_select =WorkCenterSelec::get();
+        $vendor =Vendor::get();
+        return view('data-center', compact('parts', 'customer', 'material', 'department', 'work_center_select', 'vendor'));
+    }
+
+    public function data_center_edit($id)
+    {
+        if(Auth::user()->role != 1){
+            abort(403, 'You do not have permission to access this resource.');
+        }
+        $data = Entries::with('work_center', 'out_source')->where('id', $id)->first();
+        $parts = Parts::all();
+        $customer = DB::table('customers')->get();
+        $material = DB::table('package')->get();
+        $department =Department::get();
+        $work_center_select =WorkCenterSelec::get();
+        $vendor =Vendor::get();
+        return view('data-center-edit', compact('data', 'parts', 'customer', 'material', 'department', 'work_center_select', 'vendor'));
     }
 
     public function post_data_center(Request $request)
@@ -237,12 +255,14 @@ class HomeController extends Controller
 
             // Get the entry ID
             $entryId = $entry->id;
+            dd($work_centres);
 
             foreach ($work_centres as $centre => $value) {
                 if (!empty($value)) {
                     $work_center = new WorkCenter();
                     $work_center->entry_id = $entryId;
                     $work_center->com = $value;
+                    $work_center->work_centre_id = $centre;
                     $work_center->save();
                 }
             }
@@ -253,13 +273,120 @@ class HomeController extends Controller
                     $data->entry_id = $entryId;
                     $data->out = $value ?? 'OUT 1';
                     $textKey = str_replace('outside_processing_', 'outside_processing_text_', $centre);
-                    $data->name = $validatedData[$textKey] ?? null;
+                    $data->in_process_outside = $validatedData[$textKey] ?? null;
+                    $data->outside_processing_id = $centre;
+                    $data->outside_processing_text_id = $textKey ?? null;
                     $data->save();
                 }
             }
 
             $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.']);
             return redirect()->back()->with('success', 'Part created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+    public function post_data_center_update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'part_number' => 'required|unique:entries,part_number,' . $id,
+            'customer' => 'required',
+            'revision' => 'required|string|max:255',
+            'process' => 'nullable|string|max:255',
+            'department' => 'nullable',
+            'work_centre_1' => 'required',
+            'work_centre_2' => 'nullable',
+            'work_centre_3' => 'nullable',
+            'work_centre_4' => 'nullable',
+            'work_centre_5' => 'nullable',
+            'work_centre_6' => 'nullable',
+            'work_centre_7' => 'nullable',
+            'outside_processing_1' => 'required',
+            'outside_processing_2' => 'nullable',
+            'outside_processing_3' => 'nullable',
+            'outside_processing_4' => 'nullable',
+            'outside_processing_text_1' => 'required',
+            'outside_processing_text_2' => 'nullable',
+            'outside_processing_text_3' => 'nullable',
+            'outside_processing_text_4' => 'nullable',
+            'material' => 'nullable|string|max:255',
+            'pc_weight' => 'nullable|numeric',
+            'safety_shock' => 'nullable|numeric',
+            'moq' => 'nullable|numeric',
+            'order_notes' => 'nullable|string',
+            'part_notes' => 'nullable|string',
+            'future_raw' => 'nullable|string|max:255',
+            'price' => 'nullable|numeric',
+            'notes' => 'nullable|string',
+            'rev' => 'nullable',
+            'wet_reqd' => 'nullable',
+            'safety' => 'nullable',
+            'min_ship' => 'nullable',
+            'wt_pc' => 'required',
+        ]);
+
+        try {
+            $entry = Entries::findOrFail($id);
+
+            // Update main entry data
+            $validatedData['user_id'] = Auth::user()->id;
+            $entry->update($validatedData);
+
+            // Prepare work centers and outside processing data
+            $work_centres = [
+                'work_centre_1' => $validatedData['work_centre_1'],
+                'work_centre_2' => $validatedData['work_centre_2'],
+                'work_centre_3' => $validatedData['work_centre_3'],
+                'work_centre_4' => $validatedData['work_centre_4'],
+                'work_centre_5' => $validatedData['work_centre_5'],
+                'work_centre_6' => $validatedData['work_centre_6'],
+                'work_centre_7' => $validatedData['work_centre_7'],
+            ];
+
+            $outside_processing = [
+                'outside_processing_1' => $validatedData['outside_processing_1'],
+                'outside_processing_2' => $validatedData['outside_processing_2'],
+                'outside_processing_3' => $validatedData['outside_processing_3'],
+                'outside_processing_4' => $validatedData['outside_processing_4'],
+            ];
+
+            $outside_processing_text = [
+                'outside_processing_text_1' => $validatedData['outside_processing_text_1'],
+                'outside_processing_text_2' => $validatedData['outside_processing_text_2'],
+                'outside_processing_text_3' => $validatedData['outside_processing_text_3'],
+                'outside_processing_text_4' => $validatedData['outside_processing_text_4'],
+            ];
+
+            // Update work centers
+            WorkCenter::where('entry_id', $id)->delete(); // Clear old records
+            foreach ($work_centres as $centre => $value) {
+                if (!empty($value) && $value !== 'Select') { // Check for null or 'Select'
+                    $work_center = new WorkCenter();
+                    $work_center->entry_id = $id;
+                    $work_center->com = $value;
+                    $work_center->work_centre_id = $centre;
+                    $work_center->save();
+                }
+            }
+
+            // Update outside processing
+            OutSource::where('entry_id', $id)->delete(); // Clear old records
+            foreach ($outside_processing as $centre => $value) {
+                if (!empty($value) && $value !== 'Select') { // Check for null or 'Select'
+                    $data = new OutSource();
+                    $data->entry_id = $id;
+                    $data->out = $value ?? 'OUT 1';
+                    $textKey = str_replace('outside_processing_', 'outside_processing_text_', $centre);
+                    $data->in_process_outside = $validatedData[$textKey] ?? null;
+                    $data->outside_processing_id = $centre;
+                    $data->outside_processing_text_id = $textKey ?? null;
+                    $data->save();
+                }
+            }
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.']);
+            return redirect()->back()->with('success', 'Part updated successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
@@ -285,8 +412,7 @@ class HomeController extends Controller
             abort(403, 'You do not have permission to access this resource.');
         }
 
-        $com1 = WorkCenter::with(['entries.get_customer', 'entries.part'])
-            ->where('com', 'COM 1')
+        $com1 = WorkCenter::with(['entries.get_customer', 'entries.part', 'work_select'])
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries', function ($query) {
                     $query->where('user_id', Auth::user()->id);
@@ -312,8 +438,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $out1 = OutSource::with(['entries_data.get_customer', 'entries_data.part'])
-            ->where('out', 'OUT 1')
+        $out1 = OutSource::with(['entries_data.get_customer', 'entries_data.part', 'out_source'])
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
                     $query->where('user_id', Auth::user()->id);
@@ -339,7 +464,11 @@ class HomeController extends Controller
             })
             ->get();
 
-        return view('input-screen', compact('com1', 'com2', 'com3', 'out1', 'out2', 'out3'));
+        $customers =Customer::get();
+
+        $parts =Parts::get();
+
+        return view('input-screen', compact('com1', 'com2', 'com3', 'out1', 'out2', 'out3', 'customers', 'parts'));
     }
 
     public function save_table_data(Request $request)
@@ -366,7 +495,14 @@ class HomeController extends Controller
 
             if ($existingRecord) {
                 // Update only the status if the record exists
-                $existingRecord->update(['status' => $entry['status']]);
+                $existingRecord->update([
+                    'status' => $entry['status'],
+                    'customer' => $entry['customer'],
+                    'part_number' => $entry['part_number'],
+                    'quantity' => $entry['quantity'],
+                    'job' => $entry['job'],
+                    'lot' => $entry['lot'],
+                ]);
             } else {
                 // Create a new record if it doesn't exist
                 Visual::create($entry);
@@ -400,7 +536,14 @@ class HomeController extends Controller
 
             if ($existingRecord) {
                 // Update only the status if the record exists
-                $existingRecord->update(['status' => $entry['status']]);
+                $existingRecord->update([
+                    'status' => $entry['status'],
+                    'customer' => $entry['customer'],
+                    'part_number' => $entry['part_number'],
+                    'quantity' => $entry['quantity'],
+                    'job' => $entry['job'],
+                    'lot' => $entry['lot'],
+                ]);
             } else {
                 // Create a new record if it doesn't exist
                 Visual::create($entry);

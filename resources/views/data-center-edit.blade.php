@@ -15,14 +15,15 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="parent-table">
-                        <form action="{{ route('post_data_center') }}" method="POST">
+                        <form action="{{ route('post_data_center_update', ['id' => $data->id]) }}" method="POST">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $data->id }}">
                             <table class="table table-hover table-bordered">
                                 <thead>
                                 </thead>
                                 <tbody>
                                     <tr class="">
-                                        <td scope="col" colspan="2"><strong>Part Number Input</strong></td>
+                                        <td scope="col" colspan="2"><strong>Part Number Input Edit</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Part Number</td>
@@ -32,7 +33,7 @@
                                                 <option selected disabled>Select Part Number</option>
                                                 @foreach ($parts as $item)
                                                     <option value="{{ $item->id }}"
-                                                        {{ old('part_number') == $item->Part_Number ? 'selected' : '' }}>
+                                                        {{ $data->part_number == $item->id ? 'selected' : '' }}>
                                                         {{ $item->Part_Number }}
                                                     </option>
                                                 @endforeach
@@ -47,7 +48,7 @@
                                                 <option selected disabled>Select Customer</option>
                                                 @foreach ($customer as $item)
                                                     <option value="{{ $item->id }}"
-                                                        {{ old('customer') == $item->CustomerName ? 'selected' : '' }}>
+                                                        {{ $data->customer == $item->id ? 'selected' : '' }}>
                                                         {{ $item->CustomerName }}
                                                     </option>
                                                 @endforeach
@@ -59,7 +60,7 @@
                                     <tr>
                                         <td>Revision</td>
                                         <td>
-                                            <input type="text" name="revision" value="{{ old('revision') }}"
+                                            <input type="text" name="revision" value="{{ $data->revision }}"
                                                 id="">
                                         </td>
                                     </tr>
@@ -72,7 +73,7 @@
                                     <tr>
                                         <td>Process</td>
                                         <td>
-                                            <input type="text" name="process" value="{{ old('process') }}"
+                                            <input type="text" name="process" value="{{ $data->process }}"
                                                 id="">
                                         </td>
                                     </tr>
@@ -82,21 +83,37 @@
                                             <select class="js-select2 select2-hidden-accessible" name="department" tabindex="-1" aria-hidden="true">
                                                 <option selected disabled>Select DEPARTMENT</option>
                                                 @foreach($department as $dept)
-                                                    <option value="{{ $dept->id }}" {{ old('department') == $dept->name ? 'selected' : '' }}>
+                                                    <option value="{{ $dept->id }}" {{ $data->department == $dept->id ? 'selected' : '' }}>
                                                         {{ $dept->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </td>
                                     </tr>
+                                    @php
+                                        $work_center = $data->work_center->toArray();
+                                        $work_center_select_map = collect($work_center_select)->keyBy('id')->toArray();
+                                    @endphp
+
                                     @for ($i = 1; $i <= 7; $i++)
+                                        @php
+                                            $work_centre_id = 'work_centre_' . $i;
+                                            $selected_value = null;
+                                            $com_value = null;
+
+                                            if (in_array($work_centre_id, array_column($work_center, 'work_centre_id'))) {
+                                                $selected_work_centre = collect($work_center)->firstWhere('work_centre_id', $work_centre_id);
+                                                $selected_value = $work_center_select_map[$selected_work_centre['com']] ?? null;
+                                            }
+                                        @endphp
+
                                         <tr>
                                             <td>Work Centre {{ $i }}</td>
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible" name="work_centre_{{ $i }}" aria-label="Default select example">
-                                                    <option selected>Select</option>
+                                                <select class="js-select2 select2-hidden-accessible" name="{{ $work_centre_id }}" aria-label="Default select example">
+                                                    <option value="" selected>Select</option>
                                                     @foreach ($work_center_select as $center)
-                                                        <option value="{{ $center['id'] }}" {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
+                                                        <option value="{{ $center['id'] }}" {{ $selected_value && $center['id'] == $selected_value['id'] ? 'selected' : '' }}>
                                                             {{ $center['name'] }}
                                                         </option>
                                                     @endforeach
@@ -104,28 +121,45 @@
                                             </td>
                                         </tr>
                                     @endfor
+
+
+
+
+                                    @php
+                                        $out_source = $data->out_source->toArray();
+                                        $vendor_map = collect($vendor)->keyBy('id')->toArray();
+                                    @endphp
+
                                     @for ($i = 1; $i <= 4; $i++)
+                                        @php
+                                            $outside_processing_id = 'outside_processing_' . $i;
+                                            $selected_value = null;
+
+                                            if (in_array($outside_processing_id, array_column($out_source, 'outside_processing_id'))) {
+                                                $selected_out_source = collect($out_source)->firstWhere('outside_processing_id', $outside_processing_id);
+                                                $selected_value = $vendor_map[$selected_out_source['out']] ?? null;
+                                            }
+                                        @endphp
+
                                         <tr>
                                             <td>Outside Processing {{ $i }}</td>
                                             <td>
                                                 <div class="parent-inputs">
-                                                    <select class="js-select2 select2-hidden-accessible"
-                                                        name="outside_processing_{{ $i }}"
-                                                        aria-label="Default select example">
-                                                        <option selected>Select</option>
+                                                    <select class="js-select2 select2-hidden-accessible" name="{{ $outside_processing_id }}" aria-label="Default select example">
+                                                        <option value="" selected>Select</option>
                                                         @foreach ($vendor as $v)
-                                                            <option value="{{ $v->id }}" {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
+                                                            <option value="{{ $v->id }}" {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
                                                                 {{ $v->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="number"
-                                                        name="outside_processing_text_{{ $i }}"
-                                                        value="{{ old('outside_processing_text_' . $i) }}" id="">
+                                                    <input type="number" name="outside_processing_text_{{ $i }}" value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}" id="">
                                                 </div>
                                             </td>
                                         </tr>
                                     @endfor
+
+
                                     <tr>
                                         <td>Material</td>
                                         <td>
@@ -134,7 +168,7 @@
                                                 <option selected disabled>Select Material</option>
                                                 @foreach ($material as $item)
                                                     <option value="{{ $item->id }}"
-                                                        {{ old('customer') == $item->Package ? 'selected' : '' }}>
+                                                        {{ $data->material == $item->id ? 'selected' : '' }}>
                                                         {{ $item->Package }}
                                                     </option>
                                                 @endforeach
@@ -146,77 +180,77 @@
                                         <td>Pc Weight</td>
                                         <td>
                                             <input type="number" step="any" name="pc_weight"
-                                                value="{{ old('pc_weight') }}" id="">
+                                                value="{{ $data->pc_weight }}" id="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Safety Stock</td>
                                         <td>
                                             <input type="number" step="any" name="safety_stock"
-                                                value="{{ old('safety_stock') }}" id="">
+                                                value="{{ $data->safety_stock }}" id="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>MOQ</td>
                                         <td>
-                                            <input type="number" step="any" name="moq" value="{{ old('moq') }}"
+                                            <input type="number" step="any" name="moq" value="{{ $data->moq }}"
                                                 id="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Order Notes</td>
                                         <td>
-                                            <textarea name="order_notes" id="">{{ old('order_notes') }}</textarea>
+                                            <textarea name="order_notes" id="">{{ $data->order_notes }}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Part Notes</td>
                                         <td>
-                                            <textarea name="part_notes" id="">{{ old('part_notes') }}</textarea>
+                                            <textarea name="part_notes" id="">{{ $data->part_notes }}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Future Raw</td>
                                         <td>
-                                            <input type="text" name="future_raw" value="{{ old('future_raw') }}"
+                                            <input type="text" name="future_raw" value="{{ $data->future_raw }}"
                                                 id="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Price</td>
                                         <td>
-                                            <input type="number" step="any" name="price" value="{{ old('price') }}"
+                                            <input type="number" step="any" name="price" value="{{ $data->price }}"
                                                 id="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>REV</td>
                                         <td>
-                                            <input type="text" name="rev" id="rev" value="{{ old('rev') }}">
+                                            <input type="text" name="rev" id="rev" value="{{ $data->rev }}">
                                         </td>
                                     </tr>
                                     {{-- <tr>
                                         <td>Wt Req'd</td>
                                         <td>
-                                            <input type="number" step="any" name="wet_reqd" id="wet_reqd" value="{{ old('wet_reqd') }}">
+                                            <input type="number" step="any" name="wet_reqd" id="wet_reqd" value="{{ $data->wet_reqd }}">
                                         </td>
                                     </tr> --}}
                                     <tr>
                                         <td>Safety</td>
                                         <td>
-                                            <input type="text" name="safety" id="safety" value="{{ old('safety') }}">
+                                            <input type="text" name="safety" id="safety" value="{{ $data->safety }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Minship</td>
                                         <td>
-                                            <input type="number" name="min_ship" id="min_ship" value="{{ old('min_ship') }}">
+                                            <input type="number" name="min_ship" id="min_ship" value="{{ $data->min_ship }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>WT/PC</td>
                                         <td>
-                                            <input type="number" name="wt_pc" id="wt_pc" value="{{ old('wt_pc') }}">
+                                            <input type="number" name="wt_pc" id="wt_pc" value="{{ $data->wt_pc }}">
                                         </td>
                                     </tr>
                                 </tbody>

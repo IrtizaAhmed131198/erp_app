@@ -15,4 +15,9 @@ class OutSource extends Model
     {
         return $this->hasOne(Entries::class, 'id', 'entry_id');
     }
+
+    public function out_source()
+    {
+        return $this->hasOne(Vendor::class, 'id', 'out');
+    }
 }

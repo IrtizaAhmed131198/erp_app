@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('data-center', [HomeController::class, 'data_center'])->name('data_center');
+    Route::get('data-center/{id}', [HomeController::class, 'data_center_edit'])->name('data_center_edit');
     Route::get('calender', [HomeController::class, 'calender'])->name('calender');
     Route::get('input-screen', [HomeController::class, 'input_screen'])->name('input_screen');
     Route::get('Notifications', [HomeController::class, 'notifications'])->name('notifications');
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('add-user', [HomeController::class, 'add_user'])->name('add_user');
 
     Route::post('post-data-center', [HomeController::class, 'post_data_center'])->name('post_data_center');
+    Route::post('post-data-center-update/{id}', [HomeController::class, 'post_data_center_update'])->name('post_data_center_update');
     Route::post('manual-imput', [HomeController::class, 'manual_imput'])->name('manual_imput');
     Route::post('manual-imput-work', [HomeController::class, 'manual_imput_work'])->name('manual_imput_work');
     Route::post('manual-imput-out', [HomeController::class, 'manual_imput_out'])->name('manual_imput_out');

@@ -10,7 +10,7 @@
                         onchange="sendAjaxRequest('department', this.value)">
                     <option value="" disabled>Select</option>
                     @foreach($department as $dept)
-                        <option value="{{ $dept->name }}" {{ $data->department == $dept->id ? 'selected' : '' }}>
+                        <option value="{{ $dept->id }}" {{ $data->department == $dept->id ? 'selected' : '' }}>
                             {{ $dept->name }}
                         </option>
                     @endforeach
@@ -18,11 +18,11 @@
             </td>
             <td class="toggleable toggle-work-center">
                 <select name="work-center" id="work-center"
-                        data-id=""
-                        onchange="">
+                        data-id="{{ $data->work_center_one->id }}"
+                        onchange="sendAjaxRequest2('com', this.value)">
                     <option value="" disabled>Select</option>
                     @foreach($work_selector as $val)
-                        <option value="{{ $val->id }}">
+                        <option value="{{ $val->id }}" {{ $data->work_center_one->com == $val->id ? 'selected' : '' }}>
                             {{ $val->name }}
                         </option>
                     @endforeach
@@ -81,7 +81,29 @@
         @endif
 
         <td class="toggleable">ID# {{ $data->id }}</td>
-        <td class="toggleable">{{ $data->part->Part_Number }}</td>
+        {{-- <td class="toggleable">{{ $data->part->Part_Number }}</td> --}}
+
+        <td class="custom-toggleable">
+            <div class="custom-dropdown">
+                <button class="custom-dropdown-toggle btn btn-primary" type="button">
+                    {{ $data->part->Part_Number }}
+                </button>
+                <ul class="custom-dropdown-menu">
+                    <li>
+                        <a href="#" class="custom-dropdown-item" data-part="{{ $data->part_number }}" data-url="{{ route('calender') }}">
+                            Shipment & Production
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="custom-dropdown-item" data-part="{{ $data->part_number }}" data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
+                            Part Number Input
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </td>
+
+
         @if(Auth::user()->role == 1)
             <td class="toggleable">
                 <select name="customer" id="customer"
@@ -169,7 +191,7 @@
         @if(Auth::user()->stock_finished_column == 1)
             <td class="toggleable-1">
                 <input type="number" name="in_process_outside" id="in_process_outside"
-                    value="{{ $data->out_source_one->in_process_outside ?? '' }}" data-id="{{ $data->out_source_one->id }}"
+                    value="{{ $data->out_source_one->in_process_outside ?? '' }}" data-id="{{ $data->out_source_one->id ?? ''}}"
                     onkeyup="sendAjaxRequest3('in_process_outside', this.value)">
             </td>
             <td class="toggleable-1">

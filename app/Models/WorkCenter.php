@@ -15,4 +15,9 @@ class WorkCenter extends Model
     {
         return $this->hasOne(Entries::class, 'id', 'entry_id');
     }
+
+    public function work_select()
+    {
+        return $this->hasOne(WorkCenterSelec::class, 'id', 'com');
+    }
 }

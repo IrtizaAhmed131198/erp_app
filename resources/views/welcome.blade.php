@@ -1,5 +1,34 @@
 @extends('layouts.main')
 
+@section('css')
+<style>
+    .custom-dropdown-menu {
+        display: none;
+        /* position: absolute; */
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        list-style: none;
+        z-index: 1000; /* Ensure it stays above other elements */
+    }
+
+    .custom-dropdown:hover .custom-dropdown-menu {
+        display: block;
+    }
+
+    .custom-dropdown-item {
+        padding: 5px 10px;
+        text-decoration: none;
+        color: black;
+        cursor: pointer;
+    }
+
+    .custom-dropdown-item:hover {
+        background-color: #f0f0f0;
+    }
+
+</style>
+@endsection
 
 
 @section('content')
@@ -9,16 +38,12 @@
                 <div class="col-xxl-3 col-xl-5 col-lg-5 col-md-12 col-12">
                     <div class="parent-filter">
                         <select class="js-select2" id="filter1">
-                            <option value="All" selected>ALL DEPARTMENT</option>
-                            <option value="COMPRESSION">COMPRESSION</option>
-                            <option value="EXTENSION">EXTENSION</option>
-                            <option value="MULTI SLIDE">MULTI SLIDE</option>
-                            <option value="PRESS DEPT">PRESS DEPT</option>
-                            <option value="PURCHASED">PURCHASED</option>
-                            <option value="SLIDES">SLIDES</option>
-                            <option value="STOCK">STOCK</option>
-                            <option value="TORSION">TORSION</option>
-                            <option value="WIREFORM">WIREFORM</option>
+                            @foreach($department as $dept)
+                            <option value="All">ALL DEPARTMENT</option>
+                                <option value="{{ $dept->id }}">
+                                    {{ $dept->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -458,5 +483,26 @@
                 this.classList.toggle("active");
             });
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownItems = document.querySelectorAll('.custom-dropdown-item');
+
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // Retrieve the part number and URL from the clicked item
+                    const partNumber = e.target.getAttribute('data-part');
+                    const url = e.target.getAttribute('data-url');
+
+                    // Redirect if the URL is valid
+                    if (url && partNumber) {
+                        const fullUrl = `${url}?part_number=${partNumber}`;
+                        window.open(fullUrl, '_blank');
+                    }
+                });
+            });
+        });
+
     </script>
 @endsection

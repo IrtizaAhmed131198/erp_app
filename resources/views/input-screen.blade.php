@@ -7,7 +7,124 @@
                 <div class="col-lg-12">
                     <div class="parent-table">
                         <div class="accordion" id="accordionExample">
-                            @if (!empty($com1))
+                            <h3 class="text-center mb-3">Work Center</h3>
+                            @php
+                                // Group entries by 'work_select.name'
+                                $groupedEntries = collect($com1)->groupBy('work_select.name');
+                            @endphp
+
+                            @foreach ($groupedEntries as $workCenterName => $entries)
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{{ Str::slug($workCenterName) }}">
+                                        <button class="accordion-button {{ $loop->first ? 'collapsed' : 'show' }}" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ Str::slug($workCenterName) }}" aria-expanded="{{ $loop->first ? 'false' : 'true' }}" aria-controls="collapse{{ Str::slug($workCenterName) }}">
+                                            <strong>
+                                                {{ $workCenterName }}
+                                            </strong>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ Str::slug($workCenterName) }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" aria-labelledby="heading{{ Str::slug($workCenterName) }}"
+                                        data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Status</th>
+                                                        <th>Customer</th>
+                                                        <th>Part Number</th>
+                                                        <th>Quantity</th>
+                                                        <th>Job #</th>
+                                                        <th>LOT #</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($entries as $entry)
+                                                        @php
+                                                            $status = $entry['entries']['status'] ?? null;
+                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
+                                                            $customer_id = $entry['entries']['get_customer']['id'] ?? null;
+                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
+                                                            $part_number_id = $entry['entries']['part']['id'] ?? null;
+                                                            $in_stock_finish = $entry['entries']['in_stock_finish'] ?? null;
+                                                            $job = $entry['entries']['job'] ?? null;
+                                                            $lot = $entry['entries']['lot'] ?? null;
+                                                            $id = $entry['id'] ?? null;
+                                                        @endphp
+
+                                                        @if ($status !== null && $job !== null && $lot !== null)
+                                                            <tr>
+                                                                <td>
+                                                                    <select name="status" class="status">
+                                                                        <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                        <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                        <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                        <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <select name="customer" class="customer">
+                                                                            @foreach ($customers as $item)
+                                                                                <option value="{{ $item->CustomerName }}" {{ $customer_id == $item->id ? 'selected' : '' }}>
+                                                                                    {{ $item->CustomerName }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    @else
+                                                                        {{ $customer }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <select name="part_number" class="part_number">
+                                                                            @foreach ($parts as $item)
+                                                                                <option value="{{ $item->Part_Number }}" {{ $part_number_id == $item->id ? 'selected' : '' }}>
+                                                                                    {{ $item->Part_Number }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    @else
+                                                                        {{ $part_number }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <input type="number" name="quantity" class="quantity" value="{{ $in_stock_finish }}">
+                                                                    @else
+                                                                        {{ $in_stock_finish }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                    @else
+                                                                        {{ $job }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                    @else
+                                                                        {{ $lot }}
+                                                                    @endif
+                                                                </td>
+                                                                <td style="display: none" class="type">{{ $entry['work_select']['name'] }}</td>
+                                                                <td style="display: none">{{ $id }}</td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="btn-custom-btn text-center mt-3 mb-3">
+                                            <button class="btn custom-btn submit-table-data" data-id="collapse{{ Str::slug($workCenterName) }}">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+
+                            {{-- @if (!empty($com1))
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -464,11 +581,127 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            @endif --}}
+                        </div>
+                        <div class="accordion" id="accordionExample1">
+                            <h3 class="text-center mb-3 mt-5">Out Source Processing</h3>
+
+                            @php
+                                $groupedEntriesOut= collect($out1)->groupBy('out_source.name');
+                            @endphp
+                            @foreach ($groupedEntriesOut as $outSourceName => $entries)
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{{ \Str::slug($outSourceName) }}">
+                                        <button class="accordion-button {{ $loop->first ? 'collapsed' : 'show' }}" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ \Str::slug($outSourceName) }}" aria-expanded="{{ $loop->first ? 'false' : 'true' }}" aria-controls="collapse{{ \Str::slug($outSourceName) }}">
+                                            <strong>
+                                                {{ $outSourceName }}
+                                            </strong>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ \Str::slug($outSourceName) }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" aria-labelledby="heading{{ \Str::slug($outSourceName) }}"
+                                        data-bs-parent="#accordionExample1">
+                                        <div class="accordion-body">
+                                            <table class="table table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Status</th>
+                                                        <th>Customer</th>
+                                                        <th>Part Number</th>
+                                                        <th>Quantity</th>
+                                                        <th>Job #</th>
+                                                        <th>LOT #</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($entries as $entry)
+                                                        @php
+                                                            $status = $entry['entries_data']['status'] ?? null;
+                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
+                                                            $customer_id = $entry['entries_data']['get_customer']['id'] ?? null;
+                                                            $part_number = $entry['entries_data']['part']['Part_Number'] ?? null;
+                                                            $part_number_id = $entry['entries_data']['part']['id'] ?? null;
+                                                            $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
+                                                            $job = $entry['entries_data']['job'] ?? null;
+                                                            $lot = $entry['entries_data']['lot'] ?? null;
+                                                            $id = $entry['id'] ?? null;
+                                                        @endphp
+                                                        @if ($status !== null && $job !== null && $lot !== null)
+                                                            <tr>
+                                                                <td>
+                                                                    <select name="status" id="status">
+                                                                        <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                        <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                        <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                        <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <select name="customer" class="customer">
+                                                                            @foreach ($customers as $item)
+                                                                                <option value="{{ $item->CustomerName }}" {{ $customer_id == $item->id ? 'selected' : '' }}>
+                                                                                    {{ $item->CustomerName }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    @else
+                                                                        {{ $customer }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <select name="part_number" class="part_number">
+                                                                            @foreach ($parts as $item)
+                                                                                <option value="{{ $item->Part_Number }}" {{ $part_number_id == $item->id ? 'selected' : '' }}>
+                                                                                    {{ $item->Part_Number }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    @else
+                                                                        {{ $part_number }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <input type="number" name="quantity" class="quantity" value="{{ $in_stock_finish }}">
+                                                                    @else
+                                                                        {{ $in_stock_finish }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                    @else
+                                                                        {{ $job }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(Auth::user()->role == 1)
+                                                                        <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                    @else
+                                                                        {{ $lot }}
+                                                                    @endif
+                                                                </td>
+                                                                <td style="display: none" class="type">{{ $entry['out_source']['name'] }}</td>
+                                                                <td style="display: none">{{ $id }}</td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="btn-custom-btn text-center mt-3 mb-3">
+                                            <button class="btn custom-btn submit-table-data-2" data-id="collapse{{ Str::slug($outSourceName) }}">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
                         </div>
                     </div>
                     <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                        <a href="{{ route('visual_screen') }}" class="btn custom-btn">Visual Screen</a>
+                        <a href="{{ route('visual_screen') }}" class="btn custom-btn" target="_blank">Visual Screen</a>
                     </div>
                 </div>
             </div>
@@ -478,265 +711,373 @@
 
 @section('js')
     <script>
+
         $(document).ready(function() {
-            $('.submit-table-data-1-one').on('click', function(e) {
-                e.preventDefault();
+            $('.submit-table-data').click(function() {
+                // e.preventDefault();
+                var dataId = $(this).data('id');
+                console.log(dataId);
 
                 let tableData = [];
-                $('#collapseOne tbody tr').each(function() {
-                    let row = $(this);
-                    let entry = {
-                        status: row.find('select[name="status"]').val(),
-                        customer: row.find('td:eq(1)').text().trim(),
-                        part_number: row.find('td:eq(2)').text().trim(),
-                        quantity: row.find('td:eq(3)').text().trim(),
-                        job: row.find('td:eq(4)').text().trim(),
-                        lot: row.find('td:eq(5)').text().trim(),
-                        type: row.find('td:eq(6)').text().trim(),
-                        type_id: row.find('td:eq(7)').text().trim()
-                    };
-                    tableData.push(entry);
-                });
+                let target = $(this).data('id'); // Use `data-target` attribute directly
+                if (dataId) {
+                    let collapseId = dataId; // Assign directly if target is available
+                    $('#'+collapseId+' tbody tr').each(function() {
+                        console.log(123);
+                        let row = $(this);
+                        let entry = {
+                            status: row.find('select[name="status"]').val(),
+                            customer: row.find('select[name="customer"]').val(),
+                            part_number: row.find('select[name="part_number"]').val(),
+                            quantity: row.find('.quantity').val(),
+                            job: row.find('.job').val(),
+                            lot: row.find('.lot').val(),
+                            type: row.find('td:eq(6)').text().trim(),
+                            type_id: row.find('td:eq(7)').text().trim()
+                        };
+                        tableData.push(entry);
+                    });
+                    // console.log(tableData);
+                    // return tableData;
 
-                $.ajax({
-                    url: "{{ route('save_table_data') }}",
-                    method: "POST",
-                    data: {
-                        entries: tableData
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#collapseOne').collapse('hide');
-                        } else {
-                            // Handle failure case
-                            console.error('fails');
+                    $.ajax({
+                        url: "{{ route('save_table_data') }}",
+                        method: "POST",
+                        data: {
+                            entries: tableData
+                        },
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#'+collapseId).collapse('hide');
+                            } else {
+                                // Handle failure case
+                                console.error('fails');
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
                         }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-
-                    }
-                });
+                    });
+                } else {
+                    console.error('No target specified for collapse.');
+                }
             });
 
-            $('.submit-table-data-1-two').on('click', function(e) {
-                e.preventDefault();
+            $('.submit-table-data-2').click(function() {
+                // e.preventDefault();
+                var dataId = $(this).data('id');
+                console.log(dataId);
 
                 let tableData = [];
-                $('#collapseTwo tbody tr').each(function() {
-                    let row = $(this);
-                    let entry = {
-                        status: row.find('select[name="status"]').val(),
-                        customer: row.find('td:eq(1)').text().trim(),
-                        part_number: row.find('td:eq(2)').text().trim(),
-                        quantity: row.find('td:eq(3)').text().trim(),
-                        job: row.find('td:eq(4)').text().trim(),
-                        lot: row.find('td:eq(5)').text().trim(),
-                        type: row.find('td:eq(6)').text().trim(),
-                        type_id: row.find('td:eq(7)').text().trim()
-                    };
-                    tableData.push(entry);
-                });
+                if (dataId) {
+                    let collapseId = dataId; // Assign directly if target is available
+                    $('#'+collapseId+' tbody tr').each(function() {
+                        let row = $(this);
+                        let entry = {
+                            status: row.find('select[name="status"]').val(),
+                            customer: row.find('select[name="customer"]').val(),
+                            part_number: row.find('select[name="part_number"]').val(),
+                            quantity: row.find('.quantity').val(),
+                            job: row.find('.job').val(),
+                            lot: row.find('.lot').val(),
+                            type: row.find('td:eq(6)').text().trim(),
+                            type_id: row.find('td:eq(7)').text().trim()
+                        };
+                        tableData.push(entry);
+                    });
+                    // console.log(tableData);
+                    // return tableData;
 
-                $.ajax({
-                    url: "{{ route('save_table_data') }}",
-                    method: "POST",
-                    data: {
-                        entries: tableData
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#collapseTwo').collapse('hide');
-                        } else {
-                            // Handle failure case
-                            console.error('fails');
+                    $.ajax({
+                        url: "{{ route('save_table_data_2') }}",
+                        method: "POST",
+                        data: {
+                            entries_data: tableData
+                        },
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#'+collapseId).collapse('hide');
+                            } else {
+                                // Handle failure case
+                                console.error('fails');
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
                         }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-
-                    }
-                });
-            });
-
-            $('.submit-table-data-1-three').on('click', function(e) {
-                e.preventDefault();
-
-                let tableData = [];
-                $('#collapseThree tbody tr').each(function() {
-                    let row = $(this);
-                    let entry = {
-                        status: row.find('select[name="status"]').val(),
-                        customer: row.find('td:eq(1)').text().trim(),
-                        part_number: row.find('td:eq(2)').text().trim(),
-                        quantity: row.find('td:eq(3)').text().trim(),
-                        job: row.find('td:eq(4)').text().trim(),
-                        lot: row.find('td:eq(5)').text().trim(),
-                        type: row.find('td:eq(6)').text().trim(),
-                        type_id: row.find('td:eq(7)').text().trim()
-                    };
-                    tableData.push(entry);
-                });
-
-                $.ajax({
-                    url: "{{ route('save_table_data') }}",
-                    method: "POST",
-                    data: {
-                        entries: tableData
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#collapseThree').collapse('hide');
-                        } else {
-                            // Handle failure case
-                            console.error('fails');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-
-                    }
-                });
-            });
-
-
-            $('.submit-table-data-2-one').on('click', function(e) {
-                e.preventDefault();
-
-                let tableData = [];
-                $('#collapseFour tbody tr').each(function() {
-                    let row = $(this);
-                    let entry = {
-                        status: row.find('select[name="status"]').val(),
-                        customer: row.find('td:eq(1)').text().trim(),
-                        part_number: row.find('td:eq(2)').text().trim(),
-                        quantity: row.find('td:eq(3)').text().trim(),
-                        job: row.find('td:eq(4)').text().trim(),
-                        lot: row.find('td:eq(5)').text().trim(),
-                        type: row.find('td:eq(6)').text().trim(),
-                        type_id: row.find('td:eq(7)').text().trim()
-                    };
-                    tableData.push(entry);
-                });
-
-                $.ajax({
-                    url: "{{ route('save_table_data_2') }}",
-                    method: "POST",
-                    data: {
-                        entries_data: tableData
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#collapseFour').collapse('hide');
-                        } else {
-                            // Handle failure case
-                            console.error('fails');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-
-                    }
-                });
-            });
-
-            $('.submit-table-data-2-two').on('click', function(e) {
-                e.preventDefault();
-
-                let tableData = [];
-                $('#collapseFifth tbody tr').each(function() {
-                    let row = $(this);
-                    let entry = {
-                        status: row.find('select[name="status"]').val(),
-                        customer: row.find('td:eq(1)').text().trim(),
-                        part_number: row.find('td:eq(2)').text().trim(),
-                        quantity: row.find('td:eq(3)').text().trim(),
-                        job: row.find('td:eq(4)').text().trim(),
-                        lot: row.find('td:eq(5)').text().trim(),
-                        type: row.find('td:eq(6)').text().trim(),
-                        type_id: row.find('td:eq(7)').text().trim()
-                    };
-                    tableData.push(entry);
-                });
-
-                $.ajax({
-                    url: "{{ route('save_table_data_2') }}",
-                    method: "POST",
-                    data: {
-                        entries_data: tableData
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#collapseFifth').collapse('hide');
-                        } else {
-                            // Handle failure case
-                            console.error('fails');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-
-                    }
-                });
-            });
-
-            $('.submit-table-data-2-three').on('click', function(e) {
-                e.preventDefault();
-
-                let tableData = [];
-                $('#collapseSix tbody tr').each(function() {
-                    let row = $(this);
-                    let entry = {
-                        status: row.find('select[name="status"]').val(),
-                        customer: row.find('td:eq(1)').text().trim(),
-                        part_number: row.find('td:eq(2)').text().trim(),
-                        quantity: row.find('td:eq(3)').text().trim(),
-                        job: row.find('td:eq(4)').text().trim(),
-                        lot: row.find('td:eq(5)').text().trim(),
-                        type: row.find('td:eq(6)').text().trim(),
-                        type_id: row.find('td:eq(7)').text().trim()
-                    };
-                    tableData.push(entry);
-                });
-
-                $.ajax({
-                    url: "{{ route('save_table_data_2') }}",
-                    method: "POST",
-                    data: {
-                        entries_data: tableData
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#collapseSix').collapse('hide');
-                        } else {
-                            // Handle failure case
-                            console.error('fails');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-
-                    }
-                });
+                    });
+                } else {
+                    console.error('No target specified for collapse.');
+                }
             });
         });
+
+
+        // $(document).ready(function() {
+        //     $('.submit-table-data-1-one').on('click', function(e) {
+        //         e.preventDefault();
+
+        //         let tableData = [];
+        //         $('#collapseOne tbody tr').each(function() {
+        //             let row = $(this);
+        //             let entry = {
+        //                 status: row.find('select[name="status"]').val(),
+        //                 customer: row.find('td:eq(1)').text().trim(),
+        //                 part_number: row.find('td:eq(2)').text().trim(),
+        //                 quantity: row.find('td:eq(3)').text().trim(),
+        //                 job: row.find('td:eq(4)').text().trim(),
+        //                 lot: row.find('td:eq(5)').text().trim(),
+        //                 type: row.find('td:eq(6)').text().trim(),
+        //                 type_id: row.find('td:eq(7)').text().trim()
+        //             };
+        //             tableData.push(entry);
+        //         });
+
+        //         $.ajax({
+        //             url: "{{ route('save_table_data') }}",
+        //             method: "POST",
+        //             data: {
+        //                 entries: tableData
+        //             },
+        //             headers: {
+        //                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $('#collapseOne').collapse('hide');
+        //                 } else {
+        //                     // Handle failure case
+        //                     console.error('fails');
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error(xhr.responseText);
+
+        //             }
+        //         });
+        //     });
+
+        //     $('.submit-table-data-1-two').on('click', function(e) {
+        //         e.preventDefault();
+
+        //         let tableData = [];
+        //         $('#collapseTwo tbody tr').each(function() {
+        //             let row = $(this);
+        //             let entry = {
+        //                 status: row.find('select[name="status"]').val(),
+        //                 customer: row.find('td:eq(1)').text().trim(),
+        //                 part_number: row.find('td:eq(2)').text().trim(),
+        //                 quantity: row.find('td:eq(3)').text().trim(),
+        //                 job: row.find('td:eq(4)').text().trim(),
+        //                 lot: row.find('td:eq(5)').text().trim(),
+        //                 type: row.find('td:eq(6)').text().trim(),
+        //                 type_id: row.find('td:eq(7)').text().trim()
+        //             };
+        //             tableData.push(entry);
+        //         });
+
+        //         $.ajax({
+        //             url: "{{ route('save_table_data') }}",
+        //             method: "POST",
+        //             data: {
+        //                 entries: tableData
+        //             },
+        //             headers: {
+        //                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $('#collapseTwo').collapse('hide');
+        //                 } else {
+        //                     // Handle failure case
+        //                     console.error('fails');
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error(xhr.responseText);
+
+        //             }
+        //         });
+        //     });
+
+        //     $('.submit-table-data-1-three').on('click', function(e) {
+        //         e.preventDefault();
+
+        //         let tableData = [];
+        //         $('#collapseThree tbody tr').each(function() {
+        //             let row = $(this);
+        //             let entry = {
+        //                 status: row.find('select[name="status"]').val(),
+        //                 customer: row.find('td:eq(1)').text().trim(),
+        //                 part_number: row.find('td:eq(2)').text().trim(),
+        //                 quantity: row.find('td:eq(3)').text().trim(),
+        //                 job: row.find('td:eq(4)').text().trim(),
+        //                 lot: row.find('td:eq(5)').text().trim(),
+        //                 type: row.find('td:eq(6)').text().trim(),
+        //                 type_id: row.find('td:eq(7)').text().trim()
+        //             };
+        //             tableData.push(entry);
+        //         });
+
+        //         $.ajax({
+        //             url: "{{ route('save_table_data') }}",
+        //             method: "POST",
+        //             data: {
+        //                 entries: tableData
+        //             },
+        //             headers: {
+        //                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $('#collapseThree').collapse('hide');
+        //                 } else {
+        //                     // Handle failure case
+        //                     console.error('fails');
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error(xhr.responseText);
+
+        //             }
+        //         });
+        //     });
+
+
+        //     $('.submit-table-data-2-one').on('click', function(e) {
+        //         e.preventDefault();
+
+        //         let tableData = [];
+        //         $('#collapseFour tbody tr').each(function() {
+        //             let row = $(this);
+        //             let entry = {
+        //                 status: row.find('select[name="status"]').val(),
+        //                 customer: row.find('td:eq(1)').text().trim(),
+        //                 part_number: row.find('td:eq(2)').text().trim(),
+        //                 quantity: row.find('td:eq(3)').text().trim(),
+        //                 job: row.find('td:eq(4)').text().trim(),
+        //                 lot: row.find('td:eq(5)').text().trim(),
+        //                 type: row.find('td:eq(6)').text().trim(),
+        //                 type_id: row.find('td:eq(7)').text().trim()
+        //             };
+        //             tableData.push(entry);
+        //         });
+
+        //         $.ajax({
+        //             url: "{{ route('save_table_data_2') }}",
+        //             method: "POST",
+        //             data: {
+        //                 entries_data: tableData
+        //             },
+        //             headers: {
+        //                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $('#collapseFour').collapse('hide');
+        //                 } else {
+        //                     // Handle failure case
+        //                     console.error('fails');
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error(xhr.responseText);
+
+        //             }
+        //         });
+        //     });
+
+        //     $('.submit-table-data-2-two').on('click', function(e) {
+        //         e.preventDefault();
+
+        //         let tableData = [];
+        //         $('#collapseFifth tbody tr').each(function() {
+        //             let row = $(this);
+        //             let entry = {
+        //                 status: row.find('select[name="status"]').val(),
+        //                 customer: row.find('td:eq(1)').text().trim(),
+        //                 part_number: row.find('td:eq(2)').text().trim(),
+        //                 quantity: row.find('td:eq(3)').text().trim(),
+        //                 job: row.find('td:eq(4)').text().trim(),
+        //                 lot: row.find('td:eq(5)').text().trim(),
+        //                 type: row.find('td:eq(6)').text().trim(),
+        //                 type_id: row.find('td:eq(7)').text().trim()
+        //             };
+        //             tableData.push(entry);
+        //         });
+
+        //         $.ajax({
+        //             url: "{{ route('save_table_data_2') }}",
+        //             method: "POST",
+        //             data: {
+        //                 entries_data: tableData
+        //             },
+        //             headers: {
+        //                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $('#collapseFifth').collapse('hide');
+        //                 } else {
+        //                     // Handle failure case
+        //                     console.error('fails');
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error(xhr.responseText);
+
+        //             }
+        //         });
+        //     });
+
+        //     $('.submit-table-data-2-three').on('click', function(e) {
+        //         e.preventDefault();
+
+        //         let tableData = [];
+        //         $('#collapseSix tbody tr').each(function() {
+        //             let row = $(this);
+        //             let entry = {
+        //                 status: row.find('select[name="status"]').val(),
+        //                 customer: row.find('td:eq(1)').text().trim(),
+        //                 part_number: row.find('td:eq(2)').text().trim(),
+        //                 quantity: row.find('td:eq(3)').text().trim(),
+        //                 job: row.find('td:eq(4)').text().trim(),
+        //                 lot: row.find('td:eq(5)').text().trim(),
+        //                 type: row.find('td:eq(6)').text().trim(),
+        //                 type_id: row.find('td:eq(7)').text().trim()
+        //             };
+        //             tableData.push(entry);
+        //         });
+
+        //         $.ajax({
+        //             url: "{{ route('save_table_data_2') }}",
+        //             method: "POST",
+        //             data: {
+        //                 entries_data: tableData
+        //             },
+        //             headers: {
+        //                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(response) {
+        //                 if (response.success) {
+        //                     $('#collapseSix').collapse('hide');
+        //                 } else {
+        //                     // Handle failure case
+        //                     console.error('fails');
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error(xhr.responseText);
+
+        //             }
+        //         });
+        //     });
+        // });
     </script>
 @endsection
