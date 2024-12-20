@@ -18,6 +18,16 @@
             </td>
             <td class="toggleable toggle-work-center">
                 <select name="work-center" id="work-center"
+                        data-id=""
+                        onchange="">
+                    <option value="" disabled>Select</option>
+                    @foreach($work_selector as $val)
+                    <option value="{{ $val->id }}">{{ $val->name }}</option>
+                    @endforeach
+                </select>
+            </td>
+            {{-- <td class="toggleable toggle-work-center">
+                <select name="work-center" id="work-center"
                         data-id="{{ $data->work_center_one->id }}"
                         onchange="sendAjaxRequest2('com', this.value)">
                     <option value="" disabled>Select</option>
@@ -31,7 +41,7 @@
                         {{ $data->work_center_one->com == 'COM 3' ? 'selected' : '' }}>COM 3
                     </option>
                 </select>
-            </td>
+            </td> --}}
         @else
             <td class="toggleable toggle-department">{{ $data->get_department->name }}</td>
             <td class="toggleable toggle-work-center">{{ $data->work_center_one->com ?? 'N/A'}}</td>

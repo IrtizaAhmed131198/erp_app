@@ -13,6 +13,7 @@ use App\Models\Visual;
 use App\Models\Department;
 use App\Models\Customer;
 use App\Models\Material;
+use App\Models\WorkCenterSelec;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -70,13 +71,15 @@ class HomeController extends Controller
 
         $materials =Material::get();
 
+        $work_selector =WorkCenterSelec::get();
+
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('partials.entries', compact('entries', 'department', 'customers', 'materials'))->render()
+                'html' => view('partials.entries', compact('entries', 'department', 'customers', 'materials', 'work_selector'))->render()
             ]);
         }
 
-        return view('welcome', compact('entries', 'department', 'customers', 'materials'));
+        return view('welcome', compact('entries', 'department', 'customers', 'materials', 'work_selector'));
     }
 
     public function manual_imput(Request $request)
