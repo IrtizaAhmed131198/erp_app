@@ -93,7 +93,7 @@
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('visual_screen_2') }}">Visual screen 2</a>
                                                 </li> --}}
-                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Data center</a>
+                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                                 </li>

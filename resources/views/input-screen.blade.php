@@ -467,6 +467,9 @@
                             @endif
                         </div>
                     </div>
+                    <div class="btn-custom-btn text-ceneter mt-3 mb-3">
+                        <a href="{{ route('visual_screen') }}" class="btn custom-btn">Visual Screen</a>
+                    </div>
                 </div>
             </div>
         </div>
