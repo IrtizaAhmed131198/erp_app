@@ -556,7 +556,7 @@ class HomeController extends Controller
     public function notifications()
     {
         $notifications = Notification::with('user')->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc') // Order by most recent first
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('notifications', compact('notifications'));
     }

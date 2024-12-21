@@ -1,5 +1,26 @@
 @extends('layouts.main')
 
+@section('css')
+<style>
+    .profile-img-container {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .admin-img {
+        border: 2px solid #ff6600; /* Optional: specific border color for admin */
+    }
+</style>
+@endsection
+
 @section('content')
     <section class="weekly-section">
         <div class="container bg-colored">
@@ -18,13 +39,21 @@
                         <div class="p-0 card-body">
                             @foreach($notifications as $notification)
                                 <a class="notification border-x-0 border-bottom-0 border-300 rounded-0"
-                                   href="/social/activity-log#!">
+                                   href="#">
                                     <div class="notification-avatar">
                                         <div class="avatar avatar-xl me-3">
                                             <div class="avatar-emoji rounded-circle">
                                                 <!-- Here we are using a random emoji from the emoji helper function -->
-                                                <span role="img" aria-label="Emoji">
-                                                    {{ emoji_for_type() }}
+                                                <span role="img" aria-label="Emoji" class="profile-img-container">
+                                                    @if($notification->user->role == 1)
+                                                        <img src="{{ asset('images/admin-image.jpg') }}" alt="Admin Profile" class="profile-img admin-img">
+                                                    @else
+                                                        @if($notification->user->user_img)
+                                                            <img src="{{ asset($notification->user->user_img) }}" alt="User Profile" class="profile-img">
+                                                        @else
+                                                            <img src="{{ asset('images/profile-pic.jpg') }}" alt="Default Profile" class="profile-img">
+                                                        @endif
+                                                    @endif
                                                 </span>
                                             </div>
                                         </div>
