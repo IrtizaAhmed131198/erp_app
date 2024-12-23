@@ -198,7 +198,7 @@
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Calendar Section</span>
+                                            <span class="fs-6 mb-0">Shipment & Production Section</span>
                                             {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
                                                 by
                                                 a customer and for dispute purposes.</span> --}}

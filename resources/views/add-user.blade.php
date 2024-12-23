@@ -170,7 +170,7 @@
                                         <input class="form-check-input me-3" type="checkbox"
                                             name="calendar_column" value="0">
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Calendar Section</span>
+                                            <span class="fs-6 mb-0">Shipment & Production Section</span>
                                         </span>
                                     </label>
                                     <div class="separator separator-dashed my-6"></div>

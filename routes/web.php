@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('data-center/{id}', [HomeController::class, 'data_center_edit'])->name('data_center_edit');
     Route::get('calender', [HomeController::class, 'calender'])->name('calender');
     Route::get('input-screen', [HomeController::class, 'input_screen'])->name('input_screen');
-    Route::get('Notifications', [HomeController::class, 'notifications'])->name('notifications');
+    Route::get('notifications', [HomeController::class, 'notifications'])->name('notifications');
     Route::get('visual-queue-screen', [HomeController::class, 'visual_screen'])->name('visual_screen');
     Route::get('visual-queue-screen-1', [HomeController::class, 'visual_screen_1'])->name('visual_screen_1');
     Route::get('visual-queue-screen-2', [HomeController::class, 'visual_screen_2'])->name('visual_screen_2');
@@ -45,13 +45,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update-week-or-month', [HomeController::class, 'update_week_or_month'])->name('update_week_or_month');
     Route::post('save-table-data', [HomeController::class, 'save_table_data'])->name('save_table_data');
     Route::post('save-table-data-2', [HomeController::class, 'save_table_data_2'])->name('save_table_data_2');
+    Route::post('save-columns-preferences', [HomeController::class, 'save_columns_preferences'])->name('save_columns_preferences');
 
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('users-update', [UserController::class, 'update'])->name('users.update');
     Route::get('users-delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-    // Route::get('users', [HomeController::class, 'users'])->name('users.index');
-    // Route::get('users', [HomeController::class, 'users'])->name('users.index');
 
 });
 #login route

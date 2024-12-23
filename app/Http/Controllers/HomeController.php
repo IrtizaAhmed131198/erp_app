@@ -15,6 +15,7 @@ use App\Models\Customer;
 use App\Models\Material;
 use App\Models\WorkCenterSelec;
 use App\Models\Vendor;
+use App\Models\ColumnPreferences;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -97,7 +98,7 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.']);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id]);
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -119,7 +120,7 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.']);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id);
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -141,7 +142,7 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.']);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id);
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -279,7 +280,7 @@ class HomeController extends Controller
                 }
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.']);
+            $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.'], 'entries', $entryId);
             return redirect()->back()->with('success', 'Part created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -384,7 +385,7 @@ class HomeController extends Controller
                 }
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.']);
+            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.'], 'entries', $entry->id);
             return redirect()->back()->with('success', 'Part updated successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -552,12 +553,29 @@ class HomeController extends Controller
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
     }
 
-    public function notifications()
+    public function notifications(Request $request)
     {
-        $notifications = Notification::with('user')->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->get();
-        return view('notifications', compact('notifications'));
+        $users = User::where('role', 2)->get();
+        $userId = $request->input('user_id');
+
+        $notificationsQuery = Notification::with('user');
+
+        if (Auth::user()->role != 1) {
+
+            $notificationsQuery->where('user_id', Auth::id());
+        } elseif ($userId && $userId !== 'all') {
+
+            $notificationsQuery->where('user_id', $userId);
+        }
+
+        $notifications = $notificationsQuery->orderBy('created_at', 'desc')->paginate(10);
+
+        if ($request->ajax()) {
+            $html = view('partials.notification-ajax', ['notifications' => $notifications])->render();
+            return response()->json(['html' => $html]);
+        }
+
+        return view('notifications', compact('notifications', 'users'));
     }
 
     public function visual_screen()
@@ -657,7 +675,7 @@ class HomeController extends Controller
         $part->filter = 'pending';
         $part->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.']);
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.'], 'weeks', $data->id);
 
         return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
     }
@@ -843,7 +861,7 @@ class HomeController extends Controller
         }
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved']);
+        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id);
 
         return response()->json(['message' => 'Shipment Amount Saved', 'data' => $data]);
     }
@@ -855,7 +873,7 @@ class HomeController extends Controller
         $data->past_due = $request->past_due;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed']);
+        $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id);
 
         return response()->json(['message' => 'Past Due Changed', 'past_due' => $data->past_due]);
     }
@@ -866,7 +884,7 @@ class HomeController extends Controller
         $data->{$request->id} = $request->value;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_week_or_month', ['message' => 'Weeks or Month Updated']);
+        $this->notificationService->sendNotification(Auth::user()->id, 'update_week_or_month', ['message' => 'Weeks or Month Updated'], 'weeks', $data->id);
 
         return response()->json([
             'success' => true,
@@ -875,4 +893,22 @@ class HomeController extends Controller
         ]);
     }
 
+    public function save_columns_preferences(Request $request)
+    {
+        $request->validate([
+            'columns' => 'required'
+        ]);
+
+        $user = new ColumnPreferences();
+        $user->user_id = Auth::user()->id;
+        $user->columns = $request->columns;
+        $user->save();
+
+        $columnPreferences = ColumnPreferences::updateOrCreate(
+            ['user_id' => $user->id],
+            ['columns' => json_encode($request->columns)]
+        );
+
+        return response()->json(['message' => 'Preferences saved successfully']);
+    }
 }
