@@ -255,7 +255,6 @@ class HomeController extends Controller
 
             // Get the entry ID
             $entryId = $entry->id;
-            dd($work_centres);
 
             foreach ($work_centres as $centre => $value) {
                 if (!empty($value)) {
