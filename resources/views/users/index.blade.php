@@ -9,6 +9,11 @@
         .vertical-text {
             writing-mode: unset;
         }
+
+        .btn-all-user {
+            text-align: right;
+            padding: 0 0 10px 0;
+        }
     </style>
 @endsection
 
@@ -18,6 +23,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    <div class="btn-all-user">
+                        <a class="btn btn-primary" href="{{ route('add_user') }}">Add Users</a>
+                    </div>
                     <div class="all-user">
                         <table class="table table-hover table-bordered" id="myTable">
                             <thead>

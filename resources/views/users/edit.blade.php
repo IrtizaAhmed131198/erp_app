@@ -6,7 +6,7 @@
             <!-- Account page navigation-->
             <nav class="nav nav-borders">
                 <a class="nav-link active ms-0" href="{{ route('users.index') }}">Users</a>
-                <a class="nav-link" href="{{ route('notifications') }}">Notifications</a>
+                {{-- <a class="nav-link" href="{{ route('notifications') }}">Notifications</a> --}}
             </nav>
             <hr class="mt-0 mb-4">
             <form action="{{ route('users.update') }}" method="post" enctype="multipart/form-data">

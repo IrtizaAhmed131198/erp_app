@@ -49,6 +49,7 @@
                                                             $job = $entry['entries']['job'] ?? null;
                                                             $lot = $entry['entries']['lot'] ?? null;
                                                             $id = $entry['id'] ?? null;
+                                                            $work_select = $entry['work_select']['name']  ?? null;
                                                         @endphp
 
                                                         @if ($status !== null && $job !== null && $lot !== null)
@@ -108,7 +109,7 @@
                                                                         {{ $lot }}
                                                                     @endif
                                                                 </td>
-                                                                <td style="display: none" class="type">{{ $entry['work_select']['name'] }}</td>
+                                                                <td style="display: none" class="type">{{ $work_select }}</td>
                                                                 <td style="display: none">{{ $id }}</td>
                                                             </tr>
                                                         @endif
@@ -625,6 +626,7 @@
                                                             $job = $entry['entries_data']['job'] ?? null;
                                                             $lot = $entry['entries_data']['lot'] ?? null;
                                                             $id = $entry['id'] ?? null;
+                                                            $out_source = $entry['out_source']['name']  ?? null;
                                                         @endphp
                                                         @if ($status !== null && $job !== null && $lot !== null)
                                                             <tr>
@@ -683,7 +685,7 @@
                                                                         {{ $lot }}
                                                                     @endif
                                                                 </td>
-                                                                <td style="display: none" class="type">{{ $entry['out_source']['name'] }}</td>
+                                                                <td style="display: none" class="type">{{ $out_source }}</td>
                                                                 <td style="display: none">{{ $id }}</td>
                                                             </tr>
                                                         @endif
