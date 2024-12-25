@@ -8,7 +8,16 @@
         $avatar = $role == 1 ? asset('images/admin-image.jpg') : ($user_img ? asset($user_img) : asset('images/profile-pic.jpg'));
     @endphp
 
-    <a class="notification border-x-0 border-bottom-0 border-300 rounded-0" href="#">
+    @if($notification->target_cell)
+        @php
+          $href = route('index') . '?target_cell=' . $notification->target_cell->id;
+        @endphp
+    @else
+        @php
+            $href = '';
+        @endphp
+    @endif
+    <a class="notification border-x-0 border-bottom-0 border-300 rounded-0" href="{{$href}}">
         <div class="notification-avatar">
             <div class="avatar avatar-xl me-3">
                 <div class="avatar-emoji rounded-circle">

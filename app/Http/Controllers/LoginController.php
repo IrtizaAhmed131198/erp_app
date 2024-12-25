@@ -60,7 +60,7 @@ class LoginController extends Controller
         ]);
 
 
-        if (Auth::attempt($auth)) {
+        if (Auth::attempt($request->only(['email', 'password']))) {
             $request->session()->regenerate();
 
             return redirect()->intended('/');

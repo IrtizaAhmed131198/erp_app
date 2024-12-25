@@ -31,6 +31,24 @@
         #filter-3 {
             width: 10%;
         }
+
+        /*column config css*/
+
+        .div_column_item {
+            border: 1px solid #504343;
+            border-radius: 4px;
+            padding: 6px 18px 6px 12px;
+            margin: 5px 0px 5px 0px;
+            background-color: #e6e6e6;
+            font-size: 12px;
+        }
+
+        .anchor_column_visibility_toggle {
+            cursor: pointer;
+        }
+
+        /*column config css*/
+
     </style>
 @endsection
 
@@ -42,8 +60,8 @@
                 <div class="col-xxl-3 col-xl-5 col-lg-5 col-md-12 col-12">
                     <div class="parent-filter">
                         <select class="js-select2" id="filter1">
+                            <option value="All">ALL DEPARTMENT</option>
                             @foreach ($department as $dept)
-                                <option value="All">ALL DEPARTMENT</option>
                                 <option value="{{ $dept->id }}">
                                     {{ $dept->name }}
                                 </option>
@@ -83,6 +101,19 @@
 
                 // Calculate the start date of month 5 (the day after week 16 ends)
                 $month5StartDate = date('j-M', strtotime('+1 day', strtotime($week16EndDate)));
+
+                //column configuration
+                $region_1_column_configuration_record = get_user_config('master_screen_region_1_column_configuration');
+                $region_1_column_configuration = json_decode($region_1_column_configuration_record->value);
+                usort($region_1_column_configuration, function ($a, $b) {
+                    return $a->order < $b->order ? -1 : 1;
+                });
+
+                $region_2_column_configuration_record = get_user_config('master_screen_region_2_column_configuration');
+                $region_2_column_configuration = json_decode($region_2_column_configuration_record->value);
+                usort($region_2_column_configuration, function ($a, $b) {
+                    return $a->order < $b->order ? -1 : 1;
+                });
             @endphp
 
 
@@ -95,68 +126,85 @@
                                     <th scope="col" class="highlighted toggle-header">
                                         <span class="icon">▼</span>
                                     </th>
-                                    <th scope="col" id="column-department" class="toggleable toggle-header-department ">DEPARTMENT <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" id="column-work-center" class="toggleable toggle-header-department toggle-header-work-center">WORK CENTER <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" id="column-status" class="toggleable toggle-header-department toggle-header-status">PLANNING (QUEUE) <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">STATUS <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">JOB # <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">LOT # <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">ID <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">PART NO. <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">CUSTOMER <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">REV <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span
-                                            class="icon">▼</span></th>
+
+                                    @foreach($region_1_column_configuration as $region_1_column_configuration_item)
+                                        <th scope="col" id="column-department" class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                            {{strtoupper(get_column_label($region_1_column_configuration_item->column))}}
+                                            <span class="icon">▼</span>
+                                        </th>
+                                    @endforeach
+{{--                                    <th scope="col" id="column-department" class="toggleable toggle-header-department">--}}
+{{--                                        DEPARTMENT--}}
+{{--                                        <span class="icon">▼</span>--}}
+{{--                                    </th>--}}
+{{--                                    <th scope="col" id="column-work-center" class="toggleable toggle-header-department toggle-header-work-center">WORK CENTER <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" id="column-status" class="toggleable toggle-header-department toggle-header-status">PLANNING (QUEUE) <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">STATUS <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">JOB # <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">LOT # <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">ID <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">PART NO. <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">CUSTOMER <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">REV <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span--}}
+{{--                                            class="icon">▼</span></th>--}}
                                     <th scope="col" class="highlighted toggle-header-1">
                                         <span class="icon">▼
                                         </span>
                                     </th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department">SCHED'L TOTAL <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department">IN STOCK FINISHED <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY F <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY WIP
-                                        <span class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN PROCESS OUT SIDE
-                                        <span class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> ON ORDER RAW MAT'L
-                                        <span class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd 1-12
-                                        Weeks<span class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes <span
-                                            class="icon">▼</span></th>
+
+                                    @foreach($region_2_column_configuration as $region_2_column_configuration_item)
+                                        <th scope="col" id="column-department" class="toggleable toggle-header-department" {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                            {{strtoupper(get_column_label($region_2_column_configuration_item->column))}}
+                                            <span class="icon">▼</span>
+                                        </th>
+                                    @endforeach
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">SCHED'L TOTAL <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">IN STOCK FINISHED <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY F <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY WIP--}}
+{{--                                        <span class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN PROCESS OUT SIDE--}}
+{{--                                        <span class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> ON ORDER RAW MAT'L--}}
+{{--                                        <span class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd 1-12--}}
+{{--                                        Weeks<span class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span--}}
+{{--                                            class="icon">▼</span></th>--}}
+{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes <span--}}
+{{--                                            class="icon">▼</span></th>--}}
                                     <th scope="col" class="highlighted toggle-header-2">
                                         <span class="icon">▼
                                         </span>
                                     </th>
+
                                     <th scope="col" class="toggleable-2 toggle-header-department">PAST DUE <span
                                             class="icon">▼</span></th>
                                     @for ($week = 1; $week <= 16; $week++)
@@ -194,54 +242,254 @@
 
     <!-- Modal for showing/hiding columns -->
     <div class="modal fade" id="filter3" tabindex="-1" aria-labelledby="filter3Label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filter3Label">Show/Hide Columns</h5>
+                    <h5 class="modal-title" id="filter3Label">Column configuration</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="column-toggle-form">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="column-department" checked>
-                            <label class="form-check-label" for="column-department">DEPARTMENT</label>
+                <div class="modal-body" style="padding: 0px 40px 0px 40px;">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <div class="row">
+                                <div class="col-md-12 text-center" style="margin: 15px 0px 0px 0px;">
+                                    <h6 style="font-weight: 100;">
+                                        <i class="fas fa-info text-primary"></i>
+                                        Drag the items to change column order
+                                    </h6>
+                                </div>
+                                <div class="col-md-12 text-center" style="margin: 0px 0px 10px 0px;">
+                                    <h6 style="font-weight: 100;">
+                                        <i class="fas fa-eye text-primary"></i>
+                                        Toggle column visibility
+                                    </h6>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row px-2" id="region_1_columns_container">
+                                        @foreach($region_1_column_configuration as $region_1_column_configuration_item)
+                                            <div class="col-md-12 div_column_item" data-column="{{$region_1_column_configuration_item->column}}">
+                                                <div class="row">
+                                                    <div class="col-md-11 text-left" style="cursor: pointer;">
+                                                        <span>{{get_column_label($region_1_column_configuration_item->column)}}</span>
+                                                    </div>
+                                                    <div class="col-md-1 text-center" style="cursor: pointer;">
+                                                        @php
+                                                            $color = $region_1_column_configuration_item->visibility ? 'rgb(0, 0, 0)' : 'red';
+                                                            $class = $region_1_column_configuration_item->visibility ? 'fa-eye' : 'fa-eye-slash';
+                                                        @endphp
+                                                        <i class="fas {{$class}} anchor_column_visibility_toggle" style="color: {{$color}}"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row px-2" id="region_2_columns_container">
+                                        @foreach($region_2_column_configuration as $region_2_column_configuration_item)
+                                            <div class="col-md-12 div_column_item" data-column="{{$region_2_column_configuration_item->column}}">
+                                                <div class="row">
+                                                    <div class="col-md-11 text-left" style="cursor: pointer;">
+                                                        <span>{{get_column_label($region_2_column_configuration_item->column)}}</span>
+                                                    </div>
+                                                    <div class="col-md-1 text-center" style="cursor: pointer;">
+                                                        @php
+                                                            $color = $region_2_column_configuration_item->visibility ? 'rgb(0, 0, 0)' : 'red';
+                                                            $class = $region_2_column_configuration_item->visibility ? 'fa-eye' : 'fa-eye-slash';
+                                                        @endphp
+                                                        <i class="fas {{$class}} anchor_column_visibility_toggle_2" style="color: {{$color}}"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 text-center mt-2 mb-4">
+                                    <span class="badge bg-success" id="save-columns" style="cursor: pointer;">
+                                        <i class="fas fa-floppy-disk text-white"></i>
+                                        Save changes
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="column-work-center" checked>
-                            <label class="form-check-label" for="column-work-center">WORK CENTER</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="column-status" checked>
-                            <label class="form-check-label" for="column-status">STATUS</label>
-                        </div>
-                        <!-- Add more columns as needed -->
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save-columns">Save Changes</button>
-                </div>
+{{--                <div class="modal-footer">--}}
+{{--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--}}
+{{--                    <button type="button" class="btn btn-primary" id="save-columns">Save Changes</button>--}}
+{{--                </div>--}}
             </div>
         </div>
     </div>
 @endsection
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
-        // $(document).ready(function () {
-        //     $('#myTable').DataTable({
-        //         // Configuration options
-        //         paging: false,         // Enable pagination
-        //         searching: false,      // Enable searching
-        //         ordering: true,       // Enable sorting
-        //         order: [[0, 'asc']],  // Default sorting on the first column
-        //         responsive: true,     // Make table responsive
-        //         "aoColumnDefs": [
-        //             { "bSortable": false, "aTargets": [ 0, 12, 29 ] },
-        //         ]
-        //     });
+        $(document).ready(function () {
+            //Region 1 & 2 column configuration
+            let region_1_column_configuration = '';
+            let region_2_column_configuration = '';
 
-        // });
+            $('.anchor_column_visibility_toggle').on('click', function () {
+                $(this).addClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye-slash' : 'fa-eye');
+                $(this).removeClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye' : 'fa-eye-slash');
+                $(this).css('color', ($(this).css('color') == 'rgb(0, 0, 0)' ? 'red' : 'black'));
+
+                saveRegion1ColumnConfiguration();
+            });
+
+            $('.anchor_column_visibility_toggle_2').on('click', function () {
+                $(this).addClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye-slash' : 'fa-eye');
+                $(this).removeClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye' : 'fa-eye-slash');
+                $(this).css('color', ($(this).css('color') == 'rgb(0, 0, 0)' ? 'red' : 'black'));
+
+                saveRegion2ColumnConfiguration();
+            });
+
+            const stack1 = document.getElementById('region_1_columns_container');
+            const stack2 = document.getElementById('region_2_columns_container');
+
+            new Sortable(stack1, {
+                animation: 150,
+                onEnd: function (evt) {
+                    saveRegion1ColumnConfiguration();
+                },
+            });
+            new Sortable(stack2, {
+                animation: 150,
+                onEnd: function (evt) {
+                    saveRegion2ColumnConfiguration();
+                },
+            });
+
+            // Save Order
+            function saveRegion1ColumnConfiguration() {
+                let column_configuration = [];
+                $('#region_1_columns_container').find('.div_column_item').each((i, item) => {
+                    column_configuration.push({
+                        column: $(item).data('column'),
+                        order: i + 1,
+                        visibility: $(item).find('.anchor_column_visibility_toggle').css('color') == 'rgb(0, 0, 0)' ? true : false
+                    });
+                });
+
+                region_1_column_configuration = JSON.stringify(column_configuration);
+            }
+            function saveRegion2ColumnConfiguration() {
+                let column_configuration = [];
+                $('#region_2_columns_container').find('.div_column_item').each((i, item) => {
+                    column_configuration.push({
+                        column: $(item).data('column'),
+                        order: i + 1,
+                        visibility: $(item).find('.anchor_column_visibility_toggle_2').css('color') == 'rgb(0, 0, 0)' ? true : false
+                    });
+                });
+
+                region_2_column_configuration = JSON.stringify(column_configuration);
+            }
+
+            //save changes - ajax request
+            $('#save-columns').on('click', function () {
+                if (region_1_column_configuration != '') {
+                    $.ajax({
+                        url: '{{route("save.user.configuration")}}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            key: 'master_screen_region_1_column_configuration',
+                            value: region_1_column_configuration,
+                        }
+                    });
+                }
+
+                if (region_2_column_configuration != '') {
+                    $.ajax({
+                        url: '{{route("save.user.configuration")}}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            key: 'master_screen_region_2_column_configuration',
+                            value: region_2_column_configuration,
+                        },
+                        // success: (data) => {
+                        //     if (data.success) {
+                        //         Swal.fire({
+                        //             icon: 'success',
+                        //             title: 'Success',
+                        //             text: data.message,
+                        //         });
+                        //
+                        //         $('#filter3').modal('hide');
+                        //
+                        //         window.location.reload();
+                        //     } else {
+                        //         Swal.fire({
+                        //             icon: 'error',
+                        //             title: 'Error',
+                        //             text: data.message,
+                        //         });
+                        //
+                        //         $('#filter3').modal('hide');
+                        //     }
+                        // },
+                        // error: (e) => {
+                        //     Swal.fire({
+                        //         icon: 'error',
+                        //         title: 'Error',
+                        //         text: e.message,
+                        //     });
+                        //
+                        //     $('#filter3').modal('hide');
+                        // }
+                    });
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Changes saved!',
+                });
+
+                $('#filter3').modal('hide');
+
+                window.location.reload();
+
+            });
+
+            let target_cell_id = '#' + '{{$target_cell_id}}';
+            if (target_cell_id != '0') {
+                var container = $('.parent-table');
+                var targetCell = $(target_cell_id);
+
+                // Calculate the position of the target cell relative to the container
+                var cellPosition = targetCell.position();
+
+                // Get the dimensions of the container and the target cell
+                var containerHeight = container.height();
+                var containerWidth = container.width();
+                var cellHeight = targetCell.outerHeight();
+                var cellWidth = targetCell.outerWidth();
+
+                // Adjust the scroll positions to center the cell
+                var scrollTop = container.scrollTop() + cellPosition.top - container.offset().top - (containerHeight / 2) + (cellHeight / 2);
+                var scrollLeft = container.scrollLeft() + cellPosition.left - container.offset().left - (containerWidth / 2) + (cellWidth / 2);
+
+                // Scroll the container to bring the target cell into the center
+                container.scrollTop(scrollTop);
+                container.scrollLeft(scrollLeft);
+
+                // Highlight the cell with an animation
+                targetCell.css('background-color', 'yellow');
+                setTimeout(function () {
+                    targetCell.css('background-color', '');
+                }, 2000); // Remove highlight after 2 seconds
+            }
+        });
+
         function sendAjaxRequest(field, value) {
             var inputElement = event.target;
             var dataId = inputElement.getAttribute('data-id');

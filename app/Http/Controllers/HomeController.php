@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TargetCell;
 use App\Models\User;
 use App\Models\Parts;
 use App\Models\Entries;
+use App\Models\UserConfig;
 use App\Models\Weeks;
 use App\Models\Notification;
 use App\Models\WorkCenter;
@@ -21,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Services\NotificationService;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -33,9 +36,20 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        //highlight cell with data change
+        if($_GET && $_GET['target_cell']) {
+            $target_cell = TargetCell::find($_GET['target_cell']);
+            $map_result = master_data_editable_column_map($target_cell->field);
+            $target_cell_id = ($map_result != '') ? ($target_cell->table . '_' . $target_cell->ref_id . '_' . $map_result) : '0';
+        } else {
+            $target_cell = null;
+            $target_cell_id = '0';
+        }
+
+
         // return $request;
-        $query = Entries::with('part', 'weeks_months', 'work_center_one', 'out_source_one',
-             'get_department', 'get_customer', 'get_material');
+        $query = Entries::with(['part', 'weeks_months', 'work_center_one', 'out_source_one',
+            'get_department', 'get_customer', 'get_material']);
 
         // Apply department filter
         if ($request->has('department') && $request->department != 'All') {
@@ -76,12 +90,27 @@ class HomeController extends Controller
         $work_selector =WorkCenterSelec::get();
 
         if ($request->ajax()) {
+            //column configuration
+            $region_1_column_configuration_record = get_user_config('master_screen_region_1_column_configuration');
+            $region_1_column_configuration = json_decode($region_1_column_configuration_record->value);
+            usort($region_1_column_configuration, function ($a, $b) {
+                return $a->order < $b->order ? -1 : 1;
+            });
+
+            $region_2_column_configuration_record = get_user_config('master_screen_region_2_column_configuration');
+            $region_2_column_configuration = json_decode($region_2_column_configuration_record->value);
+            usort($region_2_column_configuration, function ($a, $b) {
+                return $a->order < $b->order ? -1 : 1;
+            });
+
+            $singleton = ($request->department == 'All') ? false : true;
+
             return response()->json([
-                'html' => view('partials.entries', compact('entries', 'department', 'customers', 'materials', 'work_selector'))->render()
+                'html' => view('partials.entries', compact('entries', 'department', 'customers', 'materials', 'work_selector', 'region_1_column_configuration', 'region_2_column_configuration', 'singleton'))->render()
             ]);
         }
 
-        return view('welcome', compact('entries', 'department', 'customers', 'materials', 'work_selector'));
+        return view('welcome', compact('entries', 'department', 'customers', 'materials', 'work_selector', 'target_cell_id'));
     }
 
     public function manual_imput(Request $request)
@@ -95,10 +124,11 @@ class HomeController extends Controller
 
         if ($entry) {
             // Update the specific field
+            $old = $entry->{$fieldName};
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id]);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id], 'entries', $entry->id, $fieldName, $old, $value);
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -117,10 +147,11 @@ class HomeController extends Controller
 
         if ($entry) {
             // Update the specific field
+            $old = $entry->{$fieldName};
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value);
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -139,10 +170,11 @@ class HomeController extends Controller
 
         if ($entry) {
             // Update the specific field
+            $old = $entry->{$fieldName};
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id, $fieldName, $old, $value);
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -910,5 +942,45 @@ class HomeController extends Controller
         );
 
         return response()->json(['message' => 'Preferences saved successfully']);
+    }
+
+    public function saveUserConfiguration (Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'key' => 'required',
+                'value' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [],
+                    'message' => $validator->errors()->first(),
+                    'errors' => $validator->errors()
+                ]);
+            }
+
+            UserConfig::updateOrCreate([
+                'user_id' => auth()->id(),
+                'key' => $request->key,
+            ], [
+                'value' => $request->value
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Configuration saved!',
+                'errors' => []
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => $e->getMessage(),
+                'errors' => []
+            ]);
+        }
     }
 }
