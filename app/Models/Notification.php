@@ -22,4 +22,9 @@ class Notification extends Model
     {
         return $this->hasOne(TargetCell::class);
     }
+
+    public function target_row()
+    {
+        return $this->hasOne(TargetRow::class);
+    }
 }

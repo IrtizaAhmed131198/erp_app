@@ -1,6 +1,6 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
-    <tr>
+    <tr id="entry_number_{{$data->id}}">
         <td class="vertical-text highlighted">
         </td>
 

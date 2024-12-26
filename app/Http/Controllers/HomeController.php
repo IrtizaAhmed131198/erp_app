@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TargetCell;
+use App\Models\TargetRow;
 use App\Models\User;
 use App\Models\Parts;
 use App\Models\Entries;
@@ -37,7 +38,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         //highlight cell with data change
-        if($_GET && $_GET['target_cell']) {
+        if($request->has('target_cell')) {
             $target_cell = TargetCell::find($_GET['target_cell']);
             $map_result = master_data_editable_column_map($target_cell->field);
             $target_cell_id = ($map_result != '') ? ($target_cell->table . '_' . $target_cell->ref_id . '_' . $map_result) : '0';
@@ -45,6 +46,9 @@ class HomeController extends Controller
             $target_cell = null;
             $target_cell_id = '0';
         }
+
+        //highlight row with data entry
+        $target_row_id = $request->get('target_row') ?? '';
 
 
         // return $request;
@@ -110,7 +114,7 @@ class HomeController extends Controller
             ]);
         }
 
-        return view('welcome', compact('entries', 'department', 'customers', 'materials', 'work_selector', 'target_cell_id'));
+        return view('welcome', compact('entries', 'department', 'customers', 'materials', 'work_selector', 'target_cell_id', 'target_row_id'));
     }
 
     public function manual_imput(Request $request)

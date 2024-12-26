@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Notification;
 use App\Models\TargetCell;
+use App\Models\TargetRow;
 use Carbon\Carbon;
 
 class NotificationService
@@ -33,18 +34,25 @@ class NotificationService
             'reference_id' => $referenceId,
         ]);
 
-        if (!is_null($referenceTable) && !is_null($referenceId)) {
-            if ($type == 'add_manual_entries') {
-                TargetCell::firstOrCreate([
-                    'notification_id' => $notification->id,
-                ], [
-                    'table' => $referenceTable,
-                    'ref_id' => $referenceId,
-                    'field' => $field,
-                    'old' => $old,
-                    'new' => $new
-                ]);
-            }
+        if ($type == 'add_manual_entries' && !is_null($referenceTable) && !is_null($referenceId)) {
+            TargetCell::firstOrCreate([
+                'notification_id' => $notification->id,
+            ], [
+                'table' => $referenceTable,
+                'ref_id' => $referenceId,
+                'field' => $field,
+                'old' => $old,
+                'new' => $new
+            ]);
+        }
+
+        if ($type == 'create_entries' && !is_null($referenceTable) && !is_null($referenceId)) {
+            TargetRow::firstOrCreate([
+                'notification_id' => $notification->id,
+            ], [
+                'table' => $referenceTable,
+                'ref_id' => $referenceId,
+            ]);
         }
     }
 

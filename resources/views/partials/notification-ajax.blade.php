@@ -12,6 +12,10 @@
         @php
           $href = route('index') . '?target_cell=' . $notification->target_cell->id;
         @endphp
+    @elseif ($notification->target_row)
+        @php
+            $href = route('index') . '?target_row=' . $notification->target_row->ref_id;
+        @endphp
     @else
         @php
             $href = '';

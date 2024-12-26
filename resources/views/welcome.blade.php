@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('css')
+    <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
     <style>
         .custom-dropdown-menu {
             display: none;
@@ -58,7 +59,7 @@
         <div class="container bg-colored">
             <div class="row align-items-base justify-content-end master-data-filter invoice-listing-select-bar">
                 <div class="col-xxl-3 col-xl-5 col-lg-5 col-md-12 col-12">
-                    <div class="parent-filter">
+                    <div class="parent-filter" data-intro='Hello step one!'>
                         <select class="js-select2" id="filter1">
                             <option value="All">ALL DEPARTMENT</option>
                             @foreach ($department as $dept)
@@ -328,6 +329,11 @@
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+{{--    <script>--}}
+{{--        introJs().start();--}}
+{{--    </script>--}}
+
     <script>
         $(document).ready(function () {
             //Region 1 & 2 column configuration
@@ -460,8 +466,9 @@
 
             });
 
+            //target cell feature
             let target_cell_id = '#' + '{{$target_cell_id}}';
-            if (target_cell_id != '0') {
+            if (target_cell_id != '#0') {
                 var container = $('.parent-table');
                 var targetCell = $(target_cell_id);
 
@@ -486,7 +493,37 @@
                 targetCell.css('background-color', 'yellow');
                 setTimeout(function () {
                     targetCell.css('background-color', '');
-                }, 2000); // Remove highlight after 2 seconds
+                }, 4000); // Remove highlight after 2 seconds
+            }
+
+            //target row feature
+            let target_row_id = '#entry_number_' + '{{$target_row_id}}';
+            if (target_row_id != '#entry_number_0') {
+                var container = $('.parent-table');
+                var targetCell = $(target_row_id);
+
+                // Calculate the position of the target row relative to the container
+                var rowPosition = targetCell.position();
+
+                // Get the dimensions of the container and the target row
+                var containerHeight = container.height();
+                var containerWidth = container.width();
+                var rowHeight = targetCell.outerHeight();
+                var rowWidth = targetCell.outerWidth();
+
+                // Adjust the scroll positions to center the row
+                var scrollTop = container.scrollTop() + rowPosition.top - container.offset().top - (containerHeight / 2) + (rowHeight / 2);
+                // var scrollLeft = container.scrollLeft() + rowPosition.left - container.offset().left - (containerWidth / 2) + (rowWidth / 2);
+
+                // Scroll the container to bring the target row into the center
+                container.scrollTop(scrollTop);
+                // container.scrollLeft(scrollLeft);
+
+                // Highlight the row with an animation
+                targetCell.css('background-color', 'yellow');
+                setTimeout(function () {
+                    targetCell.css('background-color', '');
+                }, 4000); // Remove highlight after 2 seconds
             }
         });
 
