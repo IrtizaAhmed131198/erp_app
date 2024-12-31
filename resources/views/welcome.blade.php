@@ -164,7 +164,7 @@
                                     </th>
 
                                     @foreach($region_2_column_configuration as $region_2_column_configuration_item)
-                                        <th scope="col" id="column-department" class="toggleable toggle-header-department" {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                        <th scope="col" id="column-department" class="toggleable-1 toggle-header-department" {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}>
                                             {{strtoupper(get_column_label($region_2_column_configuration_item->column))}}
                                             <span class="icon">▼</span>
                                         </th>

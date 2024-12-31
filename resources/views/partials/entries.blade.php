@@ -6,7 +6,6 @@
 
         @foreach($region_1_column_configuration as $region_1_column_configuration_item)
             @if($region_1_column_configuration_item->visibility)
-{{--                {!! get_master_tables_td_content($data, $region_1_column_configuration_item->column, $department, $work_selector, $customers) !!}--}}
                 @if($region_1_column_configuration_item->column == 'department')
                     @php
                         $data_target = 'entries_'.$data->id.'_department';
@@ -58,7 +57,7 @@
                                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value)">
                         </td>
                     @else
-                        <td class="toggleable-1 toggle-department" id="{{$data_target}}">{{ $data->planning }}</td>
+                        <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->planning }}</td>
                     @endif
                 @elseif($region_1_column_configuration_item->column == 'status')
                     @php
@@ -77,7 +76,7 @@
                             </select>
                         </td>
                     @else
-                        <td class="toggleable-1 toggle-department" id="{{$data_target}}">{{ $data->status }}</td>
+                        <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->status }}</td>
                     @endif
                 @elseif($region_1_column_configuration_item->column == 'job_number')
                     @php
@@ -89,7 +88,7 @@
                                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('job', this.value)">
                         </td>
                     @else
-                        <td class="toggleable-1 toggle-department" id="{{$data_target}}">{{ $data->job }}</td>
+                        <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->job }}</td>
                     @endif
                 @elseif($region_1_column_configuration_item->column == 'lot_number')
                     @php
@@ -101,12 +100,12 @@
                                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('lot', this.value)">
                         </td>
                     @else
-                        <td class="toggleable-1 toggle-department" id="{{$data_target}}">{{ $data->lot }}</td>
+                        <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->lot }}</td>
                     @endif
                 @elseif($region_1_column_configuration_item->column == 'id')
                     <td class="toggleable">ID# {{ $data->id }}</td>
                 @elseif($region_1_column_configuration_item->column == 'part_number')
-                    <td class="custom-toggleable">
+                    <td class="toggleable custom-toggleable">
                         <div class="custom-dropdown">
                             <button class="custom-dropdown-toggle btn btn-primary" type="button">
                                 {{ $data->part->Part_Number }}
@@ -499,17 +498,17 @@
             </td>
         @endfor
         @if(Auth::user()->role == 1)
-            <td class="toggleable-1">
+            <td class="toggleable-2">
                 <input type="text" step="any" name="future_raw" id="future_raw"
                     value="{{ $data->future_raw }}" data-id="{{ $data->id }}"
                     onkeyup="sendAjaxRequest('future_raw', this.value)">
             </td>
-            <td class="toggleable-1">
+            <td class="toggleable-2">
                 <input type="number" step="any" name="price" id="price"
                     value="{{ $data->price }}" data-id="{{ $data->id }}"
                     onkeyup="sendAjaxRequest('price', this.value)">
             </td>
-            <td class="toggleable-1">
+            <td class="toggleable-2">
                 <textarea name="notes" id="notes"
                     value="{{ $data->notes }}" data-id="{{ $data->id }}"
                     onkeyup="sendAjaxRequest('notes', this.value)">{{ $data->notes }}</textarea>
