@@ -49,6 +49,13 @@ class HomeController extends Controller
 
         //highlight row with data entry
         $target_row_id = $request->get('target_row') ?? '';
+        if($request->has('target_row')) {
+            $target_row = TargetRow::find($_GET['target_row']);
+            $target_row_id = $request->get('target_row') ?? '';
+        } else {
+            $target_row = null;
+            $target_row_id = '0';
+        }
 
 
         // return $request;
