@@ -555,7 +555,7 @@
         let typingTimer; // Timer variable
         let typingTimer2;
         let typingTimer3;
-        const typingTimeout = 2000; // 2 seconds of no typing
+        const typingTimeout = 1500; // 2 seconds of no typing
 
         function sendAjaxRequest(field, value, event) {
             const inputElement = event.target;
