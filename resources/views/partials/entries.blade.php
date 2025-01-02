@@ -14,7 +14,7 @@
                         <td class="toggleable toggle-department" id="{{$data_target}}">
                             <select name="department" id="department"
                                     data-id="{{ $data->id }}"
-                                    onchange="sendAjaxRequest('department', this.value)"
+                                    onchange="sendAjaxRequest('department', this.value, event)"
                                     {!! (isset($singleton) && $singleton == true && $index != 0) ? 'hidden' : '' !!}>
                                 <option value="" disabled>Select</option>
                                 @foreach($department as $dept)
@@ -35,7 +35,7 @@
                         <td class="toggleable toggle-work-center" id="{{$data_target}}">
                             <select name="work-center" id="work-center"
                                     data-id="{{ $data->work_center_one->id }}"
-                                    onchange="sendAjaxRequest2('com', this.value)">
+                                    onchange="sendAjaxRequest2('com', this.value, event)">
                                 <option value="" disabled>Select</option>
                                 @foreach($work_selector as $val)
                                     <option value="{{ $val->id }}" {{ $data->work_center_one->com == $val->id ? 'selected' : '' }}>
@@ -54,7 +54,7 @@
                     @if(Auth::user()->status_column == 1)
                         <td class="toggleable toggle-planning" id="{{$data_target}}">
                             <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value)">
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->planning }}</td>
@@ -67,7 +67,7 @@
                         <td class="toggleable toggle-department" id="{{$data_target}}">
                             <select name="status" id="status"
                                     data-id="{{ $data->id }}"
-                                    onchange="sendAjaxRequest('status', this.value)">
+                                    onchange="sendAjaxRequest('status', this.value, event)">
                                 <option value="" disabled selected>Select</option>
                                 <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}>Running</option>
                                 <option value="Pending Order" {{ $data->status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
@@ -85,7 +85,7 @@
                     @if(Auth::user()->status_column == 1)
                         <td class="toggleable toggle-department" id="{{$data_target}}">
                             <input type="text" name="job" id="job" value="{{ $data->job ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('job', this.value)">
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('job', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->job }}</td>
@@ -97,7 +97,7 @@
                     @if(Auth::user()->status_column == 1)
                         <td class="toggleable toggle-department" id="{{$data_target}}">
                             <input type="text" name="lot" id="lot" value="{{ $data->lot ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('lot', this.value)">
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('lot', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->lot }}</td>
@@ -132,7 +132,7 @@
                         <td class="toggleable" id="{{$data_target}}">
                             <select name="customer" id="customer"
                                     data-id="{{ $data->id }}"
-                                    onchange="sendAjaxRequest('customer', this.value)">
+                                    onchange="sendAjaxRequest('customer', this.value, event)">
                                 <option value="" disabled>Select</option>
                                 @foreach ($customers as $item)
                                     <option value="{{ $item->id }}"
@@ -152,7 +152,7 @@
                     @if(Auth::user()->role == 1)
                         <td class="toggleable" id="{{$data_target}}">
                             <input type="text" name="rev" id="rev" value="{{ $data->rev ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('rev', this.value)">
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('rev', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable" id="{{$data_target}}">{{ $data->rev }}</td>
@@ -164,7 +164,7 @@
                     @if(Auth::user()->role == 1)
                         <td class="toggleable" id="{{$data_target}}">
                             <input type="text" name="process" id="process" value="{{ $data->process ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('process', this.value)">
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('process', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable" id="{{$data_target}}">{{ $data->process }}</td>
@@ -217,7 +217,7 @@
                         @if(Auth::user()->stock_finished_column == 1)
                             <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"
                                    value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
-                                   onkeyup="sendAjaxRequest('in_stock_finish', this.value)">
+                                   onkeyup="sendAjaxRequest('in_stock_finish', this.value, event)">
                         @else
                             {{ $data->in_stock_finish ?? '' }}
                         @endif
@@ -230,7 +230,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" name="live_inventory_finish" id="live_inventory_finish"
                                    value="{{ $data->live_inventory_finish }}" data-id="{{ $data->id }}"
-                                   onkeyup="sendAjaxRequest('live_inventory_finish', this.value)">
+                                   onkeyup="sendAjaxRequest('live_inventory_finish', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->out_source_one->in_process_outside }}</td>
@@ -243,7 +243,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"
                                    value="{{ $data->live_inventory_wip }}" data-id="{{ $data->id }}"
-                                   onkeyup="sendAjaxRequest('live_inventory_wip', this.value)">
+                                   onkeyup="sendAjaxRequest('live_inventory_wip', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->live_inventory_wip }}</td>
@@ -256,7 +256,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" name="in_process_outside" id="in_process_outside"
                                    value="{{ $data->out_source_one->in_process_outside ?? '' }}" data-id="{{ $data->out_source_one->id ?? ''}}"
-                                   onkeyup="sendAjaxRequest3('in_process_outside', this.value)">
+                                   onkeyup="sendAjaxRequest3('in_process_outside', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->out_source_one->in_process_outside }}</td>
@@ -268,7 +268,7 @@
                     @if(Auth::user()->stock_finished_column == 1)
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="text" name="raw_mat" id="raw_mat" value="{{ $data->raw_mat ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('raw_mat', this.value)">
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('raw_mat', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->raw_mat }}</td>
@@ -281,7 +281,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="in_stock_live" id="in_stock_live"
                                 value="{{ $data->in_stock_live }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('in_stock_live', this.value)">
+                                onkeyup="sendAjaxRequest('in_stock_live', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->in_stock_live }}</td>
@@ -294,7 +294,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="wt_pc" id="wt_pc"
                                 value="{{ $data->wt_pc }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('wt_pc', this.value)">
+                                onkeyup="sendAjaxRequest('wt_pc', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->wt_pc }}</td>
@@ -307,7 +307,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <select name="material" id="material"
                                     data-id="{{ $data->id }}"
-                                    onchange="sendAjaxRequest('material', this.value)">
+                                    onchange="sendAjaxRequest('material', this.value, event)">
                                 <option value="" disabled>Select</option>
                                 @foreach ($materials as $item)
                                     <option value="{{ $item->id }}"
@@ -334,7 +334,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="safety" id="safety"
                                 value="{{ $data->safety }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('safety', this.value)">
+                                onkeyup="sendAjaxRequest('safety', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->safety }}</td>
@@ -347,7 +347,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="min_ship" id="min_ship"
                                 value="{{ $data->min_ship }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('min_ship', this.value)">
+                                onkeyup="sendAjaxRequest('min_ship', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->min_ship }}</td>
@@ -360,7 +360,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <textarea name="part_notes" id="order_notes"
                                 value="{{ $data->order_notes }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('order_notes', this.value)">{{ $data->order_notes }}</textarea>
+                                onkeyup="sendAjaxRequest('order_notes', this.value, event)">{{ $data->order_notes }}</textarea>
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->order_notes }}</td>
@@ -373,7 +373,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <textarea name="part_notes" id="part_notes"
                                 value="{{ $data->part_notes }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('part_notes', this.value)">{{ $data->part_notes }}</textarea>
+                                onkeyup="sendAjaxRequest('part_notes', this.value, event)">{{ $data->part_notes }}</textarea>
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->part_notes }}</td>
@@ -389,7 +389,7 @@
 {{--            @if(Auth::user()->stock_finished_column == 1)--}}
 {{--                <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"--}}
 {{--                    value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('in_stock_finish', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('in_stock_finish', this.value, event)">--}}
 {{--            @else--}}
 {{--                {{ $data->in_stock_finish ?? '' }}--}}
 {{--            @endif--}}
@@ -399,12 +399,12 @@
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" name="live_inventory_finish" id="live_inventory_finish"--}}
 {{--                    value="{{ $data->live_inventory_finish }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('live_inventory_finish', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('live_inventory_finish', this.value, event)">--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"--}}
 {{--                    value="{{ $data->live_inventory_wip }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('live_inventory_wip', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('live_inventory_wip', this.value, event)">--}}
 {{--            </td>--}}
 {{--        @else--}}
 {{--            <td class="toggleable-1">{{ $data->live_inventory_finish }}</td>--}}
@@ -415,11 +415,11 @@
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" name="in_process_outside" id="in_process_outside"--}}
 {{--                    value="{{ $data->out_source_one->in_process_outside ?? '' }}" data-id="{{ $data->out_source_one->id ?? ''}}"--}}
-{{--                    onkeyup="sendAjaxRequest3('in_process_outside', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest3('in_process_outside', this.value, event)">--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="text" name="raw_mat" id="raw_mat" value="{{ $data->raw_mat ?? '' }}"--}}
-{{--                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('raw_mat', this.value)">--}}
+{{--                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('raw_mat', this.value, event)">--}}
 {{--            </td>--}}
 {{--        @else--}}
 {{--            <td class="toggleable-1">{{ $data->out_source_one->in_process_outside }}</td>--}}
@@ -430,17 +430,17 @@
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" step="any" name="in_stock_live" id="in_stock_live"--}}
 {{--                    value="{{ $data->in_stock_live }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('in_stock_live', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('in_stock_live', this.value, event)">--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" step="any" name="wt_pc" id="wt_pc"--}}
 {{--                    value="{{ $data->wt_pc }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('wt_pc', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('wt_pc', this.value, event)">--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <select name="material" id="material"--}}
 {{--                        data-id="{{ $data->id }}"--}}
-{{--                        onchange="sendAjaxRequest('material', this.value)">--}}
+{{--                        onchange="sendAjaxRequest('material', this.value, event)">--}}
 {{--                    <option value="" disabled>Select</option>--}}
 {{--                    @foreach ($materials as $item)--}}
 {{--                        <option value="{{ $item->id }}"--}}
@@ -454,22 +454,22 @@
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" step="any" name="safety" id="safety"--}}
 {{--                    value="{{ $data->safety }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('safety', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('safety', this.value, event)">--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <input type="number" step="any" name="min_ship" id="min_ship"--}}
 {{--                    value="{{ $data->min_ship }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('min_ship', this.value)">--}}
+{{--                    onkeyup="sendAjaxRequest('min_ship', this.value, event)">--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <textarea name="part_notes" id="order_notes"--}}
 {{--                    value="{{ $data->order_notes }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('order_notes', this.value)">{{ $data->order_notes }}</textarea>--}}
+{{--                    onkeyup="sendAjaxRequest('order_notes', this.value, event)">{{ $data->order_notes }}</textarea>--}}
 {{--            </td>--}}
 {{--            <td class="toggleable-1">--}}
 {{--                <textarea name="part_notes" id="part_notes"--}}
 {{--                    value="{{ $data->part_notes }}" data-id="{{ $data->id }}"--}}
-{{--                    onkeyup="sendAjaxRequest('part_notes', this.value)">{{ $data->part_notes }}</textarea>--}}
+{{--                    onkeyup="sendAjaxRequest('part_notes', this.value, event)">{{ $data->part_notes }}</textarea>--}}
 {{--            </td>--}}
         @else
 {{--            <td class="toggleable-1">{{ $data->in_stock_live }}</td>--}}
@@ -501,17 +501,17 @@
             <td class="toggleable-2">
                 <input type="text" step="any" name="future_raw" id="future_raw"
                     value="{{ $data->future_raw }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('future_raw', this.value)">
+                    onkeyup="sendAjaxRequest('future_raw', this.value, event)">
             </td>
             <td class="toggleable-2">
                 <input type="number" step="any" name="price" id="price"
                     value="{{ $data->price }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('price', this.value)">
+                    onkeyup="sendAjaxRequest('price', this.value, event)">
             </td>
             <td class="toggleable-2">
                 <textarea name="notes" id="notes"
                     value="{{ $data->notes }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('notes', this.value)">{{ $data->notes }}</textarea>
+                    onkeyup="sendAjaxRequest('notes', this.value, event)">{{ $data->notes }}</textarea>
             </td>
         @else
             @php

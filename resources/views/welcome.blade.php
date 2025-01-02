@@ -527,80 +527,180 @@
             }
         });
 
-        function sendAjaxRequest(field, value) {
-            var inputElement = event.target;
-            var dataId = inputElement.getAttribute('data-id');
-            var data = {
+        // function sendAjaxRequest(field, value) {
+        //     var inputElement = event.target;
+        //     var dataId = inputElement.getAttribute('data-id');
+        //     var data = {
+        //         id: dataId,
+        //         field: field,
+        //         value: value
+        //     };
+
+        //     $.ajax({
+        //         url: "{{ route('manual_imput') }}",
+        //         method: 'POST',
+        //         data: data,
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success: function(response) {
+        //             console.log('Success:', response);
+        //         },
+        //         error: function(error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+
+        let typingTimer; // Timer variable
+        let typingTimer2;
+        let typingTimer3;
+        const typingTimeout = 2000; // 2 seconds of no typing
+
+        function sendAjaxRequest(field, value, event) {
+            const inputElement = event.target;
+            const dataId = inputElement.getAttribute('data-id');
+
+            const data = {
                 id: dataId,
                 field: field,
                 value: value
             };
 
-            $.ajax({
-                url: "{{ route('manual_imput') }}",
-                method: 'POST',
-                data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    console.log('Success:', response);
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                }
-            });
+            if (value == "") {
+                return false;
+            }
+
+            clearTimeout(typingTimer);
+
+            typingTimer = setTimeout(() => {
+                $.ajax({
+                    url: "{{ route('manual_imput') }}",
+                    method: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('Success:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }, typingTimeout);
         }
 
-        function sendAjaxRequest2(field, value) {
-            var inputElement = event.target;
-            var dataId = inputElement.getAttribute('data-id');
-            var data = {
+        function sendAjaxRequest2(field, value, event) {
+            const inputElement = event.target;
+            const dataId = inputElement.getAttribute('data-id');
+
+            const data = {
                 id: dataId,
                 field: field,
                 value: value
             };
 
-            $.ajax({
-                url: "{{ route('manual_imput_work') }}",
-                method: 'POST',
-                data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    console.log('Success:', response);
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                }
-            });
+            clearTimeout(typingTimer2);
+
+            typingTimer2 = setTimeout(() => {
+                $.ajax({
+                    url: "{{ route('manual_imput_work') }}",
+                    method: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('Success:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }, typingTimeout);
         }
 
-        function sendAjaxRequest3(field, value) {
-            var inputElement = event.target;
-            var dataId = inputElement.getAttribute('data-id');
-            var data = {
+        function sendAjaxRequest3(field, value, event) {
+            const inputElement = event.target;
+            const dataId = inputElement.getAttribute('data-id');
+
+            const data = {
                 id: dataId,
                 field: field,
                 value: value
             };
 
-            $.ajax({
-                url: "{{ route('manual_imput_out') }}",
-                method: 'POST',
-                data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    console.log('Success:', response);
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                }
-            });
+            clearTimeout(typingTimer3);
+
+            typingTimer3 = setTimeout(() => {
+                $.ajax({
+                    url: "{{ route('manual_imput_out') }}",
+                    method: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('Success:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }, typingTimeout);
         }
+
+
+        // function sendAjaxRequest2(field, value) {
+        //     var inputElement = event.target;
+        //     var dataId = inputElement.getAttribute('data-id');
+        //     var data = {
+        //         id: dataId,
+        //         field: field,
+        //         value: value
+        //     };
+
+        //     $.ajax({
+        //         url: "{{ route('manual_imput_work') }}",
+        //         method: 'POST',
+        //         data: data,
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success: function(response) {
+        //             console.log('Success:', response);
+        //         },
+        //         error: function(error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+
+        // function sendAjaxRequest3(field, value) {
+        //     var inputElement = event.target;
+        //     var dataId = inputElement.getAttribute('data-id');
+        //     var data = {
+        //         id: dataId,
+        //         field: field,
+        //         value: value
+        //     };
+
+        //     $.ajax({
+        //         url: "{{ route('manual_imput_out') }}",
+        //         method: 'POST',
+        //         data: data,
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success: function(response) {
+        //             console.log('Success:', response);
+        //         },
+        //         error: function(error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
 
         $(document).ready(function() {
             // Handle filter changes
