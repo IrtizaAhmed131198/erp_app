@@ -55,12 +55,12 @@
                             </button>
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-                                    <button class="bell-icon" type="submit">
-                                        <a href="{{ route('notifications') }}">
-                                            <img src="{{ asset('images/notification-icon.png') }}" class="img-fluid"
-                                                alt="">
-                                        </a>
-                                    </button>
+                                    <a href="{{ route('notifications') }}">
+                                        <button class="bell-icon" type="submit">
+                                        <img src="{{ asset('images/notification-icon.png') }}" class="img-fluid"
+                                            alt="">
+                                        </button>
+                                    </a>
                                     <div class="profile-detail">
                                         <a href="javascript:;">
                                             <img src="{{ asset('images/profile-pic.png') }}" class="img-fluid"

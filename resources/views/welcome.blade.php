@@ -338,7 +338,7 @@
         $(document).ready(function () {
             //Region 1 & 2 column configuration
             let region_1_column_configuration = '';
-            let region_2_column_configuration = '';
+            let region_2_column_configurantion = '';
 
             $('.anchor_column_visibility_toggle').on('click', function () {
                 $(this).addClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye-slash' : 'fa-eye');
