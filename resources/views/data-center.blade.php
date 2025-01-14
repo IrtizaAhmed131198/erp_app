@@ -5,6 +5,17 @@
         .select2-selection__arrow {
             background-image: unset !important;
         }
+
+        .side_btn {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            gap: 20px;
+        }
+
+        .side_btn .custom-btn {
+            margin: unset;
+        }
     </style>
 @endsection
 
@@ -17,6 +28,10 @@
                     <div class="parent-table">
                         <form action="{{ route('post_data_center') }}" method="POST">
                             @csrf
+                            <div class="btn-custom-btn text-center mb-3 side_btn">
+                                <button type="submit" class="btn custom-btn">Submit</button>
+                                <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
+                            </div>
                             <table class="table table-hover table-bordered">
                                 <thead>
                                 </thead>
@@ -79,10 +94,12 @@
                                     <tr>
                                         <td>Department</td>
                                         <td>
-                                            <select class="js-select2 select2-hidden-accessible" name="department" tabindex="-1" aria-hidden="true">
+                                            <select class="js-select2 select2-hidden-accessible" name="department"
+                                                tabindex="-1" aria-hidden="true">
                                                 <option selected disabled>Select DEPARTMENT</option>
-                                                @foreach($department as $dept)
-                                                    <option value="{{ $dept->id }}" {{ old('department') == $dept->name ? 'selected' : '' }}>
+                                                @foreach ($department as $dept)
+                                                    <option value="{{ $dept->id }}"
+                                                        {{ old('department') == $dept->name ? 'selected' : '' }}>
                                                         {{ $dept->name }}
                                                     </option>
                                                 @endforeach
@@ -93,10 +110,13 @@
                                         <tr>
                                             <td>Work Centre {{ $i }}</td>
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible" name="work_centre_{{ $i }}" aria-label="Default select example">
+                                                <select class="js-select2 select2-hidden-accessible"
+                                                    name="work_centre_{{ $i }}"
+                                                    aria-label="Default select example">
                                                     <option selected>Select</option>
                                                     @foreach ($work_center_select as $center)
-                                                        <option value="{{ $center['id'] }}" {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
+                                                        <option value="{{ $center['id'] }}"
+                                                            {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
                                                             {{ $center['name'] }}
                                                         </option>
                                                     @endforeach
@@ -114,12 +134,13 @@
                                                         aria-label="Default select example">
                                                         <option selected>Select</option>
                                                         @foreach ($vendor as $v)
-                                                            <option value="{{ $v->id }}" {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
+                                                            <option value="{{ $v->id }}"
+                                                                {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
                                                                 {{ $v->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="number"
+                                                    <input type="text"
                                                         name="outside_processing_text_{{ $i }}"
                                                         value="{{ old('outside_processing_text_' . $i) }}" id="">
                                                 </div>
@@ -192,7 +213,8 @@
                                     <tr>
                                         <td>REV</td>
                                         <td>
-                                            <input type="text" name="rev" id="rev" value="{{ old('rev') }}">
+                                            <input type="text" name="rev" id="rev"
+                                                value="{{ old('rev') }}">
                                         </td>
                                     </tr>
                                     {{-- <tr>
@@ -204,26 +226,26 @@
                                     <tr>
                                         <td>Safety</td>
                                         <td>
-                                            <input type="text" name="safety" id="safety" value="{{ old('safety') }}">
+                                            <input type="text" name="safety" id="safety"
+                                                value="{{ old('safety') }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Minship</td>
                                         <td>
-                                            <input type="number" name="min_ship" id="min_ship" value="{{ old('min_ship') }}">
+                                            <input type="number" name="min_ship" id="min_ship"
+                                                value="{{ old('min_ship') }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>WT/PC</td>
                                         <td>
-                                            <input type="number" name="wt_pc" id="wt_pc" value="{{ old('wt_pc') }}">
+                                            <input type="number" name="wt_pc" id="wt_pc"
+                                                value="{{ old('wt_pc') }}">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="btn-custom-btn text-ceneter mt-5">
-                                <button type="submit" class="btn custom-btn">Submit</button>
-                            </div>
                         </form>
                     </div>
                 </div>

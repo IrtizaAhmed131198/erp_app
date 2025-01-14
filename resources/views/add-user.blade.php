@@ -147,14 +147,23 @@
                                         <input class="form-check-input me-3" type="checkbox" name="status_column"
                                             value="1">
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Status Coulmns</span>
+                                            <span class="fs-6 mb-0">Schedule Planning</span>
                                         </span>
                                     </label>
                                     <div class="separator separator-dashed my-6"></div>
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <input class="form-check-input me-3" type="checkbox" name="stock_finished_column" value="1">
+                                        <input class="form-check-input me-3" type="checkbox" name="create_order"
+                                            value="1">
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Stock Finished Column</span>
+                                            <span class="fs-6 mb-0">Create Order</span>
+                                        </span>
+                                    </label>
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox" name="stock_finished_column"
+                                            value="1">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">Add Production</span>
                                         </span>
                                     </label>
                                     <div class="separator separator-dashed my-6"></div>
@@ -162,30 +171,67 @@
                                         <input class="form-check-input me-3" type="checkbox" name="part_number_column"
                                             value="1">
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Part Number Section</span>
+                                            <span class="fs-6 mb-0"> Part Number Input</span>
                                         </span>
                                     </label>
                                     <div class="separator separator-dashed my-6"></div>
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <input class="form-check-input me-3" type="checkbox"
-                                            name="calendar_column" value="0">
+                                        <input class="form-check-input me-3" type="checkbox" name="calendar_column"
+                                            value="0">
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Shipment & Production Section</span>
+                                            <span class="fs-6 mb-0">Add Shipment</span>
                                         </span>
                                     </label>
                                     <div class="separator separator-dashed my-6"></div>
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
-                                        <input class="form-check-input me-3" type="checkbox"
-                                            name="input_screen_column" value="0">
+                                        <input class="form-check-input me-3" type="checkbox" name="user_maintenance"
+                                            value="0">
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Input Screen Section</span>
+                                            <span class="fs-6 mb-0">User Maintenance</span>
+                                        </span>
+                                    </label>
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox" name="input_screen_column"
+                                            value="0">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0"> Input Screen</span>
+                                        </span>
+                                    </label>
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox" name="visual_input_screen"
+                                            value="0">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0"> Visual Input Screen</span>
+                                        </span>
+                                    </label>
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox" name="View_1"
+                                            value="0">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0"> View 1</span>
+                                        </span>
+                                    </label>
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox" name="View_2"
+                                            value="0">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0"> View 2</span>
+                                        </span>
+                                    </label>
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <input class="form-check-input me-3" type="checkbox" name="View_3"
+                                            value="0">
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0"> View 3</span>
                                         </span>
                                     </label>
                                 </div>
-
-
                                 <button class="btn btn-primary" type="submit">Save changes</button>
-
                             </div>
                         </div>
                     </div>
@@ -196,19 +242,19 @@
 @endsection
 
 @section('js')
-<script>
-    document.getElementById('user_profile_image_path').addEventListener('change', function() {
-        const file = this.files[0];
-        if (!file) return;
+    <script>
+        document.getElementById('user_profile_image_path').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.querySelector('.preview_image').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.querySelector('.preview_image').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
 
-        // Update file name display
-        document.getElementById('fileName').textContent = file.name;
-    });
-</script>
+            // Update file name display
+            document.getElementById('fileName').textContent = file.name;
+        });
+    </script>
 @endsection

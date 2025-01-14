@@ -134,8 +134,8 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="status_column" {{ $data->status_column == 1 ? 'checked' : '' }}
-                                            value="1">
+                                        <input class="form-check-input me-3" type="checkbox" name="status_column"
+                                            {{ $data->status_column == 1 ? 'checked' : '' }} value="1">
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
@@ -152,7 +152,8 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox" name="stock_finished_column" value="1" {{ $data->stock_finished_column == 1 ? 'checked' : '' }}>
+                                        <input class="form-check-input me-3" type="checkbox" name="stock_finished_column"
+                                            value="1" {{ $data->stock_finished_column == 1 ? 'checked' : '' }}>
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
@@ -192,8 +193,8 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox"
-                                            name="calendar_column" value="0" {{ $data->calendar_column == 1 ? 'checked' : '' }}>
+                                        <input class="form-check-input me-3" type="checkbox" name="calendar_column"
+                                            value="0" {{ $data->calendar_column == 1 ? 'checked' : '' }}>
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
@@ -213,13 +214,140 @@
                                     <!--begin::Option-->
                                     <label class="form-check form-check-custom form-check-solid align-items-start">
                                         <!--begin::Input-->
-                                        <input class="form-check-input me-3" type="checkbox"
-                                            name="input_screen_column" value="0" {{ $data->input_screen_column == 1 ? 'checked' : '' }}>
+                                        <input class="form-check-input me-3" type="checkbox" name="input_screen_column"
+                                            value="0" {{ $data->input_screen_column == 1 ? 'checked' : '' }}>
                                         <!--end::Input-->
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
                                             <span class="fs-6 mb-0">Input Screen Section</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox" name="create_order"
+                                            value="0" {{ $data->create_order == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">Create Order</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox" name="user_maintenance"
+                                            value="0" {{ $data->user_maintenance == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">User Maintenance</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
+
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox" name="visual_input_screen"
+                                            value="0" {{ $data->visual_input_screen == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">Visual Input Screen</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox" name="View_1"
+                                            value="0" {{ $data->View_1 == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">View 1</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox" name="View_2"
+                                            value="0" {{ $data->View_2 == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">View 2</span>
+                                            {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
+                                                by
+                                                a customer and for dispute purposes.</span> --}}
+                                        </span>
+                                        <!--end::Label-->
+                                    </label>
+                                    <!--end::Option-->
+
+                                    <!--begin::Option-->
+                                    <div class="separator separator-dashed my-6"></div>
+                                    <!--end::Option-->
+                                    <!--begin::Option-->
+                                    <label class="form-check form-check-custom form-check-solid align-items-start">
+                                        <!--begin::Input-->
+                                        <input class="form-check-input me-3" type="checkbox" name="View_3"
+                                            value="0" {{ $data->View_3 == 1 ? 'checked' : '' }}>
+                                        <!--end::Input-->
+
+                                        <!--begin::Label-->
+                                        <span class="form-check-label d-flex flex-column align-items-start">
+                                            <span class="fs-6 mb-0">View 3</span>
                                             {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
                                                 by
                                                 a customer and for dispute purposes.</span> --}}
@@ -244,19 +372,19 @@
 @endsection
 
 @section('js')
-<script>
-    document.getElementById('user_profile_image_path').addEventListener('change', function() {
-        const file = this.files[0];
-        if (!file) return;
+    <script>
+        document.getElementById('user_profile_image_path').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.querySelector('.preview_image').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.querySelector('.preview_image').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
 
-        // Update file name display
-        document.getElementById('fileName').textContent = file.name;
-    });
-</script>
+            // Update file name display
+            document.getElementById('fileName').textContent = file.name;
+        });
+    </script>
 @endsection

@@ -50,7 +50,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('users-update', [UserController::class, 'update'])->name('users.update');
-    Route::get('users-delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::delete('users-delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::post('save-user-configuration', [HomeController::class, 'saveUserConfiguration'])->name('save.user.configuration');
 

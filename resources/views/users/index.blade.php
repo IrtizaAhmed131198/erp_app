@@ -40,7 +40,7 @@
                             </thead>
                             <tbody id="entries-table-body">
 
-                                @foreach($data as $val)
+                                @foreach ($data as $val)
                                     <tr>
                                         <td class="vertical-text highlighted">{{ $val->id }}</td>
                                         <td class="toggleable toggle-department">{{ $val->name }}</td>
@@ -49,8 +49,15 @@
                                         <td class="toggleable toggle-work-center">{{ $val->phone }}</td>
                                         <td class="toggleable toggle-planning">
                                             <div class="d-inline">
-                                                <a href="{{ route('users.edit', ['id' => $val->id]) }}" class="btn btn-success" >Edit</a>
-                                                <a href="{{ route('users.destroy', ['id' => $val->id]) }}" class="btn btn-danger">Delete</a>
+                                                <a href="{{ route('users.edit', ['id' => $val->id]) }}"
+                                                    class="btn btn-success">Edit</a>
+                                                <form action="{{ route('users.destroy', $val->id) }}" method="POST"
+                                                    class="d-inline" id="deleteID{{ $val->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="deleted({{ $val->id }})">Delete</a>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -70,6 +77,22 @@
 
 
 @section('js')
+    <script>
+        function deleted(id) {
+            Swal.fire({
+                text: "Do you want to delete this user",
+                icon: "warning",
+                confirmButtonText: "Ok",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteID' + id).submit();
+                }
+            })
+        }
+    </script>
+
     @if ($errors->any())
         <script>
             Swal.fire({

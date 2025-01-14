@@ -92,6 +92,12 @@ class UserController extends Controller
         $user->stock_finished_column = $request->filled('stock_finished_column') ? 1 : 0;
         $user->part_number_column = $request->filled('part_number_column') ? 1 : 0;
         $user->calendar_column = $request->filled('calendar_column') ? 1 : 0;
+        $user->create_order = $request->filled('create_order') ? 1 : 0;
+        $user->user_maintenance = $request->filled('user_maintenance') ? 1 : 0;
+        $user->visual_input_screen = $request->filled('visual_input_screen') ? 1 : 0;
+        $user->View_1 = $request->filled('View_1') ? 1 : 0;
+        $user->View_2 = $request->filled('View_2') ? 1 : 0;
+        $user->View_3 = $request->filled('View_3') ? 1 : 0;
 
         // Save the updated user
         $user->save();
@@ -107,6 +113,6 @@ class UserController extends Controller
         $data = User::find($id);
         $data->delete();
 
-        return redirect()->back()->with('success', 'User deleted successfully!');
+        return redirect()->back();
     }
 }

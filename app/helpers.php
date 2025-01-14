@@ -10,22 +10,26 @@ if (!function_exists('emoji_for_type')) {
     }
 }
 
-function get_user_config ($key) {
+function get_user_config($key)
+{
     if (!auth()->check()) {
         return false;
     }
 
-    if(!$record = \App\Models\UserConfig::where([
-        'user_id' => auth()->id(),
-        'key' => $key,
-    ])->first()) {
+    if (
+        !$record = \App\Models\UserConfig::where([
+            'user_id' => auth()->id(),
+            'key' => $key,
+        ])->first()
+    ) {
         return false;
     }
 
     return $record;
 }
 
-function get_column_label ($column) {
+function get_column_label($column)
+{
     $column_label_map = [];
 
     //master screen - region 1
@@ -61,7 +65,8 @@ function get_column_label ($column) {
     return $column_label_map[$column] ?? '';
 }
 
-function master_data_editable_column_map ($column) {
+function master_data_editable_column_map($column)
+{
     $arr = [
         'department' => 'department',
         'com' => 'work_center',

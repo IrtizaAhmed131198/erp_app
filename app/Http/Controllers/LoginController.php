@@ -38,6 +38,13 @@ class LoginController extends Controller
             'stock_finished_column' => $request->filled('stock_finished_column') ? 1 : 0,
             'part_number_column' => $request->filled('part_number_column') ? 1 : 0,
             'calendar_column' => $request->filled('calendar_column') ? 1 : 0,
+            'user_maintenance' => $request->filled('user_maintenance') ? 1 : 0,
+            'visual_input_screen' => $request->filled('visual_input_screen') ? 1 : 0,
+            'input_screen_column' => $request->filled('input_screen_column') ? 1 : 0,
+            'create_order' => $request->filled('create_order') ? 1 : 0,
+            'View_1' => $request->filled('View_1') ? 1 : 0,
+            'View_2' => $request->filled('View_2') ? 1 : 0,
+            'View_3' => $request->filled('View_3') ? 1 : 0,
         ]);
         // dd($user);
         // auth()->login($user);

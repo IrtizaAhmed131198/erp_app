@@ -38,7 +38,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         //highlight cell with data change
-        if($request->has('target_cell')) {
+        if ($request->has('target_cell')) {
             $target_cell = TargetCell::find($_GET['target_cell']);
             $map_result = master_data_editable_column_map($target_cell->field);
             $target_cell_id = ($map_result != '') ? ($target_cell->table . '_' . $target_cell->ref_id . '_' . $map_result) : '0';
@@ -49,7 +49,7 @@ class HomeController extends Controller
 
         //highlight row with data entry
         $target_row_id = $request->get('target_row') ?? '';
-        if($request->has('target_row')) {
+        if ($request->has('target_row')) {
             $target_row = TargetRow::find($_GET['target_row']);
             $target_row_id = $request->get('target_row') ?? '';
         } else {
@@ -59,8 +59,15 @@ class HomeController extends Controller
 
 
         // return $request;
-        $query = Entries::with(['part', 'weeks_months', 'work_center_one', 'out_source_one',
-            'get_department', 'get_customer', 'get_material']);
+        $query = Entries::with([
+            'part',
+            'weeks_months',
+            'work_center_one',
+            'out_source_one',
+            'get_department',
+            'get_customer',
+            'get_material'
+        ]);
 
         // Apply department filter
         if ($request->has('department') && $request->department != 'All') {
@@ -68,7 +75,7 @@ class HomeController extends Controller
         }
 
         // Apply status filter
-        if($request->has('filter') && $request->filter == 'prd'){
+        if ($request->has('filter') && $request->filter == 'prd') {
             // Filter where the sum of weeks 1 to 12 is greater than `in_stock_finish`
             $query->whereHas('weeks_months', function ($query) {
                 $query->whereRaw("
@@ -86,19 +93,19 @@ class HomeController extends Controller
                     CAST(week_12 AS UNSIGNED)) > in_stock_finish
                 ");
             });
-        }else if($request->has('filter') && $request->filter == 'pending'){
+        } else if ($request->has('filter') && $request->filter == 'pending') {
             $query->where('filter', $request->filter);
         }
 
         $entries = $query->get();
 
-        $department =Department::get();
+        $department = Department::get();
 
-        $customers =Customer::get();
+        $customers = Customer::get();
 
-        $materials =Material::get();
+        $materials = Material::get();
 
-        $work_selector =WorkCenterSelec::get();
+        $work_selector = WorkCenterSelec::get();
 
         if ($request->ajax()) {
             //column configuration
@@ -195,30 +202,30 @@ class HomeController extends Controller
 
     public function data_center()
     {
-        if(Auth::user()->part_number_column == 0){
+        if (Auth::user()->part_number_column == 0) {
             abort(403, 'You do not have permission to access this resource.');
         }
         $parts = Parts::all();
         $customer = DB::table('customers')->get();
         $material = DB::table('package')->get();
-        $department =Department::get();
-        $work_center_select =WorkCenterSelec::get();
-        $vendor =Vendor::get();
+        $department = Department::get();
+        $work_center_select = WorkCenterSelec::get();
+        $vendor = Vendor::get();
         return view('data-center', compact('parts', 'customer', 'material', 'department', 'work_center_select', 'vendor'));
     }
 
     public function data_center_edit($id)
     {
-        if(Auth::user()->role != 1){
+        if (Auth::user()->role != 1) {
             abort(403, 'You do not have permission to access this resource.');
         }
         $data = Entries::with('work_center', 'out_source')->where('id', $id)->first();
         $parts = Parts::all();
         $customer = DB::table('customers')->get();
         $material = DB::table('package')->get();
-        $department =Department::get();
-        $work_center_select =WorkCenterSelec::get();
-        $vendor =Vendor::get();
+        $department = Department::get();
+        $work_center_select = WorkCenterSelec::get();
+        $vendor = Vendor::get();
         return view('data-center-edit', compact('data', 'parts', 'customer', 'material', 'department', 'work_center_select', 'vendor'));
     }
 
@@ -437,21 +444,42 @@ class HomeController extends Controller
 
     public function calender()
     {
-        if(Auth::user()->calendar_column == 0){
+        if (Auth::user()->calendar_column == 0) {
             abort(403, 'You do not have permission to access this resource.');
         }
         $parts = Parts::all();
         $weeks = [
-            'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8',
-            'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13', 'Week 14', 'Week 15', 'Week 16',
-            'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'
+            'Week 1',
+            'Week 2',
+            'Week 3',
+            'Week 4',
+            'Week 5',
+            'Week 6',
+            'Week 7',
+            'Week 8',
+            'Week 9',
+            'Week 10',
+            'Week 11',
+            'Week 12',
+            'Week 13',
+            'Week 14',
+            'Week 15',
+            'Week 16',
+            'Month 5',
+            'Month 6',
+            'Month 7',
+            'Month 8',
+            'Month 9',
+            'Month 10',
+            'Month 11',
+            'Month 12'
         ];
         return view('calender', compact('parts', 'weeks'));
     }
 
     public function input_screen()
     {
-        if(Auth::user()->input_screen_column == 0){
+        if (Auth::user()->input_screen_column == 0) {
             abort(403, 'You do not have permission to access this resource.');
         }
 
@@ -507,9 +535,9 @@ class HomeController extends Controller
             })
             ->get();
 
-        $customers =Customer::get();
+        $customers = Customer::get();
 
-        $parts =Parts::get();
+        $parts = Parts::get();
 
         return view('input-screen', compact('com1', 'com2', 'com3', 'out1', 'out2', 'out3', 'customers', 'parts'));
     }
@@ -698,7 +726,7 @@ class HomeController extends Controller
         ]);
 
         $exist_data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        if($exist_data){
+        if ($exist_data) {
             return response()->json(['error' => true, 'message' => 'This part number order already exist']);
         }
 
@@ -710,7 +738,7 @@ class HomeController extends Controller
 
         foreach ($request->weeks as $key => $value) {
             $data->$key = $value;
-            $data->{$key.'_date'} = $temp[$key];
+            $data->{$key . '_date'} = $temp[$key];
         }
         $data->save();
 
@@ -734,7 +762,7 @@ class HomeController extends Controller
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         foreach ($request->weeks as $key => $value) {
-            if($value != '' && $value != null){
+            if ($value != '' && $value != null) {
                 $data->$key = $value;
             }
         }
@@ -846,13 +874,13 @@ class HomeController extends Controller
 
         $array_1['month_12'] = null;
 
-        foreach($array_1 as $key => $val){
+        foreach ($array_1 as $key => $val) {
             $data->{$key} = $array_1[$key];
         }
 
         // // Save the changes
         // return $data->week_1_date.' '.$week1date;
-        if($data->week_1_date != $week1date){
+        if ($data->week_1_date != $week1date) {
             $data->past_due = $pas_due;
         }
         $past_due_val = $data->past_due;
@@ -866,7 +894,7 @@ class HomeController extends Controller
     {
         $today = $recordDate;
         $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-        $mondayOfWeek = date('Y-m-d', strtotime('-'.$dayOfWeek.' days', strtotime($today)));
+        $mondayOfWeek = date('Y-m-d', strtotime('-' . $dayOfWeek . ' days', strtotime($today)));
         $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
         // Calculate the end date of week 16
@@ -877,7 +905,7 @@ class HomeController extends Controller
 
         // Calculate week start dates and store in array
         for ($week = 1; $week <= 16; $week++) {
-            $startOfWeek = date('Y-m-d', strtotime('+'.(($week - 1) * 7).' days', strtotime($mondayOfWeek)));
+            $startOfWeek = date('Y-m-d', strtotime('+' . (($week - 1) * 7) . ' days', strtotime($mondayOfWeek)));
             $datesArray["week_$week"] = $startOfWeek;
         }
 
@@ -955,7 +983,7 @@ class HomeController extends Controller
         return response()->json(['message' => 'Preferences saved successfully']);
     }
 
-    public function saveUserConfiguration (Request $request)
+    public function saveUserConfiguration(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
