@@ -50,6 +50,77 @@
 
         /*column config css*/
 
+        .simple-text,
+        .simple-text[type="number"] {
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            text-align: left;
+            width: auto;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .simple-text[type="number"]::-webkit-outer-spin-button,
+        .simple-text[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .simple-text:focus,
+        .simple-text[type="number"]:focus {
+            outline: none;
+        }
+
+
+        .simple-select {
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            text-align: left;
+            width: auto;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .simple-select:focus {
+            outline: none;
+        }
+
+        .simple-textarea {
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            text-align: left;
+            width: auto;
+            height: auto;
+            resize: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .simple-textarea:focus {
+            outline: none;
+        }
+
     </style>
 @endsection
 
@@ -242,7 +313,7 @@
     </section>
 
     <!-- Modal for showing/hiding columns -->
-    <div class="modal fade" id="filter3" tabindex="-1" aria-labelledby="filter3Label" aria-hidden="true">
+    <div class="modal fade" id="filter3" tabindex="-1" aria-labelledby="filter3Label" >
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -338,7 +409,7 @@
         $(document).ready(function () {
             //Region 1 & 2 column configuration
             let region_1_column_configuration = '';
-            let region_2_column_configurantion = '';
+            let region_2_column_configuration = '';
 
             $('.anchor_column_visibility_toggle').on('click', function () {
                 $(this).addClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye-slash' : 'fa-eye');
@@ -561,6 +632,16 @@
             const inputElement = event.target;
             const dataId = inputElement.getAttribute('data-id');
 
+            const isDropdown = inputElement.tagName === 'SELECT';
+
+            if (field === 'planning') {
+                const isNumeric = /^-?\d+(,\d{3})*(\.\d+)?$/.test(value);
+
+                if (isNumeric) {
+                    value = value.replace(/,/g, '');
+                }
+            }
+
             const data = {
                 id: dataId,
                 field: field,
@@ -571,9 +652,8 @@
                 return false;
             }
 
-            clearTimeout(typingTimer);
-
-            typingTimer = setTimeout(() => {
+            if (isDropdown) {
+                // Directly send AJAX request for dropdowns without delay
                 $.ajax({
                     url: "{{ route('manual_imput') }}",
                     method: 'POST',
@@ -588,7 +668,26 @@
                         console.error('Error:', error);
                     }
                 });
-            }, typingTimeout);
+            } else {
+                clearTimeout(typingTimer);
+
+                typingTimer = setTimeout(() => {
+                    $.ajax({
+                        url: "{{ route('manual_imput') }}",
+                        method: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            console.log('Success:', response);
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                }, typingTimeout);
+            }
         }
 
         function sendAjaxRequest2(field, value, event) {
@@ -806,25 +905,24 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const dropdownItems = document.querySelectorAll('.custom-dropdown-item');
+        $('body').on('click', '.custom-dropdown-item', function(e) {
+            e.preventDefault();
 
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
+            const partNumber = $(this).data('part');
+            const url = $(this).data('url');
 
-                    // Retrieve the part number and URL from the clicked item
-                    const partNumber = e.target.getAttribute('data-part');
-                    const url = e.target.getAttribute('data-url');
-
-                    // Redirect if the URL is valid
-                    if (url && partNumber) {
-                        const fullUrl = `${url}?part_number=${partNumber}`;
-                        window.open(fullUrl, '_blank');
-                    }
-                });
-            });
+            if (url && partNumber) {
+                const fullUrl = `${url}?part_number=${partNumber}`;
+                window.open(fullUrl, '_blank');
+            }
         });
+
+
+        function formatNumberWithCommas(element) {
+            console.log(element,'1');
+            const value = element.value.replace(/[^0-9]/g, '');
+            element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
 
         // Attach event listener to the save button
         // document.getElementById('save-columns').addEventListener('click', function() {

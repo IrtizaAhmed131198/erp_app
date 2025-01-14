@@ -53,8 +53,9 @@
                     @endphp
                     @if(Auth::user()->status_column == 1)
                         <td class="toggleable toggle-planning" id="{{$data_target}}">
-                            <input type="text" name="planning" id="planning" value="{{ $data->planning ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('planning', this.value, event)">
+                            <input type="text" name="planning" id="planning" value="{{ number_format((float)$data->planning ?? 0) }}"
+                                   data-id="{{ $data->id }}" oninput="formatNumberWithCommas(this)"
+                                   onkeyup="sendAjaxRequest('planning', this.value, event)">
                         </td>
                     @else
                         <td class="toggleable toggle-department" id="{{$data_target}}">{{ $data->planning }}</td>
@@ -130,7 +131,7 @@
                     @endphp
                     @if(Auth::user()->role == 1)
                         <td class="toggleable" id="{{$data_target}}">
-                            <select name="customer" id="customer"
+                            <select name="customer" id="customer" class="simple-select"
                                     data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('customer', this.value, event)">
                                 <option value="" disabled>Select</option>
@@ -151,11 +152,11 @@
                     @endphp
                     @if(Auth::user()->role == 1)
                         <td class="toggleable" id="{{$data_target}}">
-                            <input type="text" name="rev" id="rev" value="{{ $data->rev ?? '' }}"
-                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('rev', this.value, event)">
+                            <input type="text" name="rev" id="rev" value="{{ $data->revision ?? '' }}"
+                                   data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('revision', this.value, event)" class="simple-text">
                         </td>
                     @else
-                        <td class="toggleable" id="{{$data_target}}">{{ $data->rev }}</td>
+                        <td class="toggleable" id="{{$data_target}}">{{ $data->revision }}</td>
                     @endif
                 @elseif($region_1_column_configuration_item->column == 'process')
                     @php
@@ -217,7 +218,7 @@
                         @if(Auth::user()->stock_finished_column == 1)
                             <input type="number" step="any" name="in_stock_finish" id="in_stock_finish"
                                    value="{{ $data->in_stock_finish ?? '' }}" data-id="{{ $data->id }}"
-                                   onkeyup="sendAjaxRequest('in_stock_finish', this.value, event)">
+                                   onkeyup="sendAjaxRequest('in_stock_finish', this.value, event)" class="simple-text">
                         @else
                             {{ $data->in_stock_finish ?? '' }}
                         @endif
@@ -254,7 +255,7 @@
                     @endphp
                     @if(Auth::user()->stock_finished_column == 1)
                         <td class="toggleable-1" id="{{$data_target}}">
-                            <input type="number" name="in_process_outside" id="in_process_outside"
+                            <input type="text" name="in_process_outside" id="in_process_outside"
                                    value="{{ $data->out_source_one->in_process_outside ?? '' }}" data-id="{{ $data->out_source_one->id ?? ''}}"
                                    onkeyup="sendAjaxRequest3('in_process_outside', this.value, event)">
                         </td>
@@ -334,7 +335,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="safety" id="safety"
                                 value="{{ $data->safety }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('safety', this.value, event)">
+                                onkeyup="sendAjaxRequest('safety', this.value, event)" class="simple-text">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->safety }}</td>
@@ -347,7 +348,7 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="min_ship" id="min_ship"
                                 value="{{ $data->min_ship }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('min_ship', this.value, event)">
+                                onkeyup="sendAjaxRequest('min_ship', this.value, event)" class="simple-text">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->min_ship }}</td>
@@ -371,7 +372,7 @@
                     @endphp
                     @if(Auth::user()->role == 1)
                         <td class="toggleable-1" id="{{$data_target}}">
-                            <textarea name="part_notes" id="part_notes"
+                            <textarea name="part_notes" id="part_notes" class="simple-textarea"
                                 value="{{ $data->part_notes }}" data-id="{{ $data->id }}"
                                 onkeyup="sendAjaxRequest('part_notes', this.value, event)">{{ $data->part_notes }}</textarea>
                         </td>
