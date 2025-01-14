@@ -919,9 +919,29 @@
 
 
         function formatNumberWithCommas(element) {
-            console.log(element,'1');
             const value = element.value.replace(/[^0-9]/g, '');
             element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function decimalPlaces(element) {
+            let value = element.value;
+            value = value.replace(/[^0-9.]/g, '');
+
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts[1].slice(0, 3);
+            } else if (parts.length === 2 && parts[1].length > 3) {
+                value = parts[0] + '.' + parts[1].slice(0, 3);
+            }
+
+            element.value = value;
+        }
+
+
+        function preventNegativeValue(element) {
+            if (element.value < 0) {
+                element.value = element.value.replace('-', '');
+            }
         }
 
         // Attach event listener to the save button
