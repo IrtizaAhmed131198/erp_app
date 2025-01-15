@@ -446,10 +446,11 @@ class HomeController extends Controller
 
     public function calender()
     {
-        if (Auth::user()->calendar_column == 0) {
+        if (Auth::user()->calendar_column == 0 && Auth::user()->stock_finished_column == 0 && Auth::user()->create_order == 0) {
             abort(403, 'You do not have permission to access this resource.');
         }
-        $parts = Parts::all();
+        // $parts = Parts::all();
+        $parts = Entries::with('part')->get();
         $weeks = [
             'Week 1',
             'Week 2',

@@ -81,7 +81,7 @@ header {
 }
 
 .container.bg-colored {
-    margin-top: 3rem;
+    margin-top: 0rem;
     margin-bottom: 3rem;
     border-width: 2px;
     border-color: rgb(255, 255, 255);
@@ -1124,4 +1124,35 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
     font-size: 10px;
     top: 13px;
     background: #719ff4;
+}
+
+.pagination {
+    gap: 22px;
+    font-weight: 600;
+}
+
+.heading-1 {
+    font-size: 3rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.custom-row {
+    margin-bottom: 3rem;
+}
+
+.pagination a {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+
+.pagination a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
 }

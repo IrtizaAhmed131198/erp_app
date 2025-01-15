@@ -140,7 +140,7 @@
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Status Coulmns</span>
+                                            <span class="fs-6 mb-0">Schedule Planning</span>
                                         </span>
                                         <!--end::Label-->
                                     </label>
@@ -158,7 +158,7 @@
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Stock Finished Column</span>
+                                            <span class="fs-6 mb-0">Add Production</span>
                                             {{-- <span class="text-muted fs-6">Receive a notification for every initiated
                                                 payout.</span> --}}
                                         </span>
@@ -178,7 +178,7 @@
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Part Number Section</span>
+                                            <span class="fs-6 mb-0">Part Number Input</span>
                                             {{-- <span class="text-muted fs-6">Receive a notification each time you collect a
                                                 fee
                                                 from sales</span> --}}
@@ -199,7 +199,7 @@
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Shipment & Production Section</span>
+                                            <span class="fs-6 mb-0">Add Shipment</span>
                                             {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
                                                 by
                                                 a customer and for dispute purposes.</span> --}}
@@ -220,7 +220,7 @@
 
                                         <!--begin::Label-->
                                         <span class="form-check-label d-flex flex-column align-items-start">
-                                            <span class="fs-6 mb-0">Input Screen Section</span>
+                                            <span class="fs-6 mb-0">Input Screen</span>
                                             {{-- <span class="text-muted fs-6">Receive a notification if a payment is disputed
                                                 by
                                                 a customer and for dispute purposes.</span> --}}
