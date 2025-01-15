@@ -62,21 +62,24 @@
                     <div class="d-flex justify-content-start mb-3 custom-data">
                         @if (Auth::user()->create_order == 1)
                             <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
+                                    onclick="updateHeadingText(this)">
                                 Create Order
                             </button>
                         @endif
 
                         @if (Auth::user()->stock_finished_column == 1)
                             <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                                    onclick="updateHeadingText(this)">
                                 Add Production
                             </button>
                         @endif
 
                         @if (Auth::user()->calendar_column == 1)
                             <button class="btn btn-primary" id="btn-add-shipment" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                                    onclick="updateHeadingText(this)">
                                 Add Shipment
                             </button>
                         @endif
@@ -86,6 +89,24 @@
                         <!-- First Collapsible Content -->
                         <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
+                                <div class="alert alert-success" role="alert" id="lastUpdateOrder">
+                                    Last updated information (date & user)
+                                </div>
+                                <div class="col-lg-12">
+                                    <table class="master-data-to-screen table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">REV</th>
+                                                <th scope="col">MOQ & SAFETY</th>
+                                                <th scope="col">MIN SHIP</th>
+                                                <th scope="col">PART NOTES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-data">
+
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="parent-table">
                                     <table class="table table-hover">
                                         <thead>
@@ -139,7 +160,7 @@
                         <!-- Second Collapsible Content -->
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
-                                <div class="alert alert-success" role="alert">
+                                <div class="alert alert-success" role="alert" id="lastUpdateProduction">
                                     Last updated information (date & user)
                                 </div>
                                 <div class="col-lg-12">
@@ -153,12 +174,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="table-data">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>3</td>
-                                                <td>4</td>
-                                            </tr>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -173,7 +189,7 @@
                                             <tr class="">
                                                 <th scope="col">Existing Amount</th>
                                                 <td> <input type="text" name="existing_amount" id="existing_amount"
-                                                        readonly></td>
+                                                        readonly oninput="formatNumberWithCommas(this)"></td>
 
                                             </tr>
                                         </thead>
@@ -181,13 +197,13 @@
                                             <tr>
                                                 <td>Add Production</td>
                                                 <td> <input type="text" name="add_production" id="add_production"
-                                                        min="0"></td>
+                                                        min="0" oninput="formatNumberWithCommas(this)"></td>
 
                                             </tr>
                                             <tr>
                                                 <td>New Total</td>
 
-                                                <td><input type="text" name="new_total" id="new_total" readonly></td>
+                                                <td><input type="text" name="new_total" id="new_total" readonly oninput="formatNumberWithCommas(this)"></td>
 
                                             </tr>
                                         </tbody>
@@ -199,6 +215,23 @@
                         <!-- Third Collapsible Content -->
                         <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
+                                <div class="alert alert-success" role="alert" id="lastUpdateShipment">
+                                    Last updated information (date & user)
+                                </div>
+                                <div class="col-lg-12">
+                                    <table class="master-data-to-screen table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">REV</th>
+                                                <th scope="col">MOQ & SAFETY</th>
+                                                <th scope="col">MIN SHIP</th>
+                                                <th scope="col">PART NOTES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-data">
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="parent-table">
                                     <div class="add-shipment-amount">
                                         <input type="number" name="" id=""
@@ -341,6 +374,18 @@
 @endsection
 @section('js')
     <script>
+        function updateHeadingText(button) {
+            // Get the heading element
+            const heading = document.querySelector('.heading-1');
+            // Set the heading text to the button's text
+            heading.textContent = button.textContent.trim();
+        }
+
+        function formatNumberWithCommas(element) {
+            const value = element.value.replace(/[^0-9]/g, '');
+            element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
         $('#btn-add-shipment').on('click', function() {
             console.log(123);
             let partNumber = $('#part_no').val();
@@ -441,9 +486,18 @@
                         }, // Send part number as data
                         success: function(response) {
                             if (response.existing_amount) {
-                                $('input[name="existing_amount"]').val(response
-                                    .existing_amount);
+                                $('input[name="existing_amount"]').val(
+                                    parseFloat(response.existing_amount).toLocaleString()
+                                );
                                 $('.btn[data-bs-toggle="collapse"]').prop('disabled', false);
+                                $('.table-data').append(`
+                                    <tr>
+                                        <td>${response.revision}</td>
+                                        <td>${response.safety}</td>
+                                        <td>${response.min_ship}</td>
+                                        <td>${response.part_notes}</td>
+                                    </tr>
+                                `);
                             } else {
                                 Swal.fire({
                                     icon: 'info',
@@ -475,8 +529,8 @@
             }
 
             $('#submit-production').on('click', function() {
-                const existingAmount = parseFloat($('#existing_amount').val()) || 0;
-                const addProduction = parseFloat($('#add_production').val()) || 0;
+                const existingAmount = parseFloat($('#existing_amount').val().replace(/,/g, '')) || 0;
+                const addProduction = parseFloat($('#add_production').val().replace(/,/g, '')) || 0;
 
                 // Calculate new total
                 const newTotal = existingAmount + addProduction;
