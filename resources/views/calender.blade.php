@@ -498,6 +498,7 @@
                                         <td>${response.part_notes}</td>
                                     </tr>
                                 `);
+                                $('.alert-success').text(`Last updated information: ${response.last_update_user} by ${response.last_update_date}`);
                             } else {
                                 Swal.fire({
                                     icon: 'info',

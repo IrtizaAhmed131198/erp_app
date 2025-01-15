@@ -1,6 +1,8 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
     <tr id="entry_number_{{$data->id}}">
+        @if(Auth::user()->View_1 == 1)
+
         <td class="vertical-text highlighted">
         </td>
 
@@ -174,6 +176,9 @@
             @endif
         @endforeach
 
+        @endif
+
+        @if(Auth::user()->View_2 == 1)
         <td  class="vertical-text highlighted">
         </td>
 
@@ -389,6 +394,8 @@
             @endif
         @endforeach
 
+        @endif
+
 {{--        <td class="toggleable-1">{{ $sumWeeks1To6 }}</td>--}}
 {{--        <td class="toggleable-1">{{ $sumWeeks7To12 }}</td>--}}
 {{--        <td class="toggleable-1 schedule_total">{{ $sumWeeks1To6 + $sumWeeks7To12 }}</td>--}}
@@ -489,6 +496,8 @@
 {{--            <td class="toggleable-1">{{ $data->part_notes }}</td>--}}
         @endif
 
+        @if(Auth::user()->View_3 == 1)
+
         <td  class="vertical-text highlighted">
         </td>
         <td class="toggleable-2">{{ $data->weeks_months->past_due ?? '' }}</td>
@@ -506,9 +515,10 @@
         @endfor
         @if(Auth::user()->role == 1)
             <td class="toggleable-2">
-                <input type="text" step="any" name="future_raw" id="future_raw"
+                <input type="number" step="any" name="future_raw" id="future_raw"
                     value="{{ $data->future_raw }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('future_raw', this.value, event)">
+                    onkeyup="sendAjaxRequest('future_raw', this.value, event)"
+                    oninput="preventNegativeValue(this)">
             </td>
             <td class="toggleable-2">
                 <input type="number" step="any" name="price" id="price"
@@ -536,6 +546,7 @@
                 $data_target = 'entries_'.$data->id.'_notes';
             @endphp
             <td class="toggleable-2" id="{{$data_target}}">{{ $data->notes }}</td>
+        @endif
         @endif
     </tr>
 @endforeach

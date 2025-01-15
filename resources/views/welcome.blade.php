@@ -204,6 +204,7 @@
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr class="colored-table-row">
+                                    @if(Auth::user()->View_1 == 1)
                                     <th scope="col" class="highlighted toggle-header">
                                         <span class="icon">▼</span>
                                     </th>
@@ -214,6 +215,7 @@
                                             <span class="icon">▼</span>
                                         </th>
                                     @endforeach
+                                    @endif
 {{--                                    <th scope="col" id="column-department" class="toggleable toggle-header-department">--}}
 {{--                                        DEPARTMENT--}}
 {{--                                        <span class="icon">▼</span>--}}
@@ -238,6 +240,7 @@
 {{--                                            class="icon">▼</span></th>--}}
 {{--                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span--}}
 {{--                                            class="icon">▼</span></th>--}}
+                                    @if(Auth::user()->View_2 == 1)
                                     <th scope="col" class="highlighted toggle-header-1">
                                         <span class="icon">▼
                                         </span>
@@ -249,6 +252,7 @@
                                             <span class="icon">▼</span>
                                         </th>
                                     @endforeach
+                                    @endif
 {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span--}}
 {{--                                            class="icon">▼</span></th>--}}
 {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span--}}
@@ -281,6 +285,7 @@
 {{--                                            class="icon">▼</span></th>--}}
 {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes <span--}}
 {{--                                            class="icon">▼</span></th>--}}
+                                    @if(Auth::user()->View_1 == 1)
                                     <th scope="col" class="highlighted toggle-header-2">
                                         <span class="icon">▼
                                         </span>
@@ -309,6 +314,7 @@
                                             class="icon">▼</span></th>
                                     <th scope="col" class="toggleable-2 toggle-header-department">NOTES <span
                                             class="icon">▼</span></th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody id="entries-table-body">
@@ -856,6 +862,7 @@
             });
         });
     </script>
+
 
     <script>
         // Add event listener to the column header

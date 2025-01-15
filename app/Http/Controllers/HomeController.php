@@ -695,10 +695,18 @@ class HomeController extends Controller
     {
         $partNumber = $request->get('part_number');
 
-        $entries = DB::table('entries')->where('part_number', $partNumber)->where('user_id', Auth::user()->id)->first();
+        $entries = Entries::with('last_updated_by_user')->where('part_number', $partNumber)->where('user_id', Auth::user()->id)->first();
 
         if (!$entries) {
             return response()->json(['message' => 'No entry found for the provided part number.']);
+        }
+
+        $last_update_user = $entries->last_updated_by_user->name ?? null;
+        $last_update_date = is_null($entries->updated_at) ? $entries->created_at : $entries->updated_at;
+        if (!is_null($last_update_user)) {
+            $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+        }else{
+            $date_string = null;
         }
 
         return response()->json([
@@ -707,6 +715,8 @@ class HomeController extends Controller
             'safety' => $entries->safety,
             'min_ship' => $entries->min_ship,
             'part_notes' => $entries->part_notes,
+            'last_update_user' => $last_update_user,
+            'last_update_date' => $date_string,
         ]);
     }
 
@@ -720,6 +730,7 @@ class HomeController extends Controller
         $data = Entries::where('part_number', $part_no)->where('user_id', Auth::user()->id)->first();
 
         $data->in_stock_finish = $newTotal;
+        $data->last_updated_by = Auth::user()->id;
         $data->save();
 
         return response()->json([
