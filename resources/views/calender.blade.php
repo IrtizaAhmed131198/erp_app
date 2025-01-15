@@ -23,7 +23,7 @@
             <div class="row align-items-center custom-row">
                 <div class="col-lg-4 col-md-3 col-12">
                     <div class="pagination">
-                        <a href="javascript:;">
+                        <a href="{{ route('index') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd"
                                 class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
@@ -152,7 +152,7 @@
                                                 <th scope="col">PART NOTES</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="table-data">
                                             <tr>
                                                 <td>1</td>
                                                 <td>2</td>
