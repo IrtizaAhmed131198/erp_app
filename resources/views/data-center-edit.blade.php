@@ -24,6 +24,24 @@
     <section class="weekly-section data-center">
         <div class="container bg-colored">
             <div class="row align-items-center">
+                @php
+                  $last_update_user = $data->last_updated_by_user->name ?? null;
+                  $last_update_date = is_null($data->updated_at) ? $data->created_at : $data->updated_at;
+                  if (!is_null($last_update_user)) {
+                      $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+                  }
+                @endphp
+                @if(!is_null($last_update_user))
+                    <div class="alert alert-warning" role="alert" style="width: 99%;">
+                        Last updated by {{$last_update_user}} at {{$date_string}}
+                    </div>
+{{--                    <div class="col-md-6 mb-4" style="border-radius: 4px; background-color: #ffa5007a;">--}}
+{{--                        <p class="m-0">Last updated by {{$last_update_user}} at {{$date_string}}</p>--}}
+{{--                    </div>--}}
+                @endif
+
+                <div class="col-md-12"></div>
+
                 <div class="col-lg-4 col-md-3 col-12">
                     <div class="pagination">
                         <a href="{{route('index')}}">

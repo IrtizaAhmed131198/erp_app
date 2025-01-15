@@ -49,7 +49,8 @@ class Entries extends Model
         'safety',
         'min_ship',
         'wt_pc',
-        'currency'
+        'currency',
+        'last_updated_by'
     ];
 
     public function part()
@@ -95,5 +96,10 @@ class Entries extends Model
     public function get_material()
     {
         return $this->hasOne(Material::class, 'id', 'material');
+    }
+
+    public function last_updated_by_user ()
+    {
+        return $this->belongsTo(User::class, 'last_updated_by');
     }
 }

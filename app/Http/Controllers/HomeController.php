@@ -280,6 +280,8 @@ class HomeController extends Controller
         try {
             $validatedData['user_id'] = Auth::user()->id;
             $entry = Entries::create($validatedData);
+            $entry->last_updated_by = auth()->id();
+            $entry->save();
 
             $work_centres = [
                 'work_centre_1' => $validatedData['work_centre_1'],
@@ -384,6 +386,8 @@ class HomeController extends Controller
             // Update main entry data
             $validatedData['user_id'] = Auth::user()->id;
             $entry->update($validatedData);
+            $entry->last_updated_by = auth()->id();
+            $entry->save();
 
             // Prepare work centers and outside processing data
             $work_centres = [
