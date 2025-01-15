@@ -698,7 +698,11 @@ class HomeController extends Controller
         }
 
         return response()->json([
-            'existing_amount' => $entries->in_stock_finish
+            'existing_amount' => $entries->in_stock_finish,
+            'revision' => $entries->revision,
+            'safety' => $entries->safety,
+            'min_ship' => $entries->min_ship,
+            'part_notes' => $entries->part_notes,
         ]);
     }
 

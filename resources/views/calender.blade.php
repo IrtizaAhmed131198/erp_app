@@ -139,6 +139,29 @@
                         <!-- Second Collapsible Content -->
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
+                                <div class="alert alert-success" role="alert">
+                                    Last updated information (date & user)
+                                </div>
+                                <div class="col-lg-12">
+                                    <table class="master-data-to-screen table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">REV</th>
+                                                <th scope="col">MOQ & SAFETY</th>
+                                                <th scope="col">MIN SHIP</th>
+                                                <th scope="col">PART NOTES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>2</td>
+                                                <td>3</td>
+                                                <td>4</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="parent-table">
                                     <div class="btn-custom-btn add-btn-close text-ceneter">
                                         <button type="button" id="submit-production" class="btn custom-btn">Submit</button>
@@ -311,6 +334,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -382,7 +406,7 @@
                             },
                             error: function(xhr) {
                                 console.error("Error updating shipment: ", xhr
-                                .responseText);
+                                    .responseText);
                             }
                         });
                     } else {
@@ -418,7 +442,7 @@
                         success: function(response) {
                             if (response.existing_amount) {
                                 $('input[name="existing_amount"]').val(response
-                                .existing_amount);
+                                    .existing_amount);
                                 $('.btn[data-bs-toggle="collapse"]').prop('disabled', false);
                             } else {
                                 Swal.fire({
@@ -631,7 +655,7 @@
             $(document).on('click', '.add-shipment-amount .btn', function() {
                 let partNumber = $('#part_no').val();
                 let shippedAmount = parseFloat($('.add-shipment-amount input')
-            .val()); // Get the shipment amount entered
+                    .val()); // Get the shipment amount entered
                 if (isNaN(shippedAmount) || shippedAmount <= 0) {
                     alert("Please enter a valid shipment amount.");
                     return;
@@ -642,7 +666,7 @@
                 $("input[name^='edit_existing']").each(function() {
                     let $field = $(this);
                     let currentValue = parseFloat($field.val()) ||
-                    0; // Get the current value of the field (default to 0)
+                        0; // Get the current value of the field (default to 0)
                     let weekKey = $(this).data('edit-week-change');
                     fieldsData.push({
                         weekKey: weekKey,
@@ -696,7 +720,7 @@
                     if (field.value > 0) {
                         if (field.value >= shippedAmount) {
                             field.value -=
-                            shippedAmount; // Deduct shippedAmount from the current field's value
+                                shippedAmount; // Deduct shippedAmount from the current field's value
                             shippedAmount = 0; // Fully distributed
                         } else {
                             shippedAmount -= field.value; // Deduct the field's value from shippedAmount
