@@ -200,6 +200,8 @@
             $live_inventory_finish = \DB::table('inventory')->where('Part_No', $data->part_number)->whereIn('status', ['new', 'returned'])->where('location', '!=', 'WIP')->sum('container_qty');
             $live_inventory_wip = \DB::table('inventory')->where('Part_No', $data->part_number)->whereIn('status', ['new', 'returned'])->where('location', '=', 'WIP')->sum('container_qty');
             $in_stock_live = \DB::table('inventory')->where('Part_No', $data->part_number)->sum('weight');
+
+            $sumWeeks1To6 = $sumWeeks1To6 + ($data->weeks_months->past_due ?? 0)
         @endphp
 
         @foreach($region_2_column_configuration as $region_2_column_configuration_item)
@@ -231,7 +233,8 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" name="live_inventory_finish" id="live_inventory_finish"
                                    value="{{ $data->live_inventory_finish }}" data-id="{{ $data->id }}"
-                                   onkeyup="sendAjaxRequest('live_inventory_finish', this.value, event)">
+                                   onkeyup="sendAjaxRequest('live_inventory_finish', this.value, event)"
+                                   oninput="preventNegativeValue(this)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->out_source_one->in_process_outside }}</td>
@@ -244,7 +247,8 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="live_inventory_wip" id="live_inventory_wip"
                                    value="{{ $data->live_inventory_wip }}" data-id="{{ $data->id }}"
-                                   onkeyup="sendAjaxRequest('live_inventory_wip', this.value, event)">
+                                   onkeyup="sendAjaxRequest('live_inventory_wip', this.value, event)"
+                                   oninput="preventNegativeValue(this)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->live_inventory_wip }}</td>
@@ -282,7 +286,8 @@
                         <td class="toggleable-1" id="{{$data_target}}">
                             <input type="number" step="any" name="in_stock_live" id="in_stock_live"
                                 value="{{ $data->in_stock_live }}" data-id="{{ $data->id }}"
-                                onkeyup="sendAjaxRequest('in_stock_live', this.value, event)">
+                                onkeyup="sendAjaxRequest('in_stock_live', this.value, event)"
+                                oninput="preventNegativeValue(this)">
                         </td>
                     @else
                         <td class="toggleable-1" id="{{$data_target}}">{{ $data->in_stock_live }}</td>
@@ -293,8 +298,9 @@
                     @endphp
                     @if(Auth::user()->role == 1)
                         <td class="toggleable-1" id="{{$data_target}}">
-                            <input type="number" step="any" name="wt_pc" id="wt_pc"
+                            <input type="text" step="any" name="wt_pc" id="wt_pc"
                                 value="{{ $data->wt_pc }}" data-id="{{ $data->id }}"
+                                oninput="decimalPlaces(this)"
                                 onkeyup="sendAjaxRequest('wt_pc', this.value, event)">
                         </td>
                     @else
@@ -507,7 +513,8 @@
             <td class="toggleable-2">
                 <input type="number" step="any" name="price" id="price"
                     value="{{ $data->price }}" data-id="{{ $data->id }}"
-                    onkeyup="sendAjaxRequest('price', this.value, event)">
+                    onkeyup="sendAjaxRequest('price', this.value, event)"
+                    oninput="preventNegativeValue(this)">
             </td>
             <td class="toggleable-2">
                 <textarea name="notes" id="notes"
