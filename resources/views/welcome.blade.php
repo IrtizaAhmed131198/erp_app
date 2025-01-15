@@ -127,7 +127,16 @@
 
 @section('content')
     <section class="master-data-section">
-        <div class="container bg-colored">
+        <div class="container bg-colored pt-0">
+            <div class="row align-items-center custom-row justify-content-center">
+                <div class="col-lg-8 col-md-9 col-12">
+                    <div class="title">
+                        <h1 class="heading-1 text-center">
+                            Master Data
+                        </h1>
+                    </div>
+                </div>
+            </div>
             <div class="row align-items-base justify-content-end master-data-filter invoice-listing-select-bar">
                 <div class="col-xxl-3 col-xl-5 col-lg-5 col-md-12 col-12">
                     <div class="parent-filter" data-intro='Hello step one!'>

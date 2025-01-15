@@ -1126,9 +1126,12 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
     background: #719ff4;
 }
 
-.pagination {
+.parent-pagination .pagination {
     gap: 22px;
     font-weight: 600;
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
 .heading-1 {
@@ -1150,9 +1153,18 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 
 .pagination a {
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 9px;
     color: black;
     font-weight: 600;
     text-decoration: none;
+}
+
+.parent-pagination {
+    position: relative;
+    z-index: 0;
+}
+
+.title {
+    text-align: center;
 }
