@@ -251,15 +251,19 @@
                                     <tr>
                                         <td>Future Raw</td>
                                         <td>
-                                            <input type="text" name="future_raw" value="{{ $data->future_raw }}"
+                                            <input type="number" name="future_raw" value="{{ $data->future_raw }}"
                                                 id="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Price</td>
                                         <td>
-                                            <input type="number" step="any" name="price" value="{{ $data->price }}"
-                                                id="">
+{{--                                            <input type="number" step="any" name="price" value="{{ $data->price }}"--}}
+{{--                                                id="">--}}
+
+                                            <input type="text" step="any" name="price" id="price"
+                                                   value="{{ $data->price }}"
+                                                   oninput="decimalPlacesFour(this)">
                                         </td>
                                     </tr>
                                     <tr>
@@ -307,8 +311,11 @@
                                     <tr>
                                         <td>WT/PC</td>
                                         <td>
-                                            <input type="number" name="wt_pc" id="wt_pc"
-                                                value="{{ $data->wt_pc }}">
+{{--                                            <input type="number" name="wt_pc" id="wt_pc"--}}
+{{--                                                value="{{ $data->wt_pc }}">--}}
+                                            <input type="text" step="any" name="wt_pc" id="wt_pc"
+                                                   value="{{ $data->wt_pc }}"
+                                                   oninput="decimalPlaces(this)">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -322,6 +329,35 @@
 @endsection
 
 @section('js')
+    <script>
+        function decimalPlaces(element) {
+            let value = element.value;
+            value = value.replace(/[^0-9.]/g, '');
+
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts[1].slice(0, 3);
+            } else if (parts.length === 2 && parts[1].length > 3) {
+                value = parts[0] + '.' + parts[1].slice(0, 3);
+            }
+
+            element.value = value;
+        }
+
+        function decimalPlacesFour(element) {
+            let value = element.value;
+            value = value.replace(/[^0-9.]/g, ''); // Remove non-numeric and non-period characters
+
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts[1].slice(0, 4); // Limit to 4 decimal places
+            } else if (parts.length === 2 && parts[1].length > 4) {
+                value = parts[0] + '.' + parts[1].slice(0, 4); // Limit to 4 decimal places
+            }
+
+            element.value = value;
+        }
+    </script>
     @if ($errors->any())
         <script>
             Swal.fire({
