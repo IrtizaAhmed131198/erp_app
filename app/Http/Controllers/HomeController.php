@@ -267,6 +267,7 @@ class HomeController extends Controller
             'safety' => 'nullable',
             'min_ship' => 'nullable',
             'wt_pc' => 'required',
+            'currency' => 'required'
         ]);
 
         $existingEntry = Entries::where('customer', $validatedData['customer'])
@@ -374,6 +375,7 @@ class HomeController extends Controller
             'safety' => 'nullable',
             'min_ship' => 'nullable',
             'wt_pc' => 'required',
+            'currency' => 'required',
         ]);
 
         try {

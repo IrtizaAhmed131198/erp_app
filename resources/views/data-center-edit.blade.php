@@ -5,6 +5,17 @@
         .select2-selection__arrow {
             background-image: unset !important;
         }
+
+        .side_btn {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            gap: 20px;
+        }
+
+        .side_btn .custom-btn {
+            margin: unset;
+        }
     </style>
 @endsection
 
@@ -17,6 +28,10 @@
                     <div class="parent-table">
                         <form action="{{ route('post_data_center_update', ['id' => $data->id]) }}" method="POST">
                             @csrf
+                            <div class="btn-custom-btn text-center mb-3 side_btn">
+                                <button type="submit" class="btn custom-btn">Submit</button>
+                                <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
+                            </div>
                             <input type="hidden" name="id" value="{{ $data->id }}">
                             <table class="table table-hover table-bordered">
                                 <thead>
@@ -80,10 +95,12 @@
                                     <tr>
                                         <td>Department</td>
                                         <td>
-                                            <select class="js-select2 select2-hidden-accessible" name="department" tabindex="-1" aria-hidden="true">
+                                            <select class="js-select2 select2-hidden-accessible" name="department"
+                                                tabindex="-1" aria-hidden="true">
                                                 <option selected disabled>Select DEPARTMENT</option>
-                                                @foreach($department as $dept)
-                                                    <option value="{{ $dept->id }}" {{ $data->department == $dept->id ? 'selected' : '' }}>
+                                                @foreach ($department as $dept)
+                                                    <option value="{{ $dept->id }}"
+                                                        {{ $data->department == $dept->id ? 'selected' : '' }}>
                                                         {{ $dept->name }}
                                                     </option>
                                                 @endforeach
@@ -101,19 +118,27 @@
                                             $selected_value = null;
                                             $com_value = null;
 
-                                            if (in_array($work_centre_id, array_column($work_center, 'work_centre_id'))) {
-                                                $selected_work_centre = collect($work_center)->firstWhere('work_centre_id', $work_centre_id);
-                                                $selected_value = $work_center_select_map[$selected_work_centre['com']] ?? null;
+                                            if (
+                                                in_array($work_centre_id, array_column($work_center, 'work_centre_id'))
+                                            ) {
+                                                $selected_work_centre = collect($work_center)->firstWhere(
+                                                    'work_centre_id',
+                                                    $work_centre_id,
+                                                );
+                                                $selected_value =
+                                                    $work_center_select_map[$selected_work_centre['com']] ?? null;
                                             }
                                         @endphp
 
                                         <tr>
                                             <td>Work Centre {{ $i }}</td>
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible" name="{{ $work_centre_id }}" aria-label="Default select example">
+                                                <select class="js-select2 select2-hidden-accessible"
+                                                    name="{{ $work_centre_id }}" aria-label="Default select example">
                                                     <option value="" selected>Select</option>
                                                     @foreach ($work_center_select as $center)
-                                                        <option value="{{ $center['id'] }}" {{ $selected_value && $center['id'] == $selected_value['id'] ? 'selected' : '' }}>
+                                                        <option value="{{ $center['id'] }}"
+                                                            {{ $selected_value && $center['id'] == $selected_value['id'] ? 'selected' : '' }}>
                                                             {{ $center['name'] }}
                                                         </option>
                                                     @endforeach
@@ -135,8 +160,16 @@
                                             $outside_processing_id = 'outside_processing_' . $i;
                                             $selected_value = null;
 
-                                            if (in_array($outside_processing_id, array_column($out_source, 'outside_processing_id'))) {
-                                                $selected_out_source = collect($out_source)->firstWhere('outside_processing_id', $outside_processing_id);
+                                            if (
+                                                in_array(
+                                                    $outside_processing_id,
+                                                    array_column($out_source, 'outside_processing_id'),
+                                                )
+                                            ) {
+                                                $selected_out_source = collect($out_source)->firstWhere(
+                                                    'outside_processing_id',
+                                                    $outside_processing_id,
+                                                );
                                                 $selected_value = $vendor_map[$selected_out_source['out']] ?? null;
                                             }
                                         @endphp
@@ -145,15 +178,21 @@
                                             <td>Outside Processing {{ $i }}</td>
                                             <td>
                                                 <div class="parent-inputs">
-                                                    <select class="js-select2 select2-hidden-accessible" name="{{ $outside_processing_id }}" aria-label="Default select example">
+                                                    <select class="js-select2 select2-hidden-accessible"
+                                                        name="{{ $outside_processing_id }}"
+                                                        aria-label="Default select example">
                                                         <option value="" selected>Select</option>
                                                         @foreach ($vendor as $v)
-                                                            <option value="{{ $v->id }}" {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
+                                                            <option value="{{ $v->id }}"
+                                                                {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
                                                                 {{ $v->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="number" name="outside_processing_text_{{ $i }}" value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}" id="">
+                                                    <input type="text"
+                                                        name="outside_processing_text_{{ $i }}"
+                                                        value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
+                                                        id="">
                                                 </div>
                                             </td>
                                         </tr>
@@ -176,20 +215,20 @@
                                                     id=""> --}}
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>Pc Weight</td>
                                         <td>
                                             <input type="number" step="any" name="pc_weight"
                                                 value="{{ $data->pc_weight }}" id="">
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                    {{-- <tr>
                                         <td>Safety Stock</td>
                                         <td>
                                             <input type="number" step="any" name="safety_stock"
                                                 value="{{ $data->safety_stock }}" id="">
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td>MOQ</td>
                                         <td>
@@ -224,11 +263,27 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>REV</td>
+                                        <td>Currency</td>
                                         <td>
-                                            <input type="text" name="rev" id="rev" value="{{ $data->rev }}">
+                                            <select class="form-select js-select21" name="currency"
+                                                aria-label="Default select example">
+                                                <option selected disabled>Select Currency</option>
+                                                <option value="USD" {{ $data->currency == 'USD' ? 'selected' : '' }}>
+                                                    USD
+                                                </option>
+                                                <option value="CDN" {{ $data->currency == 'CDN' ? 'selected' : '' }}>
+                                                    CDN
+                                                </option>
+                                            </select>
                                         </td>
                                     </tr>
+                                    {{-- <tr>
+                                        <td>REV</td>
+                                        <td>
+                                            <input type="text" name="rev" id="rev"
+                                                value="{{ $data->rev }}">
+                                        </td>
+                                    </tr> --}}
                                     {{-- <tr>
                                         <td>Wt Req'd</td>
                                         <td>
@@ -236,28 +291,28 @@
                                         </td>
                                     </tr> --}}
                                     <tr>
-                                        <td>Safety</td>
+                                        <td>Safety Stock</td>
                                         <td>
-                                            <input type="text" name="safety" id="safety" value="{{ $data->safety }}">
+                                            <input type="text" name="safety" id="safety"
+                                                value="{{ $data->safety }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Minship</td>
                                         <td>
-                                            <input type="number" name="min_ship" id="min_ship" value="{{ $data->min_ship }}">
+                                            <input type="number" name="min_ship" id="min_ship"
+                                                value="{{ $data->min_ship }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>WT/PC</td>
                                         <td>
-                                            <input type="number" name="wt_pc" id="wt_pc" value="{{ $data->wt_pc }}">
+                                            <input type="number" name="wt_pc" id="wt_pc"
+                                                value="{{ $data->wt_pc }}">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="btn-custom-btn text-ceneter mt-5">
-                                <button type="submit" class="btn custom-btn">Submit</button>
-                            </div>
                         </form>
                     </div>
                 </div>

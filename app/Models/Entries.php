@@ -49,6 +49,7 @@ class Entries extends Model
         'safety',
         'min_ship',
         'wt_pc',
+        'currency'
     ];
 
     public function part()

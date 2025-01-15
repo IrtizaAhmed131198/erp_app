@@ -163,20 +163,20 @@
                                                     id=""> --}}
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>Pc Weight</td>
                                         <td>
                                             <input type="number" step="any" name="pc_weight"
                                                 value="{{ old('pc_weight') }}" id="">
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                    {{-- <tr>
                                         <td>Safety Stock</td>
                                         <td>
                                             <input type="number" step="any" name="safety_stock"
                                                 value="{{ old('safety_stock') }}" id="">
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td>MOQ</td>
                                         <td>
@@ -211,12 +211,27 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>Currency</td>
+                                        <td>
+                                            <select class="form-select js-select21" name="currency"
+                                                aria-label="Default select example">
+                                                <option selected disabled>Select Currency</option>
+                                                <option value="USD" {{ old('currency') == 'USD' ? 'selected' : '' }}>
+                                                    USD
+                                                </option>
+                                                <option value="CDN" {{ old('currency') == 'CDN' ? 'selected' : '' }}>
+                                                    CDN
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    {{-- <tr>
                                         <td>REV</td>
                                         <td>
                                             <input type="text" name="rev" id="rev"
                                                 value="{{ old('rev') }}">
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     {{-- <tr>
                                         <td>Wt Req'd</td>
                                         <td>
@@ -224,7 +239,7 @@
                                         </td>
                                     </tr> --}}
                                     <tr>
-                                        <td>Safety</td>
+                                        <td>Safety Stock</td>
                                         <td>
                                             <input type="text" name="safety" id="safety"
                                                 value="{{ old('safety') }}">
