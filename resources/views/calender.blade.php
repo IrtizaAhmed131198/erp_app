@@ -3,7 +3,7 @@
 @section('css')
     <style>
         div#collapseTwo table {
-            width: 30%;
+            /* width: 30%; */
         }
 
         .remove-width input {
@@ -13,6 +13,21 @@
         .add-btn-close .custom-btn {
             display: inline-block;
             margin: 30px 10px 30px 0;
+        }
+
+        .add-production-table {
+            width: 30% !important;
+        }
+
+        .side_btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .side_btn .custom-btn {
+            margin: unset;
         }
     </style>
 @endsection
@@ -62,24 +77,24 @@
                     <div class="d-flex justify-content-start mb-3 custom-data">
                         @if (Auth::user()->create_order == 1)
                             <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
-                                    onclick="updateHeadingText(this)">
+                                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
+                                onclick="updateHeadingText(this)">
                                 Create Order
                             </button>
                         @endif
 
                         @if (Auth::user()->stock_finished_column == 1)
                             <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
-                                    onclick="updateHeadingText(this)">
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                                onclick="updateHeadingText(this)">
                                 Add Production
                             </button>
                         @endif
 
                         @if (Auth::user()->calendar_column == 1)
                             <button class="btn btn-primary" id="btn-add-shipment" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
-                                    onclick="updateHeadingText(this)">
+                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                                onclick="updateHeadingText(this)">
                                 Add Shipment
                             </button>
                         @endif
@@ -89,8 +104,8 @@
                         <!-- First Collapsible Content -->
                         <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
-                                <div class="alert alert-success" role="alert" id="lastUpdateOrder">
-                                    Last updated information (date & user)
+                                <div class="alert alert-info" role="alert" id="lastUpdateOrder">
+                                    Last updated information:
                                 </div>
                                 <div class="col-lg-12">
                                     <table class="master-data-to-screen table table-hover table-striped">
@@ -107,7 +122,15 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="parent-table">
+
+                                <!-- add production form -->
+                                @include('partials.production_form')
+
+                                <div class="btn-custom-btn text-ceneter mt-5 side_btn">
+                                    <button type="button" id="create-order" class="btn custom-btn">Submit</button>
+                                    <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
+                                </div>
+                                <div class="parent-table parent-table-calender full-view-port mt-4">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr class="">
@@ -124,13 +147,25 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type='number' class='shipment-input'
+                                                        <input type='text' class='shipment-input'
                                                             data-week='week_{{ $week }}'
                                                             name='shipment[week_{{ $week }}]'
-                                                            id='week_{{ $week }}'>
+                                                            id='week_{{ $week }}'
+                                                            oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                 </tr>
                                             @endfor
+
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="">
+                                                <th scope="col">Weekly 1-18 weeks</th>
+                                                <th scope="col">Add amount of shipment</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
                                             @for ($month = 5; $month <= 12; $month++)
                                                 <tr>
@@ -140,19 +175,17 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type='number' class='shipment-input'
+                                                        <input type='text' class='shipment-input'
                                                             data-week='month_{{ $month }}'
                                                             name='shipment[month_{{ $month }}]'
-                                                            id='month_{{ $month }}'>
+                                                            id='month_{{ $month }}'
+                                                            oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                 </tr>
                                             @endfor
 
                                         </tbody>
                                     </table>
-                                    <div class="btn-custom-btn text-ceneter mt-5">
-                                        <button type="button" id="create-order" class="btn custom-btn">Submit</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -160,8 +193,8 @@
                         <!-- Second Collapsible Content -->
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
-                                <div class="alert alert-success" role="alert" id="lastUpdateProduction">
-                                    Last updated information (date & user)
+                                <div class="alert alert-info" role="alert" id="lastUpdateProduction">
+                                    Last updated information:
                                 </div>
                                 <div class="col-lg-12">
                                     <table class="master-data-to-screen table table-hover table-striped">
@@ -178,45 +211,17 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="parent-table">
-                                    <div class="btn-custom-btn add-btn-close text-ceneter">
-                                        <button type="button" id="submit-production" class="btn custom-btn">Submit</button>
-                                        <button type="button" class="btn custom-btn"
-                                            onclick="window.location.href='{{ route('calender') }}'">Cancel</button>
-                                    </div>
-                                    <table class="table table-hover remove-width">
-                                        <thead>
-                                            <tr class="">
-                                                <th scope="col">Existing Amount</th>
-                                                <td> <input type="text" name="existing_amount" id="existing_amount"
-                                                        readonly oninput="formatNumberWithCommas(this)"></td>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Add Production</td>
-                                                <td> <input type="text" name="add_production" id="add_production"
-                                                        min="0" oninput="formatNumberWithCommas(this)"></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>New Total</td>
-
-                                                <td><input type="text" name="new_total" id="new_total" readonly oninput="formatNumberWithCommas(this)"></td>
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <!-- add production form -->
+                                @include('partials.production_form')
                             </div>
                         </div>
 
                         <!-- Third Collapsible Content -->
                         <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
-                                <div class="alert alert-success" role="alert" id="lastUpdateShipment">
-                                    Last updated information (date & user)
+                                <div class="alert alert-info" role="alert" id="lastUpdateShipment">
+                                    Last updated information:
                                 </div>
                                 <div class="col-lg-12">
                                     <table class="master-data-to-screen table table-hover table-striped">
@@ -232,82 +237,74 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="parent-table">
-                                    <div class="add-shipment-amount">
-                                        <input type="number" name="" id=""
-                                            placeholder="Add Shipment Amount">
-                                        <button class="btn btn-primary">Add</button>
-                                    </div>
+
+                                <!-- add production form -->
+                                @include('partials.production_form')
+
+                                <div class="add-shipment-amount">
+                                    <input type="number" name="" id=""
+                                        placeholder="Add Shipment Amount">
+                                    <button class="btn btn-primary">Add</button>
+                                </div>
+
+                                <div class="btn-custom-btn text-ceneter mt-5 side_btn">
+                                    <button type="button" id="add-shipment" class="btn custom-btn">Submit</button>
+                                    <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
+                                </div>
+
+                                <div class="parent-table parent-table-calender full-view-port mt-4">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
                                                 <th scope="col">Existing</th>
-                                                <th scope="col">Change</th>
+                                                {{-- <th scope="col">Change</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>Past Due</td>
-                                                <td id="past_due_val"></td>
+                                                {{-- <td id="past_due_val"></td> --}}
                                                 <td>
-                                                    <input type="text" name="past_due" id="past_due">
+                                                    <input type="text" name="past_due" class="past_due_val"
+                                                        id="past_due">
                                                     <button type="button" id="change_past_due" style="display: none;"><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 </td>
                                             </tr>
-                                            {{-- @php
-                                                $data = App\Models\Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-                                            @endphp --}}
                                             @php
                                                 $datesArray = [];
 
-                                                // Calculate the start date of week 16
+                                                // Calculate the start date of the current week (Monday)
                                                 $today = date('Y-m-d');
                                                 $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-                                                $mondayOfWeek = date(
-                                                    'Y-m-d',
-                                                    strtotime('-' . $dayOfWeek . ' days', strtotime($today)),
-                                                );
-                                                $week16StartDate = date(
-                                                    'Y-m-d',
-                                                    strtotime('+15 weeks', strtotime($mondayOfWeek)),
-                                                );
+                                                $mondayOfWeek = $dayOfWeek == 0
+                                                    ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                                                    : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today))); // Else, go back to Monday
+
+                                                // Calculate the start date of week 16
+                                                $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
                                                 // Calculate the end date of week 16
-                                                $week16EndDate = date(
-                                                    'Y-m-d',
-                                                    strtotime('+6 days', strtotime($week16StartDate)),
-                                                );
+                                                $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
 
                                                 // Calculate the start date of month 5 (the day after week 16 ends)
-                                                $month5StartDate = date(
-                                                    'Y-m-d',
-                                                    strtotime('+1 day', strtotime($week16EndDate)),
-                                                );
-
+                                                $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
                                             @endphp
 
                                             @for ($week = 1; $week <= 16; $week++)
                                                 @php
                                                     $startOfWeek = date(
                                                         'Y-m-d',
-                                                        strtotime(
-                                                            '+' . ($week - 1) * 7 . ' days',
-                                                            strtotime($mondayOfWeek),
-                                                        ),
+                                                        strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))
                                                     );
-                                                    $endOfWeek = date(
-                                                        'Y-m-d',
-                                                        strtotime('+6 days', strtotime($startOfWeek)),
-                                                    );
+                                                    $endOfWeek = date('Y-m-d', strtotime('+6 days', strtotime($startOfWeek)));
                                                     $datesArray["week_$week"] = $startOfWeek;
                                                 @endphp
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Week {{ $week }} ({{ $startOfWeek }} -
-                                                                {{ $endOfWeek }})</span>
+                                                            <span>Week {{ $week }} ({{ $startOfWeek }} - {{ $endOfWeek }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -316,7 +313,7 @@
                                                             name='edit_existing[week_{{ $week }}]'
                                                             id='edit_week_{{ $week }}'>
                                                     </td>
-                                                    <td>
+                                                    <td style="display: none;">
                                                         <input type="number" class='change-amount'
                                                             data-week-change='week_{{ $week }}'
                                                             name="change_amount[week_{{ $week }}]"
@@ -324,13 +321,26 @@
                                                     </td>
                                                 </tr>
                                             @endfor
+                                            {{-- @dump($datesArray); --}}
 
+
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="">
+                                                <th scope="col">Weekly 1-18 weeks</th>
+                                                <th scope="col">Existing</th>
+                                                {{-- <th scope="col">Change</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             @for ($month = 5; $month <= 12; $month++)
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Month {{ $month }} ({{ $month5StartDate }} -
-                                                                {{ date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate))) }})</span>
+                                                            <span>Month {{ $month }} ({{ $month5StartDate }} - {{ date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate))) }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -339,7 +349,7 @@
                                                             name='edit_existing[month_{{ $month }}]'
                                                             id='edit_month_{{ $month }}'>
                                                     </td>
-                                                    <td>
+                                                    <td style="display: none;">
                                                         <input type="number" class='change-amount'
                                                             data-week-change='month_{{ $month }}'
                                                             name="change_amount[month_{{ $month }}]"
@@ -348,20 +358,12 @@
                                                 </tr>
                                                 @php
                                                     $datesArray["month_$month"] = $month5StartDate;
-                                                    $month5StartDate = date(
-                                                        'Y-m-d',
-                                                        strtotime('+31 days', strtotime($month5StartDate)),
-                                                    );
+                                                    $month5StartDate = date('Y-m-d', strtotime('+31 days', strtotime($month5StartDate)));
                                                 @endphp
                                             @endfor
-                                            {{-- @dump($datesArray); --}}
-
 
                                         </tbody>
                                     </table>
-                                    <div class="btn-custom-btn text-ceneter mt-5">
-                                        <button type="button" id="add-shipment" class="btn custom-btn">Submit</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -387,7 +389,6 @@
         }
 
         $('#btn-add-shipment').on('click', function() {
-            console.log(123);
             let partNumber = $('#part_no').val();
             $.ajax({
                 url: "{{ route('get_weeks') }}", // Replace with your backend route
@@ -441,7 +442,7 @@
                                 console.log('Total Past Value:', response.totalPastValue);
                                 // alert(response.message);
                                 let data = response.data;
-                                $('#past_due_val').text(response.past_due_val);
+                                $('.past_due_val').val(response.past_due_val);
                                 // Iterate through the response data object
                                 for (let key in data) {
                                     let value = data[key];
@@ -498,7 +499,7 @@
                                         <td>${response.part_notes}</td>
                                     </tr>
                                 `);
-                                $('.alert-success').text(`Last updated information: ${response.last_update_user} by ${response.last_update_date}`);
+                                // $('.alert-info').text(`Last updated information: ${response.last_update_user} by ${response.last_update_date}`);
                             } else {
                                 Swal.fire({
                                     icon: 'info',
@@ -518,6 +519,67 @@
                             });
                         }
                     });
+
+                    $.ajax({
+                        url: "{{ url('create-shipment-order-not') }}/" +
+                        selectedPartNumber, // Endpoint to handle data storage
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.last_update_user != null && response
+                                .last_update_date != null) {
+                                $('#lastUpdateOrder').text(
+                                    `Last updated information: ${response.last_update_user} by ${response.last_update_date}`
+                                    );
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error saving data:', error);
+                        }
+                    });
+
+                    $.ajax({
+                        url: "{{ url('update-production-total-not') }}/" +
+                        selectedPartNumber, // Endpoint to handle data storage
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.last_update_user != null && response
+                                .last_update_date != null) {
+                                $('#lastUpdateProduction').text(
+                                    `Last updated information: ${response.last_update_user} by ${response.last_update_date}`
+                                    );
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error saving data:', error);
+                        }
+                    });
+
+                    $.ajax({
+                        url: "{{ url('add-shipment-not') }}/" +
+                        selectedPartNumber, // Endpoint to handle data storage
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.last_update_user != null && response
+                                .last_update_date != null) {
+                                $('#lastUpdateShipment').text(
+                                    `Last updated information: ${response.last_update_user} by ${response.last_update_date}`
+                                    );
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error saving data:', error);
+                        }
+                    });
+
                 } else {
                     $('.btn[data-bs-toggle="collapse"]').prop('disabled', true);
                 }
@@ -529,7 +591,7 @@
                 $('#partNumberSelect').val(partNumberFromUrl).trigger('change');
             }
 
-            $('#submit-production').on('click', function() {
+            $('.submit-production').on('click', function() {
                 const existingAmount = parseFloat($('#existing_amount').val().replace(/,/g, '')) || 0;
                 const addProduction = parseFloat($('#add_production').val().replace(/,/g, '')) || 0;
 
@@ -551,6 +613,7 @@
                     },
                     success: function(response) {
                         $('#new_total').val(response.new_total);
+                        window.location.reload();
                     },
                     error: function(xhr) {
                         console.error("Error updating total: ", xhr.responseText);
@@ -652,8 +715,8 @@
             $('#add-shipment').on('click', function() {
                 let weeksData = {};
 
-                $('.change-amount').each(function() {
-                    const weekKey = $(this).data('week-change');
+                $('.edit_existing').each(function() {
+                    const weekKey = $(this).data('edit-week-change');
                     const weekValue = $(this).val();
                     weeksData[`${weekKey}`] = weekValue;
                 });
@@ -718,6 +781,15 @@
 
                 // Collect values from input fields with names starting with 'edit_existing'
                 let fieldsData = [];
+
+                let pastDueField = $('#past_due');
+                let pastDueValue = parseFloat(pastDueField.val()) || 0;
+
+                fieldsData.push({
+                    weekKey: 'past_due', // Unique key for the past_due field
+                    value: pastDueValue
+                });
+
                 $("input[name^='edit_existing']").each(function() {
                     let $field = $(this);
                     let currentValue = parseFloat($field.val()) ||
@@ -735,9 +807,17 @@
 
                 // If any amount remains undistributed, alert the user
                 if (shippedAmount > 0) {
-                    alert("Remaining shipment amount: " + shippedAmount);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Remaining shipment amount',
+                        text: "Remaining shipment amount: " + shippedAmount,
+                    });
                 } else {
-                    alert("Shipment amount distributed successfully.");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Shipment amount',
+                        text: "Shipment amount distributed successfully.",
+                    });
 
                     // Send data to server-side script for saving in database
                     $.ajax({
@@ -754,6 +834,7 @@
                             console.log('Data saved successfully:', response);
                             let data = response.data;
                             // Iterate through the response data object
+                            $('#past_due').val(data['past_due']);
                             for (let key in data) {
                                 let value = data[key];
 
@@ -807,7 +888,7 @@
                     },
                     success: function(response) {
                         // console.log('Data saved successfully:', response);
-                        $('#past_due_val').text(response.past_due ?? '');
+                        $('.past_due_val').val(response.past_due ?? '');
                     },
                     error: function(error) {
                         console.error('Error saving data:', error);

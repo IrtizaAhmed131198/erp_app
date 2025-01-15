@@ -54,6 +54,10 @@ Route::middleware(['auth', 'config.check'])->group(function () {
 
     Route::post('save-user-configuration', [HomeController::class, 'saveUserConfiguration'])->name('save.user.configuration');
 
+    Route::get('create-shipment-order-not/{id}', [HomeController::class, 'create_shipment_order_not'])->name('create_shipment_order_not');
+    Route::get('update-production-total-not/{id}', [HomeController::class, 'update_production_total_not'])->name('update_production_total_not');
+    Route::get('add-shipment-not/{id}', [HomeController::class, 'add_shipment_not'])->name('add_shipment_not');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');

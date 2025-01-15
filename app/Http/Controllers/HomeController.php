@@ -219,6 +219,11 @@ class HomeController extends Controller
         if (Auth::user()->role != 1) {
             abort(403, 'You do not have permission to access this resource.');
         }
+        $last_activity = Notification::with('user')
+            ->where('type', 'update_entries')
+            ->where('reference_id', $id)
+            ->orderBy('id', 'desc')
+            ->first();
         $data = Entries::with('work_center', 'out_source')->where('id', $id)->first();
         $parts = Parts::all();
         $customer = DB::table('customers')->get();
@@ -226,7 +231,7 @@ class HomeController extends Controller
         $department = Department::get();
         $work_center_select = WorkCenterSelec::get();
         $vendor = Vendor::get();
-        return view('data-center-edit', compact('data', 'parts', 'customer', 'material', 'department', 'work_center_select', 'vendor'));
+        return view('data-center-edit', compact('data', 'parts', 'customer', 'material', 'department', 'work_center_select', 'vendor', 'last_activity'));
     }
 
     public function post_data_center(Request $request)
@@ -481,6 +486,7 @@ class HomeController extends Controller
             'Month 11',
             'Month 12'
         ];
+
         return view('calender', compact('parts', 'weeks'));
     }
 
@@ -720,6 +726,93 @@ class HomeController extends Controller
         ]);
     }
 
+    public function create_shipment_order_not($id)
+    {
+        $create_shipment_order = Notification::with('user')
+                                    ->where('type', 'create_shipment_order')
+                                    ->where('reference_id', $id)
+                                    ->orderBy('id', 'desc')
+                                    ->first();
+
+        if(!$create_shipment_order){
+            return response()->json([
+                'last_update_user' => null,
+                'last_update_date' => null,
+            ]);
+        }
+
+        $last_update_user = $create_shipment_order->user->name ?? null;
+        $last_update_date = is_null($create_shipment_order->updated_at) ? $create_shipment_order->created_at : $create_shipment_order->updated_at;
+        if (!is_null($last_update_user)) {
+            $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+        }else{
+            $date_string = null;
+        }
+
+        return response()->json([
+            'last_update_user' => $last_update_user,
+            'last_update_date' => $date_string,
+        ]);
+    }
+
+    public function update_production_total_not($id)
+    {
+        $update_production_total = Notification::with('user')
+                                    ->where('type', 'update_production_total')
+                                    ->where('reference_id', $id)
+                                    ->orderBy('id', 'desc')
+                                    ->first();
+
+        if(!$update_production_total){
+            return response()->json([
+                'last_update_user' => null,
+                'last_update_date' => null,
+            ]);
+        }
+
+        $last_update_user = $update_production_total->user->name ?? null;
+        $last_update_date = is_null($update_production_total->updated_at) ? $update_production_total->created_at : $update_production_total->updated_at;
+        if (!is_null($last_update_user)) {
+            $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+        }else{
+            $date_string = null;
+        }
+
+        return response()->json([
+            'last_update_user' => $last_update_user,
+            'last_update_date' => $date_string,
+        ]);
+    }
+
+    public function add_shipment_not($id)
+    {
+        $add_shipment = Notification::with('user')
+                                    ->where('type', 'add_shipment')
+                                    ->where('reference_id', $id)
+                                    ->orderBy('id', 'desc')
+                                    ->first();
+
+        if(!$add_shipment){
+            return response()->json([
+                'last_update_user' => null,
+                'last_update_date' => null,
+            ]);
+        }
+
+        $last_update_user = $add_shipment->user->name ?? null;
+        $last_update_date = is_null($add_shipment->updated_at) ? $add_shipment->created_at : $add_shipment->updated_at;
+        if (!is_null($last_update_user)) {
+            $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+        }else{
+            $date_string = null;
+        }
+
+        return response()->json([
+            'last_update_user' => $last_update_user,
+            'last_update_date' => $date_string,
+        ]);
+    }
+
     public function update_production_total(Request $request)
     {
         $existingAmount = $request->input('existing_amount');
@@ -732,6 +825,8 @@ class HomeController extends Controller
         $data->in_stock_finish = $newTotal;
         $data->last_updated_by = Auth::user()->id;
         $data->save();
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no);
 
         return response()->json([
             'message' => 'Production total updated successfully!',
@@ -759,16 +854,17 @@ class HomeController extends Controller
         $temp = $this->getWeekArr(date('Y-m-d'));
 
         foreach ($request->weeks as $key => $value) {
-            $data->$key = $value;
+            $data->$key = (float) str_replace(',', '', $value);
             $data->{$key . '_date'} = $temp[$key];
         }
         $data->save();
 
         $part = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
         $part->filter = 'pending';
+        $part->last_updated_by = Auth::user()->id;
         $part->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.'], 'weeks', $data->id);
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.'], 'entries', $data->id);
 
         return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
     }
@@ -782,6 +878,7 @@ class HomeController extends Controller
         ]);
 
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         foreach ($request->weeks as $key => $value) {
             if ($value != '' && $value != null) {
@@ -789,6 +886,8 @@ class HomeController extends Controller
             }
         }
         $data->save();
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'add_shipment', ['message' => 'Shipment Added.'], 'entries', $request->part_number);
 
         return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
     }
@@ -948,8 +1047,13 @@ class HomeController extends Controller
 
         foreach ($request->shipmentData as $shipment) {
             if ($shipment['value'] != '' && $shipment['value'] != null) {
-                // Assuming that $shipment->weekKey is a valid column in your Weeks table
-                $data->{$shipment['weekKey']} = $shipment['value'];
+                if ($shipment['weekKey'] === 'past_due') {
+                    // Update the past_due field in another table (e.g., PastDueTable)
+                    $data->past_due = $shipment['value'];
+                } else {
+                    // Update fields in the Weeks table
+                    $data->{$shipment['weekKey']} = $shipment['value'];
+                }
             }
         }
         $data->save();

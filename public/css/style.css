@@ -1168,3 +1168,19 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 .title {
     text-align: center;
 }
+
+.parent-table-calender {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+}
+
+.parent-table-calender.full-view-port {
+    height: 100vh;
+    overflow: unset;
+    padding: 0;
+}
+
+.parent-table-calender.full-view-port td {
+    padding: 4px 16px;
+}
