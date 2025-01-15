@@ -58,11 +58,12 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('update-production-total-not/{id}', [HomeController::class, 'update_production_total_not'])->name('update_production_total_not');
     Route::get('add-shipment-not/{id}', [HomeController::class, 'add_shipment_not'])->name('add_shipment_not');
 
+    Route::post('signin', [LoginController::class, 'signin'])->name('signin');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');
 Route::post('loginuser', [LoginController::class, 'loginuser'])->name('loginuser');
-Route::post('signin', [LoginController::class, 'signin'])->name('signin');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 

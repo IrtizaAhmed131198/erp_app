@@ -691,7 +691,7 @@ class HomeController extends Controller
 
     public function add_user()
     {
-        if (auth()->user()->role == 1) {
+        if (Auth::user()->user_maintenance == 1) {
             return view('add-user');
         }
         return redirect()->route('index');

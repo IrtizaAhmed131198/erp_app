@@ -31,6 +31,7 @@ class LoginController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
+            'add_by' => Auth::user()->id,
             'department' => $request->input('department'),
             'phone' => $request->input('phone'),
             'user_img' => $imagename ?? null,

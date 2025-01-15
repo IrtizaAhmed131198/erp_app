@@ -76,7 +76,7 @@
                                             @if (auth()->check())
                                                 <li><a class="dropdown-item" href="{{ route('index') }}">Master Data</a>
                                                 </li>
-                                                @if(Auth::user()->role == 1)
+                                                @if(Auth::user()->user_maintenance == 1)
                                                 <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('add_user') }}">Add User</a>

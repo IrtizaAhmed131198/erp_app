@@ -4,15 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('user.maintenance');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = User::where('role', 2)->get();
+        if(Auth::user()->role == 1){
+            $data = User::where('role', 2)->get();
+        }else{
+            $data = User::where('role', 2)->where('add_by', Auth::user()->id)->get();
+        }
         return view('users.index', compact('data'));
     }
 
