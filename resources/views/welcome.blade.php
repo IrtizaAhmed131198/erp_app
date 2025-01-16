@@ -399,6 +399,10 @@
                                         <i class="fas fa-floppy-disk text-white"></i>
                                         Save changes
                                     </span>
+                                    <span class="badge bg-danger" id="reset-columns" style="cursor: pointer;">
+                                        <i class="fas fa-floppy-disk text-white"></i>
+                                        Reset changes
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -550,6 +554,52 @@
 
                 window.location.reload();
 
+            });
+
+            //reset changes
+            $('#reset-columns').on('click', function () {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will reset all column configurations to default!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, reset it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route("reset.user.configuration") }}',
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: (data) => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: data.message
+                                    });
+
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: data.message
+                                    });
+                                }
+                            },
+                            error: (e) => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'An unexpected error occurred.'
+                                });
+                            }
+                        });
+                    }
+                });
             });
 
             //target cell feature

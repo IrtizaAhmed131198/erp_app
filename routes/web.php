@@ -53,6 +53,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::delete('users-delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::post('save-user-configuration', [HomeController::class, 'saveUserConfiguration'])->name('save.user.configuration');
+    Route::post('reset-user-configuration', [HomeController::class, 'resetUserConfiguration'])->name('reset.user.configuration');
 
     Route::get('create-shipment-order-not/{id}', [HomeController::class, 'create_shipment_order_not'])->name('create_shipment_order_not');
     Route::get('update-production-total-not/{id}', [HomeController::class, 'update_production_total_not'])->name('update_production_total_not');
