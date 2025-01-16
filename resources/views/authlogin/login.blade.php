@@ -102,6 +102,7 @@
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
@@ -113,6 +114,30 @@
             });
         });
     </script>
+
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            window.location.href = "{{ url()->previous() }}"; // Redirect back
+        });
+    </script>
+    @endif
+
+    @if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
 
 </body>
 
