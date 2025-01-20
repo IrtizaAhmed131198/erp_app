@@ -79,7 +79,7 @@
                             <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
                                 onclick="updateHeadingText(this)">
-                                Create Order
+                                Create/Update Order
                             </button>
                         @endif
 
@@ -136,6 +136,7 @@
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
                                                 <th scope="col">Add amount of shipment</th>
+                                                <th scope="col">Update</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -153,6 +154,13 @@
                                                             id='week_{{ $week }}'
                                                             oninput="formatNumberWithCommas(this)">
                                                     </td>
+                                                    <td>
+                                                        <input type='text' class='shipment-input-two'
+                                                            data-week-two='week_{{ $week }}'
+                                                            name='shipment[week_two_{{ $week }}]'
+                                                            id='week_two_{{ $week }}'
+                                                            oninput="formatNumberWithCommas(this)">
+                                                    </td>
                                                 </tr>
                                             @endfor
 
@@ -163,6 +171,7 @@
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
                                                 <th scope="col">Add amount of shipment</th>
+                                                <th scope="col">Update</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -179,6 +188,13 @@
                                                             data-week='month_{{ $month }}'
                                                             name='shipment[month_{{ $month }}]'
                                                             id='month_{{ $month }}'
+                                                            oninput="formatNumberWithCommas(this)">
+                                                    </td>
+                                                    <td>
+                                                        <input type='text' class='shipment-input-two'
+                                                            data-week-two='month__{{ $month }}'
+                                                            name='shipment[month__two_{{ $month }}]'
+                                                            id='month__two_{{ $month }}'
                                                             oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                 </tr>
