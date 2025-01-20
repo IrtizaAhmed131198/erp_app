@@ -103,7 +103,7 @@
                     <div class="accordion" id="mainAccordion">
                         <!-- First Collapsible Content -->
                         <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
-                            <div class="accordion-body">
+                            <div class="accordion-body px-0">
                                 <div class="alert alert-info" role="alert" id="lastUpdateOrder">
                                     Last updated information:
                                 </div>
