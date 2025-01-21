@@ -294,33 +294,56 @@
                                                 // Calculate the start date of the current week (Monday)
                                                 $today = date('Y-m-d');
                                                 $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-                                                $mondayOfWeek = $dayOfWeek == 0
-                                                    ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
-                                                    : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today))); // Else, go back to Monday
+                                                $mondayOfWeek =
+                                                    $dayOfWeek == 0
+                                                        ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                                                        : date(
+                                                            'Y-m-d',
+                                                            strtotime(
+                                                                '-' . ($dayOfWeek - 1) . ' days',
+                                                                strtotime($today),
+                                                            ),
+                                                        ); // Else, go back to Monday
 
                                                 // Calculate the start date of week 16
-                                                $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+                                                $week16StartDate = date(
+                                                    'Y-m-d',
+                                                    strtotime('+15 weeks', strtotime($mondayOfWeek)),
+                                                );
 
                                                 // Calculate the end date of week 16
-                                                $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+                                                $week16EndDate = date(
+                                                    'Y-m-d',
+                                                    strtotime('+6 days', strtotime($week16StartDate)),
+                                                );
 
                                                 // Calculate the start date of month 5 (the day after week 16 ends)
-                                                $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+                                                $month5StartDate = date(
+                                                    'Y-m-d',
+                                                    strtotime('+1 day', strtotime($week16EndDate)),
+                                                );
                                             @endphp
 
                                             @for ($week = 1; $week <= 16; $week++)
                                                 @php
                                                     $startOfWeek = date(
                                                         'Y-m-d',
-                                                        strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))
+                                                        strtotime(
+                                                            '+' . ($week - 1) * 7 . ' days',
+                                                            strtotime($mondayOfWeek),
+                                                        ),
                                                     );
-                                                    $endOfWeek = date('Y-m-d', strtotime('+6 days', strtotime($startOfWeek)));
+                                                    $endOfWeek = date(
+                                                        'Y-m-d',
+                                                        strtotime('+6 days', strtotime($startOfWeek)),
+                                                    );
                                                     $datesArray["week_$week"] = $startOfWeek;
                                                 @endphp
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Week {{ $week }} ({{ $startOfWeek }} - {{ $endOfWeek }})</span>
+                                                            <span>Week {{ $week }} ({{ $startOfWeek }} -
+                                                                {{ $endOfWeek }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -356,7 +379,8 @@
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Month {{ $month }} ({{ $month5StartDate }} - {{ date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate))) }})</span>
+                                                            <span>Month {{ $month }} ({{ $month5StartDate }} -
+                                                                {{ date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate))) }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -374,7 +398,10 @@
                                                 </tr>
                                                 @php
                                                     $datesArray["month_$month"] = $month5StartDate;
-                                                    $month5StartDate = date('Y-m-d', strtotime('+31 days', strtotime($month5StartDate)));
+                                                    $month5StartDate = date(
+                                                        'Y-m-d',
+                                                        strtotime('+31 days', strtotime($month5StartDate)),
+                                                    );
                                                 @endphp
                                             @endfor
 
@@ -506,7 +533,8 @@
                                 let existingAmount = parseFloat(response.existing_amount);
 
                                 $('input[name="existing_amount"]').val(
-                                    isNaN(existingAmount) ? '0' : existingAmount.toLocaleString()
+                                    isNaN(existingAmount) ? '0' : existingAmount
+                                    .toLocaleString()
                                 );
                                 $('.btn[data-bs-toggle="collapse"]').prop('disabled', false);
                                 $('.table-data').append(`
@@ -540,7 +568,7 @@
 
                     $.ajax({
                         url: "{{ url('create-shipment-order-not') }}/" +
-                        selectedPartNumber, // Endpoint to handle data storage
+                            selectedPartNumber, // Endpoint to handle data storage
                         method: 'GET',
                         headers: {
                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -550,7 +578,7 @@
                                 .last_update_date != null) {
                                 $('#lastUpdateOrder').text(
                                     `Last updated information: ${response.last_update_user} by ${response.last_update_date}`
-                                    );
+                                );
                             }
                         },
                         error: function(error) {
@@ -560,7 +588,7 @@
 
                     $.ajax({
                         url: "{{ url('update-production-total-not') }}/" +
-                        selectedPartNumber, // Endpoint to handle data storage
+                            selectedPartNumber, // Endpoint to handle data storage
                         method: 'GET',
                         headers: {
                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -570,7 +598,7 @@
                                 .last_update_date != null) {
                                 $('#lastUpdateProduction').text(
                                     `Last updated information: ${response.last_update_user} by ${response.last_update_date}`
-                                    );
+                                );
                             }
                         },
                         error: function(error) {
@@ -580,7 +608,7 @@
 
                     $.ajax({
                         url: "{{ url('add-shipment-not') }}/" +
-                        selectedPartNumber, // Endpoint to handle data storage
+                            selectedPartNumber, // Endpoint to handle data storage
                         method: 'GET',
                         headers: {
                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -590,7 +618,7 @@
                                 .last_update_date != null) {
                                 $('#lastUpdateShipment').text(
                                     `Last updated information: ${response.last_update_user} by ${response.last_update_date}`
-                                    );
+                                );
                             }
                         },
                         error: function(error) {
