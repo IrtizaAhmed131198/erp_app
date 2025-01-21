@@ -137,6 +137,25 @@
     @yield('js')
 
     <script>
+        function formatAndPreventNegative(element) {
+            // Remove non-numeric characters except for the decimal point
+            let value = element.value.replace(/[^0-9.]/g, '');
+
+            // Prevent negative values
+            if (value.startsWith('-')) {
+                value = value.replace('-', '');
+            }
+
+            // Split the value into integer and decimal parts
+            const parts = value.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas to the integer part
+
+            // Rejoin the integer and decimal parts
+            element.value = parts.join('.');
+        }
+    </script>
+
+    <script>
         $(document).ready(function() {
             $(".js-select2").select2({
                 closeOnSelect: true

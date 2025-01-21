@@ -718,7 +718,9 @@
 
             const isDropdown = inputElement.tagName === 'SELECT';
 
-            if (field === 'planning') {
+            if (field === 'planning' || field === 'live_inventory_wip'
+                || field === 'live_inventory_finish' || field === 'in_stock_live' || 'wt_pc'
+                || field === 'min_ship') {
                 const isNumeric = /^-?\d+(,\d{3})*(\.\d+)?$/.test(value);
 
                 if (isNumeric) {
