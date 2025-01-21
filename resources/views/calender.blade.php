@@ -502,9 +502,11 @@
                             part_number: selectedPartNumber
                         }, // Send part number as data
                         success: function(response) {
-                            if (response.existing_amount) {
+                            if (response.success) {
+                                let existingAmount = parseFloat(response.existing_amount);
+
                                 $('input[name="existing_amount"]').val(
-                                    parseFloat(response.existing_amount).toLocaleString()
+                                    isNaN(existingAmount) ? '0' : existingAmount.toLocaleString()
                                 );
                                 $('.btn[data-bs-toggle="collapse"]').prop('disabled', false);
                                 $('.table-data').append(`

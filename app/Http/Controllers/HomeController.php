@@ -716,6 +716,7 @@ class HomeController extends Controller
         }
 
         return response()->json([
+            'success' => true,
             'existing_amount' => $entries->in_stock_finish,
             'revision' => $entries->revision,
             'safety' => $entries->safety,
