@@ -120,7 +120,6 @@
         .simple-textarea:focus {
             outline: none;
         }
-
     </style>
 @endsection
 
@@ -204,116 +203,118 @@
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr class="colored-table-row">
-                                    @if(Auth::user()->View_1 == 1)
-                                    <th scope="col" class="highlighted toggle-header">
-                                        <span class="icon">▼</span>
-                                    </th>
-
-                                    @foreach($region_1_column_configuration as $region_1_column_configuration_item)
-                                        <th scope="col" id="column-department" class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}>
-                                            {{strtoupper(get_column_label($region_1_column_configuration_item->column))}}
+                                    @if (Auth::user()->View_1 == 1)
+                                        <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
                                         </th>
-                                    @endforeach
-                                    @endif
-{{--                                    <th scope="col" id="column-department" class="toggleable toggle-header-department">--}}
-{{--                                        DEPARTMENT--}}
-{{--                                        <span class="icon">▼</span>--}}
-{{--                                    </th>--}}
-{{--                                    <th scope="col" id="column-work-center" class="toggleable toggle-header-department toggle-header-work-center">WORK CENTER <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" id="column-status" class="toggleable toggle-header-department toggle-header-status">PLANNING (QUEUE) <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">STATUS <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">JOB # <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">LOT # <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">ID <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">PART NO. <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">CUSTOMER <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">REV <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-                                    @if(Auth::user()->View_2 == 1)
-                                    <th scope="col" class="highlighted toggle-header-1">
-                                        <span class="icon">▼
-                                        </span>
-                                    </th>
 
-                                    @foreach($region_2_column_configuration as $region_2_column_configuration_item)
-                                        <th scope="col" id="column-department" class="toggleable-1 toggle-header-department" {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}>
-                                            {{strtoupper(get_column_label($region_2_column_configuration_item->column))}}
-                                            <span class="icon">▼</span>
-                                        </th>
-                                    @endforeach
+                                        @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
+                                            <th scope="col" id="column-department"
+                                                class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                                {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
+                                                <span class="icon">▼</span>
+                                            </th>
+                                        @endforeach
                                     @endif
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">SCHED'L TOTAL <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department">IN STOCK FINISHED <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY F <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY WIP--}}
-{{--                                        <span class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN PROCESS OUT SIDE--}}
-{{--                                        <span class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> ON ORDER RAW MAT'L--}}
-{{--                                        <span class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd 1-12--}}
-{{--                                        Weeks<span class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-{{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes <span--}}
-{{--                                            class="icon">▼</span></th>--}}
-                                    @if(Auth::user()->View_1 == 1)
-                                    <th scope="col" class="highlighted toggle-header-2">
-                                        <span class="icon">▼
-                                        </span>
-                                    </th>
-
-                                    <th scope="col" class="toggleable-2 toggle-header-department">PAST DUE <span
-                                            class="icon">▼</span></th>
-                                    @for ($week = 1; $week <= 16; $week++)
-                                        <th scope="col" class="toggleable-2 toggle-header-department">
-                                            {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
+                                    {{--                                    <th scope="col" id="column-department" class="toggleable toggle-header-department"> --}}
+                                    {{--                                        DEPARTMENT --}}
+                                    {{--                                        <span class="icon">▼</span> --}}
+                                    {{--                                    </th> --}}
+                                    {{--                                    <th scope="col" id="column-work-center" class="toggleable toggle-header-department toggle-header-work-center">WORK CENTER <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" id="column-status" class="toggleable toggle-header-department toggle-header-status">PLANNING (QUEUE) <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">STATUS <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">JOB # <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">LOT # <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">ID <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">PART NO. <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">CUSTOMER <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">REV <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    @if (Auth::user()->View_2 == 1)
+                                        <th scope="col" class="highlighted toggle-header-1">
+                                            <span class="icon">▼
+                                            </span>
                                         </th>
-                                    @endfor
-                                    @for ($month = 5; $month <= 12; $month++)
-                                        <th scope="col" class="toggleable-2 toggle-header-department">
-                                            {{ $month5StartDate }}</th>
-                                        @php
-                                            $month5StartDate = date(
-                                                'j-M',
-                                                strtotime('+31 days', strtotime($month5StartDate)),
-                                            );
-                                        @endphp
-                                    @endfor
-                                    <th scope="col" class="toggleable-2 toggle-header-department">FUTURE RAW <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-2 toggle-header-department">PRICE <span
-                                            class="icon">▼</span></th>
-                                    <th scope="col" class="toggleable-2 toggle-header-department">NOTES <span
-                                            class="icon">▼</span></th>
+
+                                        @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
+                                            <th scope="col" id="column-department"
+                                                class="toggleable-1 toggle-header-department" {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                                {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
+                                                <span class="icon">▼</span>
+                                            </th>
+                                        @endforeach
+                                    @endif
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">SCHED'L TOTAL <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">IN STOCK FINISHED <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY F <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY WIP --}}
+                                    {{--                                        <span class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN PROCESS OUT SIDE --}}
+                                    {{--                                        <span class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> ON ORDER RAW MAT'L --}}
+                                    {{--                                        <span class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd 1-12 --}}
+                                    {{--                                        Weeks<span class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes <span --}}
+                                    {{--                                            class="icon">▼</span></th> --}}
+                                    @if (Auth::user()->View_1 == 1)
+                                        <th scope="col" class="highlighted toggle-header-2">
+                                            <span class="icon">▼
+                                            </span>
+                                        </th>
+
+                                        <th scope="col" class="toggleable-2 toggle-header-department">PAST DUE <span
+                                                class="icon">▼</span></th>
+                                        @for ($week = 1; $week <= 16; $week++)
+                                            <th scope="col" class="toggleable-2 toggle-header-department">
+                                                {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
+                                            </th>
+                                        @endfor
+                                        @for ($month = 5; $month <= 12; $month++)
+                                            <th scope="col" class="toggleable-2 toggle-header-department">
+                                                {{ $month5StartDate }}</th>
+                                            @php
+                                                $month5StartDate = date(
+                                                    'j-M',
+                                                    strtotime('+31 days', strtotime($month5StartDate)),
+                                                );
+                                            @endphp
+                                        @endfor
+                                        <th scope="col" class="toggleable-2 toggle-header-department">FUTURE RAW <span
+                                                class="icon">▼</span></th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department">PRICE <span
+                                                class="icon">▼</span></th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department">NOTES <span
+                                                class="icon">▼</span></th>
                                     @endif
                                 </tr>
                             </thead>
@@ -328,7 +329,7 @@
     </section>
 
     <!-- Modal for showing/hiding columns -->
-    <div class="modal fade" id="filter3" tabindex="-1" aria-labelledby="filter3Label" >
+    <div class="modal fade" id="filter3" tabindex="-1" aria-labelledby="filter3Label">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -354,18 +355,24 @@
 
                                 <div class="col-md-6">
                                     <div class="row px-2" id="region_1_columns_container">
-                                        @foreach($region_1_column_configuration as $region_1_column_configuration_item)
-                                            <div class="col-md-12 div_column_item" data-column="{{$region_1_column_configuration_item->column}}">
+                                        @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
+                                            <div class="col-md-12 div_column_item"
+                                                data-column="{{ $region_1_column_configuration_item->column }}">
                                                 <div class="row">
                                                     <div class="col-md-11 text-left" style="cursor: pointer;">
-                                                        <span>{{get_column_label($region_1_column_configuration_item->column)}}</span>
+                                                        <span>{{ get_column_label($region_1_column_configuration_item->column) }}</span>
                                                     </div>
                                                     <div class="col-md-1 text-center" style="cursor: pointer;">
                                                         @php
-                                                            $color = $region_1_column_configuration_item->visibility ? 'rgb(0, 0, 0)' : 'red';
-                                                            $class = $region_1_column_configuration_item->visibility ? 'fa-eye' : 'fa-eye-slash';
+                                                            $color = $region_1_column_configuration_item->visibility
+                                                                ? 'rgb(0, 0, 0)'
+                                                                : 'red';
+                                                            $class = $region_1_column_configuration_item->visibility
+                                                                ? 'fa-eye'
+                                                                : 'fa-eye-slash';
                                                         @endphp
-                                                        <i class="fas {{$class}} anchor_column_visibility_toggle" style="color: {{$color}}"></i>
+                                                        <i class="fas {{ $class }} anchor_column_visibility_toggle"
+                                                            style="color: {{ $color }}"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -375,18 +382,24 @@
 
                                 <div class="col-md-6">
                                     <div class="row px-2" id="region_2_columns_container">
-                                        @foreach($region_2_column_configuration as $region_2_column_configuration_item)
-                                            <div class="col-md-12 div_column_item" data-column="{{$region_2_column_configuration_item->column}}">
+                                        @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
+                                            <div class="col-md-12 div_column_item"
+                                                data-column="{{ $region_2_column_configuration_item->column }}">
                                                 <div class="row">
                                                     <div class="col-md-11 text-left" style="cursor: pointer;">
-                                                        <span>{{get_column_label($region_2_column_configuration_item->column)}}</span>
+                                                        <span>{{ get_column_label($region_2_column_configuration_item->column) }}</span>
                                                     </div>
                                                     <div class="col-md-1 text-center" style="cursor: pointer;">
                                                         @php
-                                                            $color = $region_2_column_configuration_item->visibility ? 'rgb(0, 0, 0)' : 'red';
-                                                            $class = $region_2_column_configuration_item->visibility ? 'fa-eye' : 'fa-eye-slash';
+                                                            $color = $region_2_column_configuration_item->visibility
+                                                                ? 'rgb(0, 0, 0)'
+                                                                : 'red';
+                                                            $class = $region_2_column_configuration_item->visibility
+                                                                ? 'fa-eye'
+                                                                : 'fa-eye-slash';
                                                         @endphp
-                                                        <i class="fas {{$class}} anchor_column_visibility_toggle_2" style="color: {{$color}}"></i>
+                                                        <i class="fas {{ $class }} anchor_column_visibility_toggle_2"
+                                                            style="color: {{ $color }}"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,10 +421,10 @@
                         </div>
                     </div>
                 </div>
-{{--                <div class="modal-footer">--}}
-{{--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--}}
-{{--                    <button type="button" class="btn btn-primary" id="save-columns">Save Changes</button>--}}
-{{--                </div>--}}
+                {{--                <div class="modal-footer"> --}}
+                {{--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
+                {{--                    <button type="button" class="btn btn-primary" id="save-columns">Save Changes</button> --}}
+                {{--                </div> --}}
             </div>
         </div>
     </div>
@@ -420,17 +433,17 @@
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
-{{--    <script>--}}
-{{--        introJs().start();--}}
-{{--    </script>--}}
+    {{--    <script> --}}
+    {{--        introJs().start(); --}}
+    {{--    </script> --}}
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             //Region 1 & 2 column configuration
             let region_1_column_configuration = '';
             let region_2_column_configuration = '';
 
-            $('.anchor_column_visibility_toggle').on('click', function () {
+            $('.anchor_column_visibility_toggle').on('click', function() {
                 $(this).addClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye-slash' : 'fa-eye');
                 $(this).removeClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye' : 'fa-eye-slash');
                 $(this).css('color', ($(this).css('color') == 'rgb(0, 0, 0)' ? 'red' : 'black'));
@@ -438,7 +451,7 @@
                 saveRegion1ColumnConfiguration();
             });
 
-            $('.anchor_column_visibility_toggle_2').on('click', function () {
+            $('.anchor_column_visibility_toggle_2').on('click', function() {
                 $(this).addClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye-slash' : 'fa-eye');
                 $(this).removeClass($(this).css('color') == 'rgb(0, 0, 0)' ? 'fa-eye' : 'fa-eye-slash');
                 $(this).css('color', ($(this).css('color') == 'rgb(0, 0, 0)' ? 'red' : 'black'));
@@ -451,13 +464,13 @@
 
             new Sortable(stack1, {
                 animation: 150,
-                onEnd: function (evt) {
+                onEnd: function(evt) {
                     saveRegion1ColumnConfiguration();
                 },
             });
             new Sortable(stack2, {
                 animation: 150,
-                onEnd: function (evt) {
+                onEnd: function(evt) {
                     saveRegion2ColumnConfiguration();
                 },
             });
@@ -469,19 +482,22 @@
                     column_configuration.push({
                         column: $(item).data('column'),
                         order: i + 1,
-                        visibility: $(item).find('.anchor_column_visibility_toggle').css('color') == 'rgb(0, 0, 0)' ? true : false
+                        visibility: $(item).find('.anchor_column_visibility_toggle').css('color') ==
+                            'rgb(0, 0, 0)' ? true : false
                     });
                 });
 
                 region_1_column_configuration = JSON.stringify(column_configuration);
             }
+
             function saveRegion2ColumnConfiguration() {
                 let column_configuration = [];
                 $('#region_2_columns_container').find('.div_column_item').each((i, item) => {
                     column_configuration.push({
                         column: $(item).data('column'),
                         order: i + 1,
-                        visibility: $(item).find('.anchor_column_visibility_toggle_2').css('color') == 'rgb(0, 0, 0)' ? true : false
+                        visibility: $(item).find('.anchor_column_visibility_toggle_2').css(
+                            'color') == 'rgb(0, 0, 0)' ? true : false
                     });
                 });
 
@@ -489,13 +505,13 @@
             }
 
             //save changes - ajax request
-            $('#save-columns').on('click', function () {
+            $('#save-columns').on('click', function() {
                 if (region_1_column_configuration != '') {
                     $.ajax({
-                        url: '{{route("save.user.configuration")}}',
+                        url: '{{ route('save.user.configuration') }}',
                         method: 'POST',
                         data: {
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                             key: 'master_screen_region_1_column_configuration',
                             value: region_1_column_configuration,
                         }
@@ -504,10 +520,10 @@
 
                 if (region_2_column_configuration != '') {
                     $.ajax({
-                        url: '{{route("save.user.configuration")}}',
+                        url: '{{ route('save.user.configuration') }}',
                         method: 'POST',
                         data: {
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                             key: 'master_screen_region_2_column_configuration',
                             value: region_2_column_configuration,
                         },
@@ -557,7 +573,7 @@
             });
 
             //reset changes
-            $('#reset-columns').on('click', function () {
+            $('#reset-columns').on('click', function() {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: 'This will reset all column configurations to default!',
@@ -568,7 +584,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '{{ route("reset.user.configuration") }}',
+                            url: '{{ route('reset.user.configuration') }}',
                             method: 'POST',
                             data: {
                                 _token: '{{ csrf_token() }}'
@@ -603,7 +619,7 @@
             });
 
             //target cell feature
-            let target_cell_id = '#' + '{{$target_cell_id}}';
+            let target_cell_id = '#' + '{{ $target_cell_id }}';
             if (target_cell_id != '#0') {
                 var container = $('.parent-table');
                 var targetCell = $(target_cell_id);
@@ -618,8 +634,10 @@
                 var cellWidth = targetCell.outerWidth();
 
                 // Adjust the scroll positions to center the cell
-                var scrollTop = container.scrollTop() + cellPosition.top - container.offset().top - (containerHeight / 2) + (cellHeight / 2);
-                var scrollLeft = container.scrollLeft() + cellPosition.left - container.offset().left - (containerWidth / 2) + (cellWidth / 2);
+                var scrollTop = container.scrollTop() + cellPosition.top - container.offset().top - (
+                    containerHeight / 2) + (cellHeight / 2);
+                var scrollLeft = container.scrollLeft() + cellPosition.left - container.offset().left - (
+                    containerWidth / 2) + (cellWidth / 2);
 
                 // Scroll the container to bring the target cell into the center
                 container.scrollTop(scrollTop);
@@ -627,13 +645,13 @@
 
                 // Highlight the cell with an animation
                 targetCell.css('background-color', 'yellow');
-                setTimeout(function () {
+                setTimeout(function() {
                     targetCell.css('background-color', '');
                 }, 4000); // Remove highlight after 2 seconds
             }
 
             //target row feature
-            let target_row_id = '#entry_number_' + '{{$target_row_id}}';
+            let target_row_id = '#entry_number_' + '{{ $target_row_id }}';
             if (target_row_id != '#entry_number_0') {
                 var container = $('.parent-table');
                 var targetCell = $(target_row_id);
@@ -648,7 +666,8 @@
                 var rowWidth = targetCell.outerWidth();
 
                 // Adjust the scroll positions to center the row
-                var scrollTop = container.scrollTop() + rowPosition.top - container.offset().top - (containerHeight / 2) + (rowHeight / 2);
+                var scrollTop = container.scrollTop() + rowPosition.top - container.offset().top - (
+                    containerHeight / 2) + (rowHeight / 2);
                 // var scrollLeft = container.scrollLeft() + rowPosition.left - container.offset().left - (containerWidth / 2) + (rowWidth / 2);
 
                 // Scroll the container to bring the target row into the center
@@ -657,7 +676,7 @@
 
                 // Highlight the row with an animation
                 targetCell.css('background-color', 'yellow');
-                setTimeout(function () {
+                setTimeout(function() {
                     targetCell.css('background-color', '');
                 }, 4000); // Remove highlight after 2 seconds
             }
@@ -1069,6 +1088,24 @@
         //     });
         // }
 
-    </script>
 
+        function showTextAbove(element) {
+            // Remove any existing overlays
+            document.querySelectorAll(".text-overlay").forEach(overlay => overlay.remove());
+
+            // Get the parent <td> of the clicked element
+            const parentTd = element.closest("td");
+
+            // Get the input value inside the <td>
+            const inputValue = parentTd.querySelector("input").value;
+
+            // Create a new div for the text overlay
+            const overlay = document.createElement("div");
+            overlay.className = "text-overlay";
+            overlay.textContent = inputValue; // Set the input's value as the text
+
+            // Append the overlay to the <td>
+            parentTd.appendChild(overlay);
+        }
+    </script>
 @endsection

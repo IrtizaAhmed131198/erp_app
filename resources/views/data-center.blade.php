@@ -229,12 +229,11 @@
                                     <tr>
                                         <td>Price</td>
                                         <td>
-{{--                                            <input type="number" step="any" name="price" value="{{ old('price') }}"--}}
-{{--                                                id="">--}}
+                                            {{--                                            <input type="number" step="any" name="price" value="{{ old('price') }}" --}}
+                                            {{--                                                id=""> --}}
 
                                             <input type="text" step="any" name="price" id="price"
-                                                   value="{{ old('price') }}"
-                                                   oninput="decimalPlacesFour(this)">
+                                                value="{{ old('price') }}" oninput="decimalPlacesFour(this)">
                                         </td>
                                     </tr>
                                     <tr>
@@ -282,11 +281,10 @@
                                     <tr>
                                         <td>WT/PC</td>
                                         <td>
-{{--                                            <input type="number" name="wt_pc" id="wt_pc"--}}
-{{--                                                value="{{ old('wt_pc') }}">--}}
+                                            {{--                                            <input type="number" name="wt_pc" id="wt_pc" --}}
+                                            {{--                                                value="{{ old('wt_pc') }}"> --}}
                                             <input type="text" step="any" name="wt_pc" id="wt_pc"
-                                                   value="{{ old('wt_pc') }}"
-                                                   oninput="decimalPlaces(this)">
+                                                value="{{ old('wt_pc') }}" oninput="decimalPlaces(this)">
                                         </td>
                                     </tr>
                                 </tbody>

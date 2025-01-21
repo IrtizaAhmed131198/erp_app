@@ -57,8 +57,8 @@
                                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                                     <a href="{{ route('notifications') }}">
                                         <button class="bell-icon" type="submit">
-                                        <img src="{{ asset('images/notification-icon.png') }}" class="img-fluid"
-                                            alt="">
+                                            <img src="{{ asset('images/notification-icon.png') }}" class="img-fluid"
+                                                alt="">
                                         </button>
                                     </a>
                                     <div class="profile-detail">
@@ -76,33 +76,38 @@
                                             @if (auth()->check())
                                                 <li><a class="dropdown-item" href="{{ route('index') }}">Master Data</a>
                                                 </li>
-                                                @if(Auth::user()->user_maintenance == 1)
-                                                <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="{{ route('add_user') }}">Add User</a>
-                                                </li>
+                                                @if (Auth::user()->user_maintenance == 1)
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('users.index') }}">Users</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="{{ route('add_user') }}">Add
+                                                            User</a>
+                                                    </li>
                                                 @endif
-                                                </li>
-                                                <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment & Production</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="{{ route('input_screen') }}">Input screen</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="{{ route('visual_screen') }}">Visual Input Screen
-                                                </a>
-                                                </li>
-                                                {{-- <li><a class="dropdown-item" href="{{ route('visual_screen_1') }}">Visual screen 1</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment &
+                                            Production</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('input_screen') }}">Input screen</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('visual_screen') }}">Visual Input
+                                            Screen
+                                        </a>
+                                    </li>
+                                    {{-- <li><a class="dropdown-item" href="{{ route('visual_screen_1') }}">Visual screen 1</a>
                                                 </li>
                                                 <li><a class="dropdown-item" href="{{ route('visual_screen_2') }}">Visual screen 2</a>
                                                 </li> --}}
-                                                <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number Input</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
-                                                </li>
-                                            @else
-                                                <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
-                                            @endif
-                                        </ul>
+                                    <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number
+                                            Input</a>
                                     </li>
+                                    <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                                    </li>
+                                @else
+                                    <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
+                                    @endif
+                                </ul>
+                                </li>
                                 </ul>
                             </div>
                         </div>

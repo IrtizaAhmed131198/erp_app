@@ -1185,3 +1185,40 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 .parent-table-calender.full-view-port td {
     padding: 4px 16px;
 }
+
+.data-w {
+    width: 150px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+}
+.text-w {
+    width: 160px !important;
+}
+.text-overlay {
+    position: absolute;
+    top: -40px; /* Adjust to position the text above */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%);
+    background-color: #fff;
+    color: black;
+    font-weight: 600;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.targetshow {
+    position: relative !important;
+}
+
+.part-st {
+    border: none !important;
+    background: transparent !important;
+    font-weight: 800;
+    font-size: 18px;
+}
