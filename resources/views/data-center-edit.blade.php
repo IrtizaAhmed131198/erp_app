@@ -9,12 +9,40 @@
         .side_btn {
             display: flex;
             align-items: center;
-            justify-content: end;
+            justify-content: center;
             gap: 20px;
         }
 
         .side_btn .custom-btn {
             margin: unset;
+        }
+
+        .weekly-section.data-center .parent-table {
+            padding-right: 0;
+            height: unset;
+        }
+
+        .parent-table table input,
+        .parent-table table textarea {
+            height: 22px;
+        }
+
+        .select2.select2-container .select2-selection {
+            height: 25px;
+            margin-bottom: 5px;
+        }
+
+        .select2.select2-container .select2-selection .select2-selection__rendered {
+            line-height: 25px;
+            font-size: 14px;
+        }
+
+        .weekly-section.data-center .parent-table tr td:nth-child(01) {
+            line-height: 30px;
+        }
+
+        .select2.select2-container .select2-selection .select2-selection__arrow {
+            height: 22px;
         }
     </style>
 @endsection
@@ -47,20 +75,36 @@
                 </div>
             </div>
             <div class="row align-items-center">
+                {{-- @php
+                    $last_update_user = $last_activity->user->name ?? null;
+                    $last_update_date = is_null($last_activity->updated_at)
+                        ? $last_activity->created_at
+                        : $last_activity->updated_at;
+                    if (!is_null($last_update_user)) {
+                        $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+                    }
+                @endphp --}}
                 @php
-                  $last_update_user = $last_activity->user->name ?? null;
-                  $last_update_date = is_null($last_activity->updated_at) ? $last_activity->created_at : $last_activity->updated_at;
-                  if (!is_null($last_update_user)) {
-                      $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
-                  }
+                    $last_update_user = $last_activity->user->name ?? null;
+                    $last_update_date = null;
+
+                    if (!is_null($last_activity)) {
+                        $last_update_date = $last_activity->updated_at ?? $last_activity->created_at;
+                    }
+
+                    $date_string = null;
+                    if (!is_null($last_update_user) && !is_null($last_update_date)) {
+                        $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+                    }
                 @endphp
-                @if(!is_null($last_update_user))
+
+                @if (!is_null($last_update_user))
                     <div class="alert alert-info" role="alert" style="width: 99%;">
-                        Last updated by {{$last_update_user}} at {{$date_string}}
+                        Last updated by {{ $last_update_user }} at {{ $date_string }}
                     </div>
-{{--                    <div class="col-md-6 mb-4" style="border-radius: 4px; background-color: #ffa5007a;">--}}
-{{--                        <p class="m-0">Last updated by {{$last_update_user}} at {{$date_string}}</p>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="col-md-6 mb-4" style="border-radius: 4px; background-color: #ffa5007a;"> --}}
+                    {{--                        <p class="m-0">Last updated by {{$last_update_user}} at {{$date_string}}</p> --}}
+                    {{--                    </div> --}}
                 @endif
 
                 <div class="col-md-12"></div>
@@ -73,293 +117,306 @@
                                 <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
                             </div>
                             <input type="hidden" name="id" value="{{ $data->id }}">
-                            <table class="table table-hover table-bordered">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                    <tr class="">
-                                        <td scope="col" colspan="2"><strong>Part Number Input Edit</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Part Number</td>
-                                        <td>
-                                            <select class="form-select js-select21" name="part_number"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select Part Number</option>
-                                                @foreach ($parts as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ $data->part_number == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->Part_Number }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Customer</td>
-                                        <td>
-                                            <select class="form-select js-select21" name="customer"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select Customer</option>
-                                                @foreach ($customer as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ $data->customer == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->CustomerName }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            {{-- <input type="text" name="customer" value="{{ old('customer') }}"
-                                                id=""> --}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Revision</td>
-                                        <td>
-                                            <input type="text" name="revision" value="{{ $data->revision }}"
-                                                id="">
-                                        </td>
-                                    </tr>
-                                    {{-- <tr>
-                                        <td>ID</td>
-                                        <td>
-                                            <input type="text" name="ids" value="{{ old('ids') }}" id="">
-                                        </td>
-                                    </tr> --}}
-                                    <tr>
-                                        <td>Process</td>
-                                        <td>
-                                            <input type="text" name="process" value="{{ $data->process }}"
-                                                id="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Department</td>
-                                        <td>
-                                            <select class="js-select2 select2-hidden-accessible" name="department"
-                                                tabindex="-1" aria-hidden="true">
-                                                <option selected disabled>Select DEPARTMENT</option>
-                                                @foreach ($department as $dept)
-                                                    <option value="{{ $dept->id }}"
-                                                        {{ $data->department == $dept->id ? 'selected' : '' }}>
-                                                        {{ $dept->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    @php
-                                        $work_center = $data->work_center->toArray();
-                                        $work_center_select_map = collect($work_center_select)->keyBy('id')->toArray();
-                                    @endphp
-
-                                    @for ($i = 1; $i <= 7; $i++)
-                                        @php
-                                            $work_centre_id = 'work_centre_' . $i;
-                                            $selected_value = null;
-                                            $com_value = null;
-
-                                            if (
-                                                in_array($work_centre_id, array_column($work_center, 'work_centre_id'))
-                                            ) {
-                                                $selected_work_centre = collect($work_center)->firstWhere(
-                                                    'work_centre_id',
-                                                    $work_centre_id,
-                                                );
-                                                $selected_value =
-                                                    $work_center_select_map[$selected_work_centre['com']] ?? null;
-                                            }
-                                        @endphp
-
+                            <div class="parent-table parent-table-calender full-view-port mt-4">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="">
+                                            <td scope="col" colspan="2"><strong>Part Number Input Edit</strong></td>
+                                        </tr>
                                         <tr>
-                                            <td>Work Centre {{ $i }}</td>
+                                            <td>Part Number</td>
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible"
-                                                    name="{{ $work_centre_id }}" aria-label="Default select example">
-                                                    <option value="" selected>Select</option>
-                                                    @foreach ($work_center_select as $center)
-                                                        <option value="{{ $center['id'] }}"
-                                                            {{ $selected_value && $center['id'] == $selected_value['id'] ? 'selected' : '' }}>
-                                                            {{ $center['name'] }}
+                                                <select class="form-select js-select21" name="part_number"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Part Number</option>
+                                                    @foreach ($parts as $item)
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $data->part_number == $item->id ? 'selected' : '' }}>
+                                                            {{ $item->Part_Number }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                         </tr>
-                                    @endfor
-
-
-
-
-                                    @php
-                                        $out_source = $data->out_source->toArray();
-                                        $vendor_map = collect($vendor)->keyBy('id')->toArray();
-                                    @endphp
-
-                                    @for ($i = 1; $i <= 4; $i++)
+                                        <tr>
+                                            <td>Customer</td>
+                                            <td>
+                                                <select class="form-select js-select21" name="customer"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Customer</option>
+                                                    @foreach ($customer as $item)
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $data->customer == $item->id ? 'selected' : '' }}>
+                                                            {{ $item->CustomerName }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {{-- <input type="text" name="customer" value="{{ old('customer') }}"
+                                                id=""> --}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revision</td>
+                                            <td>
+                                                <input type="text" name="revision" value="{{ $data->revision }}"
+                                                    id="">
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
+                                        <td>ID</td>
+                                        <td>
+                                            <input type="text" name="ids" value="{{ old('ids') }}" id="">
+                                        </td>
+                                    </tr> --}}
+                                        <tr>
+                                            <td>Process</td>
+                                            <td>
+                                                <input type="text" name="process" value="{{ $data->process }}"
+                                                    id="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Department</td>
+                                            <td>
+                                                <select class="js-select2 select2-hidden-accessible" name="department"
+                                                    tabindex="-1" aria-hidden="true">
+                                                    <option selected disabled>Select DEPARTMENT</option>
+                                                    @foreach ($department as $dept)
+                                                        <option value="{{ $dept->id }}"
+                                                            {{ $data->department == $dept->id ? 'selected' : '' }}>
+                                                            {{ $dept->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
                                         @php
-                                            $outside_processing_id = 'outside_processing_' . $i;
-                                            $selected_value = null;
-
-                                            if (
-                                                in_array(
-                                                    $outside_processing_id,
-                                                    array_column($out_source, 'outside_processing_id'),
-                                                )
-                                            ) {
-                                                $selected_out_source = collect($out_source)->firstWhere(
-                                                    'outside_processing_id',
-                                                    $outside_processing_id,
-                                                );
-                                                $selected_value = $vendor_map[$selected_out_source['out']] ?? null;
-                                            }
+                                            $work_center = $data->work_center->toArray();
+                                            $work_center_select_map = collect($work_center_select)
+                                                ->keyBy('id')
+                                                ->toArray();
                                         @endphp
 
-                                        <tr>
-                                            <td>Outside Processing {{ $i }}</td>
-                                            <td>
-                                                <div class="parent-inputs">
+                                        @for ($i = 1; $i <= 7; $i++)
+                                            @php
+                                                $work_centre_id = 'work_centre_' . $i;
+                                                $selected_value = null;
+                                                $com_value = null;
+
+                                                if (
+                                                    in_array(
+                                                        $work_centre_id,
+                                                        array_column($work_center, 'work_centre_id'),
+                                                    )
+                                                ) {
+                                                    $selected_work_centre = collect($work_center)->firstWhere(
+                                                        'work_centre_id',
+                                                        $work_centre_id,
+                                                    );
+                                                    $selected_value =
+                                                        $work_center_select_map[$selected_work_centre['com']] ?? null;
+                                                }
+                                            @endphp
+
+                                            <tr>
+                                                <td>Work Centre {{ $i }}</td>
+                                                <td>
                                                     <select class="js-select2 select2-hidden-accessible"
-                                                        name="{{ $outside_processing_id }}"
-                                                        aria-label="Default select example">
+                                                        name="{{ $work_centre_id }}" aria-label="Default select example">
                                                         <option value="" selected>Select</option>
-                                                        @foreach ($vendor as $v)
-                                                            <option value="{{ $v->id }}"
-                                                                {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
-                                                                {{ $v->name }}
+                                                        @foreach ($work_center_select as $center)
+                                                            <option value="{{ $center['id'] }}"
+                                                                {{ $selected_value && $center['id'] == $selected_value['id'] ? 'selected' : '' }}>
+                                                                {{ $center['name'] }}
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="text"
-                                                        name="outside_processing_text_{{ $i }}"
-                                                        value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
-                                                        id="">
-                                                </div>
+                                                </td>
+                                            </tr>
+                                        @endfor
+
+
+
+
+                                        @php
+                                            $out_source = $data->out_source->toArray();
+                                            $vendor_map = collect($vendor)->keyBy('id')->toArray();
+                                        @endphp
+
+                                        <tr>
+                                            <td>Part Notes</td>
+                                            <td>
+                                                <textarea name="part_notes" id="">{{ $data->part_notes }}</textarea>
                                             </td>
                                         </tr>
-                                    @endfor
 
+                                    </tbody>
+                                </table>
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        @for ($i = 1; $i <= 4; $i++)
+                                            @php
+                                                $outside_processing_id = 'outside_processing_' . $i;
+                                                $selected_value = null;
 
-                                    <tr>
-                                        <td>Material</td>
-                                        <td>
-                                            <select class="form-select js-select21" name="material"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select Material</option>
-                                                @foreach ($material as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ $data->material == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->Package }}
-                                                    </option>
-                                                @endforeach
-                                                {{-- <input type="text" name="material" value="{{ old('material') }}"
+                                                if (
+                                                    in_array(
+                                                        $outside_processing_id,
+                                                        array_column($out_source, 'outside_processing_id'),
+                                                    )
+                                                ) {
+                                                    $selected_out_source = collect($out_source)->firstWhere(
+                                                        'outside_processing_id',
+                                                        $outside_processing_id,
+                                                    );
+                                                    $selected_value = $vendor_map[$selected_out_source['out']] ?? null;
+                                                }
+                                            @endphp
+
+                                            <tr>
+                                                <td>Outside Processing {{ $i }}</td>
+                                                <td>
+                                                    <div class="parent-inputs">
+                                                        <select class="js-select2 select2-hidden-accessible"
+                                                            name="{{ $outside_processing_id }}"
+                                                            aria-label="Default select example">
+                                                            <option value="" selected>Select</option>
+                                                            @foreach ($vendor as $v)
+                                                                <option value="{{ $v->id }}"
+                                                                    {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
+                                                                    {{ $v->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="text"
+                                                            name="outside_processing_text_{{ $i }}"
+                                                            value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
+                                                            id="">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endfor
+                                        <tr>
+                                            <td>Material</td>
+                                            <td>
+                                                <select class="form-select js-select21" name="material"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Material</option>
+                                                    @foreach ($material as $item)
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $data->material == $item->id ? 'selected' : '' }}>
+                                                            {{ $item->Package }}
+                                                        </option>
+                                                    @endforeach
+                                                    {{-- <input type="text" name="material" value="{{ old('material') }}"
                                                     id=""> --}}
-                                        </td>
-                                    </tr>
-                                    {{-- <tr>
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td>Pc Weight</td>
                                         <td>
                                             <input type="number" step="any" name="pc_weight"
                                                 value="{{ $data->pc_weight }}" id="">
                                         </td>
                                     </tr> --}}
-                                    {{-- <tr>
+                                        {{-- <tr>
                                         <td>Safety Stock</td>
                                         <td>
                                             <input type="number" step="any" name="safety_stock"
                                                 value="{{ $data->safety_stock }}" id="">
                                         </td>
                                     </tr> --}}
-                                    <tr>
-                                        <td>MOQ</td>
-                                        <td>
-                                            <input type="number" step="any" name="moq" value="{{ $data->moq }}"
-                                                id="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Order Notes</td>
-                                        <td>
-                                            <textarea name="order_notes" id="">{{ $data->order_notes }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Part Notes</td>
-                                        <td>
-                                            <textarea name="part_notes" id="">{{ $data->part_notes }}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Future Raw</td>
-                                        <td>
-                                            <input type="number" name="future_raw" value="{{ $data->future_raw }}"
-                                                id="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Price</td>
-                                        <td>
-{{--                                            <input type="number" step="any" name="price" value="{{ $data->price }}"--}}
-{{--                                                id="">--}}
+                                        <tr>
+                                            <td>MOQ</td>
+                                            <td>
+                                                <input type="number" step="any" name="moq"
+                                                    value="{{ $data->moq }}" id="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Notes</td>
+                                            <td>
+                                                <textarea name="order_notes" id="">{{ $data->order_notes }}</textarea>
+                                            </td>
+                                        </tr>
 
-                                            <input type="text" step="any" name="price" id="price"
-                                                   value="{{ $data->price }}"
-                                                   oninput="decimalPlacesFour(this)">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Currency</td>
-                                        <td>
-                                            <select class="form-select js-select21" name="currency"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select Currency</option>
-                                                <option value="USD" {{ $data->currency == 'USD' ? 'selected' : '' }}>
-                                                    USD
-                                                </option>
-                                                <option value="CDN" {{ $data->currency == 'CDN' ? 'selected' : '' }}>
-                                                    CDN
-                                                </option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    {{-- <tr>
+                                        <tr>
+                                            <td>Future Raw</td>
+                                            <td>
+                                                <input type="number" name="future_raw" value="{{ $data->future_raw }}"
+                                                    id="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td>
+                                                {{--                                            <input type="number" step="any" name="price" value="{{ $data->price }}" --}}
+                                                {{--                                                id=""> --}}
+
+                                                <input type="text" step="any" name="price" id="price"
+                                                    value="{{ $data->price }}" oninput="decimalPlacesFour(this)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Currency</td>
+                                            <td>
+                                                <select class="form-select js-select21" name="currency"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Currency</option>
+                                                    <option value="USD"
+                                                        {{ $data->currency == 'USD' ? 'selected' : '' }}>
+                                                        USD
+                                                    </option>
+                                                    <option value="CDN"
+                                                        {{ $data->currency == 'CDN' ? 'selected' : '' }}>
+                                                        CDN
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td>REV</td>
                                         <td>
                                             <input type="text" name="rev" id="rev"
                                                 value="{{ $data->rev }}">
                                         </td>
                                     </tr> --}}
-                                    {{-- <tr>
+                                        {{-- <tr>
                                         <td>Wt Req'd</td>
                                         <td>
                                             <input type="number" step="any" name="wet_reqd" id="wet_reqd" value="{{ $data->wet_reqd }}">
                                         </td>
                                     </tr> --}}
-                                    <tr>
-                                        <td>Safety Stock</td>
-                                        <td>
-                                            <input type="text" name="safety" id="safety"
-                                                value="{{ $data->safety }}">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Minship</td>
-                                        <td>
-                                            <input type="number" name="min_ship" id="min_ship"
-                                                value="{{ $data->min_ship }}">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>WT/PC</td>
-                                        <td>
-{{--                                            <input type="number" name="wt_pc" id="wt_pc"--}}
-{{--                                                value="{{ $data->wt_pc }}">--}}
-                                            <input type="text" step="any" name="wt_pc" id="wt_pc"
-                                                   value="{{ $data->wt_pc }}"
-                                                   oninput="decimalPlaces(this)">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        <tr>
+                                            <td>Safety Stock</td>
+                                            <td>
+                                                <input type="text" name="safety" id="safety"
+                                                    value="{{ $data->safety }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minship</td>
+                                            <td>
+                                                <input type="number" name="min_ship" id="min_ship"
+                                                    value="{{ $data->min_ship }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>WT/PC</td>
+                                            <td>
+                                                {{--                                            <input type="number" name="wt_pc" id="wt_pc" --}}
+                                                {{--                                                value="{{ $data->wt_pc }}"> --}}
+                                                <input type="text" step="any" name="wt_pc" id="wt_pc"
+                                                    value="{{ $data->wt_pc }}" oninput="decimalPlaces(this)">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </form>
                     </div>
                 </div>

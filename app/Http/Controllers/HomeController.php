@@ -711,7 +711,7 @@ class HomeController extends Controller
         $last_update_date = is_null($entries->updated_at) ? $entries->created_at : $entries->updated_at;
         if (!is_null($last_update_user)) {
             $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
-        }else{
+        } else {
             $date_string = null;
         }
 
@@ -730,12 +730,12 @@ class HomeController extends Controller
     public function create_shipment_order_not($id)
     {
         $create_shipment_order = Notification::with('user')
-                                    ->where('type', 'create_shipment_order')
-                                    ->where('reference_id', $id)
-                                    ->orderBy('id', 'desc')
-                                    ->first();
+            ->where('type', 'create_shipment_order')
+            ->where('reference_id', $id)
+            ->orderBy('id', 'desc')
+            ->first();
 
-        if(!$create_shipment_order){
+        if (!$create_shipment_order) {
             return response()->json([
                 'last_update_user' => null,
                 'last_update_date' => null,
@@ -746,7 +746,7 @@ class HomeController extends Controller
         $last_update_date = is_null($create_shipment_order->updated_at) ? $create_shipment_order->created_at : $create_shipment_order->updated_at;
         if (!is_null($last_update_user)) {
             $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
-        }else{
+        } else {
             $date_string = null;
         }
 
@@ -759,12 +759,12 @@ class HomeController extends Controller
     public function update_production_total_not($id)
     {
         $update_production_total = Notification::with('user')
-                                    ->where('type', 'update_production_total')
-                                    ->where('reference_id', $id)
-                                    ->orderBy('id', 'desc')
-                                    ->first();
+            ->where('type', 'update_production_total')
+            ->where('reference_id', $id)
+            ->orderBy('id', 'desc')
+            ->first();
 
-        if(!$update_production_total){
+        if (!$update_production_total) {
             return response()->json([
                 'last_update_user' => null,
                 'last_update_date' => null,
@@ -775,7 +775,7 @@ class HomeController extends Controller
         $last_update_date = is_null($update_production_total->updated_at) ? $update_production_total->created_at : $update_production_total->updated_at;
         if (!is_null($last_update_user)) {
             $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
-        }else{
+        } else {
             $date_string = null;
         }
 
@@ -788,12 +788,12 @@ class HomeController extends Controller
     public function add_shipment_not($id)
     {
         $add_shipment = Notification::with('user')
-                                    ->where('type', 'add_shipment')
-                                    ->where('reference_id', $id)
-                                    ->orderBy('id', 'desc')
-                                    ->first();
+            ->where('type', 'add_shipment')
+            ->where('reference_id', $id)
+            ->orderBy('id', 'desc')
+            ->first();
 
-        if(!$add_shipment){
+        if (!$add_shipment) {
             return response()->json([
                 'last_update_user' => null,
                 'last_update_date' => null,
@@ -804,7 +804,7 @@ class HomeController extends Controller
         $last_update_date = is_null($add_shipment->updated_at) ? $add_shipment->created_at : $add_shipment->updated_at;
         if (!is_null($last_update_user)) {
             $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
-        }else{
+        } else {
             $date_string = null;
         }
 
