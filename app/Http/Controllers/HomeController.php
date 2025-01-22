@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Validator;
+use App\Events\StockUpdate;
 
 class HomeController extends Controller
 {
@@ -842,6 +843,10 @@ class HomeController extends Controller
 
         $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no);
 
+        $data_target = 'entries_' . $data->id . '_in_stock_finished';
+        // Broadcast the event
+        event(new StockUpdate($data_target, $data->in_stock_finish));
+
         return response()->json([
             'message' => 'Production total updated successfully!',
             'new_total' => $newTotal
@@ -903,7 +908,7 @@ class HomeController extends Controller
             'create_shipment_order',
             ['message' => $message],
             'entries',
-            $data->id
+            $request->part_number
         );
 
         return response()->json(['message' => $message, 'data' => $data]);
@@ -1089,6 +1094,7 @@ class HomeController extends Controller
     public function save_shipment_data(Request $request)
     {
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         foreach ($request->shipmentData as $shipment) {
             if ($shipment['value'] != '' && $shipment['value'] != null) {
@@ -1103,9 +1109,13 @@ class HomeController extends Controller
         }
         $data->save();
 
+        // Update Entries table
+        $entries->in_stock_finish -= (float)$request->shipped_amount;
+        $entries->save();
+
         $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id);
 
-        return response()->json(['message' => 'Shipment Amount Saved', 'data' => $data]);
+        return response()->json(['message' => 'Shipment Amount Saved', 'data' => $data, 'existing_amount' => number_format($entries->in_stock_finish)]);
     }
 
     public function change_past_due(Request $request)

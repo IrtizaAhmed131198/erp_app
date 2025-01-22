@@ -376,7 +376,7 @@
                                                     <input type="text" name="past_due" class="past_due_val"
                                                         id="past_due">
                                                     <button type="button" id="change_past_due" style="display: none;"><i
-                                                            class="fa-regular fa-pen-to-square"></i></button>
+                                                            class="fa-regular fa-pen-to-square" readonly></i></button>
                                                 </td>
                                             </tr>
 
@@ -406,13 +406,15 @@
                                                         <input type='text' class='edit_existing'
                                                             data-edit-week-change='week_{{ $week }}'
                                                             name='edit_existing[week_{{ $week }}]'
-                                                            id='edit_week_{{ $week }}' oninput="formatNumberWithCommas(this)">
+                                                            id='edit_week_{{ $week }}' oninput="formatNumberWithCommas(this)"
+                                                            readonly>
                                                     </td>
                                                     <td style="display: none;">
                                                         <input type="text" class='change-amount'
                                                             data-week-change='week_{{ $week }}'
                                                             name="change_amount[week_{{ $week }}]"
-                                                            id="change_week_{{ $week }}" oninput="formatNumberWithCommas(this)">
+                                                            id="change_week_{{ $week }}" oninput="formatNumberWithCommas(this)"
+                                                            readonly>
                                                     </td>
                                                 </tr>
                                             @endfor
@@ -906,8 +908,7 @@
 
             $(document).on('click', '.add-shipment-amount .btn', function() {
                 let partNumber = $('#part_no').val();
-                let shippedAmount = parseFloat($('.add-shipment-amount input')
-                    .val()); // Get the shipment amount entered
+                let shippedAmount = parseFloat($('.add-shipment-amount input').val());
                 if (isNaN(shippedAmount) || shippedAmount <= 0) {
                     Swal.fire({
                         icon: 'error',
@@ -962,7 +963,8 @@
                         method: 'POST',
                         data: {
                             shipmentData: fieldsData,
-                            part_number: partNumber
+                            part_number: partNumber,
+                            shipped_amount: parseFloat($('.add-shipment-amount input').val())
                         },
                         headers: {
                             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -972,6 +974,7 @@
                             let data = response.data;
                             // Iterate through the response data object
                             $('#past_due').val(data['past_due']);
+                            $('input[name="existing_amount"]').val(response.existing_amount);
                             for (let key in data) {
                                 let value = data[key];
                                 let formattedValue = new Intl.NumberFormat('en-US').format(value);

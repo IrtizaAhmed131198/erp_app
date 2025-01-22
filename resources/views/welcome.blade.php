@@ -1117,4 +1117,22 @@
             }); // Use `{ once: true }` to ensure the listener is removed after firing once
         }
     </script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('baad692bd96332553a6d', {
+            cluster: 'ap2'
+        });
+
+        var channel = pusher.subscribe('erp-app');
+        channel.bind('StockUpdate', function(data) {
+            const targetElement = document.getElementById(data.dataTarget);
+
+            if (targetElement) {
+                targetElement.textContent = new Intl.NumberFormat().format(data.inStockFinish || 0);
+            }
+        });
+    </script>
 @endsection
