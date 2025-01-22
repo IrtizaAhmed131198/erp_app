@@ -234,6 +234,12 @@ class HomeController extends Controller
         return view('data-center-edit', compact('data', 'parts', 'customer', 'material', 'department', 'work_center_select', 'vendor', 'last_activity'));
     }
 
+    private function removeCommas($value)
+    {
+        // Check if the value is not empty and is numeric before removing commas
+        return !empty($value) ? preg_replace('/,/', '', $value) : $value;
+    }
+
     public function post_data_center(Request $request)
     {
         $validatedData = $request->validate([
@@ -259,13 +265,13 @@ class HomeController extends Controller
             'outside_processing_text_3' => 'nullable',
             'outside_processing_text_4' => 'nullable',
             'material' => 'nullable|string|max:255',
-            'pc_weight' => 'nullable|numeric',
-            'safety_shock' => 'nullable|numeric',
-            'moq' => 'nullable|numeric',
+            'pc_weight' => 'nullable',
+            'safety_shock' => 'nullable',
+            'moq' => 'nullable',
             'order_notes' => 'nullable|string',
             'part_notes' => 'nullable|string',
             'future_raw' => 'nullable|string|max:255',
-            'price' => 'nullable|numeric',
+            'price' => 'nullable',
             'notes' => 'nullable|string',
             'rev' => 'nullable',
             'wet_reqd' => 'nullable',
@@ -284,6 +290,10 @@ class HomeController extends Controller
         }
         try {
             $validatedData['user_id'] = Auth::user()->id;
+            $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
+            $validatedData['safety'] = $this->removeCommas($validatedData['safety']);
+            $validatedData['min_ship'] = $this->removeCommas($validatedData['min_ship']);
+
             $entry = Entries::create($validatedData);
             $entry->last_updated_by = auth()->id();
             $entry->save();
@@ -369,9 +379,9 @@ class HomeController extends Controller
             'outside_processing_text_3' => 'nullable',
             'outside_processing_text_4' => 'nullable',
             'material' => 'nullable|string|max:255',
-            'pc_weight' => 'nullable|numeric',
-            'safety_shock' => 'nullable|numeric',
-            'moq' => 'nullable|numeric',
+            'pc_weight' => 'nullable',
+            'safety_shock' => 'nullable',
+            'moq' => 'nullable',
             'order_notes' => 'nullable|string',
             'part_notes' => 'nullable|string',
             'future_raw' => 'nullable|string|max:255',
@@ -390,6 +400,9 @@ class HomeController extends Controller
 
             // Update main entry data
             $validatedData['user_id'] = Auth::user()->id;
+            $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
+            $validatedData['safety'] = $this->removeCommas($validatedData['safety']);
+            $validatedData['min_ship'] = $this->removeCommas($validatedData['min_ship']);
             $entry->update($validatedData);
             $entry->last_updated_by = auth()->id();
             $entry->save();

@@ -1,9 +1,9 @@
 <div class="parent-table" style="height: auto">
-    <div class="btn-custom-btn add-btn-close text-ceneter">
+    {{-- <div class="btn-custom-btn add-btn-close text-ceneter">
         <button type="button" class="btn custom-btn submit-production">Submit</button>
         <button type="button" class="btn custom-btn"
             onclick="window.location.href='{{ route('calender') }}'">Cancel</button>
-    </div>
+    </div> --}}
     <table class="table table-hover remove-width add-production-table">
         <thead>
             <tr class="">
@@ -13,7 +13,7 @@
 
             </tr>
         </thead>
-        <tbody>
+        {{-- <tbody>
             <tr>
                 <td>Add Production</td>
                 <td> <input type="text" name="add_production" id="add_production"
@@ -26,6 +26,6 @@
                 <td><input type="text" name="new_total" id="new_total" readonly oninput="formatNumberWithCommas(this)"></td>
 
             </tr>
-        </tbody>
+        </tbody> --}}
     </table>
 </div>

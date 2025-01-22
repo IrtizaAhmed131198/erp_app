@@ -161,7 +161,7 @@
                                             <td>Revision</td>
                                             <td>
                                                 <input type="text" name="revision" value="{{ $data->revision }}"
-                                                    id="">
+                                                    oninput="this.value = this.value.toUpperCase();" id="">
                                             </td>
                                         </tr>
                                         {{-- <tr>
@@ -174,7 +174,7 @@
                                             <td>Process</td>
                                             <td>
                                                 <input type="text" name="process" value="{{ $data->process }}"
-                                                    id="">
+                                                    oninput="this.value = this.value.toUpperCase();"  id="">
                                             </td>
                                         </tr>
                                         <tr>
@@ -333,8 +333,8 @@
                                         <tr>
                                             <td>MOQ</td>
                                             <td>
-                                                <input type="number" step="any" name="moq"
-                                                    value="{{ $data->moq }}" id="">
+                                                <input type="text" step="any" name="moq"
+                                                    value="{{ number_format($data->moq) }}" oninput="formatAndPreventNegative(this)" id="">
                                             </td>
                                         </tr>
                                         <tr>
@@ -395,14 +395,14 @@
                                             <td>Safety Stock</td>
                                             <td>
                                                 <input type="text" name="safety" id="safety"
-                                                    value="{{ $data->safety }}">
+                                                    value="{{ number_format($data->safety) }}" oninput="formatAndPreventNegative(this)">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Minship</td>
                                             <td>
-                                                <input type="number" name="min_ship" id="min_ship"
-                                                    value="{{ $data->min_ship }}">
+                                                <input type="text" name="min_ship" id="min_ship"
+                                                    value="{{ number_format($data->min_ship) }}" oninput="formatAndPreventNegative(this)">
                                             </td>
                                         </tr>
                                         <tr>
