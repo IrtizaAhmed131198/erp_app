@@ -856,31 +856,57 @@ class HomeController extends Controller
             'part_number' => 'required'
         ]);
 
-        $exist_data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        if ($exist_data) {
-            return response()->json(['error' => true, 'message' => 'This part number order already exist']);
+        // Check if data exists
+        $data = Weeks::where('user_id', Auth::user()->id)
+                    ->where('part_number', $request->part_number)
+                    ->first();
+
+        $isNewEntry = false;
+
+        if (!$data) {
+            // Create new data
+            $data = new Weeks();
+            $data->user_id = Auth::user()->id;
+            $data->part_number = $request->part_number;
+            $isNewEntry = true;
         }
 
-        $data = new Weeks();
-        $data->user_id = Auth::user()->id;
-        $data->part_number = $request->part_number;
+        // Get week dates for new entries
+        $temp = $isNewEntry ? $this->getWeekArr(date('Y-m-d')) : null;
 
-        $temp = $this->getWeekArr(date('Y-m-d'));
-
+        // Update weeks and corresponding dates
         foreach ($request->weeks as $key => $value) {
             $data->$key = (float) str_replace(',', '', $value);
-            $data->{$key . '_date'} = $temp[$key];
+
+            // Set date only for new entries
+            if ($isNewEntry) {
+                $data->{$key . '_date'} = $temp[$key];
+            }
         }
+
         $data->save();
 
-        $part = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $part->filter = 'pending';
-        $part->last_updated_by = Auth::user()->id;
-        $part->save();
+        // Update Entries table
+        $part = Entries::where('user_id', Auth::user()->id)
+                    ->where('part_number', $request->part_number)
+                    ->first();
+        if ($part) {
+            $part->filter = 'pending';
+            $part->last_updated_by = Auth::user()->id;
+            $part->save();
+        }
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'create_shipment_order', ['message' => 'Shipment Order Created.'], 'entries', $data->id);
+        // Send notification
+        $message = $isNewEntry ? 'Shipment Order Created' : 'Shipment Order Updated';
+        $this->notificationService->sendNotification(
+            Auth::user()->id,
+            'create_shipment_order',
+            ['message' => $message],
+            'entries',
+            $data->id
+        );
 
-        return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
+        return response()->json(['message' => $message, 'data' => $data]);
     }
 
     public function add_shipment(Request $request)
@@ -892,11 +918,15 @@ class HomeController extends Controller
         ]);
 
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        if(!$data) {
+            return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
+        }
         $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         foreach ($request->weeks as $key => $value) {
             if ($value != '' && $value != null) {
-                $data->$key = $value;
+                $data->$key = (float) str_replace(',', '', $value);
+                // $data->$key = $value;
             }
         }
         $data->save();
@@ -912,30 +942,30 @@ class HomeController extends Controller
         $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         $Arr = [
-            "week_1" => $data->week_1,
-            "week_2" => $data->week_2,
-            "week_3" => $data->week_3,
-            "week_4" => $data->week_4,
-            "week_5" => $data->week_5,
-            "week_6" => $data->week_6,
-            "week_7" => $data->week_7,
-            "week_8" => $data->week_8,
-            "week_9" => $data->week_9,
-            "week_10" => $data->week_10,
-            "week_11" => $data->week_11,
-            "week_12" => $data->week_12,
-            "week_13" => $data->week_13,
-            "week_14" => $data->week_14,
-            "week_15" => $data->week_15,
-            "week_16" => $data->week_16,
-            "month_5" => $data->month_5,
-            "month_6" => $data->month_6,
-            "month_7" => $data->month_7,
-            "month_8" => $data->month_8,
-            "month_9" => $data->month_9,
-            "month_10" => $data->month_10,
-            "month_11" => $data->month_11,
-            "month_12" => $data->month_12,
+            "week_1" => $data->week_1 ?? null,
+            "week_2" => $data->week_2 ?? null,
+            "week_3" => $data->week_3 ?? null,
+            "week_4" => $data->week_4 ?? null,
+            "week_5" => $data->week_5 ?? null,
+            "week_6" => $data->week_6 ?? null,
+            "week_7" => $data->week_7 ?? null,
+            "week_8" => $data->week_8 ?? null,
+            "week_9" => $data->week_9 ?? null,
+            "week_10" => $data->week_10 ?? null,
+            "week_11" => $data->week_11 ?? null,
+            "week_12" => $data->week_12 ?? null,
+            "week_13" => $data->week_13 ?? null,
+            "week_14" => $data->week_14 ?? null,
+            "week_15" => $data->week_15 ?? null,
+            "week_16" => $data->week_16 ?? null,
+            "month_5" => $data->month_5 ?? null,
+            "month_6" => $data->month_6 ?? null,
+            "month_7" => $data->month_7 ?? null,
+            "month_8" => $data->month_8 ?? null,
+            "month_9" => $data->month_9 ?? null,
+            "month_10" => $data->month_10 ?? null,
+            "month_11" => $data->month_11 ?? null,
+            "month_12" => $data->month_12 ?? null,
         ];
 
         return response()->json(['message' => 'Get Weeks', 'in_stock_finish' => $entries->in_stock_finish, 'data' => $Arr]);
@@ -980,6 +1010,7 @@ class HomeController extends Controller
         $passedWeeks = [];
 
         $pas_due = 0;
+        // return $array_1;
 
         // Iterate through the array to check passed weeks
         foreach ($array_1 as $key => $value) {

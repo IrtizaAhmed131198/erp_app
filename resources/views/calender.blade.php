@@ -76,7 +76,7 @@
                 <div class="col-lg-12">
                     <div class="d-flex justify-content-start mb-3 custom-data">
                         @if (Auth::user()->create_order == 1)
-                            <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
+                            <button class="btn btn-primary me-2" id="btn-create-order" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
                                 onclick="updateHeadingText(this)">
                                 Create/Update Order
@@ -179,8 +179,7 @@
                                             <tr>
                                                 <td>Past Due</td>
                                                 <td>
-                                                    <input type="text" name="past_due" class="past_due_val"
-                                                        id="past_due">
+                                                    <input type="text" name="past_due" class="past_due_val">
                                                     <button type="button" id="change_past_due" style="display: none;"><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 </td>
@@ -404,16 +403,16 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type='number' class='edit_existing'
+                                                        <input type='text' class='edit_existing'
                                                             data-edit-week-change='week_{{ $week }}'
                                                             name='edit_existing[week_{{ $week }}]'
-                                                            id='edit_week_{{ $week }}'>
+                                                            id='edit_week_{{ $week }}' oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                     <td style="display: none;">
-                                                        <input type="number" class='change-amount'
+                                                        <input type="text" class='change-amount'
                                                             data-week-change='week_{{ $week }}'
                                                             name="change_amount[week_{{ $week }}]"
-                                                            id="change_week_{{ $week }}">
+                                                            id="change_week_{{ $week }}" oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                 </tr>
                                             @endfor
@@ -488,7 +487,7 @@
             element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
-        $('#btn-add-shipment').on('click', function() {
+        $('#btn-add-shipment, #btn-create-order').on('click', function() {
             let partNumber = $('#part_no').val();
             $.ajax({
                 url: "{{ route('get_weeks') }}", // Replace with your backend route
@@ -500,6 +499,11 @@
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
+                    if (response.data && Object.values(response.data).every(value => value === null)) {
+                        console.log("Response contains only null values.");
+                        return false;
+                    }
+
                     if (response.data) {
                         let weeksData = {};
                         let data = response.data;
@@ -509,7 +513,10 @@
                         for (let key in data) {
                             let value = data[key];
 
-                            $(`#edit_${key}`).val(value);
+                            let formattedValue = new Intl.NumberFormat('en-US').format(value);
+
+                            $(`#edit_${key}`).val(formattedValue);
+                            $(`#${key}`).val(formattedValue);
                             weeksData[`${key}`] = value;
                             temp[`${key}`] = value;
                             temp[`${key}_date`] = temp1[`${key}`];
@@ -547,7 +554,10 @@
                                 for (let key in data) {
                                     let value = data[key];
 
-                                    $(`#edit_${key}`).val(value);
+                                    let formattedValue = new Intl.NumberFormat('en-US').format(value);
+
+                                    $(`#edit_${key}`).val(formattedValue);
+                                    $(`#${key}`).val(formattedValue);
                                 }
                             },
                             error: function(xhr) {
@@ -774,6 +784,17 @@
 
                 let partNumber = $('#part_no').val();
 
+                let allEmpty = Object.values(weeksData).every(value => value == '');
+
+                if (allEmpty) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Shipment Order',
+                        text: "Please fill in at least one week's data before submitting.",
+                    });
+                    return false;
+                }
+
                 // Optionally, send updated data to the server via AJAX
                 $.ajax({
                     url: "{{ route('create_order') }}", // Replace with your backend route
@@ -825,6 +846,16 @@
                 });
 
                 let partNumber = $('#part_no').val();
+                const allEmpty = Object.values(weeksData).every(value => value == '');
+
+                if (allEmpty) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Shipment Order',
+                        text: "Please fill in at least one week's data before submitting.",
+                    });
+                    return false;
+                }
 
                 // Optionally, send updated data to the server via AJAX
                 $.ajax({
@@ -878,7 +909,11 @@
                 let shippedAmount = parseFloat($('.add-shipment-amount input')
                     .val()); // Get the shipment amount entered
                 if (isNaN(shippedAmount) || shippedAmount <= 0) {
-                    alert("Please enter a valid shipment amount.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Shipment Amount',
+                        text: 'Please enter a valid shipment amount.',
+                    });
                     return;
                 }
 
@@ -895,8 +930,7 @@
 
                 $("input[name^='edit_existing']").each(function() {
                     let $field = $(this);
-                    let currentValue = parseFloat($field.val()) ||
-                        0; // Get the current value of the field (default to 0)
+                    let currentValue = parseFloat($field.val().replace(/,/g, '')) || 0;
                     let weekKey = $(this).data('edit-week-change');
                     fieldsData.push({
                         weekKey: weekKey,
@@ -940,8 +974,9 @@
                             $('#past_due').val(data['past_due']);
                             for (let key in data) {
                                 let value = data[key];
+                                let formattedValue = new Intl.NumberFormat('en-US').format(value);
 
-                                $(`#edit_${key}`).val(value);
+                                $(`#edit_${key}`).val(formattedValue);
                             }
                         },
                         error: function(error) {
