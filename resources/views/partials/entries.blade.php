@@ -382,9 +382,9 @@
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'wt_reqd_1_12_weeks')
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable-1">{{ ($data->wt_pc / 1000) * $sum1_12 }}</td>
+                            <td class="toggleable-1">{{ number_format(($data->wt_pc / 1000) * $sum1_12) ?? 0 }}</td>
                         @else
-                            <td class="toggleable-1">{{ ($data->wt_pc / 1000) * $sum1_12 }}</td>
+                            <td class="toggleable-1">{{ number_format(($data->wt_pc / 1000) * $sum1_12) ?? 0 }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'safety')
                         @php
@@ -392,12 +392,14 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="number" step="any" name="safety" id="safety"
-                                    value="{{ $data->safety }}" data-id="{{ $data->id }}"
+                                <input type="text" step="any" name="safety" id="safety"
+                                    value="{{ number_format($data->safety ?? 0) }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('safety', this.value, event)" class="simple-text">
+
                             </td>
                         @else
-                            <td class="toggleable-1" id="{{ $data_target }}">{{ $data->safety }}</td>
+                            <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($data->safety) }}
+                            </td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'min_ship')
                         @php
