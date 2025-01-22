@@ -250,7 +250,7 @@ class HomeController extends Controller
             'work_centre_5' => 'nullable',
             'work_centre_6' => 'nullable',
             'work_centre_7' => 'nullable',
-            'outside_processing_1' => 'required',
+            'outside_processing_1' => 'nullable',
             'outside_processing_2' => 'nullable',
             'outside_processing_3' => 'nullable',
             'outside_processing_4' => 'nullable',
@@ -316,7 +316,7 @@ class HomeController extends Controller
             $entryId = $entry->id;
 
             foreach ($work_centres as $centre => $value) {
-                if (!empty($value)) {
+                if (!empty($value) && $value != 'Select') {
                     $work_center = new WorkCenter();
                     $work_center->entry_id = $entryId;
                     $work_center->com = $value;
@@ -326,7 +326,7 @@ class HomeController extends Controller
             }
 
             foreach ($outside_processing as $centre => $value) {
-                if (!empty($value)) {
+                if (!empty($value) && $value != 'Select') {
                     $data = new OutSource();
                     $data->entry_id = $entryId;
                     $data->out = $value ?? 'OUT 1';

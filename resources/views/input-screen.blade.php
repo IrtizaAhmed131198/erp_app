@@ -113,7 +113,7 @@
                                                                 </td>
                                                                 <td>
                                                                     @if(Auth::user()->role == 1)
-                                                                        <input type="number" name="quantity" class="quantity" value="{{ $in_stock_finish }}">
+                                                                        <input type="text" name="quantity" oninput="formatAndPreventNegative(this)" class="quantity" value="{{ $in_stock_finish }}">
                                                                     @else
                                                                         {{ $in_stock_finish }}
                                                                     @endif
@@ -689,7 +689,7 @@
                                                                 </td>
                                                                 <td>
                                                                     @if(Auth::user()->role == 1)
-                                                                        <input type="number" name="quantity" class="quantity" value="{{ $in_stock_finish }}">
+                                                                        <input type="text" name="quantity" oninput="formatAndPreventNegative(this)" class="quantity" value="{{ $in_stock_finish }}">
                                                                     @else
                                                                         {{ $in_stock_finish }}
                                                                     @endif

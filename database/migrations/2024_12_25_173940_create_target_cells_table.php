@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('table');
             $table->integer('ref_id');
             $table->string('field');
-            $table->text('old');
-            $table->text('new');
+            $table->text('old')->nullable();
+            $table->text('new')->nullable();
             $table->timestamps();
         });
     }
