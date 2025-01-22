@@ -1198,7 +1198,7 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 }
 .text-overlay {
     position: absolute;
-    top: -40px; /* Adjust to position the text above */
+    top: 0px; /* Adjust to position the text above */
     left: 50%; /* Center it horizontally */
     transform: translateX(-50%);
     background-color: #fff;

@@ -718,9 +718,9 @@
 
             const isDropdown = inputElement.tagName === 'SELECT';
 
-            if (field === 'planning' || field === 'live_inventory_wip'
-                || field === 'live_inventory_finish' || field === 'in_stock_live' || 'wt_pc'
-                || field === 'min_ship' || 'future_raw' || 'price') {
+            if (field === 'planning' || field === 'live_inventory_wip' ||
+                field === 'live_inventory_finish' || field === 'in_stock_live' || 'wt_pc' ||
+                field === 'min_ship' || 'future_raw' || 'price') {
                 const isNumeric = /^-?\d+(,\d{3})*(\.\d+)?$/.test(value);
 
                 if (isNumeric) {
@@ -1092,11 +1092,11 @@
 
 
         function showTextAbove(element) {
-            // Remove any existing overlays
-            document.querySelectorAll(".text-overlay").forEach(overlay => overlay.remove());
-
-            // Get the parent <td> of the clicked element
+            // Get the parent <td> of the hovered element
             const parentTd = element.closest("td");
+
+            // Remove any existing overlays
+            parentTd.querySelectorAll(".text-overlay").forEach(overlay => overlay.remove());
 
             // Get the input value inside the <td>
             const inputValue = parentTd.querySelector("input").value;
@@ -1108,6 +1108,13 @@
 
             // Append the overlay to the <td>
             parentTd.appendChild(overlay);
+
+            // Remove the overlay on mouse leave
+            parentTd.addEventListener("mouseleave", () => {
+                overlay.remove();
+            }, {
+                once: true
+            }); // Use `{ once: true }` to ensure the listener is removed after firing once
         }
     </script>
 @endsection
