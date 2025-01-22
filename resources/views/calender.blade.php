@@ -123,6 +123,42 @@
                                     </table>
                                 </div>
 
+                                @php
+                                    $datesArray = [];
+
+                                    // Calculate the start date of the current week (Monday)
+                                    $today = date('Y-m-d');
+                                    $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+                                    $mondayOfWeek =
+                                        $dayOfWeek == 0
+                                            ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                                            : date(
+                                                'Y-m-d',
+                                                strtotime(
+                                                    '-' . ($dayOfWeek - 1) . ' days',
+                                                    strtotime($today),
+                                                ),
+                                            ); // Else, go back to Monday
+
+                                    // Calculate the start date of week 16
+                                    $week16StartDate = date(
+                                        'Y-m-d',
+                                        strtotime('+15 weeks', strtotime($mondayOfWeek)),
+                                    );
+
+                                    // Calculate the end date of week 16
+                                    $week16EndDate = date(
+                                        'Y-m-d',
+                                        strtotime('+6 days', strtotime($week16StartDate)),
+                                    );
+
+                                    // Calculate the start date of month 5 (the day after week 16 ends)
+                                    $month5StartDate = date(
+                                        'Y-m-d',
+                                        strtotime('+1 day', strtotime($week16EndDate)),
+                                    );
+                                @endphp
+
                                 <!-- add production form -->
                                 @include('partials.production_form')
 
@@ -140,11 +176,35 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr>
+                                                <td>Past Due</td>
+                                                <td>
+                                                    <input type="text" name="past_due" class="past_due_val"
+                                                        id="past_due">
+                                                    <button type="button" id="change_past_due" style="display: none;"><i
+                                                            class="fa-regular fa-pen-to-square"></i></button>
+                                                </td>
+                                            </tr>
                                             @for ($week = 1; $week <= 16; $week++)
+                                                @php
+                                                    $startOfWeek = date(
+                                                        'Y-m-d',
+                                                        strtotime(
+                                                            '+' . ($week - 1) * 7 . ' days',
+                                                            strtotime($mondayOfWeek),
+                                                        ),
+                                                    );
+                                                    $endOfWeek = date(
+                                                        'Y-m-d',
+                                                        strtotime('+6 days', strtotime($startOfWeek)),
+                                                    );
+                                                    $datesArray["week_$week"] = $startOfWeek;
+                                                @endphp
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Week {{ $week }} </span>
+                                                            <span>Week {{ $week }} ({{ $startOfWeek }} -
+                                                                {{ $endOfWeek }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -180,7 +240,8 @@
                                                 <tr>
                                                     <td>
                                                         <div class='weekdays-parent'>
-                                                            <span>Month {{ $month }} </span>
+                                                            <span>Month {{ $month }} ({{ $month5StartDate }} -
+                                                                {{ date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate))) }})</span>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -319,41 +380,6 @@
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 </td>
                                             </tr>
-                                            @php
-                                                $datesArray = [];
-
-                                                // Calculate the start date of the current week (Monday)
-                                                $today = date('Y-m-d');
-                                                $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-                                                $mondayOfWeek =
-                                                    $dayOfWeek == 0
-                                                        ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
-                                                        : date(
-                                                            'Y-m-d',
-                                                            strtotime(
-                                                                '-' . ($dayOfWeek - 1) . ' days',
-                                                                strtotime($today),
-                                                            ),
-                                                        ); // Else, go back to Monday
-
-                                                // Calculate the start date of week 16
-                                                $week16StartDate = date(
-                                                    'Y-m-d',
-                                                    strtotime('+15 weeks', strtotime($mondayOfWeek)),
-                                                );
-
-                                                // Calculate the end date of week 16
-                                                $week16EndDate = date(
-                                                    'Y-m-d',
-                                                    strtotime('+6 days', strtotime($week16StartDate)),
-                                                );
-
-                                                // Calculate the start date of month 5 (the day after week 16 ends)
-                                                $month5StartDate = date(
-                                                    'Y-m-d',
-                                                    strtotime('+1 day', strtotime($week16EndDate)),
-                                                );
-                                            @endphp
 
                                             @for ($week = 1; $week <= 16; $week++)
                                                 @php
