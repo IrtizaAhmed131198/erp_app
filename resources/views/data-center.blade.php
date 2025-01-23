@@ -94,7 +94,11 @@
                                             <td scope="col" colspan="2"><strong>Part Number Input</strong></td>
                                         </tr>
                                         <tr>
-                                            <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number</td>
+                                            @if (Auth::user()->role == 1)
+                                                <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number</td>
+                                            @else
+                                                <td>Part Number</td>
+                                            @endif
                                             <td>
                                                 <select class="form-select js-select21" id="part_number" name="part_number"
                                                     aria-label="Default select example">
@@ -109,7 +113,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer</td>
+                                            @if (Auth::user()->role == 1)
+                                                <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer</td>
+                                            @else
+                                                <td>Customer</td>
+                                            @endif
                                             <td>
                                                 <select class="form-select js-select21" id="customer_id" name="customer"
                                                     aria-label="Default select example">
@@ -146,7 +154,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department</td>
+                                            @if (Auth::user()->role == 1)
+                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department</td>
+                                            @else
+                                                <td>Department</td>
+                                            @endif
                                             <td>
                                                 <select class="js-select2 select2-hidden-accessible" id="department_id" name="department"
                                                     tabindex="-1">
@@ -162,7 +174,11 @@
                                         </tr>
                                         @for ($i = 1; $i <= 7; $i++)
                                             <tr>
-                                                <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }}</td>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }}</td>
+                                                @else
+                                                    <td>Work Centre {{ $i }}</td>
+                                                @endif
                                                 <td>
                                                     <select class="js-select2 select2-hidden-accessible work_centre_select"
                                                         name="work_centre_{{ $i }}"
@@ -192,7 +208,11 @@
                                     <tbody>
                                         @for ($i = 1; $i <= 4; $i++)
                                             <tr>
-                                                <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }}</td>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }}</td>
+                                                @else
+                                                    <td>Outside Processing {{ $i }}</td>
+                                                @endif
                                                 <td>
                                                     <div class="parent-inputs">
                                                         <select class="js-select2 select2-hidden-accessible outside_select"
