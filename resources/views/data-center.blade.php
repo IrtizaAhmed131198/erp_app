@@ -479,19 +479,19 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="outsideProcessingModalLabel{{ $i }}">Add Outside Processing for {{ $i }}</h5>
+                        <h5 class="modal-title" id="outsideProcessingModalLabel{{ $i }}">Add Vendor</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form class="outsideProcessingForm" data-select-id="outside_processing_{{ $i }}">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="outsideProcessingInput{{ $i }}" class="form-label">Outside Processing Name</label>
+                                <label for="outsideProcessingInput{{ $i }}" class="form-label">Vendor Name</label>
                                 <input type="text" class="form-control" id="outsideProcessingInput{{ $i }}" placeholder="Enter outside processing name" required>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add Outside Processing</button>
+                            <button type="submit" class="btn btn-primary">Add Vendor</button>
                         </div>
                     </form>
                 </div>
