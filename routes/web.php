@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TableController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,13 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('add-shipment-not/{id}', [HomeController::class, 'add_shipment_not'])->name('add_shipment_not');
 
     Route::post('signin', [LoginController::class, 'signin'])->name('signin');
+
+    Route::post('add-part-number', [TableController::class, 'add_part_number'])->name('add.part.number');
+    Route::post('add-customer', [TableController::class, 'add_customer'])->name('add.customer');
+    Route::post('add-department', [TableController::class, 'add_department'])->name('add.department');
+    Route::post('add-material', [TableController::class, 'add_material'])->name('add.material');
+    Route::post('add-work-center', [TableController::class, 'add_work_center'])->name('add.work.center');
+    Route::post('add-outside-processing', [TableController::class, 'add_outside_processing'])->name('add.outside.processing');
 
 });
 #login route

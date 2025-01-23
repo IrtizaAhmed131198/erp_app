@@ -9,5 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = "customers";
 }

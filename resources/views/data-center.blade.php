@@ -94,9 +94,9 @@
                                             <td scope="col" colspan="2"><strong>Part Number Input</strong></td>
                                         </tr>
                                         <tr>
-                                            <td>Part Number</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number</td>
                                             <td>
-                                                <select class="form-select js-select21" name="part_number"
+                                                <select class="form-select js-select21" id="part_number" name="part_number"
                                                     aria-label="Default select example">
                                                     <option selected disabled>Select Part Number</option>
                                                     @foreach ($parts as $item)
@@ -109,9 +109,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Customer</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer</td>
                                             <td>
-                                                <select class="form-select js-select21" name="customer"
+                                                <select class="form-select js-select21" id="customer_id" name="customer"
                                                     aria-label="Default select example">
                                                     <option selected disabled>Select Customer</option>
                                                     @foreach ($customer as $item)
@@ -146,10 +146,10 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Department</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department</td>
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible" name="department"
-                                                    tabindex="-1" aria-hidden="true">
+                                                <select class="js-select2 select2-hidden-accessible" id="department_id" name="department"
+                                                    tabindex="-1">
                                                     <option selected disabled>Select DEPARTMENT</option>
                                                     @foreach ($department as $dept)
                                                         <option value="{{ $dept->id }}"
@@ -162,12 +162,12 @@
                                         </tr>
                                         @for ($i = 1; $i <= 7; $i++)
                                             <tr>
-                                                <td>Work Centre {{ $i }}</td>
+                                                <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }}</td>
                                                 <td>
-                                                    <select class="js-select2 select2-hidden-accessible"
+                                                    <select class="js-select2 select2-hidden-accessible work_centre_select"
                                                         name="work_centre_{{ $i }}"
                                                         aria-label="Default select example">
-                                                        <option selected>Select</option>
+                                                        <option value="" selected>Select</option>
                                                         @foreach ($work_center_select as $center)
                                                             <option value="{{ $center['id'] }}"
                                                                 {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
@@ -192,13 +192,13 @@
                                     <tbody>
                                         @for ($i = 1; $i <= 4; $i++)
                                             <tr>
-                                                <td>Outside Processing {{ $i }}</td>
+                                                <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }}</td>
                                                 <td>
                                                     <div class="parent-inputs">
-                                                        <select class="js-select2 select2-hidden-accessible"
+                                                        <select class="js-select2 select2-hidden-accessible outside_select"
                                                             name="outside_processing_{{ $i }}"
                                                             aria-label="Default select example">
-                                                            <option selected>Select</option>
+                                                            <option value="" selected>Select</option>
                                                             @foreach ($vendor as $v)
                                                                 <option value="{{ $v->id }}"
                                                                     {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
@@ -215,9 +215,9 @@
                                             </tr>
                                         @endfor
                                         <tr>
-                                            <td>Material</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material</td>
                                             <td>
-                                                <select class="form-select js-select21" name="material"
+                                                <select class="form-select js-select21" id="material_id" name="material"
                                                     aria-label="Default select example">
                                                     <option selected disabled>Select Material</option>
                                                     @foreach ($material as $item)
@@ -336,6 +336,149 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="partNumber" tabindex="-1" aria-labelledby="partNumberLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="partNumberLabel">Add Part Number</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="partNumberForm">
+                <div class="modal-body">
+                <div class="mb-3">
+                    <label for="partNumberInput" class="form-label">Part Number</label>
+                    <input type="text" class="form-control" id="partNumberInput" placeholder="Enter part number" required>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Part Number</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerModalLabel">Add Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="customerForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="customerInput" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control" id="customerInput" placeholder="Enter customer name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Customer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="departmentModalLabel">Add Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="departmentForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="departmentInput" class="form-label">Department Name</label>
+                            <input type="text" class="form-control" id="departmentInput" placeholder="Enter department name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Department</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="materialModalLabel">Add Material</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="materialForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="materialInput" class="form-label">Package</label>
+                            <input type="text" class="form-control" id="materialInput" placeholder="Enter package name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Material</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @for ($i = 1; $i <= 7; $i++)
+        <div class="modal fade" id="workCenterModal{{ $i }}" tabindex="-1" aria-labelledby="workCenterModalLabel{{ $i }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="workCenterModalLabel{{ $i }}">Add Work Center for Work Centre {{ $i }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="workCenterForm" data-select-id="work_centre_{{ $i }}">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="workCenterInput{{ $i }}" class="form-label">Work Center Name</label>
+                                <input type="text" class="form-control" id="workCenterInput{{ $i }}" placeholder="Enter work center name" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Work Center</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endfor
+
+    @for ($i = 1; $i <= 4; $i++)
+        <div class="modal fade" id="outsideProcessingModal{{ $i }}" tabindex="-1" aria-labelledby="outsideProcessingModalLabel{{ $i }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="outsideProcessingModalLabel{{ $i }}">Add Outside Processing for {{ $i }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="outsideProcessingForm" data-select-id="outside_processing_{{ $i }}">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="outsideProcessingInput{{ $i }}" class="form-label">Outside Processing Name</label>
+                                <input type="text" class="form-control" id="outsideProcessingInput{{ $i }}" placeholder="Enter outside processing name" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Outside Processing</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endfor
+
 @endsection
 
 @section('js')
@@ -368,6 +511,304 @@
             element.value = value;
         }
     </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#partNumberForm').submit(function (event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const partNumberInput = $('#partNumberInput').val();
+
+                // AJAX request
+                $.ajax({
+                    url: '{{ route("add.part.number") }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        part_number: partNumberInput
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Add the new part number to the table
+                            const selectDropdown = $('#part_number');
+                            const newOption = `<option value="${response.part_number.id}">${response.part_number.part_number}</option>`;
+                            selectDropdown.append(newOption);
+
+                            // Reset the form and close the modal
+                            $('#partNumberForm')[0].reset();
+                            $('#partNumber').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Part Number Added',
+                                text: response.message,
+                            });
+
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Part Number Failed',
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Part Number Failed',
+                            text: 'An error occurred while adding the part number.',
+                        });
+                    }
+                });
+            });
+
+            $('#customerForm').submit(function (event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const customerInput = $('#customerInput').val();
+
+                // AJAX request
+                $.ajax({
+                    url: '{{ route("add.customer") }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        customer_name: customerInput
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Add the new customer to the dropdown
+                            const selectDropdown = $('#customer_id');
+                            const newOption = `<option value="${response.customer.id}">${response.customer.CustomerName}</option>`;
+                            selectDropdown.append(newOption);
+
+                            // Reset the form and close the modal
+                            $('#customerForm')[0].reset();
+                            $('#customerModal').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Customer Added',
+                                text: response.message,
+                            });
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Add Customer Failed',
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Customer Failed',
+                            text: 'An error occurred while adding the customer.',
+                        });
+                    }
+                });
+            });
+
+            $('#departmentForm').submit(function (event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const departmentInput = $('#departmentInput').val();
+
+                // AJAX request
+                $.ajax({
+                    url: '{{ route("add.department") }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        name: departmentInput
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Add the new department to the dropdown
+                            const selectDropdown = $('#department_id');
+                            const newOption = `<option value="${response.department.id}">${response.department.name}</option>`;
+                            selectDropdown.append(newOption);
+
+                            // Reset the form and close the modal
+                            $('#departmentForm')[0].reset();
+                            $('#departmentModal').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Department Added',
+                                text: response.message,
+                            });
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Add Department Failed',
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Department Failed',
+                            text: 'An error occurred while adding the department.',
+                        });
+                    }
+                });
+            });
+
+            $('#materialForm').submit(function (event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const materialInput = $('#materialInput').val();
+
+                // AJAX request
+                $.ajax({
+                    url: '{{ route("add.material") }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        package: materialInput
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Add the new material to the dropdown
+                            const selectDropdown = $('#material_id');
+                            const newOption = `<option value="${response.material.id}">${response.material.Package}</option>`;
+                            selectDropdown.append(newOption);
+
+                            // Reset the form and close the modal
+                            $('#materialForm')[0].reset();
+                            $('#materialModal').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Material Added',
+                                text: response.message,
+                            });
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Add Material Failed',
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Material Failed',
+                            text: 'An error occurred while adding the material.',
+                        });
+                    }
+                });
+            });
+
+            $('.workCenterForm').submit(function (event) {
+                event.preventDefault();
+
+                const form = $(this);
+                const selectId = form.data('select-id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const workCenterInput = form.find('input[type="text"]').val();
+
+                // AJAX request
+                $.ajax({
+                    url: '{{ route("add.work.center") }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        name: workCenterInput
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Add the new work center to the relevant dropdown
+                            const selectDropdown = $(`.work_centre_select`);
+                            const newOption = `<option value="${response.workCenter.id}">${response.workCenter.name}</option>`;
+                            selectDropdown.append(newOption);
+
+                            // Reset the form and close the modal
+                            form[0].reset();
+                            form.closest('.modal').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Work Center Added',
+                                text: response.message,
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Add Work Center Failed',
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Work Center Failed',
+                            text: 'An error occurred while adding the work center.',
+                        });
+                    }
+                });
+            });
+
+            $('.outsideProcessingForm').submit(function (event) {
+                event.preventDefault();
+
+                const form = $(this);
+                const selectId = form.data('select-id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const outsideProcessingInput = form.find('input[type="text"]').val();
+
+                // AJAX request
+                $.ajax({
+                    url: '{{ route("add.outside.processing") }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        name: outsideProcessingInput
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Add the new outside processing to the relevant dropdown
+                            const selectDropdown = $(`.outside_select`);
+                            const newOption = `<option value="${response.outsideProcessing.id}">${response.outsideProcessing.name}</option>`;
+                            selectDropdown.append(newOption);
+
+                            // Reset the form and close the modal
+                            form[0].reset();
+                            form.closest('.modal').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Outside Processing Added',
+                                text: response.message,
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Add Outside Processing Failed',
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Outside Processing Failed',
+                            text: 'An error occurred while adding the outside processing.',
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+
     @if ($errors->any())
         <script>
             Swal.fire({

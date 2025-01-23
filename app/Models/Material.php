@@ -9,5 +9,7 @@ class Material extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = "package";
 }
