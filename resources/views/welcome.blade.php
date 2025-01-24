@@ -711,6 +711,26 @@
                     return false;
                 }
 
+                if (($(this).css('background-color') != 'rgba(0, 0, 0, 0)')) {
+                    $(this).css('background-color', 'rgba(0, 0, 0, 0)');
+
+                    $.ajax({
+                        url: '{{route("un_highlight_cell_for_me")}}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{csrf_token()}}',
+                            identifier: $(this).attr('id'),
+                        },
+                        success: (data) => {
+                            console.log('un highlighted!')
+                        }
+                    });
+
+
+                    highlight_button_is_clicked = false;
+                    return false;
+                }
+
                 let color = '#ffc107';
                 $(this).css('background-color', color);
 
@@ -728,7 +748,7 @@
                 });
 
                 // alert($(this).attr('id'));
-                highlight_button_is_clicked = false;q
+                highlight_button_is_clicked = false;
             });
         });
 

@@ -105,3 +105,34 @@ Route::post('highlight-cell-for-me', function (\Illuminate\Http\Request $request
         ]);
     }
 })->name('highlight_cell_for_me');
+
+Route::post('un-highlight-cell-for-me', function (\Illuminate\Http\Request $request) {
+    try {
+        $request->validate([
+            'identifier' => 'required'
+        ]);
+
+        $record = \App\Models\HighlightedCell::where([
+            'user_id' => auth()->id(),
+            'identifier' => $request->identifier
+        ])->first();
+
+        if($record) {
+            $record->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [],
+            'message' => 'Cell un-highlighted!',
+            'errors' => [],
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'data' => [],
+            'message' => $e->getMessage(),
+            'errors' => [],
+        ]);
+    }
+})->name('un_highlight_cell_for_me');
