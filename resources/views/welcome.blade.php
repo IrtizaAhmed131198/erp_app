@@ -160,6 +160,9 @@
                             data-bs-target="#filter3" title="Show/Hide Columns">
                             <i class="fas fa-eye"></i>
                         </button>
+                        <button type="button" id="btn_highlight_cell" class="btn btn-warning ml-4" title="Highlight a specific cell">
+                            <i class="fas fa-highlighter"></i>
+                        </button>
                         {{-- <button type="button" class="btn btn-primary ml-4" data-bs-toggle="modal" data-bs-target="#exampleModal" width="100%">
                             Open Modal
                             </button> --}}
@@ -680,6 +683,21 @@
                     targetCell.css('background-color', '');
                 }, 4000); // Remove highlight after 2 seconds
             }
+
+            //highligt cell
+            let highlight_button_is_clicked = false;
+            $('#btn_highlight_cell').on('click', function () {
+                highlight_button_is_clicked = true;
+            });
+
+            $('.toggleable-1, .toggleable').on('click', function () {
+                if (!highlight_button_is_clicked) {
+                    return false;
+                }
+
+                alert($(this).attr('id'));
+                highlight_button_is_clicked = false;
+            });
         });
 
         // function sendAjaxRequest(field, value) {
@@ -710,7 +728,7 @@
         let typingTimer; // Timer variable
         let typingTimer2;
         let typingTimer3;
-        const typingTimeout = 1500; // 2 seconds of no typing
+        const typingTimeout = 500; // 2 seconds of no typing
 
         function sendAjaxRequest(field, value, event) {
             const inputElement = event.target;

@@ -30,7 +30,7 @@
                         @endif
                     @elseif($region_1_column_configuration_item->column == 'work_center')
                         @php
-                            $data_target = 'work_center_' . $data->work_center_one . '_work_center';
+                            $data_target = 'work_center_' . $data->id . '_work_center';
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable toggle-work-center" id="{{ $data_target }}">
@@ -250,12 +250,20 @@
             @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                 @if ($region_2_column_configuration_item->visibility)
                     @if ($region_2_column_configuration_item->column == 'reqd_1_6_weeks')
-                        <td class="toggleable-1">{{ number_format($sumWeeks1To6) }}</td>
+                        @php
+                            $data_target = 'entries_' . $data->id . '_reqd_1_6_weeks';
+                        @endphp
+                        <td class="toggleable-1" id="{{$data_target}}">{{ number_format($sumWeeks1To6) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'reqd_7_12_weeks')
-                        <td class="toggleable-1">{{ number_format($sumWeeks7To12) }}</td>
+                        @php
+                            $data_target = 'entries_' . $data->id . '_reqd_7_12_weeks';
+                        @endphp
+                        <td class="toggleable-1" id="{{$data_target}}">{{ number_format($sumWeeks7To12) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'scheduled_total')
-                        <td class="toggleable-1 schedule_total">{{ number_format($sumWeeks1To6 + $sumWeeks7To12) }}
-                        </td>
+                        @php
+                            $data_target = 'entries_' . $data->id . '_scheduled_total';
+                        @endphp
+                        <td class="toggleable-1 schedule_total" id="{{$data_target}}">{{ number_format($sumWeeks1To6 + $sumWeeks7To12) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'in_stock_finished')
                         @php
                             $data_target = 'entries_' . $data->id . '_in_stock_finished';
@@ -382,9 +390,9 @@
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'wt_reqd_1_12_weeks')
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable-1">{{ number_format(($data->wt_pc / 1000) * $sum1_12) ?? 0 }}</td>
+                            <td class="toggleable-1">{{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
                         @else
-                            <td class="toggleable-1">{{ number_format(($data->wt_pc / 1000) * $sum1_12) ?? 0 }}</td>
+                            <td class="toggleable-1">{{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'safety')
                         @php
