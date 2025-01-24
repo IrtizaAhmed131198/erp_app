@@ -8,7 +8,4 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
-        allowedHosts: ['2z377w-5173.csb.app'], // Add the host here
-    },
 });
