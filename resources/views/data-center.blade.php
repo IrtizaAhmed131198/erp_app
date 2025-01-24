@@ -277,13 +277,13 @@
                                                 <textarea name="order_notes" id="">{{ old('order_notes') }}</textarea>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td>Future Raw</td>
                                             <td>
                                                 <input type="number" name="future_raw" value="{{ old('future_raw') }}"
                                                     id="">
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             <td>Price</td>
                                             <td>

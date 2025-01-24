@@ -171,7 +171,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Add amount of shipment to Existing order</th>
+                                                <th scope="col">Existing order</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
