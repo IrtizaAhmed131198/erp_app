@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('highlighted_cells', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->string('identifier');
+            $table->string('color')->default('#ffc107');
             $table->timestamps();
         });
     }

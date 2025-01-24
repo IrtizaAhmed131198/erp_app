@@ -80,4 +80,19 @@ class User extends Authenticatable
         $permissionIds = Permission::whereIn('key', $permissions)->pluck('id');
         $this->permissions()->sync($permissionIds);
     }
+
+    public function highlighted_cell ()
+    {
+        return $this->hasMany(HighlightedCell::class, 'user_id', 'id');
+    }
+
+    public function highlighted_cell_identifiers ()
+    {
+        return $this->hasMany(HighlightedCell::class, 'user_id', 'id')->pluck('identifier')->toArray();
+    }
+
+    public function highlighted_cell_colors ()
+    {
+        return $this->hasMany(HighlightedCell::class, 'user_id', 'id')->pluck('color')->toArray();
+    }
 }

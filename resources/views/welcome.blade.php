@@ -125,6 +125,15 @@
 
 
 @section('content')
+    @php
+        $highlighted_cell_identifiers = auth()->user()->highlighted_cell_identifiers();
+        $highlighted_cell_colors = auth()->user()->highlighted_cell_colors();
+
+        $highlight_map = [];
+        foreach ($highlighted_cell_identifiers as $key => $item) {
+            $highlight_map[$item] = $highlighted_cell_colors[$key];
+        }
+    @endphp
     <section class="master-data-section">
         <div class="container bg-colored pt-0">
             <div class="row align-items-center custom-row justify-content-center">
@@ -686,17 +695,40 @@
 
             //highligt cell
             let highlight_button_is_clicked = false;
+            let highlighted_cell_identifiers = @json($highlighted_cell_identifiers);
+            let highlight_map = @json($highlight_map);
+
+            for (const highlighted_cell_identifier of highlighted_cell_identifiers) {
+                $('#' + highlighted_cell_identifier).css('background-color', highlight_map[highlighted_cell_identifier]);
+            }
+
             $('#btn_highlight_cell').on('click', function () {
                 highlight_button_is_clicked = true;
             });
 
-            $('.toggleable-1, .toggleable').on('click', function () {
+            $('.toggleable-1, .toggleable, .toggleable-2').on('click', function () {
                 if (!highlight_button_is_clicked) {
                     return false;
                 }
 
-                alert($(this).attr('id'));
-                highlight_button_is_clicked = false;
+                let color = '#ffc107';
+                $(this).css('background-color', color);
+
+                $.ajax({
+                    url: '{{route("highlight_cell_for_me")}}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        identifier: $(this).attr('id'),
+                        color: color
+                    },
+                    success: (data) => {
+                        console.log('highlighted!')
+                    }
+                });
+
+                // alert($(this).attr('id'));
+                highlight_button_is_clicked = false;q
             });
         });
 

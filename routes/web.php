@@ -77,3 +77,31 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::post('addimg', [LoginController::class, 'addimg'])->name('addimg');
+
+Route::post('highlight-cell-for-me', function (\Illuminate\Http\Request $request) {
+    try {
+        $request->validate([
+            'identifier' => 'required'
+        ]);
+
+        \App\Models\HighlightedCell::create([
+            'user_id' => auth()->id(),
+            'identifier' => $request->identifier,
+            'color' => $request->color ?? '#ffc107',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => [],
+            'message' => 'Cell highlighted!',
+            'errors' => [],
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'data' => [],
+            'message' => $e->getMessage(),
+            'errors' => [],
+        ]);
+    }
+})->name('highlight_cell_for_me');
