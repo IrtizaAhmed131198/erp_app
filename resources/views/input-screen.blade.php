@@ -85,8 +85,8 @@
                                                                         <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                                     </select>
                                                                 </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
+                                                                <td class="customer_val">
+                                                                    {{-- @if(Auth::user()->role == 1)
                                                                         <select name="customer" class="customer">
                                                                             @foreach ($customers as $item)
                                                                                 <option value="{{ $item->CustomerName }}" {{ $customer_id == $item->id ? 'selected' : '' }}>
@@ -94,12 +94,12 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
-                                                                    @else
+                                                                    @else --}}
                                                                         {{ $customer }}
-                                                                    @endif
+                                                                    {{-- @endif --}}
                                                                 </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
+                                                                <td class="part_number_val">
+                                                                    {{-- @if(Auth::user()->role == 1)
                                                                         <select name="part_number" class="part_number">
                                                                             @foreach ($parts as $item)
                                                                                 <option value="{{ $item->Part_Number }}" {{ $part_number_id == $item->id ? 'selected' : '' }}>
@@ -107,30 +107,30 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
-                                                                    @else
+                                                                    @else --}}
                                                                         {{ $part_number }}
-                                                                    @endif
+                                                                    {{-- @endif --}}
                                                                 </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
-                                                                        <input type="text" name="quantity" oninput="formatAndPreventNegative(this)" class="quantity" value="{{ $in_stock_finish }}">
-                                                                    @else
+                                                                <td class="quantity_val">
+                                                                    {{-- @if(Auth::user()->role == 1)
+                                                                        <input type="text" name="quantity" oninput="formatAndPreventNegative(this)" class="quantity" value="{{ $in_stock_finish }}" readonly>
+                                                                    @else --}}
                                                                         {{ $in_stock_finish }}
-                                                                    @endif
+                                                                    {{-- @endif --}}
                                                                 </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
+                                                                <td class="job_val">
+                                                                    {{-- @if(Auth::user()->role == 1)
                                                                         <input type="text" name="job" class="job" value="{{ $job }}">
-                                                                    @else
+                                                                    @else --}}
                                                                         {{ $job }}
-                                                                    @endif
+                                                                    {{-- @endif --}}
                                                                 </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
+                                                                <td class="lot_val">
+                                                                    {{-- @if(Auth::user()->role == 1)
                                                                         <input type="text" name="lot" class="lot" value="{{ $lot }}">
-                                                                    @else
+                                                                    @else --}}
                                                                         {{ $lot }}
-                                                                    @endif
+                                                                    {{-- @endif --}}
                                                                 </td>
                                                                 <td style="display: none" class="type">{{ $work_select }}</td>
                                                                 <td style="display: none">{{ $id }}</td>
@@ -146,584 +146,126 @@
                                     </div>
                                 </div>
                             @endforeach
-
-
-                            {{-- @if (!empty($com1))
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            <strong>
-                                                COPM 01
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show"
-                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                        <th style="display: none">type #</th>
-                                                        <th style="display: none">ID #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($com1 as $entry)
-                                                        @php
-                                                            $status = $entry['entries']['status'] ?? null;
-                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
-                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish =
-                                                                $entry['entries']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries']['job'] ?? null;
-                                                            $lot = $entry['entries']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running"
-                                                                            {{ $status == 'Running' ? 'selected' : '' }}>
-                                                                            Running</option>
-                                                                        <option value="Pending Order"
-                                                                            {{ $status == 'Pending Order' ? 'selected' : '' }}>
-                                                                            Pending Order</option>
-                                                                        <option value="Pause"
-                                                                            {{ $status == 'Pause' ? 'selected' : '' }}>Pause
-                                                                        </option>
-                                                                        <option value="Closed"
-                                                                            {{ $status == 'Closed' ? 'selected' : '' }}>
-                                                                            Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>{{ $customer }}</td>
-                                                                <td>{{ $part_number }}</td>
-                                                                <td>{{ $in_stock_finish }}</td>
-                                                                <td>{{ $job }}</td>
-                                                                <td>{{ $lot }}</td>
-                                                                <td style="display: none">COM 1</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-1-one">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            @if (!empty($com2))
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingTwo">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            <strong>
-                                                COPM 02
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                        data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                        <th style="display: none">type #</th>
-                                                        <th style="display: none">ID #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($com2 as $entry)
-                                                        @php
-                                                            $status = $entry['entries']['status'] ?? null;
-                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
-                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish =
-                                                                $entry['entries']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries']['job'] ?? null;
-                                                            $lot = $entry['entries']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running"
-                                                                            {{ $status == 'Running' ? 'selected' : '' }}>
-                                                                            Running</option>
-                                                                        <option value="Pending Order"
-                                                                            {{ $status == 'Pending Order' ? 'selected' : '' }}>
-                                                                            Pending Order</option>
-                                                                        <option value="Pause"
-                                                                            {{ $status == 'Pause' ? 'selected' : '' }}>
-                                                                            Pause</option>
-                                                                        <option value="Closed"
-                                                                            {{ $status == 'Closed' ? 'selected' : '' }}>
-                                                                            Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>{{ $customer }}</td>
-                                                                <td>{{ $part_number }}</td>
-                                                                <td>{{ $in_stock_finish }}</td>
-                                                                <td>{{ $job }}</td>
-                                                                <td>{{ $lot }}</td>
-                                                                <td style="display: none">COM 2</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-1-two">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            @if (!empty($com3))
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingThree">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseThree" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            <strong>
-                                                COPM 03
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseThree" class="accordion-collapse collapse"
-                                        aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                        <th style="display: none">type #</th>
-                                                        <th style="display: none">ID #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($com3 as $entry)
-                                                        @php
-                                                            $status = $entry['entries']['status'] ?? null;
-                                                            $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
-                                                            $part_number = $entry['entries']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish =
-                                                                $entry['entries']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries']['job'] ?? null;
-                                                            $lot = $entry['entries']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running"
-                                                                            {{ $status == 'Running' ? 'selected' : '' }}>
-                                                                            Running</option>
-                                                                        <option value="Pending Order"
-                                                                            {{ $status == 'Pending Order' ? 'selected' : '' }}>
-                                                                            Pending Order</option>
-                                                                        <option value="Pause"
-                                                                            {{ $status == 'Pause' ? 'selected' : '' }}>
-                                                                            Pause</option>
-                                                                        <option value="Closed"
-                                                                            {{ $status == 'Closed' ? 'selected' : '' }}>
-                                                                            Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>{{ $customer }}</td>
-                                                                <td>{{ $part_number }}</td>
-                                                                <td>{{ $in_stock_finish }}</td>
-                                                                <td>{{ $job }}</td>
-                                                                <td>{{ $lot }}</td>
-                                                                <td style="display: none">COM 3</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-1-three">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if (!empty($out1))
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingFour">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseFour" aria-expanded="false"
-                                            aria-controls="collapseFour">
-                                            <strong>
-                                                OUT 1
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
-                                        data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                        <th style="display: none">type #</th>
-                                                        <th style="display: none">ID #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($out1 as $entry)
-                                                        @php
-                                                            $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
-                                                            $part_number =
-                                                                $entry['entries_data']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish =
-                                                                $entry['entries_data']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries_data']['job'] ?? null;
-                                                            $lot = $entry['entries_data']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running"
-                                                                            {{ $status == 'Running' ? 'selected' : '' }}>
-                                                                            Running</option>
-                                                                        <option value="Pending Order"
-                                                                            {{ $status == 'Pending Order' ? 'selected' : '' }}>
-                                                                            Pending Order</option>
-                                                                        <option value="Pause"
-                                                                            {{ $status == 'Pause' ? 'selected' : '' }}>
-                                                                            Pause</option>
-                                                                        <option value="Closed"
-                                                                            {{ $status == 'Closed' ? 'selected' : '' }}>
-                                                                            Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>{{ $customer }}</td>
-                                                                <td>{{ $part_number }}</td>
-                                                                <td>{{ $in_stock_finish }}</td>
-                                                                <td>{{ $job }}</td>
-                                                                <td>{{ $lot }}</td>
-                                                                <td style="display: none">OUT 1</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2-one">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            @if (!empty($out2))
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingFifth">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseFifth"
-                                            aria-expanded="false" aria-controls="collapseFifth">
-                                            <strong>
-                                                OUT 2
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseFifth" class="accordion-collapse collapse"
-                                        aria-labelledby="headingFifth" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                        <th style="display: none">type #</th>
-                                                        <th style="display: none">ID #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($out2 as $entry)
-                                                        @php
-                                                            $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
-                                                            $part_number =
-                                                                $entry['entries_data']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish =
-                                                                $entry['entries_data']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries_data']['job'] ?? null;
-                                                            $lot = $entry['entries_data']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running"
-                                                                            {{ $status == 'Running' ? 'selected' : '' }}>
-                                                                            Running</option>
-                                                                        <option value="Pending Order"
-                                                                            {{ $status == 'Pending Order' ? 'selected' : '' }}>
-                                                                            Pending Order</option>
-                                                                        <option value="Pause"
-                                                                            {{ $status == 'Pause' ? 'selected' : '' }}>
-                                                                            Pause</option>
-                                                                        <option value="Closed"
-                                                                            {{ $status == 'Closed' ? 'selected' : '' }}>
-                                                                            Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>{{ $customer }}</td>
-                                                                <td>{{ $part_number }}</td>
-                                                                <td>{{ $in_stock_finish }}</td>
-                                                                <td>{{ $job }}</td>
-                                                                <td>{{ $lot }}</td>
-                                                                <td style="display: none">OUT 2</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2-two">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            @if (!empty($out3))
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingSix">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false"
-                                            aria-controls="collapseSix">
-                                            <strong>
-                                                OUT 3
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseSix" class="accordion-collapse collapse"
-                                        aria-labelledby="headingSix" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                        <th style="display: none">type #</th>
-                                                        <th style="display: none">ID #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($out3 as $entry)
-                                                        @php
-                                                            $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
-                                                            $part_number =
-                                                                $entry['entries_data']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish =
-                                                                $entry['entries_data']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries_data']['job'] ?? null;
-                                                            $lot = $entry['entries_data']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running"
-                                                                            {{ $status == 'Running' ? 'selected' : '' }}>
-                                                                            Running</option>
-                                                                        <option value="Pending Order"
-                                                                            {{ $status == 'Pending Order' ? 'selected' : '' }}>
-                                                                            Pending Order</option>
-                                                                        <option value="Pause"
-                                                                            {{ $status == 'Pause' ? 'selected' : '' }}>
-                                                                            Pause</option>
-                                                                        <option value="Closed"
-                                                                            {{ $status == 'Closed' ? 'selected' : '' }}>
-                                                                            Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>{{ $customer }}</td>
-                                                                <td>{{ $part_number }}</td>
-                                                                <td>{{ $in_stock_finish }}</td>
-                                                                <td>{{ $job }}</td>
-                                                                <td>{{ $lot }}</td>
-                                                                <td style="display: none">OUT 3</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-ceneter mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2-three">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif --}}
                         </div>
-                        <div class="accordion" id="accordionExample1">
-                            <h3 class="text-center mb-3 mt-5">Out Source Processing</h3>
+                        @if(!empty($out1) && count($out1) > 0)
+                            <div class="accordion" id="accordionExample1">
+                                <h3 class="text-center mb-3 mt-5">Out Source Processing</h3>
 
-                            @php
-                                $groupedEntriesOut= collect($out1)->groupBy('out_source.name');
-                            @endphp
-                            @foreach ($groupedEntriesOut as $outSourceName => $entries)
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading{{ \Str::slug($outSourceName) }}">
-                                        <button class="accordion-button {{ $loop->first ? 'collapsed' : 'show' }}" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapse{{ \Str::slug($outSourceName) }}" aria-expanded="{{ $loop->first ? 'false' : 'true' }}" aria-controls="collapse{{ \Str::slug($outSourceName) }}">
-                                            <strong>
-                                                {{ $outSourceName }}
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapse{{ \Str::slug($outSourceName) }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" aria-labelledby="heading{{ \Str::slug($outSourceName) }}"
-                                        data-bs-parent="#accordionExample1">
-                                        <div class="accordion-body">
-                                            <table class="table table-hover table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <th>Customer</th>
-                                                        <th>Part Number</th>
-                                                        <th>Quantity</th>
-                                                        <th>Job #</th>
-                                                        <th>LOT #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($entries as $entry)
-                                                        @php
-                                                            $status = $entry['entries_data']['status'] ?? null;
-                                                            $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
-                                                            $customer_id = $entry['entries_data']['get_customer']['id'] ?? null;
-                                                            $part_number = $entry['entries_data']['part']['Part_Number'] ?? null;
-                                                            $part_number_id = $entry['entries_data']['part']['id'] ?? null;
-                                                            $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
-                                                            $job = $entry['entries_data']['job'] ?? null;
-                                                            $lot = $entry['entries_data']['lot'] ?? null;
-                                                            $id = $entry['id'] ?? null;
-                                                            $out_source = $entry['out_source']['name']  ?? null;
-                                                        @endphp
-                                                        @if ($status !== null && $job !== null && $lot !== null)
-                                                            <tr>
-                                                                <td>
-                                                                    <select name="status" id="status">
-                                                                        <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                        <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                        <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                        <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
-                                                                        <select name="customer" class="customer">
-                                                                            @foreach ($customers as $item)
-                                                                                <option value="{{ $item->CustomerName }}" {{ $customer_id == $item->id ? 'selected' : '' }}>
-                                                                                    {{ $item->CustomerName }}
-                                                                                </option>
-                                                                            @endforeach
+                                @php
+                                    $groupedEntriesOut= collect($out1)->groupBy('out_source.name');
+                                @endphp
+                                @foreach ($groupedEntriesOut as $outSourceName => $entries)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading{{ \Str::slug($outSourceName) }}">
+                                            <button class="accordion-button {{ $loop->first ? 'collapsed' : 'show' }}" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapse{{ \Str::slug($outSourceName) }}" aria-expanded="{{ $loop->first ? 'false' : 'true' }}" aria-controls="collapse{{ \Str::slug($outSourceName) }}">
+                                                <strong>
+                                                    {{ $outSourceName }}
+                                                </strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{ \Str::slug($outSourceName) }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" aria-labelledby="heading{{ \Str::slug($outSourceName) }}"
+                                            data-bs-parent="#accordionExample1">
+                                            <div class="accordion-body">
+                                                <table class="table table-hover table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Status</th>
+                                                            <th>Customer</th>
+                                                            <th>Part Number</th>
+                                                            <th>Quantity</th>
+                                                            <th>Job #</th>
+                                                            <th>LOT #</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($entries as $entry)
+                                                            @php
+                                                                $status = $entry['entries_data']['status'] ?? null;
+                                                                $customer = $entry['entries_data']['get_customer']['CustomerName'] ?? null;
+                                                                $customer_id = $entry['entries_data']['get_customer']['id'] ?? null;
+                                                                $part_number = $entry['entries_data']['part']['Part_Number'] ?? null;
+                                                                $part_number_id = $entry['entries_data']['part']['id'] ?? null;
+                                                                $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
+                                                                $job = $entry['entries_data']['job'] ?? null;
+                                                                $lot = $entry['entries_data']['lot'] ?? null;
+                                                                $id = $entry['id'] ?? null;
+                                                                $out_source = $entry['out_source']['name']  ?? null;
+                                                            @endphp
+                                                            @if ($status !== null && $job !== null && $lot !== null)
+                                                                <tr>
+                                                                    <td>
+                                                                        <select name="status" id="status">
+                                                                            <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                            <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                            <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                            <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
                                                                         </select>
-                                                                    @else
-                                                                        {{ $customer }}
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
-                                                                        <select name="part_number" class="part_number">
-                                                                            @foreach ($parts as $item)
-                                                                                <option value="{{ $item->Part_Number }}" {{ $part_number_id == $item->id ? 'selected' : '' }}>
-                                                                                    {{ $item->Part_Number }}
-                                                                                </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    @else
-                                                                        {{ $part_number }}
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
-                                                                        <input type="text" name="quantity" oninput="formatAndPreventNegative(this)" class="quantity" value="{{ $in_stock_finish }}">
-                                                                    @else
-                                                                        {{ $in_stock_finish }}
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
-                                                                        <input type="text" name="job" class="job" value="{{ $job }}">
-                                                                    @else
-                                                                        {{ $job }}
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if(Auth::user()->role == 1)
-                                                                        <input type="text" name="lot" class="lot" value="{{ $lot }}">
-                                                                    @else
-                                                                        {{ $lot }}
-                                                                    @endif
-                                                                </td>
-                                                                <td style="display: none" class="type">{{ $out_source }}</td>
-                                                                <td style="display: none">{{ $id }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="btn-custom-btn text-center mt-3 mb-3">
-                                            <button class="btn custom-btn submit-table-data-2" data-id="collapse{{ Str::slug($outSourceName) }}">Submit</button>
+                                                                    </td>
+                                                                    <td class="customer_val">
+                                                                        {{-- @if(Auth::user()->role == 1)
+                                                                            <select name="customer" class="customer">
+                                                                                @foreach ($customers as $item)
+                                                                                    <option value="{{ $item->CustomerName }}" {{ $customer_id == $item->id ? 'selected' : '' }}>
+                                                                                        {{ $item->CustomerName }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        @else --}}
+                                                                            {{ $customer }}
+                                                                        {{-- @endif --}}
+                                                                    </td>
+                                                                    <td class="part_number_val">
+                                                                        {{-- @if(Auth::user()->role == 1)
+                                                                            <select name="part_number" class="part_number">
+                                                                                @foreach ($parts as $item)
+                                                                                    <option value="{{ $item->Part_Number }}" {{ $part_number_id == $item->id ? 'selected' : '' }}>
+                                                                                        {{ $item->Part_Number }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        @else --}}
+                                                                            {{ $part_number }}
+                                                                        {{-- @endif --}}
+                                                                    </td>
+                                                                    <td class="quantity_val">
+                                                                        {{-- @if(Auth::user()->role == 1)
+                                                                            <input type="text" name="quantity" oninput="formatAndPreventNegative(this)" class="quantity" value="{{ $in_stock_finish }}" readonly>
+                                                                        @else --}}
+                                                                            {{ $in_stock_finish }}
+                                                                        {{-- @endif --}}
+                                                                    </td>
+                                                                    <td class="job_val">
+                                                                        {{-- @if(Auth::user()->role == 1)
+                                                                            <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                        @else --}}
+                                                                            {{ $job }}
+                                                                        {{-- @endif --}}
+                                                                    </td>
+                                                                    <td class="lot_val">
+                                                                        {{-- @if(Auth::user()->role == 1)
+                                                                            <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                        @else --}}
+                                                                            {{ $lot }}
+                                                                        {{-- @endif --}}
+                                                                    </td>
+                                                                    <td style="display: none" class="type">{{ $out_source }}</td>
+                                                                    <td style="display: none">{{ $id }}</td>
+                                                                </tr>
+                                                            @endif
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="btn-custom-btn text-center mt-3 mb-3">
+                                                <button class="btn custom-btn submit-table-data-2" data-id="collapse{{ Str::slug($outSourceName) }}">Submit</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
 
-                        </div>
+                            </div>
+                        @endif
                     </div>
                     <div class="btn-custom-btn text-ceneter mt-3 mb-3">
                         <a href="{{ route('visual_screen') }}" class="btn custom-btn" target="_blank">Visual Screen</a>
@@ -752,11 +294,11 @@
                         let row = $(this);
                         let entry = {
                             status: row.find('select[name="status"]').val(),
-                            customer: row.find('select[name="customer"]').val(),
-                            part_number: row.find('select[name="part_number"]').val(),
-                            quantity: row.find('.quantity').val(),
-                            job: row.find('.job').val(),
-                            lot: row.find('.lot').val(),
+                            customer: row.find('.customer_val').text() ?? null,
+                            part_number: row.find('.part_number_val').text() ?? null,
+                            quantity: row.find('.quantity_val').text() ?? null,
+                            job: row.find('.job_val').text() ?? null,
+                            lot: row.find('.lot_val').text() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
                             type_id: row.find('td:eq(7)').text().trim()
                         };
@@ -803,11 +345,11 @@
                         let row = $(this);
                         let entry = {
                             status: row.find('select[name="status"]').val(),
-                            customer: row.find('select[name="customer"]').val(),
-                            part_number: row.find('select[name="part_number"]').val(),
-                            quantity: row.find('.quantity').val(),
-                            job: row.find('.job').val(),
-                            lot: row.find('.lot').val(),
+                            customer: row.find('.customer_val').text() ?? null,
+                            part_number: row.find('.part_number_val').text() ?? null,
+                            quantity: row.find('.quantity_val').text() ?? null,
+                            job: row.find('.job_val').text() ?? null,
+                            lot: row.find('.lot_val').text() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
                             type_id: row.find('td:eq(7)').text().trim()
                         };

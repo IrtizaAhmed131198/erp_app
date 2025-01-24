@@ -171,7 +171,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Add amount of shipment</th>
+                                                <th scope="col">Add amount of shipment to Existing order</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -179,7 +179,7 @@
                                             <tr>
                                                 <td>Past Due</td>
                                                 <td>
-                                                    <input type="text" name="past_due" class="past_due_val">
+                                                    <input type="text" name="past_due" id="order_past_due" class="past_due_val">
                                                     <button type="button" id="change_past_due" style="display: none;"><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 </td>
@@ -229,7 +229,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Add amount of shipment</th>
+                                                <th scope="col">Add amount of shipment to Existing order</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -252,9 +252,9 @@
                                                     </td>
                                                     <td>
                                                         <input type='text' class='shipment-input-two'
-                                                            data-week-two='month__{{ $month }}'
-                                                            name='shipment[month__two_{{ $month }}]'
-                                                            id='month__two_{{ $month }}'
+                                                            data-week-two='month_{{ $month }}'
+                                                            name='shipment[month_two_{{ $month }}]'
+                                                            id='month_two_{{ $month }}'
                                                             oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                 </tr>
@@ -348,11 +348,22 @@
                                 <!-- add production form -->
                                 @include('partials.production_form')
 
-                                <div class="add-shipment-amount">
+                                <table class="table table-hover remove-width add-production-table">
+                                    <thead>
+                                        <tr class="">
+                                            <th scope="col">Add Shipment Amount</th>
+                                            <td> <div class="add-shipment-amount"><input type="number" name="" id=""
+                                                placeholder="Add Shipment Amount"></div>
+                                            </td>
+
+                                        </tr>
+                                    </thead>
+                                </table>
+                                {{-- <div class="add-shipment-amount">
                                     <input type="number" name="" id=""
                                         placeholder="Add Shipment Amount">
                                     <button class="btn btn-primary">Add</button>
-                                </div>
+                                </div> --}}
 
                                 <div class="btn-custom-btn text-ceneter mt-5 side_btn">
                                     <button type="button" id="add-shipment" class="btn custom-btn">Submit</button>
@@ -374,7 +385,7 @@
                                                 {{-- <td id="past_due_val"></td> --}}
                                                 <td>
                                                     <input type="text" name="past_due" class="past_due_val"
-                                                        id="past_due">
+                                                        id="past_due" readonly>
                                                     <button type="button" id="change_past_due" style="display: none;"><i
                                                             class="fa-regular fa-pen-to-square" readonly></i></button>
                                                 </td>
@@ -517,8 +528,8 @@
 
                             let formattedValue = new Intl.NumberFormat('en-US').format(value);
 
-                            $(`#edit_${key}`).val(formattedValue);
-                            $(`#${key}`).val(formattedValue);
+                            $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
+                            $(`#${key}`).val(formattedValue).prop('readonly', true);
                             weeksData[`${key}`] = value;
                             temp[`${key}`] = value;
                             temp[`${key}_date`] = temp1[`${key}`];
@@ -558,8 +569,8 @@
 
                                     let formattedValue = new Intl.NumberFormat('en-US').format(value);
 
-                                    $(`#edit_${key}`).val(formattedValue);
-                                    $(`#${key}`).val(formattedValue);
+                                    $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
+                                    $(`#${key}`).val(formattedValue).prop('readonly', true);
                                 }
                             },
                             error: function(xhr) {
@@ -777,12 +788,20 @@
 
             $('#create-order').on('click', function() {
                 let weeksData = {};
+                let weeksDataEdit = {};
 
                 $('.shipment-input').each(function() {
                     const weekKey = $(this).data('week');
                     const weekValue = $(this).val();
                     weeksData[`${weekKey}`] = weekValue;
                 });
+
+                $('.shipment-input-two').each(function() {
+                    const weekKeyEdit = $(this).data('week-two');
+                    const weekValueEdit = $(this).val();
+                    weeksDataEdit[`${weekKeyEdit}`] = weekValueEdit;
+                });
+                // return false;
 
                 let partNumber = $('#part_no').val();
 
@@ -803,6 +822,7 @@
                     method: 'POST',
                     data: {
                         weeks: weeksData,
+                        weeks_edit: weeksDataEdit,
                         part_number: partNumber
                     },
                     headers: {
@@ -813,100 +833,109 @@
 
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Shipment Order',
+                                title: 'Order',
                                 text: response.message,
                             });
 
                         } else {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Shipment Order Created',
-                                text: response.message ?? 'Shipment Order Created.',
+                                title: response.message,
+                                text: response.message ?? 'Order Created.',
                             });
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error("Error updating shipment: ", xhr.responseText);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Shipment Order Failed',
-                            text: 'An error occurred while updating the shipment amount. Please try again.',
-                        });
-                    }
-                });
-            });
-
-
-
-            $('#add-shipment').on('click', function() {
-                let weeksData = {};
-
-                $('.edit_existing').each(function() {
-                    const weekKey = $(this).data('edit-week-change');
-                    const weekValue = $(this).val();
-                    weeksData[`${weekKey}`] = weekValue;
-                });
-
-                let partNumber = $('#part_no').val();
-                const allEmpty = Object.values(weeksData).every(value => value == '');
-
-                if (allEmpty) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Shipment Order',
-                        text: "Please fill in at least one week's data before submitting.",
-                    });
-                    return false;
-                }
-
-                // Optionally, send updated data to the server via AJAX
-                $.ajax({
-                    url: "{{ route('add_shipment') }}", // Replace with your backend route
-                    method: 'POST',
-                    data: {
-                        weeks: weeksData,
-                        part_number: partNumber
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.error) {
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Shipment Order',
-                                text: response.message,
-                            });
-
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Shipment Order Change',
-                                text: response.message ?? 'Shipment Order Change.',
-                            });
-
                             let data = response.data;
-                            // Iterate through the response data object
                             for (let key in data) {
                                 let value = data[key];
 
-                                $(`#edit_${key}`).val(value);
+                                let formattedValue = new Intl.NumberFormat('en-US').format(value);
+
+                                $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
+                                $(`#${key}`).val(formattedValue).prop('readonly', true);
                             }
                         }
                     },
                     error: function(xhr) {
-                        console.error("Error updating shipment: ", xhr.responseText);
+                        console.error("Error updating order: ", xhr.responseText);
                         Swal.fire({
                             icon: 'error',
-                            title: 'Shipment Order Failed',
-                            text: 'An error occurred while updating the shipment amount. Please try again.',
+                            title: 'Order Failed',
+                            text: 'An error occurred while updating the order amount. Please try again.',
                         });
                     }
                 });
             });
 
-            $(document).on('click', '.add-shipment-amount .btn', function() {
+
+
+            // $('#add-shipment').on('click', function() {
+            //     let weeksData = {};
+
+            //     $('.edit_existing').each(function() {
+            //         const weekKey = $(this).data('edit-week-change');
+            //         const weekValue = $(this).val();
+            //         weeksData[`${weekKey}`] = weekValue;
+            //     });
+
+            //     let partNumber = $('#part_no').val();
+            //     const allEmpty = Object.values(weeksData).every(value => value == '');
+
+            //     if (allEmpty) {
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Shipment Order',
+            //             text: "Please fill in at least one week's data before submitting.",
+            //         });
+            //         return false;
+            //     }
+
+            //     // Optionally, send updated data to the server via AJAX
+            //     $.ajax({
+            //         url: "{{ route('add_shipment') }}", // Replace with your backend route
+            //         method: 'POST',
+            //         data: {
+            //             weeks: weeksData,
+            //             part_number: partNumber
+            //         },
+            //         headers: {
+            //             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            //         },
+            //         success: function(response) {
+            //             if (response.error) {
+
+            //                 Swal.fire({
+            //                     icon: 'error',
+            //                     title: 'Shipment Order',
+            //                     text: response.message,
+            //                 });
+
+            //             } else {
+            //                 Swal.fire({
+            //                     icon: 'success',
+            //                     title: 'Shipment Order Change',
+            //                     text: response.message ?? 'Shipment Order Change.',
+            //                 });
+
+            //                 let data = response.data;
+            //                 // Iterate through the response data object
+            //                 for (let key in data) {
+            //                     let value = data[key];
+
+            //                     $(`#edit_${key}`).val(value);
+            //                 }
+            //             }
+            //         },
+            //         error: function(xhr) {
+            //             console.error("Error updating shipment: ", xhr.responseText);
+            //             Swal.fire({
+            //                 icon: 'error',
+            //                 title: 'Shipment Order Failed',
+            //                 text: 'An error occurred while updating the shipment amount. Please try again.',
+            //             });
+            //         }
+            //     });
+            // });
+
+            $(document).on('click', '#add-shipment', function() {
                 let partNumber = $('#part_no').val();
                 let shippedAmount = parseFloat($('.add-shipment-amount input').val());
                 if (isNaN(shippedAmount) || shippedAmount <= 0) {
@@ -1008,13 +1037,13 @@
                 return shippedAmount;
             }
 
-            $('#past_due').on('keyup', function() {
+            $('#order_past_due').on('keyup', function() {
                 $('#change_past_due').show();
             });
 
 
             $('#change_past_due').on('click', function() {
-                let value = $('#past_due').val();
+                let value = $('#order_past_due').val();
                 let partNumber = $('#part_no').val();
 
                 $.ajax({
@@ -1029,7 +1058,21 @@
                     },
                     success: function(response) {
                         // console.log('Data saved successfully:', response);
+                        if(response.error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Past Due Change',
+                                text: response.message ?? 'Failed to change past due.',
+                            });
+                            return;
+                        }
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Past Due Changed',
+                            text: response.message ?? 'Past Due Changed',
+                        });
                         $('.past_due_val').val(response.past_due ?? '');
+
                     },
                     error: function(error) {
                         console.error('Error saving data:', error);

@@ -574,13 +574,13 @@ class HomeController extends Controller
         $validated = $request->validate([
             'entries' => 'required|array',
             'entries.*.status' => 'required|string',
-            'entries.*.customer' => 'required|string',
-            'entries.*.part_number' => 'required|string',
-            'entries.*.quantity' => 'required|integer',
-            'entries.*.job' => 'required|string',
-            'entries.*.lot' => 'required|string',
-            'entries.*.type' => 'required|string',
-            'entries.*.type_id' => 'required|string',
+            'entries.*.customer' => 'nullable|string',
+            'entries.*.part_number' => 'nullable|string',
+            'entries.*.quantity' => 'nullable|integer',
+            'entries.*.job' => 'nullable|string',
+            'entries.*.lot' => 'nullable|string',
+            'entries.*.type' => 'nullable|string',
+            'entries.*.type_id' => 'nullable|string',
         ]);
 
         foreach ($validated['entries'] as $entry) {
@@ -615,13 +615,13 @@ class HomeController extends Controller
         $validated = $request->validate([
             'entries_data' => 'required|array',
             'entries_data.*.status' => 'required|string',
-            'entries_data.*.customer' => 'required|string',
-            'entries_data.*.part_number' => 'required|string',
-            'entries_data.*.quantity' => 'required|integer',
-            'entries_data.*.job' => 'required|string',
-            'entries_data.*.lot' => 'required|string',
-            'entries_data.*.type' => 'required|string',
-            'entries_data.*.type_id' => 'required|string',
+            'entries_data.*.customer' => 'nullable|string',
+            'entries_data.*.part_number' => 'nullable|string',
+            'entries_data.*.quantity' => 'nullable|integer',
+            'entries_data.*.job' => 'nullable|string',
+            'entries_data.*.lot' => 'nullable|string',
+            'entries_data.*.type' => 'nullable|string',
+            'entries_data.*.type_id' => 'nullable|string',
         ]);
 
         foreach ($validated['entries_data'] as $entry) {
@@ -858,32 +858,35 @@ class HomeController extends Controller
         $request->validate([
             'weeks' => 'required|array',
             'weeks.*' => 'nullable|string',
+            'weeks_edit' => 'required|array',
+            'weeks_edit.*' => 'nullable|string',
             'part_number' => 'required'
         ]);
 
-        // Check if data exists
         $data = Weeks::where('user_id', Auth::user()->id)
                     ->where('part_number', $request->part_number)
                     ->first();
 
         $isNewEntry = false;
 
+        $weeksData = $data ? $request->weeks_edit : $request->weeks;
+
         if (!$data) {
-            // Create new data
             $data = new Weeks();
             $data->user_id = Auth::user()->id;
             $data->part_number = $request->part_number;
             $isNewEntry = true;
         }
 
-        // Get week dates for new entries
         $temp = $isNewEntry ? $this->getWeekArr(date('Y-m-d')) : null;
 
-        // Update weeks and corresponding dates
-        foreach ($request->weeks as $key => $value) {
+        foreach ($weeksData as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
             $data->$key = (float) str_replace(',', '', $value);
 
-            // Set date only for new entries
             if ($isNewEntry) {
                 $data->{$key . '_date'} = $temp[$key];
             }
@@ -891,7 +894,6 @@ class HomeController extends Controller
 
         $data->save();
 
-        // Update Entries table
         $part = Entries::where('user_id', Auth::user()->id)
                     ->where('part_number', $request->part_number)
                     ->first();
@@ -902,7 +904,7 @@ class HomeController extends Controller
         }
 
         // Send notification
-        $message = $isNewEntry ? 'Shipment Order Created' : 'Shipment Order Updated';
+        $message = $isNewEntry ? 'Order Created' : 'Order Updated';
         $this->notificationService->sendNotification(
             Auth::user()->id,
             'create_shipment_order',
@@ -1121,6 +1123,10 @@ class HomeController extends Controller
     public function change_past_due(Request $request)
     {
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+
+        if(!$data) {
+            return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
+        }
 
         $data->past_due = $request->past_due;
         $data->save();
