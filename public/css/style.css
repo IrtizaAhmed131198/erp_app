@@ -1187,7 +1187,7 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 }
 
 .data-w {
-    width: 150px !important;
+    /* width: 150px !important; */
     overflow: hidden !important;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1221,4 +1221,11 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
     background: transparent !important;
     font-weight: 800;
     font-size: 18px;
+}
+select#status {
+    width: 70px;
+}
+
+select#material {
+    width: 150px;
 }

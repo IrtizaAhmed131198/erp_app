@@ -73,13 +73,17 @@
                                 <select name="status" id="status" data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('status', this.value, event)">
                                     <option value="" disabled selected>Select</option>
-                                    <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}>Running
+                                    <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}
+                                        style="background-color: #ff000087;">Running
                                     </option>
                                     <option value="Pending Order"
-                                        {{ $data->status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                    <option value="Pause" {{ $data->status == 'Pause' ? 'selected' : '' }}>Pause
+                                        {{ $data->status == 'Pending Order' ? 'selected' : '' }}
+                                        style="background-color: #ffff009c;">Pending Order</option>
+                                    <option value="Pause" {{ $data->status == 'Pause' ? 'selected' : '' }}
+                                        style="background-color: #00800094;">Pause
                                     </option>
-                                    <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}>Closed
+                                    <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}
+                                        style="background-color: #719ff4">Closed
                                     </option>
                                 </select>
                             </td>
@@ -91,10 +95,11 @@
                             $data_target = 'entries_' . $data->id . '_job_number';
                         @endphp
                         @if (Auth::user()->status_column == 1)
-                            <td class="toggleable toggle-department" id="{{ $data_target }}">
-                                <input class="text-w" type="text" name="job" id="job"
+                            <td class="toggleable toggle-department targetshow" id="{{ $data_target }}">
+                                <input type="text" name="job" id="job" class="data-w"
                                     value="{{ $data->job ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('job', this.value, event)">
+                                    onkeyup="sendAjaxRequest('job', this.value, event)"
+                                    onmouseover="showTextAbove(this)">
                             </td>
                         @else
                             <td class="toggleable toggle-department" id="{{ $data_target }}">{{ $data->job }}</td>
@@ -104,10 +109,11 @@
                             $data_target = 'entries_' . $data->id . '_lot_number';
                         @endphp
                         @if (Auth::user()->status_column == 1)
-                            <td class="toggleable toggle-department" id="{{ $data_target }}">
-                                <input class="text-w" type="text" name="lot" id="lot"
+                            <td class="toggleable toggle-department targetshow" id="{{ $data_target }}">
+                                <input type="text" name="lot" id="lot" class="data-w"
                                     value="{{ $data->lot ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('lot', this.value, event)">
+                                    onkeyup="sendAjaxRequest('lot', this.value, event)"
+                                    onmouseover="showTextAbove(this)">
                             </td>
                         @else
                             <td class="toggleable toggle-department" id="{{ $data_target }}">{{ $data->lot }}</td>
@@ -170,11 +176,11 @@
                             $data_target = 'entries_' . $data->id . '_rev';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable" id="{{ $data_target }}">
-                                <input type="text" name="rev" id="rev"
-                                    value="{{ $data->revision ?? '' }}" class="text-w"
-                                    data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('revision', this.value, event)" class="simple-text">
+                            <td class="toggleable targetshow" id="{{ $data_target }}">
+                                <input type="text" name="rev" id="rev" class="data-w"
+                                    value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"
+                                    onkeyup="sendAjaxRequest('revision', this.value, event)"
+                                    onmouseover="showTextAbove(this)">
                             </td>
                         @else
                             <td class="toggleable" id="{{ $data_target }}">{{ $data->revision }}</td>
@@ -259,17 +265,18 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_reqd_1_6_weeks';
                         @endphp
-                        <td class="toggleable-1" id="{{$data_target}}">{{ number_format($sumWeeks1To6) }}</td>
+                        <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($sumWeeks1To6) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'reqd_7_12_weeks')
                         @php
                             $data_target = 'entries_' . $data->id . '_reqd_7_12_weeks';
                         @endphp
-                        <td class="toggleable-1" id="{{$data_target}}">{{ number_format($sumWeeks7To12) }}</td>
+                        <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($sumWeeks7To12) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'scheduled_total')
                         @php
                             $data_target = 'entries_' . $data->id . '_scheduled_total';
                         @endphp
-                        <td class="toggleable-1 schedule_total" id="{{$data_target}}">{{ number_format($sumWeeks1To6 + $sumWeeks7To12) }}</td>
+                        <td class="toggleable-1 schedule_total" id="{{ $data_target }}">
+                            {{ number_format($sumWeeks1To6 + $sumWeeks7To12) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'in_stock_finished')
                         @php
                             $data_target = 'entries_' . $data->id . '_in_stock_finished';
@@ -367,7 +374,7 @@
                                 <input type="text" step="any" name="wt_pc" id="wt_pc"
                                     value="{{ number_format($data->wt_pc, 3, '.', ',') }}"
                                     data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)"
-                                    class="text-w" onkeyup="sendAjaxRequest('wt_pc', this.value, event)">
+                                    onkeyup="sendAjaxRequest('wt_pc', this.value, event)">
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -399,9 +406,11 @@
                             $data_target = 'entries_' . $data->id . '_wt_reqd_1_12_weeks';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable-1" id="{{ $data_target }}">{{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
+                            <td class="toggleable-1" id="{{ $data_target }}">
+                                {{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
                         @else
-                            <td class="toggleable-1" id="{{ $data_target }}">{{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
+                            <td class="toggleable-1" id="{{ $data_target }}">
+                                {{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'safety')
                         @php
@@ -439,8 +448,8 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <textarea name="order_notes" id="order_notes" class="text-w" value="{{ $data->order_notes }}"
-                                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('order_notes', this.value, event)">{{ $data->order_notes }}</textarea>
+                                <textarea name="order_notes" id="order_notes" value="{{ $data->order_notes }}" data-id="{{ $data->id }}"
+                                    onkeyup="sendAjaxRequest('order_notes', this.value, event)">{{ $data->order_notes }}</textarea>
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">{{ $data->order_notes }}</td>
@@ -451,7 +460,7 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <textarea name="part_notes" id="part_notes" class="simple-textarea text-w" value="{{ $data->part_notes }}"
+                                <textarea name="part_notes" id="part_notes" class="simple-textarea" value="{{ $data->part_notes }}"
                                     data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('part_notes', this.value, event)">{{ $data->part_notes }}</textarea>
                             </td>
                         @else
@@ -469,7 +478,7 @@
             @php
                 $data_target = 'entries_' . $data->id . '_past_due';
             @endphp
-            <td class="toggleable-2" id="{{$data_target}}">
+            <td class="toggleable-2" id="{{ $data_target }}">
                 {{ number_format($data->weeks_months->past_due ?? 0) }}
             </td>
 
@@ -480,7 +489,8 @@
                     $formattedWeekValue = is_numeric($weekValue) ? number_format($weekValue) : $weekValue;
                     $data_target = 'entries_' . $data->id . '_week_' . $week;
                 @endphp
-                <td class="toggleable-2 shipment_date" id="{{$data_target}}" data-week-change='week_{{ $week }}'>
+                <td class="toggleable-2 shipment_date" id="{{ $data_target }}"
+                    data-week-change='week_{{ $week }}'>
                     {{ $formattedWeekValue }}
                 </td>
             @endfor
@@ -492,7 +502,8 @@
                     $formattedMonthValue = is_numeric($monthValue) ? number_format($monthValue) : $monthValue;
                     $data_target = 'entries_' . $data->id . '_month_' . $month;
                 @endphp
-                <td class="toggleable-2 shipment_date" id="{{$data_target}}" data-week-change='month_{{ $month }}'>
+                <td class="toggleable-2 shipment_date" id="{{ $data_target }}"
+                    data-week-change='month_{{ $month }}'>
                     {{ $formattedMonthValue }}
                 </td>
             @endfor
@@ -501,7 +512,7 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_future_raw';
                 @endphp
-                <td class="toggleable-2" id="{{$data_target}}">
+                <td class="toggleable-2" id="{{ $data_target }}">
                     <input type="text" step="any" name="future_raw" id="future_raw"
                         value="{{ number_format($data->future_raw) }}" data-id="{{ $data->id }}"
                         onkeyup="sendAjaxRequest('future_raw', this.value, event)"
@@ -511,8 +522,8 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_price';
                 @endphp
-                <td class="toggleable-2" id="{{$data_target}}">
-                    <input class="text-w" type="text" step="any" name="price" id="price"
+                <td class="toggleable-2" id="{{ $data_target }}">
+                    <input type="text" step="any" name="price" id="price"
                         value="{{ number_format($data->price) }}" data-id="{{ $data->id }}"
                         onkeyup="sendAjaxRequest('price', this.value, event)"
                         oninput="formatAndPreventNegative(this)">
@@ -521,9 +532,9 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_notes';
                 @endphp
-                <td class="toggleable-2" id="{{$data_target}}">
-                    <textarea name="notes" class="text-w" value="{{ $data->notes }}"
-                        data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('notes', this.value, event)">{{ $data->notes }}</textarea>
+                <td class="toggleable-2" id="{{ $data_target }}">
+                    <textarea name="notes" value="{{ $data->notes }}" data-id="{{ $data->id }}"
+                        onkeyup="sendAjaxRequest('notes', this.value, event)">{{ $data->notes }}</textarea>
                 </td>
             @else
                 @php
