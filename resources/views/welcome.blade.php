@@ -120,6 +120,46 @@
         .simple-textarea:focus {
             outline: none;
         }
+
+
+        .custom-custom-picker {
+            position: relative;
+            z-index: 0;
+            width: 65px;
+        }
+
+        .custom-custom-picker button {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: -1;
+        }
+
+        .custom-custom-picker select#highlight_color {
+            background: transparent;
+            opacity: 0;
+        }
+
+        .custom-custom-picker select option:nth-child(01) {
+            background: #ffc107;
+        }
+
+        .custom-custom-picker select option:nth-child(02) {
+            background: red;
+        }
+
+        .custom-custom-picker select option:nth-child(03) {
+            background: #5252ff;
+        }
+
+        .custom-custom-picker select option:nth-child(04) {
+            background: green;
+        }
+
+        #btn_highlight_cell {
+            background-color: #ffc107;
+        }
     </style>
 @endsection
 
@@ -169,9 +209,24 @@
                             data-bs-target="#filter3" title="Show/Hide Columns">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" id="btn_highlight_cell" class="btn btn-warning ml-4" title="Highlight a specific cell">
+                        <!-- Color Selection -->
+                        <div class="custom-custom-picker">
+                            <button type="button" id="btn_highlight_cell" class="btn ml-4" title="Highlight a specific cell">
+                                <i class="fas fa-highlighter"></i>
+                            </button>
+                            <select id="highlight_color" class="form-control">
+                                <option value="#ffc107" selected></option>
+                                <option value="#dc3545"></option>
+                                <option value="#007bff"></option>
+                                <option value="#28a745"></option>
+                                <option value="#fff"></option>
+                            </select>
+                        </div>
+
+                        <!-- Highlight Button -->
+                        {{-- <button type="button" id="btn_highlight_cell" class="btn btn-warning ml-4" title="Highlight a specific cell">
                             <i class="fas fa-highlighter"></i>
-                        </button>
+                        </button> --}}
                         {{-- <button type="button" class="btn btn-primary ml-4" data-bs-toggle="modal" data-bs-target="#exampleModal" width="100%">
                             Open Modal
                             </button> --}}
@@ -699,57 +754,68 @@
             let highlight_map = @json($highlight_map);
 
             for (const highlighted_cell_identifier of highlighted_cell_identifiers) {
-                $('#' + highlighted_cell_identifier).css('background-color', highlight_map[highlighted_cell_identifier]);
+                $('#' + highlighted_cell_identifier).css('background-color', highlight_map[
+                    highlighted_cell_identifier]);
             }
 
-            $('#btn_highlight_cell').on('click', function () {
+            $('#highlight_color').on('change', function () {
+                // Get selected color
+                let selectedColor = $(this).val();
+
                 highlight_button_is_clicked = true;
+
+                // Change background color of the dropdown
+                $('#btn_highlight_cell').css('background-color', selectedColor);
             });
 
-            $('.toggleable-1, .toggleable, .toggleable-2').on('click', function () {
+            // $('#btn_highlight_cell').on('click', function() {
+            //     highlight_button_is_clicked = true;
+            // });
+
+            $('.toggleable-1, .toggleable, .toggleable-2').on('click', function() {
                 if (!highlight_button_is_clicked) {
                     return false;
                 }
 
-                if (($(this).css('background-color') != 'rgba(0, 0, 0, 0)')) {
+                if ($(this).css('background-color') !== 'rgba(0, 0, 0, 0)') {
                     $(this).css('background-color', 'rgba(0, 0, 0, 0)');
 
                     $.ajax({
-                        url: '{{route("un_highlight_cell_for_me")}}',
+                        url: '{{ route('un_highlight_cell_for_me') }}',
                         method: 'POST',
                         data: {
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                             identifier: $(this).attr('id'),
                         },
                         success: (data) => {
-                            console.log('un highlighted!')
+                            console.log('un highlighted!');
                         }
                     });
-
 
                     highlight_button_is_clicked = false;
                     return false;
                 }
 
-                let color = '#ffc107';
+                // Get selected color
+                let color = $('#highlight_color').val();
                 $(this).css('background-color', color);
 
                 $.ajax({
-                    url: '{{route("highlight_cell_for_me")}}',
+                    url: '{{ route('highlight_cell_for_me') }}',
                     method: 'POST',
                     data: {
-                        _token: '{{csrf_token()}}',
+                        _token: '{{ csrf_token() }}',
                         identifier: $(this).attr('id'),
                         color: color
                     },
                     success: (data) => {
-                        console.log('highlighted!')
+                        console.log('highlighted!');
                     }
                 });
 
-                // alert($(this).attr('id'));
                 highlight_button_is_clicked = false;
             });
+
         });
 
         // function sendAjaxRequest(field, value) {
