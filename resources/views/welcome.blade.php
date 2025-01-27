@@ -1129,6 +1129,7 @@
         });
 
         $('body').on('click', '.custom-dropdown-item', function(e) {
+            console.log('clicked');
             e.preventDefault();
 
             const partNumber = $(this).data('part');

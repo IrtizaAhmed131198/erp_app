@@ -134,13 +134,13 @@
                                 </button>
                                 <ul class="custom-dropdown-menu">
                                     <li>
-                                        <a href="#" class="custom-dropdown-item"
+                                        <a href="{{ route('calender') }}" class="custom-dropdown-item"
                                             data-part="{{ $data->part_number }}" data-url="{{ route('calender') }}">
                                             Shipment & Production
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="custom-dropdown-item"
+                                        <a href="{{ route('data_center_edit', ['id' => $data->id]) }}" class="custom-dropdown-item"
                                             data-part="{{ $data->part_number }}"
                                             data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
                                             Part Number Input
