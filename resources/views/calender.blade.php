@@ -258,7 +258,27 @@
                                                             oninput="formatNumberWithCommas(this)">
                                                     </td>
                                                 </tr>
+                                                @php
+                                                    $datesArray["month_$month"] = $month5StartDate;
+                                                    $month5StartDate = date(
+                                                        'Y-m-d',
+                                                        strtotime('+31 days', strtotime($month5StartDate)),
+                                                    );
+                                                @endphp
                                             @endfor
+
+                                            <tr>
+                                                <td>
+                                                    <div class='weekdays-parent'>
+                                                        <span>Future Raw</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="future_raw" class="future_raw" oninput="formatNumberWithCommas(this)">
+                                                <td>
+                                                    <input type='text' class='' disabled>
+                                                </td>
+                                            </tr>
 
                                         </tbody>
                                     </table>
@@ -345,6 +365,42 @@
                                     </table>
                                 </div>
 
+                                @php
+                                    $datesArray1 = [];
+
+                                    // Calculate the start date of the current week (Monday)
+                                    $today = date('Y-m-d');
+                                    $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+                                    $mondayOfWeek =
+                                        $dayOfWeek == 0
+                                            ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                                            : date(
+                                                'Y-m-d',
+                                                strtotime(
+                                                    '-' . ($dayOfWeek - 1) . ' days',
+                                                    strtotime($today),
+                                                ),
+                                            ); // Else, go back to Monday
+
+                                    // Calculate the start date of week 16
+                                    $week16StartDate = date(
+                                        'Y-m-d',
+                                        strtotime('+15 weeks', strtotime($mondayOfWeek)),
+                                    );
+
+                                    // Calculate the end date of week 16
+                                    $week16EndDate = date(
+                                        'Y-m-d',
+                                        strtotime('+6 days', strtotime($week16StartDate)),
+                                    );
+
+                                    // Calculate the start date of month 5 (the day after week 16 ends)
+                                    $month5StartDate = date(
+                                        'Y-m-d',
+                                        strtotime('+1 day', strtotime($week16EndDate)),
+                                    );
+                                @endphp
+
                                 <!-- add production form -->
                                 @include('partials.production_form')
 
@@ -404,7 +460,7 @@
                                                         'Y-m-d',
                                                         strtotime('+6 days', strtotime($startOfWeek)),
                                                     );
-                                                    $datesArray["week_$week"] = $startOfWeek;
+                                                    $datesArray1["week_$week"] = $startOfWeek;
                                                 @endphp
                                                 <tr>
                                                     <td>
@@ -429,7 +485,7 @@
                                                     </td>
                                                 </tr>
                                             @endfor
-                                            {{-- @dump($datesArray); --}}
+                                            {{-- @dump($datesArray1); --}}
 
 
                                         </tbody>
@@ -466,7 +522,7 @@
                                                     </td>
                                                 </tr>
                                                 @php
-                                                    $datesArray["month_$month"] = $month5StartDate;
+                                                    $datesArray1["month_$month"] = $month5StartDate;
                                                     $month5StartDate = date(
                                                         'Y-m-d',
                                                         strtotime('+31 days', strtotime($month5StartDate)),
