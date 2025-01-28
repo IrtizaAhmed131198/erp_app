@@ -408,10 +408,10 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                {{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
+                                {{ (($sum1_12 - $data->in_stock_finish) > 0) ? number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc, 2) : 0 }}</td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                {{ number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc) ?? 0 }}</td>
+                                {{ (($sum1_12 - $data->in_stock_finish) > 0) ? number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc, 2) : 0 }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'safety')
                         @php
