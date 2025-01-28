@@ -860,7 +860,8 @@ class HomeController extends Controller
             'weeks.*' => 'nullable|string',
             'weeks_edit' => 'required|array',
             'weeks_edit.*' => 'nullable|string',
-            'part_number' => 'required'
+            'part_number' => 'required',
+            'future_raw' => 'nullable'
         ]);
 
         $data = Weeks::where('user_id', Auth::user()->id)
@@ -899,6 +900,7 @@ class HomeController extends Controller
                     ->first();
         if ($part) {
             $part->filter = 'pending';
+            $part->future_raw = $request->future_raw;
             $part->last_updated_by = Auth::user()->id;
             $part->save();
         }

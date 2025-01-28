@@ -328,7 +328,7 @@
                                             <tr>
                                                 <td>Add Production</td>
                                                 <td> <input type="text" name="add_production" id="add_production"
-                                                        min="0" oninput="formatNumberWithCommas(this)"></td>
+                                                        min="0" oninput="formatNumberWithCommasN(this)"></td>
 
                                             </tr>
                                             <tr>
@@ -553,6 +553,13 @@
 
         function formatNumberWithCommas(element) {
             const value = element.value.replace(/[^0-9]/g, '');
+            element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function formatNumberWithCommasN(element) {
+            let value = element.value.replace(/[^0-9-]/g, ''); // Allow only numbers and a negative sign
+            value = value.replace(/(?!^)-/g, ''); // Ensure only one negative sign at the start
+
             element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
@@ -795,7 +802,12 @@
                     },
                     success: function(response) {
                         $('#new_total').val(response.new_total);
-                        window.location.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Product Updated',
+                            text: 'Product Updated Successfully',
+                        });
+                        // window.location.reload();
                     },
                     error: function(xhr) {
                         console.error("Error updating total: ", xhr.responseText);
@@ -861,6 +873,8 @@
 
                 let partNumber = $('#part_no').val();
 
+                let futureRaw = $('.future_raw').val();
+
                 let allEmpty = Object.values(weeksData).every(value => value == '');
 
                 if (allEmpty) {
@@ -879,7 +893,8 @@
                     data: {
                         weeks: weeksData,
                         weeks_edit: weeksDataEdit,
-                        part_number: partNumber
+                        part_number: partNumber,
+                        future_raw: futureRaw
                     },
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -1030,10 +1045,11 @@
 
                 // If any amount remains undistributed, alert the user
                 if (shippedAmount > 0) {
+                    console.log('Remaining shipment amount:', shippedAmount);
                     Swal.fire({
                         icon: 'success',
-                        title: 'Remaining shipment amount',
-                        text: "Remaining shipment amount: " + shippedAmount,
+                        title: 'Shipment amount',
+                        text: "Shipment is greater than outstanding orders",
                     });
                 } else {
                     Swal.fire({
