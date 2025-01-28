@@ -296,11 +296,12 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="text" name="live_inventory_finish" id="live_inventory_finish"
+                                {{-- <input type="text" name="live_inventory_finish" id="live_inventory_finish"
                                     value="{{ number_format($data->live_inventory_finish) }}"
                                     data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('live_inventory_finish', this.value, event)"
-                                    oninput="formatAndPreventNegative(this)">
+                                    oninput="formatAndPreventNegative(this)"> --}}
+                                    {{ number_format($data->live_inventory_finish) }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -312,11 +313,12 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="text" step="any" name="live_inventory_wip"
+                                {{-- <input type="text" step="any" name="live_inventory_wip"
                                     id="live_inventory_wip" value="{{ number_format($data->live_inventory_wip) }}"
                                     data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('live_inventory_wip', this.value, event)"
-                                    oninput="formatAndPreventNegative(this)">
+                                    oninput="formatAndPreventNegative(this)"> --}}
+                                    {{ number_format($data->live_inventory_wip) }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -357,10 +359,11 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="text" step="any" name="in_stock_live" id="in_stock_live"
+                                {{-- <input type="text" step="any" name="in_stock_live" id="in_stock_live"
                                     value="{{ number_format($data->in_stock_live) }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('in_stock_live', this.value, event)"
-                                    oninput="formatAndPreventNegative(this)">
+                                    oninput="formatAndPreventNegative(this)"> --}}
+                                    {{ number_format($data->in_stock_live) }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
