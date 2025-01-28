@@ -944,9 +944,11 @@
 
         function sendAjaxRequest3(field, value, event) {
             const inputElement = event.target;
+            const entryId = inputElement.getAttribute('data-entry-id');
             const dataId = inputElement.getAttribute('data-id');
 
             const data = {
+                entry_id: entryId,
                 id: dataId,
                 field: field,
                 value: value
@@ -1128,18 +1130,18 @@
             });
         });
 
-        $('body').on('click', '.custom-dropdown-item', function(e) {
-            console.log('clicked');
-            e.preventDefault();
+        // $('body').on('click', '.custom-dropdown-item', function(e) {
+        //     console.log('clicked');
+        //     e.preventDefault();
 
-            const partNumber = $(this).data('part');
-            const url = $(this).data('url');
+        //     const partNumber = $(this).data('part');
+        //     const url = $(this).data('url');
 
-            if (url && partNumber) {
-                const fullUrl = `${url}?part_number=${partNumber}`;
-                window.open(fullUrl, '_blank');
-            }
-        });
+        //     if (url && partNumber) {
+        //         const fullUrl = `${url}?part_number=${partNumber}`;
+        //         window.open(fullUrl, '_blank');
+        //     }
+        // });
 
 
         function formatNumberWithCommas(element) {

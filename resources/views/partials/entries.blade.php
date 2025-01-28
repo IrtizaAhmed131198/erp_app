@@ -134,13 +134,13 @@
                                 </button>
                                 <ul class="custom-dropdown-menu">
                                     <li>
-                                        <a href="{{ route('calender') }}" class="custom-dropdown-item"
+                                        <a href="{{ route('calender' , ['part_number' => $data->id]) }}" class="custom-dropdown-item"
                                             data-part="{{ $data->part_number }}" data-url="{{ route('calender') }}">
                                             Shipment & Production
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('data_center_edit', ['id' => $data->id]) }}" class="custom-dropdown-item"
+                                        <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->id]) }}" class="custom-dropdown-item"
                                             data-part="{{ $data->part_number }}"
                                             data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
                                             Part Number Input
@@ -324,13 +324,14 @@
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'in_process_out_side')
                         @php
-                            $data_target = 'outsource_' . $data->out_source_one->id . '_in_process_out_side';
+                            $out_source_id = $data->out_source_one->id ?? 0;
+                            $data_target = 'outsource_' . $out_source_id . '_in_process_out_side';
                         @endphp
                         @if (Auth::user()->stock_finished_column == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
                                 <input type="text" name="in_process_outside" id="in_process_outside"
                                     value="{{ $data->out_source_one->in_process_outside ?? '' }}"
-                                    data-id="{{ $data->out_source_one->id ?? '' }}"
+                                    data-id="{{ $out_source_id ?? '' }}" data-entry-id = "{{ $data->id }}"
                                     onkeyup="sendAjaxRequest3('in_process_outside', this.value, event)">
                             </td>
                         @else

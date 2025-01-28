@@ -127,7 +127,7 @@
                                     </tr>
                                     <tr>
                                         @if (Auth::user()->role == 1)
-                                        <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number</td>
+                                        <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                         @else
                                         <td>Part Number</td>
                                         @endif
@@ -146,7 +146,7 @@
                                     </tr>
                                     <tr>
                                         @if (Auth::user()->role == 1)
-                                        <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer</td>
+                                        <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                         @else
                                         <td>Customer</td>
                                         @endif
@@ -187,7 +187,7 @@
                                     </tr>
                                     <tr>
                                         @if (Auth::user()->role == 1)
-                                        <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department</td>
+                                        <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                         @else
                                         <td>Department</td>
                                         @endif
@@ -234,7 +234,7 @@
 
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                            <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }} <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                             <td>Work Centre {{ $i }}</td>
                                             @endif
@@ -295,7 +295,7 @@
 
                                             <tr>
                                             @if (Auth::user()->role == 1)
-                                            <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }} <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                             <td>Outside Processing {{ $i }}</td>
                                             @endif
@@ -321,7 +321,7 @@
                                             </tr>
                                             @endfor
                                             <tr>
-                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                                 <td>
                                                     <select class="form-select js-select21" id="material_id" name="material"
                                                         aria-label="Default select example">
