@@ -762,7 +762,7 @@
                 // Get selected color
                 let selectedColor = $(this).val();
 
-                highlight_button_is_clicked = true;
+                highlight_button_is_clicked = !(highlight_button_is_clicked);
 
                 // Change background color of the dropdown
                 $('#btn_highlight_cell').css('background-color', selectedColor);
@@ -772,7 +772,11 @@
             //     highlight_button_is_clicked = true;
             // });
 
-            $('.toggleable-1, .toggleable, .toggleable-2').on('click', function() {
+            $('.toggleable-1, .toggleable, .toggleable-2').on('click', function(event) {
+                if ($(event.target).is('.custom-dropdown-item')) {
+                    window.open($(event.target).attr('href'), '_blank');
+                }
+
                 if (!highlight_button_is_clicked) {
                     return false;
                 }
@@ -792,7 +796,7 @@
                         }
                     });
 
-                    highlight_button_is_clicked = false;
+                    // highlight_button_is_clicked = false;
                     return false;
                 }
 
@@ -813,7 +817,7 @@
                     }
                 });
 
-                highlight_button_is_clicked = false;
+                // highlight_button_is_clicked = false;
             });
 
         });
@@ -1131,16 +1135,18 @@
         });
 
         // $('body').on('click', '.custom-dropdown-item', function(e) {
-        //     console.log('clicked');
-        //     e.preventDefault();
-
-        //     const partNumber = $(this).data('part');
-        //     const url = $(this).data('url');
-
-        //     if (url && partNumber) {
-        //         const fullUrl = `${url}?part_number=${partNumber}`;
-        //         window.open(fullUrl, '_blank');
-        //     }
+        //     alert();
+        //     window.open($(this).attr('href'), '_blank');
+        //     // console.log('clicked');
+        //     // e.preventDefault();
+        //     //
+        //     // const partNumber = $(this).data('part');
+        //     // const url = $(this).data('url');
+        //     //
+        //     // if (url && partNumber) {
+        //     //     const fullUrl = `${url}?part_number=${partNumber}`;
+        //     //     window.open(fullUrl, '_blank');
+        //     // }
         // });
 
 
