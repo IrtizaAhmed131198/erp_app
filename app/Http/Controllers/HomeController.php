@@ -915,7 +915,7 @@ class HomeController extends Controller
             $request->part_number
         );
 
-        return response()->json(['message' => $message, 'future_raw' => number_format($part->future_raw), 'data' => $data]);
+        return response()->json(['message' => $message, 'future_raw' => number_format((float)$part->future_raw), 'data' => $data]);
     }
 
     public function add_shipment(Request $request)

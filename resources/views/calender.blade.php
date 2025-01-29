@@ -211,7 +211,7 @@
                                                             data-week='week_{{ $week }}'
                                                             name='shipment[week_{{ $week }}]'
                                                             id='week_{{ $week }}'
-                                                            oninput="formatNumberWithCommas(this)">
+                                                            oninput="formatNumberWithCommas(this)" disabled readonly>
                                                     </td>
                                                     <td>
                                                         <input type='text' class='shipment-input-two'
@@ -248,7 +248,7 @@
                                                             data-week='month_{{ $month }}'
                                                             name='shipment[month_{{ $month }}]'
                                                             id='month_{{ $month }}'
-                                                            oninput="formatNumberWithCommas(this)">
+                                                            oninput="formatNumberWithCommas(this)" disabled readonly>
                                                     </td>
                                                     <td>
                                                         <input type='text' class='shipment-input-two'
@@ -860,8 +860,14 @@
                 let weeksData = {};
                 let weeksDataEdit = {};
 
-                $('.shipment-input').each(function() {
-                    const weekKey = $(this).data('week');
+                // $('.shipment-input').each(function() {
+                //     const weekKey = $(this).data('week');
+                //     const weekValue = $(this).val();
+                //     weeksData[`${weekKey}`] = weekValue;
+                // });
+
+                $('.shipment-input-two').each(function() {
+                    const weekKey = $(this).data('week-two');
                     const weekValue = $(this).val();
                     weeksData[`${weekKey}`] = weekValue;
                 });
