@@ -900,7 +900,7 @@ class HomeController extends Controller
                     ->first();
         if ($part) {
             $part->filter = 'pending';
-            $part->future_raw = $request->future_raw;
+            $part->future_raw = str_replace(',', '', $request->future_raw);
             $part->last_updated_by = Auth::user()->id;
             $part->save();
         }
@@ -915,7 +915,7 @@ class HomeController extends Controller
             $request->part_number
         );
 
-        return response()->json(['message' => $message, 'data' => $data]);
+        return response()->json(['message' => $message, 'future_raw' => number_format($part->future_raw), 'data' => $data]);
     }
 
     public function add_shipment(Request $request)
@@ -977,7 +977,7 @@ class HomeController extends Controller
             "month_12" => $data->month_12 ?? null,
         ];
 
-        return response()->json(['message' => 'Get Weeks', 'in_stock_finish' => $entries->in_stock_finish, 'data' => $Arr]);
+        return response()->json(['message' => 'Get Weeks', 'in_stock_finish' => $entries->in_stock_finish, 'future_raw' => $entries->future_raw, 'data' => $Arr]);
     }
 
     public function update_past_due(Request $request)

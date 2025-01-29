@@ -598,6 +598,8 @@
                             temp[`${key}_date`] = temp1[`${key}`];
                         }
 
+                        $(`.future_raw`).val(response.future_raw);
+
                         // $('#past_due').val(response.in_stock_finish);
 
 
@@ -922,6 +924,7 @@
 
                                 $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
                                 $(`#${key}`).val(formattedValue).prop('readonly', true);
+                                $(`.future_raw`).val(response.future_raw);
                             }
                         }
                     },
