@@ -98,6 +98,66 @@ class HomeController extends Controller
             $query->where('filter', $request->filter);
         }
 
+        // Apply search query
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where(function ($query) use ($request) {
+                $search = $request->search;
+
+                $query->where('revision', 'LIKE', "%$search%") // Replace with actual column names
+                    ->orWhere('process', 'LIKE', "%$search%")
+                    ->orWhere('pc_weight', 'LIKE', "%$search%")
+                    ->orWhere('safety_shock', 'LIKE', "%$search%")
+                    ->orWhere('moq', 'LIKE', "%$search%")
+                    ->orWhere('order_notes', 'LIKE', "%$search%")
+                    ->orWhere('part_notes', 'LIKE', "%$search%")
+                    ->orWhere('future_raw', 'LIKE', "%$search%")
+                    ->orWhere('price', 'LIKE', "%$search%")
+                    ->orWhere('notes', 'LIKE', "%$search%")
+                    ->orWhere('planning', 'LIKE', "%$search%")
+                    ->orWhere('status', 'LIKE', "%$search%")
+                    ->orWhere('filter', 'LIKE', "%$search%")
+                    ->orWhere('job', 'LIKE', "%$search%")
+                    ->orWhere('lot', 'LIKE', "%$search%")
+                    ->orWhere('in_stock_finish', 'LIKE', "%$search%")
+                    ->orWhere('live_inventory_finish', 'LIKE', "%$search%")
+                    ->orWhere('live_inventory_wip', 'LIKE', "%$search%")
+                    ->orWhere('in_stock_live', 'LIKE', "%$search%")
+                    ->orWhere('in_process_outside', 'LIKE', "%$search%")
+                    ->orWhere('raw_mat', 'LIKE', "%$search%")
+                    ->orWhere('wet_reqd', 'LIKE', "%$search%")
+                    ->orWhere('wet_reqd', 'LIKE', "%$search%")
+                    ->orWhere('safety', 'LIKE', "%$search%")
+                    ->orWhere('min_ship', 'LIKE', "%$search%")
+                    ->orWhere('currency', 'LIKE', "%$search%")
+                    ->orWhere('wt_pc', 'LIKE', "%$search%");
+
+                $query->orWhereHas('part', function ($q) use ($search) {
+                    $q->where('Part_Number', 'LIKE', "%$search%");
+                });
+
+                $query->orWhereHas('get_customer', function ($q) use ($search) {
+                    $q->where('CustomerName', 'LIKE', "%$search%");
+                });
+
+                $query->orWhereHas('get_material', function ($q) use ($search) {
+                    $q->where('Package', 'LIKE', "%$search%");
+                });
+
+                $query->orWhereHas('get_department', function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%$search%");
+                });
+
+                $query->orWhereHas('out_source_one', function ($q) use ($search) {
+                    $q->where('out', 'LIKE', "%$search%");
+                    $q->where('in_process_outside', 'LIKE', "%$search%");
+                });
+
+                $query->orWhereHas('work_center_one', function ($q) use ($search) {
+                    $q->where('com', 'LIKE', "%$search%");
+                });
+            });
+        }
+
         $entries = $query->get();
 
         $department = Department::get();
