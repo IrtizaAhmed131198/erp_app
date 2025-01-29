@@ -179,7 +179,10 @@
                                             <tr>
                                                 <td>Past Due</td>
                                                 <td>
-                                                    <input type="text" name="past_due" id="order_past_due" class="past_due_val">
+                                                    <input type="text" name="show_past_due" id="show_past_due" class="past_due_show" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="past_due" id="order_past_due" class="">
                                                     <button type="button" id="change_past_due" style="display: none;"><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 </td>
@@ -274,9 +277,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="future_raw" class="future_raw" oninput="formatNumberWithCommas(this)">
+                                                    <input type='text' class='show_future_raw' disabled>
                                                 <td>
-                                                    <input type='text' class='' disabled>
+                                                    <input type="text" name="future_raw" class="future_raw" oninput="formatNumberWithCommas(this)">
                                                 </td>
                                             </tr>
 
@@ -544,6 +547,14 @@
 @endsection
 @section('js')
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (localStorage.getItem("collapseOpen") === "true") {
+                let collapseElement = new bootstrap.Collapse(document.getElementById("collapseTwo"), {
+                    show: true
+                });
+                localStorage.removeItem("collapseOpen"); // Remove flag after applying
+            }
+        });
         function updateHeadingText(button) {
             // Get the heading element
             const heading = document.querySelector('.heading-1');
@@ -598,7 +609,7 @@
                             temp[`${key}_date`] = temp1[`${key}`];
                         }
 
-                        $(`.future_raw`).val(response.future_raw);
+                        $(`.show_future_raw`).val(response.future_raw);
 
                         // $('#past_due').val(response.in_stock_finish);
 
@@ -628,6 +639,7 @@
                                 // alert(response.message);
                                 let data = response.data;
                                 $('.past_due_val').val(response.past_due_val);
+                                $('.past_due_show').val(response.past_due_val);
                                 // Iterate through the response data object
                                 for (let key in data) {
                                     let value = data[key];
@@ -930,7 +942,7 @@
 
                                 $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
                                 $(`#${key}`).val(formattedValue).prop('readonly', true);
-                                $(`.future_raw`).val(response.future_raw);
+                                $(`.show_future_raw`).val(response.future_raw);
                             }
                         }
                     },
@@ -1056,9 +1068,18 @@
                 if (shippedAmount > 0) {
                     console.log('Remaining shipment amount:', shippedAmount);
                     Swal.fire({
-                        icon: 'success',
+                        icon: 'warning',
                         title: 'Shipment amount',
-                        text: "Shipment is greater than outstanding orders",
+                        text: "Shipment is greater than outstanding orders. Do you want to proceed?",
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirect to another route
+                            localStorage.setItem("collapseOpen", "true");
+                            window.location.href = "{{ route('calender') }}" + "?part_number=" + encodeURIComponent(partNumber); // Change to your actual route
+                        }
                     });
                 } else {
                     Swal.fire({
@@ -1125,6 +1146,14 @@
 
             $('#change_past_due').on('click', function() {
                 let value = $('#order_past_due').val();
+                if(value == '' || value < 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Past Due Change',
+                        text: 'Please enter a valid past due value.',
+                    });
+                    return;
+                }
                 let partNumber = $('#part_no').val();
 
                 $.ajax({
@@ -1153,6 +1182,7 @@
                             text: response.message ?? 'Past Due Changed',
                         });
                         $('.past_due_val').val(response.past_due ?? '');
+                        $('.past_due_show').val(response.past_due ?? '');
 
                     },
                     error: function(error) {
