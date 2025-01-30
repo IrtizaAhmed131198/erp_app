@@ -211,7 +211,8 @@
                         </button>
                         <!-- Color Selection -->
                         <div class="custom-custom-picker">
-                            <button type="button" id="btn_highlight_cell" class="btn ml-4" title="Highlight a specific cell">
+                            <button type="button" id="btn_highlight_cell" class="btn ml-4"
+                                title="Highlight a specific cell">
                                 <i class="fas fa-highlighter"></i>
                             </button>
                             <select id="highlight_color" class="form-control">
@@ -758,7 +759,7 @@
                     highlighted_cell_identifier]);
             }
 
-            $('#highlight_color').on('change', function () {
+            $('#highlight_color').on('change', function() {
                 // Get selected color
                 let selectedColor = $(this).val();
 

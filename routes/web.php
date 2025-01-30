@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\PartnumberController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +70,11 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::post('add-work-center', [TableController::class, 'add_work_center'])->name('add.work.center');
     Route::post('add-outside-processing', [TableController::class, 'add_outside_processing'])->name('add.outside.processing');
 
+    Route::get('part-number', [PartnumberController::class, "index"])->name('partsnumber.index');
+    Route::get('part-number/{id}', [PartnumberController::class, "edit"])->name('partsnumber.edit');
+    Route::post('/parts/update/{id}', [PartsController::class, 'update'])->name('parts.update');
+
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');
@@ -117,7 +123,7 @@ Route::post('un-highlight-cell-for-me', function (\Illuminate\Http\Request $requ
             'identifier' => $request->identifier
         ])->first();
 
-        if($record) {
+        if ($record) {
             $record->delete();
         }
 

@@ -865,8 +865,8 @@ class HomeController extends Controller
         ]);
 
         $data = Weeks::where('user_id', Auth::user()->id)
-                    ->where('part_number', $request->part_number)
-                    ->first();
+            ->where('part_number', $request->part_number)
+            ->first();
 
         $isNewEntry = false;
 
@@ -896,8 +896,8 @@ class HomeController extends Controller
         $data->save();
 
         $part = Entries::where('user_id', Auth::user()->id)
-                    ->where('part_number', $request->part_number)
-                    ->first();
+            ->where('part_number', $request->part_number)
+            ->first();
         if ($part) {
             $part->filter = 'pending';
             $part->future_raw = str_replace(',', '', $request->future_raw);
@@ -915,7 +915,7 @@ class HomeController extends Controller
             $request->part_number
         );
 
-        return response()->json(['message' => $message, 'future_raw' => number_format((float)$part->future_raw), 'data' => $data]);
+        return response()->json(['message' => $message, 'future_raw' => number_format((float) $part->future_raw), 'data' => $data]);
     }
 
     public function add_shipment(Request $request)
@@ -927,7 +927,7 @@ class HomeController extends Controller
         ]);
 
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        if(!$data) {
+        if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
         }
         $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
@@ -1114,7 +1114,7 @@ class HomeController extends Controller
         $data->save();
 
         // Update Entries table
-        $entries->in_stock_finish -= (float)$request->shipped_amount;
+        $entries->in_stock_finish -= (float) $request->shipped_amount;
         $entries->save();
 
         $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id);
@@ -1126,7 +1126,7 @@ class HomeController extends Controller
     {
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
-        if(!$data) {
+        if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
         }
 

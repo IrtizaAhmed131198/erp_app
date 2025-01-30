@@ -95,7 +95,8 @@
                                         </tr>
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number <span
+                                                        class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                                 <td>Part Number</td>
                                             @endif
@@ -114,7 +115,8 @@
                                         </tr>
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer <span
+                                                        class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                                 <td>Customer</td>
                                             @endif
@@ -155,13 +157,14 @@
                                         </tr>
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department
+                                                    <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                                 <td>Department</td>
                                             @endif
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible" id="department_id" name="department"
-                                                    tabindex="-1">
+                                                <select class="js-select2 select2-hidden-accessible" id="department_id"
+                                                    name="department" tabindex="-1">
                                                     <option selected disabled>Select DEPARTMENT</option>
                                                     @foreach ($department as $dept)
                                                         <option value="{{ $dept->id }}"
@@ -175,7 +178,10 @@
                                         @for ($i = 1; $i <= 7; $i++)
                                             <tr>
                                                 @if (Auth::user()->role == 1)
-                                                    <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }} <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="#workCenterModal{{ $i }}">Work Centre
+                                                        {{ $i }} <span
+                                                            class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                                 @else
                                                     <td>Work Centre {{ $i }}</td>
                                                 @endif
@@ -209,7 +215,10 @@
                                         @for ($i = 1; $i <= 4; $i++)
                                             <tr>
                                                 @if (Auth::user()->role == 1)
-                                                    <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }} <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="#outsideProcessingModal{{ $i }}">Outside
+                                                        Processing {{ $i }} <span
+                                                            class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                                 @else
                                                     <td>Outside Processing {{ $i }}</td>
                                                 @endif
@@ -235,7 +244,8 @@
                                             </tr>
                                         @endfor
                                         <tr>
-                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material <span
+                                                    class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             <td>
                                                 <select class="form-select js-select21" id="material_id" name="material"
                                                     aria-label="Default select example">
@@ -268,7 +278,8 @@
                                             <td>MOQ</td>
                                             <td>
                                                 <input type="text" step="any" name="moq"
-                                                    value="{{ old('moq') }}" oninput="formatAndPreventNegative(this)" id="">
+                                                    value="{{ old('moq') }}" oninput="formatAndPreventNegative(this)"
+                                                    id="">
                                             </td>
                                         </tr>
                                         <tr>
@@ -335,7 +346,8 @@
                                             <td>Minship</td>
                                             <td>
                                                 <input type="text" name="min_ship" id="min_ship"
-                                                    value="{{ old('min_ship') }}" oninput="formatAndPreventNegative(this)">
+                                                    value="{{ old('min_ship') }}"
+                                                    oninput="formatAndPreventNegative(this)">
                                             </td>
                                         </tr>
                                         <tr>
@@ -360,22 +372,23 @@
     <div class="modal fade" id="partNumber" tabindex="-1" aria-labelledby="partNumberLabel">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="partNumberLabel">Add Part Number</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="partNumberForm">
-                <div class="modal-body">
-                <div class="mb-3">
-                    <label for="partNumberInput" class="form-label">Part Number</label>
-                    <input type="text" class="form-control" id="partNumberInput" placeholder="Enter part number" required>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="partNumberLabel">Add Part Number</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add Part Number</button>
-                </div>
-            </form>
+                <form id="partNumberForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="partNumberInput" class="form-label">Part Number</label>
+                            <input type="text" class="form-control" id="partNumberInput"
+                                placeholder="Enter part number" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Part Number</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -391,7 +404,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="customerInput" class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" id="customerInput" placeholder="Enter customer name" required>
+                            <input type="text" class="form-control" id="customerInput"
+                                placeholder="Enter customer name" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -414,7 +428,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="departmentInput" class="form-label">Department Name</label>
-                            <input type="text" class="form-control" id="departmentInput" placeholder="Enter department name" required>
+                            <input type="text" class="form-control" id="departmentInput"
+                                placeholder="Enter department name" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -437,7 +452,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="materialInput" class="form-label">Package</label>
-                            <input type="text" class="form-control" id="materialInput" placeholder="Enter package name" required>
+                            <input type="text" class="form-control" id="materialInput"
+                                placeholder="Enter package name" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -450,18 +466,22 @@
     </div>
 
     @for ($i = 1; $i <= 7; $i++)
-        <div class="modal fade" id="workCenterModal{{ $i }}" tabindex="-1" aria-labelledby="workCenterModalLabel{{ $i }}" aria-hidden="true">
+        <div class="modal fade" id="workCenterModal{{ $i }}" tabindex="-1"
+            aria-labelledby="workCenterModalLabel{{ $i }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="workCenterModalLabel{{ $i }}">Add Work Center for Work Centre {{ $i }}</h5>
+                        <h5 class="modal-title" id="workCenterModalLabel{{ $i }}">Add Work Center for Work
+                            Centre {{ $i }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form class="workCenterForm" data-select-id="work_centre_{{ $i }}">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="workCenterInput{{ $i }}" class="form-label">Work Center Name</label>
-                                <input type="text" class="form-control" id="workCenterInput{{ $i }}" placeholder="Enter work center name" required>
+                                <label for="workCenterInput{{ $i }}" class="form-label">Work Center
+                                    Name</label>
+                                <input type="text" class="form-control" id="workCenterInput{{ $i }}"
+                                    placeholder="Enter work center name" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -475,7 +495,8 @@
     @endfor
 
     @for ($i = 1; $i <= 4; $i++)
-        <div class="modal fade" id="outsideProcessingModal{{ $i }}" tabindex="-1" aria-labelledby="outsideProcessingModalLabel{{ $i }}" aria-hidden="true">
+        <div class="modal fade" id="outsideProcessingModal{{ $i }}" tabindex="-1"
+            aria-labelledby="outsideProcessingModalLabel{{ $i }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -485,8 +506,11 @@
                     <form class="outsideProcessingForm" data-select-id="outside_processing_{{ $i }}">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="outsideProcessingInput{{ $i }}" class="form-label">Vendor Name</label>
-                                <input type="text" class="form-control" id="outsideProcessingInput{{ $i }}" placeholder="Enter outside processing name" required>
+                                <label for="outsideProcessingInput{{ $i }}" class="form-label">Vendor
+                                    Name</label>
+                                <input type="text" class="form-control"
+                                    id="outsideProcessingInput{{ $i }}"
+                                    placeholder="Enter outside processing name" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -533,25 +557,26 @@
     </script>
 
     <script>
-        $(document).ready(function () {
-            $('#partNumberForm').submit(function (event) {
+        $(document).ready(function() {
+            $('#partNumberForm').submit(function(event) {
                 event.preventDefault();
                 const token = $('meta[name="csrf-token"]').attr('content');
                 const partNumberInput = $('#partNumberInput').val();
 
                 // AJAX request
                 $.ajax({
-                    url: '{{ route("add.part.number") }}',
+                    url: '{{ route('add.part.number') }}',
                     type: 'POST',
                     data: {
                         _token: token,
                         part_number: partNumberInput
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Add the new part number to the table
                             const selectDropdown = $('#part_number');
-                            const newOption = `<option value="${response.part_number.id}">${response.part_number.part_number}</option>`;
+                            const newOption =
+                                `<option value="${response.part_number.id}">${response.part_number.part_number}</option>`;
                             selectDropdown.append(newOption);
 
                             // Reset the form and close the modal
@@ -572,7 +597,7 @@
                             });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Part Number Failed',
@@ -582,24 +607,25 @@
                 });
             });
 
-            $('#customerForm').submit(function (event) {
+            $('#customerForm').submit(function(event) {
                 event.preventDefault();
                 const token = $('meta[name="csrf-token"]').attr('content');
                 const customerInput = $('#customerInput').val();
 
                 // AJAX request
                 $.ajax({
-                    url: '{{ route("add.customer") }}',
+                    url: '{{ route('add.customer') }}',
                     type: 'POST',
                     data: {
                         _token: token,
                         customer_name: customerInput
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Add the new customer to the dropdown
                             const selectDropdown = $('#customer_id');
-                            const newOption = `<option value="${response.customer.id}">${response.customer.CustomerName}</option>`;
+                            const newOption =
+                                `<option value="${response.customer.id}">${response.customer.CustomerName}</option>`;
                             selectDropdown.append(newOption);
 
                             // Reset the form and close the modal
@@ -620,7 +646,7 @@
                             });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Add Customer Failed',
@@ -630,24 +656,25 @@
                 });
             });
 
-            $('#departmentForm').submit(function (event) {
+            $('#departmentForm').submit(function(event) {
                 event.preventDefault();
                 const token = $('meta[name="csrf-token"]').attr('content');
                 const departmentInput = $('#departmentInput').val();
 
                 // AJAX request
                 $.ajax({
-                    url: '{{ route("add.department") }}',
+                    url: '{{ route('add.department') }}',
                     type: 'POST',
                     data: {
                         _token: token,
                         name: departmentInput
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Add the new department to the dropdown
                             const selectDropdown = $('#department_id');
-                            const newOption = `<option value="${response.department.id}">${response.department.name}</option>`;
+                            const newOption =
+                                `<option value="${response.department.id}">${response.department.name}</option>`;
                             selectDropdown.append(newOption);
 
                             // Reset the form and close the modal
@@ -668,7 +695,7 @@
                             });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Add Department Failed',
@@ -678,24 +705,25 @@
                 });
             });
 
-            $('#materialForm').submit(function (event) {
+            $('#materialForm').submit(function(event) {
                 event.preventDefault();
                 const token = $('meta[name="csrf-token"]').attr('content');
                 const materialInput = $('#materialInput').val();
 
                 // AJAX request
                 $.ajax({
-                    url: '{{ route("add.material") }}',
+                    url: '{{ route('add.material') }}',
                     type: 'POST',
                     data: {
                         _token: token,
                         package: materialInput
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Add the new material to the dropdown
                             const selectDropdown = $('#material_id');
-                            const newOption = `<option value="${response.material.id}">${response.material.Package}</option>`;
+                            const newOption =
+                                `<option value="${response.material.id}">${response.material.Package}</option>`;
                             selectDropdown.append(newOption);
 
                             // Reset the form and close the modal
@@ -716,7 +744,7 @@
                             });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Add Material Failed',
@@ -726,7 +754,7 @@
                 });
             });
 
-            $('.workCenterForm').submit(function (event) {
+            $('.workCenterForm').submit(function(event) {
                 event.preventDefault();
 
                 const form = $(this);
@@ -736,17 +764,18 @@
 
                 // AJAX request
                 $.ajax({
-                    url: '{{ route("add.work.center") }}',
+                    url: '{{ route('add.work.center') }}',
                     type: 'POST',
                     data: {
                         _token: token,
                         name: workCenterInput
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Add the new work center to the relevant dropdown
                             const selectDropdown = $(`.work_centre_select`);
-                            const newOption = `<option value="${response.workCenter.id}">${response.workCenter.name}</option>`;
+                            const newOption =
+                                `<option value="${response.workCenter.id}">${response.workCenter.name}</option>`;
                             selectDropdown.append(newOption);
 
                             // Reset the form and close the modal
@@ -766,7 +795,7 @@
                             });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Add Work Center Failed',
@@ -776,7 +805,7 @@
                 });
             });
 
-            $('.outsideProcessingForm').submit(function (event) {
+            $('.outsideProcessingForm').submit(function(event) {
                 event.preventDefault();
 
                 const form = $(this);
@@ -786,17 +815,18 @@
 
                 // AJAX request
                 $.ajax({
-                    url: '{{ route("add.outside.processing") }}',
+                    url: '{{ route('add.outside.processing') }}',
                     type: 'POST',
                     data: {
                         _token: token,
                         name: outsideProcessingInput
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Add the new outside processing to the relevant dropdown
                             const selectDropdown = $(`.outside_select`);
-                            const newOption = `<option value="${response.outsideProcessing.id}">${response.outsideProcessing.name}</option>`;
+                            const newOption =
+                                `<option value="${response.outsideProcessing.id}">${response.outsideProcessing.name}</option>`;
                             selectDropdown.append(newOption);
 
                             // Reset the form and close the modal
@@ -816,7 +846,7 @@
                             });
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Add Outside Processing Failed',
@@ -826,7 +856,6 @@
                 });
             });
         });
-
     </script>
 
     @if ($errors->any())
