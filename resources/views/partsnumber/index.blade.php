@@ -29,7 +29,7 @@
         }
 
         .table-data-all {
-            padding-top: 50px;
+            padding-top: 20px;
             padding-bottom: 50px;
         }
 
@@ -37,6 +37,22 @@
             width: 65%;
             margin: auto;
             border: 1px solid black;
+        }
+
+        .data-show-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .data-show-toggle button {
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 15px;
         }
     </style>
 @endsection
@@ -86,6 +102,18 @@
                             data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                             Department
                         </button>
+                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Work Centre
+                        </button>
+                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Outside Processing
+                        </button>
+                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Material
+                        </button>
                     </div>
                 </div>
                 <div class="accordion" id="mainAccordion">
@@ -101,7 +129,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="entries-table-body">
-
                                         @foreach ($parts as $val)
                                             <tr>
                                                 <td>{{ $val->id }}</td>
@@ -128,13 +155,11 @@
 
                                 </table>
                                 <div class="pagination-all">
-                                    {{ $parts->links() }}
+                                    {!! $parts->links() !!}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="accordion" id="mainAccordion">
                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
@@ -142,7 +167,7 @@
                                     <thead>
                                         <tr class="colored-table-row">
                                             <th class="highlighted toggle-header">ID</th>
-                                            <th class="toggleable toggle-header-planning">Part Name </th>
+                                            <th class="toggleable toggle-header-planning">Customer </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
                                     </thead>
@@ -174,13 +199,11 @@
 
                                 </table>
                                 <div class="pagination-all">
-                                    {{ $parts->links() }}
+                                    {!! $customer->links() !!}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="accordion" id="mainAccordion">
                     <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
@@ -188,12 +211,11 @@
                                     <thead>
                                         <tr class="colored-table-row">
                                             <th class="highlighted toggle-header">ID</th>
-                                            <th class="toggleable toggle-header-planning">Part Name </th>
+                                            <th class="toggleable toggle-header-planning">Department </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
                                     </thead>
                                     <tbody id="entries-table-body">
-
                                         @foreach ($department as $val)
                                             <tr>
                                                 <td>{{ $val->id }}</td>
@@ -215,10 +237,135 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
                                     </tbody>
-
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                        <div class="accordion-body px-0">
+                            <div class="col-lg-12">
+                                <table class="table table-hover table-bordered" id="myTable">
+                                    <thead>
+                                        <tr class="colored-table-row">
+                                            <th class="highlighted toggle-header">ID</th>
+                                            <th class="toggleable toggle-header-planning">Work Centre </th>
+                                            <th class="toggleable toggle-header-planning">Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="entries-table-body">
+
+                                        @foreach ($work_center_selector as $val)
+                                            <tr>
+                                                <td>{{ $val->id }}</td>
+                                                <td>{{ $val->name }}</td>
+                                                <td class="toggleable toggle-planning">
+                                                    <div class="d-inline">
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#partNumber" class="btn btn-success opendata"
+                                                            data-column="{{ $val->name }}"
+                                                            data-id="{{ $val->id }}">Edit</a>
+                                                        {{-- <form action="{{ route('users.destroy', $parts->id) }}" method="POST"
+                                                class="d-inline" id="deleteID{{ $parts->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="deleted({{ $parts->id }})">Delete</a>
+                                            </form> --}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="pagination-all">
+                                    {!! $work_center_selector->links() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                        <div class="accordion-body px-0">
+                            <div class="col-lg-12">
+                                <table class="table table-hover table-bordered" id="myTable">
+                                    <thead>
+                                        <tr class="colored-table-row">
+                                            <th class="highlighted toggle-header">ID</th>
+                                            <th class="toggleable toggle-header-planning">Vendor </th>
+                                            <th class="toggleable toggle-header-planning">Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="entries-table-body">
+
+                                        @foreach ($vendor as $val)
+                                            <tr>
+                                                <td>{{ $val->id }}</td>
+                                                <td>{{ $val->name }}</td>
+                                                <td class="toggleable toggle-planning">
+                                                    <div class="d-inline">
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#partNumber" class="btn btn-success opendata"
+                                                            data-column="{{ $val->name }}"
+                                                            data-id="{{ $val->id }}">Edit</a>
+                                                        {{-- <form action="{{ route('users.destroy', $parts->id) }}" method="POST"
+                                                class="d-inline" id="deleteID{{ $parts->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="deleted({{ $parts->id }})">Delete</a>
+                                            </form> --}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="pagination-all">
+                                    {!! $vendor->links() !!}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                        <div class="accordion-body px-0">
+                            <div class="col-lg-12">
+                                <table class="table table-hover table-bordered" id="myTable">
+                                    <thead>
+                                        <tr class="colored-table-row">
+                                            <th class="highlighted toggle-header">ID</th>
+                                            <th class="toggleable toggle-header-planning">Material </th>
+                                            <th class="toggleable toggle-header-planning">Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="entries-table-body">
+
+                                        @foreach ($package as $val)
+                                            <tr>
+                                                <td>{{ $val->id }}</td>
+                                                <td>{{ $val->Package }}</td>
+                                                <td class="toggleable toggle-planning">
+                                                    <div class="d-inline">
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#partNumber" class="btn btn-success opendata"
+                                                            data-column="{{ $val->Package }}"
+                                                            data-id="{{ $val->id }}">Edit</a>
+                                                        {{-- <form action="{{ route('users.destroy', $parts->id) }}" method="POST"
+                                                class="d-inline" id="deleteID{{ $parts->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="deleted({{ $parts->id }})">Delete</a>
+                                            </form> --}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="pagination-all">
+                                    {!! $package->links() !!}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,6 +408,28 @@
                 $('#partNumber').show();
             })
         })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $(document).on('click', '.pagination a', function(event) {
+                event.preventDefault();
+                var page = $(this).attr('href').split('page=')[1];
+                fetch_data(page);
+            });
+
+            function fetch_data(page) {
+                $.ajax({
+                    url: "//pagination?page=" + page,
+                    success: function(satwork) {
+                        $('.table').html(satwork);
+                    }
+                });
+            }
+
+        });
+        }
     </script>
 @endsection
 @endsection

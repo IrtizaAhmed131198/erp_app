@@ -72,8 +72,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
 
     Route::get('part-number', [PartnumberController::class, "index"])->name('partsnumber.index');
     Route::get('part-number/{id}', [PartnumberController::class, "edit"])->name('partsnumber.edit');
-    Route::post('/parts/update/{id}', [PartsController::class, 'update'])->name('parts.update');
-
+    Route::get('/pagination', [PartnumberController::class, 'fetch_data']);
 
 });
 #login route

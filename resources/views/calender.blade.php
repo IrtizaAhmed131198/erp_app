@@ -76,9 +76,9 @@
                 <div class="col-lg-12">
                     <div class="d-flex justify-content-start mb-3 custom-data">
                         @if (Auth::user()->create_order == 1)
-                            <button class="btn btn-primary me-2" id="btn-create-order" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
-                                onclick="updateHeadingText(this)">
+                            <button class="btn btn-primary me-2" id="btn-create-order" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
+                                aria-controls="collapseOne" onclick="updateHeadingText(this)">
                                 Create/Update Order
                             </button>
                         @endif
@@ -134,29 +134,17 @@
                                             ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
                                             : date(
                                                 'Y-m-d',
-                                                strtotime(
-                                                    '-' . ($dayOfWeek - 1) . ' days',
-                                                    strtotime($today),
-                                                ),
+                                                strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today)),
                                             ); // Else, go back to Monday
 
                                     // Calculate the start date of week 16
-                                    $week16StartDate = date(
-                                        'Y-m-d',
-                                        strtotime('+15 weeks', strtotime($mondayOfWeek)),
-                                    );
+                                    $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
                                     // Calculate the end date of week 16
-                                    $week16EndDate = date(
-                                        'Y-m-d',
-                                        strtotime('+6 days', strtotime($week16StartDate)),
-                                    );
+                                    $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
 
                                     // Calculate the start date of month 5 (the day after week 16 ends)
-                                    $month5StartDate = date(
-                                        'Y-m-d',
-                                        strtotime('+1 day', strtotime($week16EndDate)),
-                                    );
+                                    $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
                                 @endphp
 
                                 <!-- add production form -->
@@ -179,10 +167,12 @@
                                             <tr>
                                                 <td>Past Due</td>
                                                 <td>
-                                                    <input type="text" name="show_past_due" id="show_past_due" class="past_due_show" disabled>
+                                                    <input type="text" name="show_past_due" id="show_past_due"
+                                                        class="past_due_show" disabled>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="past_due" id="order_past_due" class="">
+                                                    <input type="text" name="past_due" id="order_past_due"
+                                                        class="">
                                                     <button type="button" id="change_past_due" style="display: none;"><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 </td>
@@ -279,7 +269,8 @@
                                                 <td>
                                                     <input type='text' class='show_future_raw' disabled>
                                                 <td>
-                                                    <input type="text" name="future_raw" class="future_raw" oninput="formatNumberWithCommas(this)">
+                                                    <input type="text" name="future_raw" class="future_raw"
+                                                        oninput="formatNumberWithCommas(this)">
                                                 </td>
                                             </tr>
 
@@ -337,7 +328,8 @@
                                             <tr>
                                                 <td>New Total</td>
 
-                                                <td><input type="text" name="new_total" id="new_total" readonly oninput="formatNumberWithCommas(this)"></td>
+                                                <td><input type="text" name="new_total" id="new_total" readonly
+                                                        oninput="formatNumberWithCommas(this)"></td>
 
                                             </tr>
                                         </tbody>
@@ -379,29 +371,17 @@
                                             ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
                                             : date(
                                                 'Y-m-d',
-                                                strtotime(
-                                                    '-' . ($dayOfWeek - 1) . ' days',
-                                                    strtotime($today),
-                                                ),
+                                                strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today)),
                                             ); // Else, go back to Monday
 
                                     // Calculate the start date of week 16
-                                    $week16StartDate = date(
-                                        'Y-m-d',
-                                        strtotime('+15 weeks', strtotime($mondayOfWeek)),
-                                    );
+                                    $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
                                     // Calculate the end date of week 16
-                                    $week16EndDate = date(
-                                        'Y-m-d',
-                                        strtotime('+6 days', strtotime($week16StartDate)),
-                                    );
+                                    $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
 
                                     // Calculate the start date of month 5 (the day after week 16 ends)
-                                    $month5StartDate = date(
-                                        'Y-m-d',
-                                        strtotime('+1 day', strtotime($week16EndDate)),
-                                    );
+                                    $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
                                 @endphp
 
                                 <!-- add production form -->
@@ -411,8 +391,9 @@
                                     <thead>
                                         <tr class="">
                                             <th scope="col">Add Shipment Amount</th>
-                                            <td> <div class="add-shipment-amount"><input type="number" name="" id=""
-                                                placeholder="Add Shipment Amount"></div>
+                                            <td>
+                                                <div class="add-shipment-amount"><input type="number" name=""
+                                                        id="" placeholder="Add Shipment Amount"></div>
                                             </td>
 
                                         </tr>
@@ -476,15 +457,15 @@
                                                         <input type='text' class='edit_existing'
                                                             data-edit-week-change='week_{{ $week }}'
                                                             name='edit_existing[week_{{ $week }}]'
-                                                            id='edit_week_{{ $week }}' oninput="formatNumberWithCommas(this)"
-                                                            readonly>
+                                                            id='edit_week_{{ $week }}'
+                                                            oninput="formatNumberWithCommas(this)" readonly>
                                                     </td>
                                                     <td style="display: none;">
                                                         <input type="text" class='change-amount'
                                                             data-week-change='week_{{ $week }}'
                                                             name="change_amount[week_{{ $week }}]"
-                                                            id="change_week_{{ $week }}" oninput="formatNumberWithCommas(this)"
-                                                            readonly>
+                                                            id="change_week_{{ $week }}"
+                                                            oninput="formatNumberWithCommas(this)" readonly>
                                                     </td>
                                                 </tr>
                                             @endfor
@@ -547,7 +528,7 @@
 @endsection
 @section('js')
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             if (localStorage.getItem("collapseOpen") === "true") {
                 let collapseElement = new bootstrap.Collapse(document.getElementById("collapseTwo"), {
                     show: true
@@ -555,6 +536,7 @@
                 localStorage.removeItem("collapseOpen"); // Remove flag after applying
             }
         });
+
         function updateHeadingText(button) {
             // Get the heading element
             const heading = document.querySelector('.heading-1');
@@ -644,9 +626,11 @@
                                 for (let key in data) {
                                     let value = data[key];
 
-                                    let formattedValue = new Intl.NumberFormat('en-US').format(value);
+                                    let formattedValue = new Intl.NumberFormat('en-US')
+                                        .format(value);
 
-                                    $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
+                                    $(`#edit_${key}`).val(formattedValue).prop('readonly',
+                                        true);
                                     $(`#${key}`).val(formattedValue).prop('readonly', true);
                                 }
                             },
@@ -938,7 +922,8 @@
                             for (let key in data) {
                                 let value = data[key];
 
-                                let formattedValue = new Intl.NumberFormat('en-US').format(value);
+                                let formattedValue = new Intl.NumberFormat('en-US').format(
+                                    value);
 
                                 $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
                                 $(`#${key}`).val(formattedValue).prop('readonly', true);
@@ -1078,7 +1063,8 @@
                         if (result.isConfirmed) {
                             // Redirect to another route
                             localStorage.setItem("collapseOpen", "true");
-                            window.location.href = "{{ route('calender') }}" + "?part_number=" + encodeURIComponent(partNumber); // Change to your actual route
+                            window.location.href = "{{ route('calender') }}" + "?part_number=" +
+                                encodeURIComponent(partNumber); // Change to your actual route
                         }
                     });
                 } else {
@@ -1108,7 +1094,8 @@
                             $('input[name="existing_amount"]').val(response.existing_amount);
                             for (let key in data) {
                                 let value = data[key];
-                                let formattedValue = new Intl.NumberFormat('en-US').format(value);
+                                let formattedValue = new Intl.NumberFormat('en-US').format(
+                                    value);
 
                                 $(`#edit_${key}`).val(formattedValue);
                             }
@@ -1146,7 +1133,7 @@
 
             $('#change_past_due').on('click', function() {
                 let value = $('#order_past_due').val();
-                if(value == '' || value < 0) {
+                if (value == '' || value < 0) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Past Due Change',
@@ -1168,7 +1155,7 @@
                     },
                     success: function(response) {
                         // console.log('Data saved successfully:', response);
-                        if(response.error) {
+                        if (response.error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Past Due Change',
