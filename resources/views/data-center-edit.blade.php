@@ -1,81 +1,81 @@
 @extends('layouts.main')
 
 @section('css')
-<style>
-    .select2-selection__arrow {
-        background-image: unset !important;
-    }
+    <style>
+        .select2-selection__arrow {
+            background-image: unset !important;
+        }
 
-    .side_btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-    }
+        .side_btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
 
-    .side_btn .custom-btn {
-        margin: unset;
-    }
+        .side_btn .custom-btn {
+            margin: unset;
+        }
 
-    .weekly-section.data-center .parent-table {
-        padding-right: 0;
-        height: unset;
-    }
+        .weekly-section.data-center .parent-table {
+            padding-right: 0;
+            height: unset;
+        }
 
-    .parent-table table input,
-    .parent-table table textarea {
-        height: 22px;
-    }
+        .parent-table table input,
+        .parent-table table textarea {
+            height: 22px;
+        }
 
-    .select2.select2-container .select2-selection {
-        height: 25px;
-        margin-bottom: 5px;
-    }
+        .select2.select2-container .select2-selection {
+            height: 25px;
+            margin-bottom: 5px;
+        }
 
-    .select2.select2-container .select2-selection .select2-selection__rendered {
-        line-height: 25px;
-        font-size: 14px;
-    }
+        .select2.select2-container .select2-selection .select2-selection__rendered {
+            line-height: 25px;
+            font-size: 14px;
+        }
 
-    .weekly-section.data-center .parent-table tr td:nth-child(01) {
-        line-height: 30px;
-    }
+        .weekly-section.data-center .parent-table tr td:nth-child(01) {
+            line-height: 30px;
+        }
 
-    .select2.select2-container .select2-selection .select2-selection__arrow {
-        height: 22px;
-    }
-</style>
+        .select2.select2-container .select2-selection .select2-selection__arrow {
+            height: 22px;
+        }
+    </style>
 @endsection
 
 
 @section('content')
-<section class="weekly-section data-center">
-    <div class="container bg-colored">
-        <div class="row align-items-center mb-5">
-            <div class="col-lg-12 col-md-12 col-12">
-                <div class="parent-pagination">
-                    <div class="pagination">
-                        <a href="{{ route('index') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd"
-                                class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z" />
-                            </svg>
-                            <span class="pagination-heading">
-                                Return To Master Data
-                            </span>
-                        </a>
-                    </div>
-                    <div class="title">
-                        <h1 class="heading-1">
-                            Part Number Input Edit
-                        </h1>
+    <section class="weekly-section data-center">
+        <div class="container bg-colored">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-12 col-md-12 col-12">
+                    <div class="parent-pagination">
+                        <div class="pagination">
+                            <a href="{{ route('index') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd"
+                                    class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z" />
+                                </svg>
+                                <span class="pagination-heading">
+                                    Return To Master Data
+                                </span>
+                            </a>
+                        </div>
+                        <div class="title">
+                            <h1 class="heading-1">
+                                Part Number Input Edit
+                            </h1>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row align-items-center">
-            {{-- @php
+            <div class="row align-items-center">
+                {{-- @php
                     $last_update_user = $last_activity->user->name ?? null;
                     $last_update_date = is_null($last_activity->updated_at)
                         ? $last_activity->created_at
@@ -84,181 +84,193 @@
                         $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
                     }
                 @endphp --}}
-            @php
-            $last_update_user = $last_activity->user->name ?? null;
-            $last_update_date = null;
+                @php
+                    $last_update_user = $last_activity->user->name ?? null;
+                    $last_update_date = null;
 
-            if (!is_null($last_activity)) {
-            $last_update_date = $last_activity->updated_at ?? $last_activity->created_at;
-            }
+                    if (!is_null($last_activity)) {
+                        $last_update_date = $last_activity->updated_at ?? $last_activity->created_at;
+                    }
 
-            $date_string = null;
-            if (!is_null($last_update_user) && !is_null($last_update_date)) {
-            $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
-            }
-            @endphp
+                    $date_string = null;
+                    if (!is_null($last_update_user) && !is_null($last_update_date)) {
+                        $date_string = \Carbon\Carbon::parse($last_update_date)->format('d F Y, h:i A');
+                    }
+                @endphp
 
-            @if (!is_null($last_update_user))
-            <div class="alert alert-info" role="alert" style="width: 99%;">
-                Last updated by {{ $last_update_user }} at {{ $date_string }}
-            </div>
-            {{-- <div class="col-md-6 mb-4" style="border-radius: 4px; background-color: #ffa5007a;"> --}}
-            {{-- <p class="m-0">Last updated by {{$last_update_user}} at {{$date_string}}</p> --}}
-            {{-- </div> --}}
-            @endif
+                @if (!is_null($last_update_user))
+                    <div class="alert alert-info" role="alert" style="width: 99%;">
+                        Last updated by {{ $last_update_user }} at {{ $date_string }}
+                    </div>
+                    {{-- <div class="col-md-6 mb-4" style="border-radius: 4px; background-color: #ffa5007a;"> --}}
+                    {{-- <p class="m-0">Last updated by {{$last_update_user}} at {{$date_string}}</p> --}}
+                    {{-- </div> --}}
+                @endif
 
-            <div class="col-md-12"></div>
-            <div class="col-lg-12">
-                <div class="parent-table">
-                    <form action="{{ route('post_data_center_update', ['id' => $data->id]) }}" method="POST">
-                        @csrf
-                        <div class="btn-custom-btn text-center mb-3 side_btn">
-                            <button type="submit" class="btn custom-btn">Submit</button>
-                            <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
-                        </div>
-                        <input type="hidden" name="id" value="{{ $data->id }}">
-                        <div class="parent-table parent-table-calender full-view-port mt-4">
-                            <table class="table table-hover table-bordered">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                    <tr class="">
-                                        <td scope="col" colspan="2"><strong>Part Number Input Edit</strong></td>
-                                    </tr>
-                                    <tr>
-                                        @if (Auth::user()->role == 1)
-                                        <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
-                                        @else
-                                        <td>Part Number</td>
-                                        @endif
-                                        <td>
-                                            <select class="form-select js-select21" id="part_number" name="part_number"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select Part Number</option>
-                                                @foreach ($parts as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ $data->part_number == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->Part_Number }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        @if (Auth::user()->role == 1)
-                                        <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
-                                        @else
-                                        <td>Customer</td>
-                                        @endif
-                                        <td>
-                                            <select class="form-select js-select21" id="customer_id" name="customer"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select Customer</option>
-                                                @foreach ($customer as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ $data->customer == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->CustomerName }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                            {{-- <input type="text" name="customer" value="{{ old('customer') }}"
+                <div class="col-md-12"></div>
+                <div class="col-lg-12">
+                    <div class="parent-table">
+                        <form action="{{ route('post_data_center_update', ['id' => $data->id]) }}" method="POST">
+                            @csrf
+                            <div class="btn-custom-btn text-center mb-3 side_btn">
+                                <button type="submit" class="btn custom-btn">Submit</button>
+                                <a href="{{ route('index') }}" class="btn custom-btn">Cancel</a>
+                            </div>
+                            <input type="hidden" name="id" value="{{ $data->id }}">
+                            <div class="parent-table parent-table-calender full-view-port mt-4">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="">
+                                            <td scope="col" colspan="2"><strong>Part Number Input Edit</strong></td>
+                                        </tr>
+                                        <tr>
+                                            @if (Auth::user()->role == 1)
+                                                <td data-bs-toggle="modal" data-bs-target="#partNumber">Part Number <span
+                                                        class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                            @else
+                                                <td>Part Number</td>
+                                            @endif
+                                            <td>
+                                                <select class="form-select js-select21" id="part_number" name="part_number"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Part Number</option>
+                                                    @foreach ($parts as $item)
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $data->part_number == $item->id ? 'selected' : '' }}>
+                                                            {{ $item->Part_Number }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            @if (Auth::user()->role == 1)
+                                                <td data-bs-toggle="modal" data-bs-target="#customerModal">Customer <span
+                                                        class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                            @else
+                                                <td>Customer</td>
+                                            @endif
+                                            <td>
+                                                <select class="form-select js-select21" id="customer_id" name="customer"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Customer</option>
+                                                    @foreach ($customer as $item)
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $data->customer == $item->id ? 'selected' : '' }}>
+                                                            {{ $item->CustomerName }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {{-- <input type="text" name="customer" value="{{ old('customer') }}"
                                             id=""> --}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Revision</td>
-                                        <td>
-                                            <input type="text" name="revision" value="{{ $data->revision }}"
-                                                oninput="this.value = this.value.toUpperCase();" id="">
-                                        </td>
-                                    </tr>
-                                    {{-- <tr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revision</td>
+                                            <td>
+                                                <input type="text" name="revision" value="{{ $data->revision }}"
+                                                    oninput="this.value = this.value.toUpperCase();" id="">
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td>ID</td>
                                         <td>
                                             <input type="text" name="ids" value="{{ old('ids') }}" id="">
                                     </td>
                                     </tr> --}}
-                                    <tr>
-                                        <td>Process</td>
-                                        <td>
-                                            <input type="text" name="process" value="{{ $data->process }}"
-                                                oninput="this.value = this.value.toUpperCase();" id="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        @if (Auth::user()->role == 1)
-                                        <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
-                                        @else
-                                        <td>Department</td>
-                                        @endif
-                                        <td>
-                                            <select class="js-select2 select2-hidden-accessible" id="department_id" name="department"
-                                                tabindex="-1" aria-hidden="true">
-                                                <option selected disabled>Select DEPARTMENT</option>
-                                                @foreach ($department as $dept)
-                                                <option value="{{ $dept->id }}"
-                                                    {{ $data->department == $dept->id ? 'selected' : '' }}>
-                                                    {{ $dept->name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    @php
-                                    $work_center = $data->work_center->toArray();
-                                    $work_center_select_map = collect($work_center_select)
-                                    ->keyBy('id')
-                                    ->toArray();
-                                    @endphp
-
-                                    @for ($i = 1; $i <= 7; $i++)
-                                        @php
-                                        $work_centre_id='work_centre_' . $i;
-                                        $selected_value=null;
-                                        $com_value=null;
-
-                                        if (
-                                        in_array(
-                                        $work_centre_id,
-                                        array_column($work_center, 'work_centre_id' ),
-                                        )
-                                        ) {
-                                        $selected_work_centre=collect($work_center)->firstWhere(
-                                        'work_centre_id',
-                                        $work_centre_id,
-                                        );
-                                        $selected_value =
-                                        $work_center_select_map[$selected_work_centre['com']] ?? null;
-                                        }
-                                        @endphp
-
+                                        <tr>
+                                            <td>Process</td>
+                                            <td>
+                                                <input type="text" name="process" value="{{ $data->process }}"
+                                                    oninput="this.value = this.value.toUpperCase();" id="">
+                                            </td>
+                                        </tr>
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                            <td data-bs-toggle="modal" data-bs-target="#workCenterModal{{ $i }}">Work Centre {{ $i }} <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department
+                                                    <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
-                                            <td>Work Centre {{ $i }}</td>
+                                                <td>Department</td>
                                             @endif
                                             <td>
-                                                <select class="js-select2 select2-hidden-accessible work_centre_select"
-                                                    name="{{ $work_centre_id }}" aria-label="Default select example">
-                                                    <option value="" selected>Select</option>
-                                                    @foreach ($work_center_select as $center)
-                                                    <option value="{{ $center['id'] }}"
-                                                        {{ $selected_value && $center['id'] == $selected_value['id']  ? 'selected' : '' }}>
-                                                        {{ $center['name'] }}
-                                                    </option>
+                                                <select class="js-select2 select2-hidden-accessible" id="department_id"
+                                                    name="department" tabindex="-1" aria-hidden="true">
+                                                    <option selected disabled>Select DEPARTMENT</option>
+                                                    @foreach ($department as $dept)
+                                                        <option value="{{ $dept->id }}"
+                                                            {{ $data->department == $dept->id ? 'selected' : '' }}>
+                                                            {{ $dept->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                         </tr>
+                                        @php
+                                            $work_center = $data->work_center->toArray();
+                                            $work_center_select_map = collect($work_center_select)
+                                                ->keyBy('id')
+                                                ->toArray();
+                                        @endphp
+
+                                        @for ($i = 1; $i <= 7; $i++)
+                                            @php
+                                                $work_centre_id = 'work_centre_' . $i;
+                                                $selected_value = null;
+                                                $com_value = null;
+
+                                                if (
+                                                    in_array(
+                                                        $work_centre_id,
+                                                        array_column($work_center, 'work_centre_id'),
+                                                    )
+                                                ) {
+                                                    $selected_work_centre = collect($work_center)->firstWhere(
+                                                        'work_centre_id',
+                                                        $work_centre_id,
+                                                    );
+                                                    $selected_value =
+                                                        $work_center_select_map[$selected_work_centre['com']] ?? null;
+                                                }
+                                            @endphp
+
+                                            <tr>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="{{ $i == 1 ? '#workCenterModal' : '' }}"
+                                                        data-work-id="{{ $i }}">
+                                                        Work Centre {{ $i }}
+                                                        @if ($i == 1)
+                                                            <!-- Show "Add new" only for the first row -->
+                                                            <span class="badge badge-sm bg-success bg-add-new">Add
+                                                                new</span>
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>Work Centre {{ $i }}</td>
+                                                @endif
+                                                <td>
+                                                    <select class="js-select2 select2-hidden-accessible work_centre_select"
+                                                        name="{{ $work_centre_id }}" aria-label="Default select example">
+                                                        <option value="" selected>Select</option>
+                                                        @foreach ($work_center_select as $center)
+                                                            <option value="{{ $center['id'] }}"
+                                                                {{ $selected_value && $center['id'] == $selected_value['id'] ? 'selected' : '' }}>
+                                                                {{ $center['name'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                            </tr>
                                         @endfor
 
 
 
 
                                         @php
-                                        $out_source = $data->out_source->toArray();
-                                        $vendor_map = collect($vendor)->keyBy('id')->toArray();
+                                            $out_source = $data->out_source->toArray();
+                                            $vendor_map = collect($vendor)->keyBy('id')->toArray();
                                         @endphp
 
                                         <tr>
@@ -268,312 +280,332 @@
                                             </td>
                                         </tr>
 
-                                </tbody>
-                            </table>
-                            <table class="table table-hover table-bordered">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                    @for ($i = 1; $i <= 4; $i++)
-                                        @php
-                                        $outside_processing_id='outside_processing_' . $i;
-                                        $selected_value=null;
+                                    </tbody>
+                                </table>
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        @for ($i = 1; $i <= 4; $i++)
+                                            @php
+                                                $outside_processing_id = 'outside_processing_' . $i;
+                                                $selected_value = null;
 
-                                        if (
-                                        in_array(
-                                        $outside_processing_id,
-                                        array_column($out_source, 'outside_processing_id' ),
-                                        )
-                                        ) {
-                                        $selected_out_source=collect($out_source)->firstWhere(
-                                        'outside_processing_id',
-                                        $outside_processing_id,
-                                        );
-                                        $selected_value = $vendor_map[$selected_out_source['out']] ?? null;
-                                        }
-                                        @endphp
+                                                if (
+                                                    in_array(
+                                                        $outside_processing_id,
+                                                        array_column($out_source, 'outside_processing_id'),
+                                                    )
+                                                ) {
+                                                    $selected_out_source = collect($out_source)->firstWhere(
+                                                        'outside_processing_id',
+                                                        $outside_processing_id,
+                                                    );
+                                                    $selected_value = $vendor_map[$selected_out_source['out']] ?? null;
+                                                }
+                                            @endphp
 
                                             <tr>
-                                            @if (Auth::user()->role == 1)
-                                            <td data-bs-toggle="modal" data-bs-target="#outsideProcessingModal{{ $i }}">Outside Processing {{ $i }} <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
-                                            @else
-                                            <td>Outside Processing {{ $i }}</td>
-                                            @endif
-                                            <td>
-                                                <div class="parent-inputs">
-                                                    <select class="js-select2 select2-hidden-accessible outside_select"
-                                                        name="{{ $outside_processing_id }}"
-                                                        aria-label="Default select example">
-                                                        <option value="" selected>Select</option>
-                                                        @foreach ($vendor as $v)
-                                                        <option value="{{ $v->id }}"
-                                                            {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
-                                                            {{ $v->name }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <input type="text"
-                                                        name="outside_processing_text_{{ $i }}"
-                                                        value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
-                                                        id="">
-                                                </div>
-                                            </td>
-                                            </tr>
-                                            @endfor
-                                            <tr>
-                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="{{ $i == 1 ? '#outsideProcessingModal' : '' }}"
+                                                        data-outside-id="{{ $i }}">
+                                                        Outside Processing {{ $i }}
+                                                        @if ($i == 1)
+                                                            <!-- Show "Add new" only for the first row -->
+                                                            <span class="badge badge-sm bg-success bg-add-new">Add
+                                                                new</span>
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>Outside Processing {{ $i }}</td>
+                                                @endif
                                                 <td>
-                                                    <select class="form-select js-select21" id="material_id" name="material"
-                                                        aria-label="Default select example">
-                                                        <option selected disabled>Select Material</option>
-                                                        @foreach ($material as $item)
+                                                    <div class="parent-inputs">
+                                                        <select class="js-select2 select2-hidden-accessible outside_select"
+                                                            name="{{ $outside_processing_id }}"
+                                                            aria-label="Default select example">
+                                                            <option value="" selected>Select</option>
+                                                            @foreach ($vendor as $v)
+                                                                <option value="{{ $v->id }}"
+                                                                    {{ $selected_value && $v->id == $selected_value['id'] ? 'selected' : '' }}>
+                                                                    {{ $v->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="text"
+                                                            name="outside_processing_text_{{ $i }}"
+                                                            value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
+                                                            id="">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endfor
+                                        <tr>
+                                            <td data-bs-toggle="modal" data-bs-target="#materialModal">Material <span
+                                                    class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                            <td>
+                                                <select class="form-select js-select21" id="material_id" name="material"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Material</option>
+                                                    @foreach ($material as $item)
                                                         <option value="{{ $item->id }}"
                                                             {{ $data->material == $item->id ? 'selected' : '' }}>
                                                             {{ $item->Package }}
                                                         </option>
-                                                        @endforeach
-                                                        {{-- <input type="text" name="material" value="{{ old('material') }}"
+                                                    @endforeach
+                                                    {{-- <input type="text" name="material" value="{{ old('material') }}"
                                                         id=""> --}}
-                                                </td>
-                                            </tr>
-                                            {{-- <tr>
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td>Pc Weight</td>
                                         <td>
                                             <input type="number" step="any" name="pc_weight"
                                                 value="{{ $data->pc_weight }}" id="">
                                             </td>
                                             </tr> --}}
-                                            {{-- <tr>
+                                        {{-- <tr>
                                         <td>Safety Stock</td>
                                         <td>
                                             <input type="number" step="any" name="safety_stock"
                                                 value="{{ $data->safety_stock }}" id="">
                                             </td>
                                             </tr> --}}
-                                            <tr>
-                                                <td>MOQ</td>
-                                                <td>
-                                                    <input type="text" step="any" name="moq"
-                                                        value="{{ number_format($data->moq) }}" oninput="formatAndPreventNegative(this)" id="">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Order Notes</td>
-                                                <td>
-                                                    <textarea name="order_notes" id="">{{ $data->order_notes }}</textarea>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>MOQ</td>
+                                            <td>
+                                                <input type="text" step="any" name="moq"
+                                                    value="{{ number_format($data->moq) }}"
+                                                    oninput="formatAndPreventNegative(this)" id="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Notes</td>
+                                            <td>
+                                                <textarea name="order_notes" id="">{{ $data->order_notes }}</textarea>
+                                            </td>
+                                        </tr>
 
-                                            <tr>
-                                                <td>Future Raw</td>
-                                                <td>
-                                                    <input type="number" name="future_raw" value="{{ $data->future_raw }}"
-                                                        id="">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Price</td>
-                                                <td>
-                                                    {{-- <input type="number" step="any" name="price" value="{{ $data->price }}" --}}
-                                                    {{-- id=""> --}}
+                                        <tr>
+                                            <td>Future Raw</td>
+                                            <td>
+                                                <input type="number" name="future_raw" value="{{ $data->future_raw }}"
+                                                    id="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td>
+                                                {{-- <input type="number" step="any" name="price" value="{{ $data->price }}" --}}
+                                                {{-- id=""> --}}
 
-                                                    <input type="text" step="any" name="price" id="price"
-                                                        value="{{ $data->price }}" oninput="decimalPlacesFour(this)">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Currency</td>
-                                                <td>
-                                                    <select class="form-select js-select21" name="currency"
-                                                        aria-label="Default select example">
-                                                        <option selected disabled>Select Currency</option>
-                                                        <option value="USD"
-                                                            {{ $data->currency == 'USD' ? 'selected' : '' }}>
-                                                            USD
-                                                        </option>
-                                                        <option value="CDN"
-                                                            {{ $data->currency == 'CDN' ? 'selected' : '' }}>
-                                                            CDN
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            {{-- <tr>
+                                                <input type="text" step="any" name="price" id="price"
+                                                    value="{{ $data->price }}" oninput="decimalPlacesFour(this)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Currency</td>
+                                            <td>
+                                                <select class="form-select js-select21" name="currency"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Select Currency</option>
+                                                    <option value="USD"
+                                                        {{ $data->currency == 'USD' ? 'selected' : '' }}>
+                                                        USD
+                                                    </option>
+                                                    <option value="CDN"
+                                                        {{ $data->currency == 'CDN' ? 'selected' : '' }}>
+                                                        CDN
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td>REV</td>
                                         <td>
                                             <input type="text" name="rev" id="rev"
                                                 value="{{ $data->rev }}">
                                             </td>
                                             </tr> --}}
-                                            {{-- <tr>
+                                        {{-- <tr>
                                         <td>Wt Req'd</td>
                                         <td>
                                             <input type="number" step="any" name="wet_reqd" id="wet_reqd" value="{{ $data->wet_reqd }}">
                                             </td>
                                             </tr> --}}
-                                            <tr>
-                                                <td>Safety Stock</td>
-                                                <td>
-                                                    <input type="text" name="safety" id="safety"
-                                                        value="{{ number_format($data->safety) }}" oninput="formatAndPreventNegative(this)">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Minship</td>
-                                                <td>
-                                                    <input type="text" name="min_ship" id="min_ship"
-                                                        value="{{ number_format($data->min_ship) }}" oninput="formatAndPreventNegative(this)">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>WT/PC</td>
-                                                <td>
-                                                    {{-- <input type="number" name="wt_pc" id="wt_pc" --}}
-                                                    {{-- value="{{ $data->wt_pc }}"> --}}
-                                                    <input type="text" step="any" name="wt_pc" id="wt_pc"
-                                                        value="{{ $data->wt_pc }}" oninput="decimalPlaces(this)">
-                                                </td>
-                                            </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="modal fade" id="partNumber" tabindex="-1" aria-labelledby="partNumberLabel">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="partNumberLabel">Add Part Number</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="partNumberForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="partNumberInput" class="form-label">Part Number</label>
-                        <input type="text" class="form-control" id="partNumberInput" placeholder="Enter part number" required>
+                                        <tr>
+                                            <td>Safety Stock</td>
+                                            <td>
+                                                <input type="text" name="safety" id="safety"
+                                                    value="{{ number_format($data->safety) }}"
+                                                    oninput="formatAndPreventNegative(this)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minship</td>
+                                            <td>
+                                                <input type="text" name="min_ship" id="min_ship"
+                                                    value="{{ number_format($data->min_ship) }}"
+                                                    oninput="formatAndPreventNegative(this)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>WT/PC</td>
+                                            <td>
+                                                {{-- <input type="number" name="wt_pc" id="wt_pc" --}}
+                                                {{-- value="{{ $data->wt_pc }}"> --}}
+                                                <input type="text" step="any" name="wt_pc" id="wt_pc"
+                                                    value="{{ $data->wt_pc }}" oninput="decimalPlaces(this)">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Part Number</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="customerModalLabel">Add Customer</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="customerForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="customerInput" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control" id="customerInput" placeholder="Enter customer name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Customer</button>
-                </div>
-            </form>
         </div>
-    </div>
-</div>
+    </section>
 
-<div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="departmentModalLabel">Add Department</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="departmentForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="departmentInput" class="form-label">Department Name</label>
-                        <input type="text" class="form-control" id="departmentInput" placeholder="Enter department name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Department</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="materialModalLabel">Add Material</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="materialForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="materialInput" class="form-label">Package</label>
-                        <input type="text" class="form-control" id="materialInput" placeholder="Enter package name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Material</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@for ($i = 1; $i <= 7; $i++)
-    <div class="modal fade" id="workCenterModal{{ $i }}" tabindex="-1" aria-labelledby="workCenterModalLabel{{ $i }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="workCenterModalLabel{{ $i }}">Add Work Center for Work Centre {{ $i }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form class="workCenterForm" data-select-id="work_centre_{{ $i }}">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="workCenterInput{{ $i }}" class="form-label">Work Center Name</label>
-                        <input type="text" class="form-control" id="workCenterInput{{ $i }}" placeholder="Enter work center name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Work Center</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
-    @endfor
-
-    @for ($i = 1; $i <= 4; $i++)
-        <div class="modal fade" id="outsideProcessingModal{{ $i }}" tabindex="-1" aria-labelledby="outsideProcessingModalLabel{{ $i }}" aria-hidden="true">
+    <div class="modal fade" id="partNumber" tabindex="-1" aria-labelledby="partNumberLabel">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="outsideProcessingModalLabel{{ $i }}">Add Vendor</h5>
+                    <h5 class="modal-title" id="partNumberLabel">Add Part Number</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form class="outsideProcessingForm" data-select-id="outside_processing_{{ $i }}">
+                <form id="partNumberForm">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="outsideProcessingInput{{ $i }}" class="form-label">Vendor Name</label>
-                            <input type="text" class="form-control" id="outsideProcessingInput{{ $i }}" placeholder="Enter outside processing name" required>
+                            <label for="partNumberInput" class="form-label">Part Number</label>
+                            <input type="text" class="form-control" id="partNumberInput"
+                                placeholder="Enter part number" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Part Number</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerModalLabel">Add Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="customerForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="customerInput" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control" id="customerInput"
+                                placeholder="Enter customer name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Customer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="departmentModalLabel">Add Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="departmentForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="departmentInput" class="form-label">Department Name</label>
+                            <input type="text" class="form-control" id="departmentInput"
+                                placeholder="Enter department name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Department</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="materialModalLabel">Add Material</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="materialForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="materialInput" class="form-label">Package</label>
+                            <input type="text" class="form-control" id="materialInput"
+                                placeholder="Enter package name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Material</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="workCenterModal" tabindex="-1" aria-labelledby="workCenterModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="workCenterModalLabel">Add Work Center</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="workCenterForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="workCenterInput" class="form-label">Work Center Name</label>
+                            <input type="text" class="form-control" id="workCenterInput"
+                                placeholder="Enter work center name" required>
+                            <input type="hidden" id="workCenterId">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Work Center</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="outsideProcessingModal" tabindex="-1" aria-labelledby="outsideProcessingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="outsideProcessingModalLabel">Add Vendor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="outsideProcessingForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="outsideProcessingInput" class="form-label">Vendor Name</label>
+                            <input type="text" class="form-control" id="outsideProcessingInput"
+                                placeholder="Enter outside processing name" required>
+                            <input type="hidden" id="outsideProcessingId">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -583,336 +615,341 @@
                 </form>
             </div>
         </div>
-        </div>
-        @endfor
-        @endsection
+    </div>
+@endsection
 
-        @section('js')
-        <script>
-            $(document).ready(function() {
-                $('#partNumberForm').submit(function(event) {
-                    event.preventDefault();
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    const partNumberInput = $('#partNumberInput').val();
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('#partNumberForm').submit(function(event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const partNumberInput = $('#partNumberInput').val();
 
-                    // AJAX request
-                    $.ajax({
-                        url: '{{ route("add.part.number") }}',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            part_number: partNumberInput
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                // Add the new part number to the table
-                                const selectDropdown = $('#part_number');
-                                const newOption = `<option value="${response.part_number.id}">${response.part_number.part_number}</option>`;
-                                selectDropdown.append(newOption);
+                // AJAX request
+                $.ajax({
+                    url: '{{ route('add.part.number') }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        part_number: partNumberInput
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Add the new part number to the table
+                            const selectDropdown = $('#part_number');
+                            const newOption =
+                                `<option value="${response.part_number.id}">${response.part_number.part_number}</option>`;
+                            selectDropdown.append(newOption);
 
-                                // Reset the form and close the modal
-                                $('#partNumberForm')[0].reset();
-                                $('#partNumber').modal('hide');
+                            // Reset the form and close the modal
+                            $('#partNumberForm')[0].reset();
+                            $('#partNumber').modal('hide');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Part Number Added',
-                                    text: response.message,
-                                });
-
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Part Number Failed',
-                                    text: response.message,
-                                });
-                            }
-                        },
-                        error: function(xhr) {
                             Swal.fire({
-                                icon: 'error',
+                                icon: 'success',
+                                title: 'Part Number Added',
+                                text: response.message,
+                            });
+
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
                                 title: 'Part Number Failed',
-                                text: 'An error occurred while adding the part number.',
+                                text: response.message,
                             });
                         }
-                    });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Part Number Failed',
+                            text: 'An error occurred while adding the part number.',
+                        });
+                    }
                 });
+            });
 
-                $('#customerForm').submit(function(event) {
-                    event.preventDefault();
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    const customerInput = $('#customerInput').val();
+            $('#customerForm').submit(function(event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const customerInput = $('#customerInput').val();
 
-                    // AJAX request
-                    $.ajax({
-                        url: '{{ route("add.customer") }}',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            customer_name: customerInput
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                // Add the new customer to the dropdown
-                                const selectDropdown = $('#customer_id');
-                                const newOption = `<option value="${response.customer.id}">${response.customer.CustomerName}</option>`;
-                                selectDropdown.append(newOption);
+                // AJAX request
+                $.ajax({
+                    url: '{{ route('add.customer') }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        customer_name: customerInput
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Add the new customer to the dropdown
+                            const selectDropdown = $('#customer_id');
+                            const newOption =
+                                `<option value="${response.customer.id}">${response.customer.CustomerName}</option>`;
+                            selectDropdown.append(newOption);
 
-                                // Reset the form and close the modal
-                                $('#customerForm')[0].reset();
-                                $('#customerModal').modal('hide');
+                            // Reset the form and close the modal
+                            $('#customerForm')[0].reset();
+                            $('#customerModal').modal('hide');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Customer Added',
-                                    text: response.message,
-                                });
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Customer Added',
+                                text: response.message,
+                            });
 
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Add Customer Failed',
-                                    text: response.message,
-                                });
-                            }
-                        },
-                        error: function(xhr) {
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Add Customer Failed',
-                                text: 'An error occurred while adding the customer.',
+                                text: response.message,
                             });
                         }
-                    });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Customer Failed',
+                            text: 'An error occurred while adding the customer.',
+                        });
+                    }
                 });
+            });
 
-                $('#departmentForm').submit(function(event) {
-                    event.preventDefault();
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    const departmentInput = $('#departmentInput').val();
+            $('#departmentForm').submit(function(event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const departmentInput = $('#departmentInput').val();
 
-                    // AJAX request
-                    $.ajax({
-                        url: '{{ route("add.department") }}',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            name: departmentInput
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                // Add the new department to the dropdown
-                                const selectDropdown = $('#department_id');
-                                const newOption = `<option value="${response.department.id}">${response.department.name}</option>`;
-                                selectDropdown.append(newOption);
+                // AJAX request
+                $.ajax({
+                    url: '{{ route('add.department') }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        name: departmentInput
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Add the new department to the dropdown
+                            const selectDropdown = $('#department_id');
+                            const newOption =
+                                `<option value="${response.department.id}">${response.department.name}</option>`;
+                            selectDropdown.append(newOption);
 
-                                // Reset the form and close the modal
-                                $('#departmentForm')[0].reset();
-                                $('#departmentModal').modal('hide');
+                            // Reset the form and close the modal
+                            $('#departmentForm')[0].reset();
+                            $('#departmentModal').modal('hide');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Department Added',
-                                    text: response.message,
-                                });
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Department Added',
+                                text: response.message,
+                            });
 
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Add Department Failed',
-                                    text: response.message,
-                                });
-                            }
-                        },
-                        error: function(xhr) {
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Add Department Failed',
-                                text: 'An error occurred while adding the department.',
+                                text: response.message,
                             });
                         }
-                    });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Department Failed',
+                            text: 'An error occurred while adding the department.',
+                        });
+                    }
                 });
+            });
 
-                $('#materialForm').submit(function(event) {
-                    event.preventDefault();
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    const materialInput = $('#materialInput').val();
+            $('#materialForm').submit(function(event) {
+                event.preventDefault();
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const materialInput = $('#materialInput').val();
 
-                    // AJAX request
-                    $.ajax({
-                        url: '{{ route("add.material") }}',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            package: materialInput
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                // Add the new material to the dropdown
-                                const selectDropdown = $('#material_id');
-                                const newOption = `<option value="${response.material.id}">${response.material.Package}</option>`;
-                                selectDropdown.append(newOption);
+                // AJAX request
+                $.ajax({
+                    url: '{{ route('add.material') }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        package: materialInput
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Add the new material to the dropdown
+                            const selectDropdown = $('#material_id');
+                            const newOption =
+                                `<option value="${response.material.id}">${response.material.Package}</option>`;
+                            selectDropdown.append(newOption);
 
-                                // Reset the form and close the modal
-                                $('#materialForm')[0].reset();
-                                $('#materialModal').modal('hide');
+                            // Reset the form and close the modal
+                            $('#materialForm')[0].reset();
+                            $('#materialModal').modal('hide');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Material Added',
-                                    text: response.message,
-                                });
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Material Added',
+                                text: response.message,
+                            });
 
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Add Material Failed',
-                                    text: response.message,
-                                });
-                            }
-                        },
-                        error: function(xhr) {
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Add Material Failed',
-                                text: 'An error occurred while adding the material.',
+                                text: response.message,
                             });
                         }
-                    });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Material Failed',
+                            text: 'An error occurred while adding the material.',
+                        });
+                    }
                 });
+            });
 
-                $('.workCenterForm').submit(function(event) {
-                    event.preventDefault();
+            $('.workCenterForm').submit(function(event) {
+                event.preventDefault();
 
-                    const form = $(this);
-                    const selectId = form.data('select-id');
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    const workCenterInput = form.find('input[type="text"]').val();
+                const form = $(this);
+                const selectId = form.data('select-id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const workCenterInput = form.find('input[type="text"]').val();
 
-                    // AJAX request
-                    $.ajax({
-                        url: '{{ route("add.work.center") }}',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            name: workCenterInput
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                // Add the new work center to the relevant dropdown
-                                const selectDropdown = $(`.work_centre_select`);
-                                const newOption = `<option value="${response.workCenter.id}">${response.workCenter.name}</option>`;
-                                selectDropdown.append(newOption);
+                // AJAX request
+                $.ajax({
+                    url: '{{ route('add.work.center') }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        name: workCenterInput
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Add the new work center to the relevant dropdown
+                            const selectDropdown = $(`.work_centre_select`);
+                            const newOption =
+                                `<option value="${response.workCenter.id}">${response.workCenter.name}</option>`;
+                            selectDropdown.append(newOption);
 
-                                // Reset the form and close the modal
-                                form[0].reset();
-                                form.closest('.modal').modal('hide');
+                            // Reset the form and close the modal
+                            form[0].reset();
+                            form.closest('.modal').modal('hide');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Work Center Added',
-                                    text: response.message,
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Add Work Center Failed',
-                                    text: response.message,
-                                });
-                            }
-                        },
-                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Work Center Added',
+                                text: response.message,
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Add Work Center Failed',
-                                text: 'An error occurred while adding the work center.',
+                                text: response.message,
                             });
                         }
-                    });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Work Center Failed',
+                            text: 'An error occurred while adding the work center.',
+                        });
+                    }
                 });
+            });
 
-                $('.outsideProcessingForm').submit(function(event) {
-                    event.preventDefault();
+            $('.outsideProcessingForm').submit(function(event) {
+                event.preventDefault();
 
-                    const form = $(this);
-                    const selectId = form.data('select-id');
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    const outsideProcessingInput = form.find('input[type="text"]').val();
+                const form = $(this);
+                const selectId = form.data('select-id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                const outsideProcessingInput = form.find('input[type="text"]').val();
 
-                    // AJAX request
-                    $.ajax({
-                        url: '{{ route("add.outside.processing") }}',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            name: outsideProcessingInput
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                // Add the new outside processing to the relevant dropdown
-                                const selectDropdown = $(`.outside_select`);
-                                const newOption = `<option value="${response.outsideProcessing.id}">${response.outsideProcessing.name}</option>`;
-                                selectDropdown.append(newOption);
+                // AJAX request
+                $.ajax({
+                    url: '{{ route('add.outside.processing') }}',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        name: outsideProcessingInput
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Add the new outside processing to the relevant dropdown
+                            const selectDropdown = $(`.outside_select`);
+                            const newOption =
+                                `<option value="${response.outsideProcessing.id}">${response.outsideProcessing.name}</option>`;
+                            selectDropdown.append(newOption);
 
-                                // Reset the form and close the modal
-                                form[0].reset();
-                                form.closest('.modal').modal('hide');
+                            // Reset the form and close the modal
+                            form[0].reset();
+                            form.closest('.modal').modal('hide');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Outside Processing Added',
-                                    text: response.message,
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Add Outside Processing Failed',
-                                    text: response.message,
-                                });
-                            }
-                        },
-                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Outside Processing Added',
+                                text: response.message,
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Add Outside Processing Failed',
-                                text: 'An error occurred while adding the outside processing.',
+                                text: response.message,
                             });
                         }
-                    });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Add Outside Processing Failed',
+                            text: 'An error occurred while adding the outside processing.',
+                        });
+                    }
                 });
             });
-        </script>
-        <script>
-            function decimalPlaces(element) {
-                let value = element.value;
-                value = value.replace(/[^0-9.]/g, '');
+        });
+    </script>
+    <script>
+        function decimalPlaces(element) {
+            let value = element.value;
+            value = value.replace(/[^0-9.]/g, '');
 
-                const parts = value.split('.');
-                if (parts.length > 2) {
-                    value = parts[0] + '.' + parts[1].slice(0, 3);
-                } else if (parts.length === 2 && parts[1].length > 3) {
-                    value = parts[0] + '.' + parts[1].slice(0, 3);
-                }
-
-                element.value = value;
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts[1].slice(0, 3);
+            } else if (parts.length === 2 && parts[1].length > 3) {
+                value = parts[0] + '.' + parts[1].slice(0, 3);
             }
 
-            function decimalPlacesFour(element) {
-                let value = element.value;
-                value = value.replace(/[^0-9.]/g, ''); // Remove non-numeric and non-period characters
+            element.value = value;
+        }
 
-                const parts = value.split('.');
-                if (parts.length > 2) {
-                    value = parts[0] + '.' + parts[1].slice(0, 4); // Limit to 4 decimal places
-                } else if (parts.length === 2 && parts[1].length > 4) {
-                    value = parts[0] + '.' + parts[1].slice(0, 4); // Limit to 4 decimal places
-                }
+        function decimalPlacesFour(element) {
+            let value = element.value;
+            value = value.replace(/[^0-9.]/g, ''); // Remove non-numeric and non-period characters
 
-                element.value = value;
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts[1].slice(0, 4); // Limit to 4 decimal places
+            } else if (parts.length === 2 && parts[1].length > 4) {
+                value = parts[0] + '.' + parts[1].slice(0, 4); // Limit to 4 decimal places
             }
-        </script>
-        @if ($errors->any())
+
+            element.value = value;
+        }
+    </script>
+    @if ($errors->any())
         <script>
             Swal.fire({
                 title: 'Validation Errors!',
@@ -927,5 +964,5 @@
                 confirmButtonText: 'OK'
             });
         </script>
-        @endif
-        @endsection
+    @endif
+@endsection

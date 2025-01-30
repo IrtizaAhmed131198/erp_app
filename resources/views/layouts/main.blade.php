@@ -45,7 +45,7 @@
                                         <img src="{{ asset('images/search-bar.png') }}" class="img-fluid"
                                             alt="">
                                     </button>
-                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                    <input class="form-control" type="search" id="search-input" placeholder="Search" aria-label="Search">
                                 </div>
                             </form>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -135,6 +135,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelector('form[role="search"]').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your custom search handling logic here
+        });
+    </script>
 
     @yield('js')
 

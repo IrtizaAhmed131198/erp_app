@@ -1121,9 +1121,9 @@ label.form-check.form-check-custom.form-check-solid.align-items-start {
 .weekly-section .table > :not(caption) > * > * button {
     position: absolute;
     z-index: 0;
-    right: 26px;
+    right: 23px;
     font-size: 10px;
-    top: 13px;
+    top: 6px;
     background: #719ff4;
 }
 

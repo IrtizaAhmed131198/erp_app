@@ -268,7 +268,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="parent-table">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover table-bordered" id="entries-table">
                             <thead>
                                 <tr class="colored-table-row">
                                     @if (Auth::user()->View_1 == 1)
@@ -284,30 +284,6 @@
                                             </th>
                                         @endforeach
                                     @endif
-                                    {{--                                    <th scope="col" id="column-department" class="toggleable toggle-header-department"> --}}
-                                    {{--                                        DEPARTMENT --}}
-                                    {{--                                        <span class="icon">▼</span> --}}
-                                    {{--                                    </th> --}}
-                                    {{--                                    <th scope="col" id="column-work-center" class="toggleable toggle-header-department toggle-header-work-center">WORK CENTER <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" id="column-status" class="toggleable toggle-header-department toggle-header-status">PLANNING (QUEUE) <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">STATUS <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">JOB # <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">LOT # <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">ID <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">PART NO. <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">CUSTOMER <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">REV <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable toggle-header-department">PROCESS <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
                                     @if (Auth::user()->View_2 == 1)
                                         <th scope="col" class="highlighted toggle-header-1">
                                             <span class="icon">▼
@@ -322,38 +298,6 @@
                                             </th>
                                         @endforeach
                                     @endif
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 1-6 WEEKS <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">REQ 7-12 WEEKS <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">SCHED'L TOTAL <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department">IN STOCK FINISHED <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY F <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> LIVE INVENTORY WIP --}}
-                                    {{--                                        <span class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN PROCESS OUT SIDE --}}
-                                    {{--                                        <span class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> ON ORDER RAW MAT'L --}}
-                                    {{--                                        <span class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> IN STOCK LIVE <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> WT/PC <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> MATERIAL (SORT) <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Wt Req'd 1-12 --}}
-                                    {{--                                        Weeks<span class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> SAFTY <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Min Ship <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Order Notes <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
-                                    {{--                                    <th scope="col" class="toggleable-1 toggle-header-department"> Part Notes <span --}}
-                                    {{--                                            class="icon">▼</span></th> --}}
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header-2">
                                             <span class="icon">▼
@@ -1035,6 +979,7 @@
             $('#filter1, #filter2').on('change', function() {
                 let department = $('#filter1').val();
                 let filter = $('#filter2').val();
+                let searchQuery = $('#search-input').val();
 
                 // Send AJAX request
                 $.ajax({
@@ -1042,7 +987,32 @@
                     type: 'GET',
                     data: {
                         department: department,
-                        filter: filter
+                        filter: filter,
+                        search: searchQuery
+                    },
+                    success: function(response) {
+                        // Replace table content with new data
+                        $('#entries-table-body').html(response.html);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            $('#search-input').on('keyup', function() {
+                let searchQuery = $(this).val();
+                let department = $('#filter1').val();
+                let filter = $('#filter2').val();
+
+                // Send AJAX request
+                $.ajax({
+                    url: '{{ route('index') }}',
+                    type: 'GET',
+                    data: {
+                        department: department,
+                        filter: filter,
+                        search: searchQuery
                     },
                     success: function(response) {
                         // Replace table content with new data
