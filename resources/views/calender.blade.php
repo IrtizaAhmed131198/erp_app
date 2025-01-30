@@ -653,6 +653,7 @@
             $('.btn[data-bs-toggle="collapse"]').prop('disabled', true);
 
             $('#partNumberSelect').on('change', function() {
+                $('.table-data').html('');
                 const selectedPartNumber = $(this).val(); // Get selected part number
                 console.log("Selected Part Number: ", selectedPartNumber);
 
