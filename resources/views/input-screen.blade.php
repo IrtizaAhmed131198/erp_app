@@ -281,6 +281,8 @@
 
         $(document).ready(function() {
             $('.submit-table-data').click(function() {
+                let $button = $(this);
+                $button.prop('disabled', true);
                 // e.preventDefault();
                 var dataId = $(this).data('id');
                 console.log(dataId);
@@ -290,7 +292,6 @@
                 if (dataId) {
                     let collapseId = dataId; // Assign directly if target is available
                     $('#'+collapseId+' tbody tr').each(function() {
-                        console.log(123);
                         let row = $(this);
                         let entry = {
                             status: row.find('select[name="status"]').val(),
@@ -326,14 +327,20 @@
                         },
                         error: function(xhr) {
                             console.error(xhr.responseText);
+                        },
+                        complete: function() {
+                            $button.prop('disabled', false);
                         }
                     });
                 } else {
                     console.error('No target specified for collapse.');
+                    $button.prop('disabled', false);
                 }
             });
 
             $('.submit-table-data-2').click(function() {
+                let $button = $(this);
+                $button.prop('disabled', true);
                 // e.preventDefault();
                 var dataId = $(this).data('id');
                 console.log(dataId);
@@ -377,10 +384,14 @@
                         },
                         error: function(xhr) {
                             console.error(xhr.responseText);
+                        },
+                        complete: function() {
+                            $button.prop('disabled', false);
                         }
                     });
                 } else {
                     console.error('No target specified for collapse.');
+                    $button.prop('disabled', false);
                 }
             });
         });

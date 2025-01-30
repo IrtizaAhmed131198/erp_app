@@ -779,6 +779,9 @@
             }
 
             $('.submit-production').on('click', function() {
+                let $button = $(this);
+                $button.prop('disabled', true);
+
                 const existingAmount = parseFloat($('#existing_amount').val().replace(/,/g, '')) || 0;
                 const addProduction = parseFloat($('#add_production').val().replace(/,/g, '')) || 0;
 
@@ -814,6 +817,9 @@
                             title: 'Update Failed',
                             text: 'An error occurred while updating the total. Please try again.',
                         });
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false);
                     }
                 });
             });
@@ -853,6 +859,9 @@
             // });
 
             $('#create-order').on('click', function() {
+                let $button = $(this);
+                $button.prop('disabled', true);
+
                 let weeksData = {};
                 let weeksDataEdit = {};
 
@@ -887,6 +896,7 @@
                         title: 'Shipment Order',
                         text: "Please fill in at least one week's data before submitting.",
                     });
+                    $button.prop('disabled', false);
                     return false;
                 }
 
@@ -938,6 +948,9 @@
                             title: 'Order Failed',
                             text: 'An error occurred while updating the order amount. Please try again.',
                         });
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false); // Re-enable button after AJAX completes
                     }
                 });
             });
@@ -1013,6 +1026,9 @@
             // });
 
             $(document).on('click', '#add-shipment', function() {
+                let $button = $(this);
+                $button.prop('disabled', true);
+
                 let partNumber = $('#part_no').val();
                 let shippedAmount = parseFloat($('.add-shipment-amount input').val());
                 if (isNaN(shippedAmount) || shippedAmount <= 0) {
@@ -1021,6 +1037,7 @@
                         title: 'Shipment Amount',
                         text: 'Please enter a valid shipment amount.',
                     });
+                    $button.prop('disabled', false);
                     return;
                 }
 
@@ -1066,6 +1083,7 @@
                             window.location.href = "{{ route('calender') }}" + "?part_number=" +
                                 encodeURIComponent(partNumber); // Change to your actual route
                         }
+                        $button.prop('disabled', false);
                     });
                 } else {
                     Swal.fire({
@@ -1102,6 +1120,9 @@
                         },
                         error: function(error) {
                             console.error('Error saving data:', error);
+                        },
+                        complete: function() {
+                            $button.prop('disabled', false);
                         }
                     });
                 }
@@ -1132,6 +1153,9 @@
 
 
             $('#change_past_due').on('click', function() {
+                let $button = $(this);
+                $button.prop('disabled', true);
+
                 let value = $('#order_past_due').val();
                 if (value == '' || value < 0) {
                     Swal.fire({
@@ -1139,6 +1163,7 @@
                         title: 'Past Due Change',
                         text: 'Please enter a valid past due value.',
                     });
+                    $button.prop('disabled', false);
                     return;
                 }
                 let partNumber = $('#part_no').val();
@@ -1174,6 +1199,9 @@
                     },
                     error: function(error) {
                         console.error('Error saving data:', error);
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false);
                     }
                 });
             });
