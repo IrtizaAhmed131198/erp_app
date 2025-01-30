@@ -1393,4 +1393,17 @@ class HomeController extends Controller
         }
     }
 
+    public function delete_entry($id)
+    {
+        $entry = Entries::find($id);
+
+        if (!$entry) {
+            return response()->json(['message' => 'Entry not found.'], 404);
+        }
+
+        $entry->delete();
+
+        return response()->json(['message' => 'Entry deleted successfully.']);
+    }
+
 }

@@ -156,6 +156,7 @@
         .custom-custom-picker select option:nth-child(04) {
             background: rgb(0, 128, 0);
         }
+
         .custom-custom-picker select option:nth-child(05) {
             background: rgb(255, 193, 7);
         }
@@ -274,6 +275,7 @@
                         <table class="table table-hover table-bordered" id="entries-table">
                             <thead>
                                 <tr class="colored-table-row">
+                                    <th style="display: none">Delete</th>
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
@@ -763,15 +765,15 @@
 
             //     // highlight_button_is_clicked = false;
             // });
-            $(document).ready(function () {
+            $(document).ready(function() {
                 // Change the button color when selecting a color
-                $('#highlight_color').on('change', function () {
+                $('#highlight_color').on('change', function() {
                     let selectedColor = $(this).val();
                     $('#btn_highlight_cell').css('background-color', selectedColor);
                 });
 
                 // Apply the selected color to the clicked cell
-                $('.toggleable-1, .toggleable, .toggleable-2').on('click', function (event) {
+                $('.toggleable-1, .toggleable, .toggleable-2').on('click', function(event) {
                     // if ($(event.target).is('.custom-dropdown-item')) {
                     //     window.open($(event.target).attr('href'), '_blank');
                     // }
@@ -792,7 +794,8 @@
                     }
 
                     function parseRgb(rgbStr) {
-                        var match = rgbStr.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
+                        var match = rgbStr.match(
+                            /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
                         return match ? {
                             r: parseInt(match[1], 10),
                             g: parseInt(match[2], 10),
@@ -1299,6 +1302,35 @@
                 once: true
             }); // Use `{ once: true }` to ensure the listener is removed after firing once
         }
+
+        $(document).on('click', '.delete-entry', function() {
+            let entryId = $(this).data('id');
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-entry') }}/"+entryId,
+                        type: 'GET',
+                        success: function(response) {
+                            Swal.fire("Deleted!", response.message, "success");
+                            location.reload();
+                        },
+                        error: function(xhr) {
+                            Swal.fire("Error!", "Something went wrong.", "error");
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
     </script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>

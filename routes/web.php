@@ -75,6 +75,8 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('part-number', [PartnumberController::class, "index"])->name('partsnumber.index');
     Route::get('part-number/{id}', [PartnumberController::class, "edit"])->name('partsnumber.edit');
 
+    Route::get('delete-entry/{id}', [HomeController::class, "delete_entry"])->name('delete_entry');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');

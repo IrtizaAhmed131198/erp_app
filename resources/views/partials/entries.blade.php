@@ -1,6 +1,7 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
     <tr id="entry_number_{{ $data->id }}">
+        <td style="display: none"><button type="button" class="btn btn-danger delete-entry" data-id="{{ $data->id }}"><i class="fa fa-trash"></i></button></td>
         @if (Auth::user()->View_1 == 1)
             <td class="vertical-text highlighted">
             </td>
