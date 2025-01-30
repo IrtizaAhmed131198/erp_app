@@ -19,6 +19,7 @@ use App\Models\Material;
 use App\Models\WorkCenterSelec;
 use App\Models\Vendor;
 use App\Models\ColumnPreferences;
+use App\Models\HighlightedCell;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -1340,6 +1341,54 @@ class HomeController extends Controller
                 'data' => [],
                 'message' => $e->getMessage(),
                 'errors' => []
+            ]);
+        }
+    }
+
+    public function highlight_cell_for_me(Request $request)
+    {
+        try {
+            $request->validate([
+                'identifier' => 'required'
+            ]);
+
+            if($request->color == 'rgb(255, 255, 255)') {
+                $record = HighlightedCell::where([
+                    'user_id' => auth()->id(),
+                    'identifier' => $request->identifier
+                ])->first();
+
+                if ($record) {
+                    $record->delete();
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [],
+                    'message' => 'Cell un-highlighted!',
+                    'errors' => [],
+                ]);
+            }
+
+
+            HighlightedCell::create([
+                'user_id' => auth()->id(),
+                'identifier' => $request->identifier,
+                'color' => $request->color,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Cell highlighted!',
+                'errors' => [],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => $e->getMessage(),
+                'errors' => [],
             ]);
         }
     }
