@@ -90,34 +90,28 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="data-show-toggle">
-                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <button class="btn btn-primary me-2" type="button" onclick="toggleDiv(1)">
                             Part Number
                         </button>
-                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <button class="btn btn-primary me-2" type="button" onclick="toggleDiv(2)">
                             Customers
                         </button>
-                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <button class="btn btn-primary me-2" type="button" onclick="toggleDiv(3)">
                             Department
                         </button>
-                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <button class="btn btn-primary me-2" type="button" onclick="toggleDiv(4)">
                             Work Centre
                         </button>
-                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <button class="btn btn-primary me-2" type="button" onclick="toggleDiv(5)">
                             Outside Processing
                         </button>
-                        <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        <button class="btn btn-primary me-2" type="button" onclick="toggleDiv(6)">
                             Material
                         </button>
                     </div>
                 </div>
                 <div class="accordion" id="mainAccordion">
-                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div id="div1" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
@@ -155,12 +149,12 @@
 
                                 </table>
                                 <div class="pagination-all">
-                                    {!! $parts->links() !!}
+                                    {{ $parts->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div id="div2" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
@@ -172,7 +166,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="entries-table-body">
-
                                         @foreach ($customer as $val)
                                             <tr>
                                                 <td>{{ $val->id }}</td>
@@ -199,12 +192,12 @@
 
                                 </table>
                                 <div class="pagination-all">
-                                    {!! $customer->links() !!}
+                                    {{ $customer->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div id="div3" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
@@ -242,7 +235,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div id="div4" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
@@ -279,12 +272,12 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-all">
-                                    {!! $work_center_selector->links() !!}
+                                    {{ $work_center_selector->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div id="div5" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
@@ -321,13 +314,12 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-all">
-                                    {!! $vendor->links() !!}
-
+                                    {{ $vendor->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div id="div6" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
@@ -364,7 +356,7 @@
                                     </tbody>
                                 </table>
                                 <div class="pagination-all">
-                                    {!! $package->links() !!}
+                                    {{ $package->links() }}
                                 </div>
                             </div>
                         </div>
@@ -408,27 +400,36 @@
                 $('#partNumber').show();
             })
         })
-    </script>
 
-    <script>
-        $(document).ready(function() {
 
-            $(document).on('click', '.pagination a', function(event) {
-                event.preventDefault();
-                var page = $(this).attr('href').split('page=')[1];
-                fetch_data(page);
-            });
+        document.addEventListener("DOMContentLoaded", function() {
+            let openDiv = localStorage.getItem("openDiv");
 
-            function fetch_data(page) {
-                $.ajax({
-                    url: "//pagination?page=" + page,
-                    success: function(satwork) {
-                        $('.table').html(satwork);
-                    }
-                });
+            if (openDiv) {
+                let selectedDiv = document.getElementById("div" + openDiv);
+                if (selectedDiv) {
+                    selectedDiv.classList.add("show"); // Bootstrap class to keep it open
+                }
             }
-
         });
+
+        function toggleDiv(num) {
+            let allDivs = document.querySelectorAll(".accordion-collapse");
+            let selectedDiv = document.getElementById("div" + num);
+            let openDiv = localStorage.getItem("openDiv");
+
+            if (openDiv == num) {
+                // Close same div if clicked again
+                selectedDiv.classList.remove("show");
+                localStorage.removeItem("openDiv");
+            } else {
+                // Close all other divs
+                allDivs.forEach(div => div.classList.remove("show"));
+
+                // Open new div
+                selectedDiv.classList.add("show");
+                localStorage.setItem("openDiv", num);
+            }
         }
     </script>
 @endsection
