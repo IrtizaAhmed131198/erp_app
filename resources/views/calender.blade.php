@@ -886,7 +886,7 @@
 
                 let partNumber = $('#part_no').val();
 
-                let futureRaw = $('.future_raw').val();
+                let futureRaw = $('.future_raw').val() ?? 0;
 
                 let allEmpty = Object.values(weeksData).every(value => value == '');
 

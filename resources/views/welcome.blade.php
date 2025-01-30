@@ -772,9 +772,9 @@
 
                 // Apply the selected color to the clicked cell
                 $('.toggleable-1, .toggleable, .toggleable-2').on('click', function (event) {
-                    if ($(event.target).is('.custom-dropdown-item')) {
-                        window.open($(event.target).attr('href'), '_blank');
-                    }
+                    // if ($(event.target).is('.custom-dropdown-item')) {
+                    //     window.open($(event.target).attr('href'), '_blank');
+                    // }
                     let color = $('#highlight_color').val();
 
                     // Functions to handle color conversions

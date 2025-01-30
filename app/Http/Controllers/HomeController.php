@@ -332,7 +332,7 @@ class HomeController extends Controller
             'moq' => 'nullable',
             'order_notes' => 'nullable|string',
             'part_notes' => 'nullable|string',
-            'future_raw' => 'nullable|string|max:255',
+            // 'future_raw' => 'nullable|string|max:255',
             'price' => 'nullable',
             'notes' => 'nullable|string',
             'rev' => 'nullable',
@@ -362,26 +362,26 @@ class HomeController extends Controller
 
             $work_centres = [
                 'work_centre_1' => $validatedData['work_centre_1'],
-                'work_centre_2' => $validatedData['work_centre_2'],
-                'work_centre_3' => $validatedData['work_centre_3'],
-                'work_centre_4' => $validatedData['work_centre_4'],
-                'work_centre_5' => $validatedData['work_centre_5'],
-                'work_centre_6' => $validatedData['work_centre_6'],
-                'work_centre_7' => $validatedData['work_centre_7'],
+                'work_centre_2' => $validatedData['work_centre_2'] ?? null,
+                'work_centre_3' => $validatedData['work_centre_3'] ?? null,
+                'work_centre_4' => $validatedData['work_centre_4'] ?? null,
+                'work_centre_5' => $validatedData['work_centre_5'] ?? null,
+                'work_centre_6' => $validatedData['work_centre_6'] ?? null,
+                'work_centre_7' => $validatedData['work_centre_7'] ?? null,
             ];
 
             $outside_processing = [
-                'outside_processing_1' => $validatedData['outside_processing_1'],
-                'outside_processing_2' => $validatedData['outside_processing_2'],
-                'outside_processing_3' => $validatedData['outside_processing_3'],
-                'outside_processing_4' => $validatedData['outside_processing_4'],
+                'outside_processing_1' => $validatedData['outside_processing_1'] ?? null,
+                'outside_processing_2' => $validatedData['outside_processing_2'] ?? null,
+                'outside_processing_3' => $validatedData['outside_processing_3'] ?? null,
+                'outside_processing_4' => $validatedData['outside_processing_4'] ?? null,
             ];
 
             $outside_processing_text = [
-                'outside_processing_text_1' => $validatedData['outside_processing_text_1'],
-                'outside_processing_text_2' => $validatedData['outside_processing_text_2'],
-                'outside_processing_text_3' => $validatedData['outside_processing_text_3'],
-                'outside_processing_text_4' => $validatedData['outside_processing_text_4'],
+                'outside_processing_text_1' => $validatedData['outside_processing_text_1'] ?? null,
+                'outside_processing_text_2' => $validatedData['outside_processing_text_2'] ?? null,
+                'outside_processing_text_3' => $validatedData['outside_processing_text_3'] ?? null,
+                'outside_processing_text_4' => $validatedData['outside_processing_text_4'] ?? null,
             ];
 
             // Get the entry ID
@@ -446,7 +446,7 @@ class HomeController extends Controller
             'moq' => 'nullable',
             'order_notes' => 'nullable|string',
             'part_notes' => 'nullable|string',
-            'future_raw' => 'nullable|string|max:255',
+            // 'future_raw' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
             'notes' => 'nullable|string',
             'rev' => 'nullable',
@@ -471,27 +471,27 @@ class HomeController extends Controller
 
             // Prepare work centers and outside processing data
             $work_centres = [
-                'work_centre_1' => $validatedData['work_centre_1'],
-                'work_centre_2' => $validatedData['work_centre_2'],
-                'work_centre_3' => $validatedData['work_centre_3'],
-                'work_centre_4' => $validatedData['work_centre_4'],
-                'work_centre_5' => $validatedData['work_centre_5'],
-                'work_centre_6' => $validatedData['work_centre_6'],
-                'work_centre_7' => $validatedData['work_centre_7'],
+                'work_centre_1' => $validatedData['work_centre_1'] ?? null,
+                'work_centre_2' => $validatedData['work_centre_2'] ?? null,
+                'work_centre_3' => $validatedData['work_centre_3'] ?? null,
+                'work_centre_4' => $validatedData['work_centre_4'] ?? null,
+                'work_centre_5' => $validatedData['work_centre_5'] ?? null,
+                'work_centre_6' => $validatedData['work_centre_6'] ?? null,
+                'work_centre_7' => $validatedData['work_centre_7'] ?? null,
             ];
 
             $outside_processing = [
-                'outside_processing_1' => $validatedData['outside_processing_1'],
-                'outside_processing_2' => $validatedData['outside_processing_2'],
-                'outside_processing_3' => $validatedData['outside_processing_3'],
-                'outside_processing_4' => $validatedData['outside_processing_4'],
+                'outside_processing_1' => $validatedData['outside_processing_1'] ?? null,
+                'outside_processing_2' => $validatedData['outside_processing_2'] ?? null,
+                'outside_processing_3' => $validatedData['outside_processing_3'] ?? null,
+                'outside_processing_4' => $validatedData['outside_processing_4'] ?? null,
             ];
 
             $outside_processing_text = [
-                'outside_processing_text_1' => $validatedData['outside_processing_text_1'],
-                'outside_processing_text_2' => $validatedData['outside_processing_text_2'],
-                'outside_processing_text_3' => $validatedData['outside_processing_text_3'],
-                'outside_processing_text_4' => $validatedData['outside_processing_text_4'],
+                'outside_processing_text_1' => $validatedData['outside_processing_text_1'] ?? null,
+                'outside_processing_text_2' => $validatedData['outside_processing_text_2'] ?? null,
+                'outside_processing_text_3' => $validatedData['outside_processing_text_3'] ?? null,
+                'outside_processing_text_4' => $validatedData['outside_processing_text_4'] ?? null,
             ];
 
             // Update work centers
