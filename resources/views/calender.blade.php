@@ -159,7 +159,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Existing order</th>
+                                                <th scope="col">In Stock</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -221,8 +221,8 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr class="">
-                                                <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Existing order</th>
+                                                <th scope="col">Month 5-12</th>
+                                                <th scope="col">In Stock</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>

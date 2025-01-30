@@ -1305,11 +1305,11 @@
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
-        var pusher = new Pusher('baad692bd96332553a6d', {
-            cluster: 'ap2'
+        var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+            cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
         });
 
-        var channel = pusher.subscribe('erp-app');
+        var channel = pusher.subscribe("{{ env('PUSHER_APP_CHANNEL') }}");
         channel.bind('StockUpdate', function(data) {
             const targetElement = document.getElementById(data.dataTarget);
 
