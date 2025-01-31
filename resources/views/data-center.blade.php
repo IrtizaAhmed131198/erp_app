@@ -157,7 +157,8 @@
                                         </tr>
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department
+                                                    <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                                 <td>Department</td>
                                             @endif
@@ -175,31 +176,35 @@
                                             </td>
                                         </tr>
                                         @for ($i = 1; $i <= 7; $i++)
-                                        <tr>
-                                            @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="{{ $i == 1 ? '#workCenterModal' : '' }}" data-work-id="{{ $i }}">
-                                                    Work Centre {{ $i }}
-                                                    @if ($i == 1) <!-- Show "Add new" only for the first row -->
-                                                        <span class="badge badge-sm bg-success bg-add-new">Add new</span>
-                                                    @endif
+                                            <tr>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="{{ $i == 1 ? '#workCenterModal' : '' }}"
+                                                        data-work-id="{{ $i }}">
+                                                        Work Centre {{ $i }}
+                                                        @if ($i == 1)
+                                                            <!-- Show "Add new" only for the first row -->
+                                                            <span class="badge badge-sm bg-success bg-add-new">Add
+                                                                new</span>
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>Work Centre {{ $i }}</td>
+                                                @endif
+                                                <td>
+                                                    <select class="js-select2 select2-hidden-accessible work_centre_select"
+                                                        name="work_centre_{{ $i }}"
+                                                        aria-label="Default select example">
+                                                        <option value="" selected>Select</option>
+                                                        @foreach ($work_center_select as $center)
+                                                            <option value="{{ $center['id'] }}"
+                                                                {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
+                                                                {{ $center['name'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </td>
-                                            @else
-                                                <td>Work Centre {{ $i }}</td>
-                                            @endif
-                                            <td>
-                                                <select class="js-select2 select2-hidden-accessible work_centre_select"
-                                                    name="work_centre_{{ $i }}"
-                                                    aria-label="Default select example">
-                                                    <option value="" selected>Select</option>
-                                                    @foreach ($work_center_select as $center)
-                                                        <option value="{{ $center['id'] }}"
-                                                            {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
-                                                            {{ $center['name'] }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endfor
                                         <tr>
                                             <td>Part Notes</td>
@@ -214,37 +219,41 @@
                                     </thead>
                                     <tbody>
                                         @for ($i = 1; $i <= 4; $i++)
-                                        <tr>
-                                            @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="{{ $i == 1 ? '#outsideProcessingModal' : '' }}" data-outside-id="{{ $i }}">
-                                                    Outside Processing {{ $i }}
-                                                    @if ($i == 1) <!-- Show "Add new" only for the first row -->
-                                                        <span class="badge badge-sm bg-success bg-add-new">Add new</span>
-                                                    @endif
+                                            <tr>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="{{ $i == 1 ? '#outsideProcessingModal' : '' }}"
+                                                        data-outside-id="{{ $i }}">
+                                                        Outside Processing {{ $i }}
+                                                        @if ($i == 1)
+                                                            <!-- Show "Add new" only for the first row -->
+                                                            <span class="badge badge-sm bg-success bg-add-new">Add
+                                                                new</span>
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>Outside Processing {{ $i }}</td>
+                                                @endif
+                                                <td>
+                                                    <div class="parent-inputs">
+                                                        <select class="js-select2 select2-hidden-accessible outside_select"
+                                                            name="outside_processing_{{ $i }}"
+                                                            aria-label="Default select example">
+                                                            <option value="" selected>Select</option>
+                                                            @foreach ($vendor as $v)
+                                                                <option value="{{ $v->id }}"
+                                                                    {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
+                                                                    {{ $v->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="text"
+                                                            name="outside_processing_text_{{ $i }}"
+                                                            value="{{ old('outside_processing_text_' . $i) }}"
+                                                            id="">
+                                                    </div>
                                                 </td>
-                                            @else
-                                                <td>Outside Processing {{ $i }}</td>
-                                            @endif
-                                            <td>
-                                                <div class="parent-inputs">
-                                                    <select class="js-select2 select2-hidden-accessible outside_select"
-                                                        name="outside_processing_{{ $i }}"
-                                                        aria-label="Default select example">
-                                                        <option value="" selected>Select</option>
-                                                        @foreach ($vendor as $v)
-                                                            <option value="{{ $v->id }}"
-                                                                {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
-                                                                {{ $v->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <input type="text"
-                                                        name="outside_processing_text_{{ $i }}"
-                                                        value="{{ old('outside_processing_text_' . $i) }}"
-                                                        id="">
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endfor
 
                                         <tr>
@@ -469,7 +478,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="workCenterModal" tabindex="-1" aria-labelledby="workCenterModalLabel" aria-hidden="true">
+    <div class="modal fade" id="workCenterModal" tabindex="-1" aria-labelledby="workCenterModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -480,7 +490,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="workCenterInput" class="form-label">Work Center Name</label>
-                            <input type="text" class="form-control" id="workCenterInput" placeholder="Enter work center name" required>
+                            <input type="text" class="form-control" id="workCenterInput"
+                                placeholder="Enter work center name" required>
                             <input type="hidden" id="workCenterId">
                         </div>
                     </div>
@@ -493,7 +504,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="outsideProcessingModal" tabindex="-1" aria-labelledby="outsideProcessingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="outsideProcessingModal" tabindex="-1" aria-labelledby="outsideProcessingModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -504,7 +516,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="outsideProcessingInput" class="form-label">Vendor Name</label>
-                            <input type="text" class="form-control" id="outsideProcessingInput" placeholder="Enter outside processing name" required>
+                            <input type="text" class="form-control" id="outsideProcessingInput"
+                                placeholder="Enter outside processing name" required>
                             <input type="hidden" id="outsideProcessingId">
                         </div>
                     </div>

@@ -102,7 +102,7 @@
                                    --}}
                                     <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number
                                             Input</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Parts Number</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a></li>
                                     <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                     </li>
                                 @else

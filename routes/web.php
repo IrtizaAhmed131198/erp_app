@@ -70,8 +70,14 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::post('add-work-center', [TableController::class, 'add_work_center'])->name('add.work.center');
     Route::post('add-outside-processing', [TableController::class, 'add_outside_processing'])->name('add.outside.processing');
 
-    Route::get('part-number', [PartnumberController::class, "index"])->name('partsnumber.index');
-    Route::get('part-number/{id}', [PartnumberController::class, "edit"])->name('partsnumber.edit');
+    Route::get('tables', [PartnumberController::class, "index"])->name('partsnumber.index');
+    Route::post('update/parts', [PartnumberController::class, "partupdate"])->name('partsnumber.update');
+    Route::post('update/customer', [PartnumberController::class, "customerupdate"])->name('customer.update');
+    Route::post('update/department', [PartnumberController::class, "departmentupdate"])->name('department.update');
+    Route::post('update/work', [PartnumberController::class, "workupdate"])->name('work.update');
+    Route::post('update/vendor', [PartnumberController::class, "vendorupdate"])->name('vendor.update');
+    Route::post('update/material', [PartnumberController::class, "materialupdate"])->name('material.update');
+
 
 });
 #login route
