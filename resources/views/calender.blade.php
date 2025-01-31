@@ -478,7 +478,7 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr class="">
-                                                <th scope="col">Weekly 1-18 weeks</th>
+                                                <th scope="col">Month 5-12</th>
                                                 <th scope="col">Existing</th>
                                                 {{-- <th scope="col">Change</th> --}}
                                             </tr>
