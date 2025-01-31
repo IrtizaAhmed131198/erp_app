@@ -887,19 +887,21 @@
 
                 let partNumber = $('#part_no').val();
 
+                let past_val = $('#order_past_due').val();
+
                 let futureRaw = $('.future_raw').val() ?? 0;
 
                 let allEmpty = Object.values(weeksData).every(value => value == '');
 
-                if (allEmpty) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Shipment Order',
-                        text: "Please fill in at least one week's data before submitting.",
-                    });
-                    $button.prop('disabled', false);
-                    return false;
-                }
+                // if (allEmpty) {
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Shipment Order',
+                //         text: "Please fill in at least one week's data before submitting.",
+                //     });
+                //     $button.prop('disabled', false);
+                //     return false;
+                // }
 
                 // Optionally, send updated data to the server via AJAX
                 $.ajax({
@@ -909,7 +911,8 @@
                         weeks: weeksData,
                         weeks_edit: weeksDataEdit,
                         part_number: partNumber,
-                        future_raw: futureRaw
+                        future_raw: futureRaw,
+                        past_val: past_val
                     },
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

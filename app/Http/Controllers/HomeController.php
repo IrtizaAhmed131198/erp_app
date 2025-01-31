@@ -917,12 +917,13 @@ class HomeController extends Controller
     public function create_order(Request $request)
     {
         $request->validate([
-            'weeks' => 'required|array',
+            'weeks' => 'nullable|array',
             'weeks.*' => 'nullable|string',
-            'weeks_edit' => 'required|array',
+            'weeks_edit' => 'nullable|array',
             'weeks_edit.*' => 'nullable|string',
             'part_number' => 'required',
-            'future_raw' => 'nullable'
+            'future_raw' => 'nullable',
+            'past_val' => 'nullable'
         ]);
 
         $data = Weeks::where('user_id', Auth::user()->id)
@@ -954,6 +955,7 @@ class HomeController extends Controller
             }
         }
 
+        $data->past_due = $request->past_val;
         $data->save();
 
         $part = Entries::where('user_id', Auth::user()->id)
