@@ -54,6 +54,16 @@
             justify-content: center;
             padding: 0 15px;
         }
+
+        .select2-selection__arrow {
+            background-image: none !important;
+            display: none !important;
+        }
+
+        .select2.select2-container {
+            width: 60% !important;
+            margin-top: 18px !important;
+        }
     </style>
 @endsection
 
@@ -140,12 +150,7 @@
                                                             data-bs-target="#partNumber" class="btn btn-success opendata"
                                                             data-column="{{ $val->Part_Number }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                        <form action="#" method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-danger"
-                                                                disabled>Delete</a>
-                                                        </form>
+                                                        <button type="button" class="btn btn-danger" id="delete-part" data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1407,6 +1412,147 @@
                 localStorage.setItem("openDiv", num);
             }
         }
+
+        $(document).on('click', '#delete-part', function() {
+            let partId = $(this).data('id'); // Get the selected part ID
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-part') }}/" + partId,
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The part has been deleted.',
+                            }).then(() => {
+                                location.reload(); // Refresh page
+                            });
+                        },
+                        error: function(xhr) {
+                            let errorMessage = xhr.responseJSON?.error || 'Something went wrong!';
+
+                            if (xhr.status === 400 && xhr.responseJSON.parts) {
+                                // Show a dropdown with available parts for replacement
+                                let partOptions = xhr.responseJSON.parts.map(part =>
+                                    `<option value="${part.id}">${part.Part_Number}</option>`
+                                ).join('');
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Cannot Delete!',
+                                    html: `
+                                        <p>${errorMessage}</p>
+                                        <label for="replacement-part">Select a replacement part:</label>
+                                        <select id="replacement-part" class="swal2-select js-select2-custom">
+                                            <option value="">--Select a Part--</option>
+                                            ${partOptions}
+                                        </select>
+                                    `,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Replace & Delete',
+                                    cancelButtonText: 'Cancel',
+                                    showDenyButton: true,
+                                    denyButtonText: 'Delete Completely',
+                                    didOpen: () => {
+                                        // Initialize Select2 after modal is opened
+                                        $('.js-select2-custom').select2({
+                                            dropdownParent: $('.swal2-popup'),
+                                            width: '100%',
+                                            placeholder: "Select a Part",
+                                            allowClear: true
+                                        });
+                                    },
+                                    preConfirm: () => {
+                                        let selectedPart = document.getElementById('replacement-part').value;
+                                        if (!selectedPart) {
+                                            Swal.showValidationMessage('Please select a replacement part!');
+                                        }
+                                        return selectedPart;
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        let newPartId = result.value;
+                                        $.ajax({
+                                            url: "{{ url('replace-part') }}",
+                                            method: 'POST',
+                                            headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                                            data: { old_part_id: partId, new_part_id: newPartId },
+                                            success: function(response) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Updated!',
+                                                    text: 'Entries updated, and the part has been deleted.',
+                                                }).then(() => {
+                                                    location.reload(); // Refresh page
+                                                });
+                                            },
+                                            error: function(error) {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error!',
+                                                    text: 'Failed to update entries.',
+                                                });
+                                            }
+                                        });
+                                    } else if (result.isDenied) {
+                                        Swal.fire({
+                                            title: 'Are you sure?',
+                                            text: "This will permanently delete the part and may cause data inconsistencies!",
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Yes, delete it!',
+                                            cancelButtonText: 'Cancel',
+                                            confirmButtonColor: '#d33',
+                                        }).then((confirmDelete) => {
+                                            if (confirmDelete.isConfirmed) {
+                                                $.ajax({
+                                                    url: "{{ url('force-delete-part') }}/" + partId,
+                                                    method: 'DELETE',
+                                                    headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                                                    success: function(response) {
+                                                        Swal.fire({
+                                                            icon: 'success',
+                                                            title: 'Deleted!',
+                                                            text: 'The part has been deleted permanently.',
+                                                        }).then(() => {
+                                                            location.reload(); // Refresh page
+                                                        });
+                                                    },
+                                                    error: function(error) {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Error!',
+                                                            text: 'Failed to delete the part.',
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: errorMessage,
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
     {{-- pagination script --}}

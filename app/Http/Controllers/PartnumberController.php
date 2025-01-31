@@ -7,6 +7,8 @@ use App\Models\Vendor;
 use App\Models\Customer;
 use App\Models\Material;
 use App\Models\Department;
+use App\Models\Entries;
+use App\Models\Weeks;
 use Illuminate\Http\Request;
 use App\Models\WorkCenterSelec;
 use Illuminate\Support\Facades\DB;
@@ -252,5 +254,50 @@ class PartnumberController extends Controller
         ]);
     }
 
+    public function deletePart($id)
+    {
+        // Check if the part is used in another table
+        if (Entries::where('part_number', $id)->exists()) {
+            $availableParts = Parts::where('id', '!=', $id)->get(['id', 'Part_Number']); // Get all parts except the selected one
+            return response()->json([
+                'error' => 'This part is used in other records and cannot be deleted.',
+                'parts' => $availableParts
+            ], 400);
+        }
+
+        // Delete the part
+        Parts::destroy($id);
+        return response()->json(['success' => 'Part deleted successfully.']);
+    }
+
+    public function replacePart(Request $request)
+    {
+        $oldPartId = $request->old_part_id;
+        $newPartId = $request->new_part_id;
+
+        if (!$newPartId) {
+            return response()->json(['error' => 'Replacement part is required!'], 400);
+        }
+
+        Entries::where('part_number', $oldPartId)->update(['part_number' => $newPartId]);
+        Weeks::where('part_number', $oldPartId)->update(['part_number' => $newPartId]);
+        Parts::destroy($oldPartId);
+
+        return response()->json(['success' => 'Entries updated, and the part has been deleted.']);
+    }
+
+    // Force delete part even if used
+    public function forceDeletePart($id)
+    {
+        // Delete all entries that use this part number
+        Entries::where('part_number', $id)->delete();
+
+        // Delete all entries that use this weeks
+        Weeks::where('part_number', $id)->delete();
+
+        // Now delete the part itself
+        Parts::destroy($id);
+        return response()->json(['success' => 'Part deleted permanently.']);
+    }
 
 }

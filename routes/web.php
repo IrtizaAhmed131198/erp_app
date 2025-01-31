@@ -79,6 +79,9 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::post('update/work', [PartnumberController::class, "workupdate"])->name('work.update');
     Route::post('update/vendor', [PartnumberController::class, "vendorupdate"])->name('vendor.update');
     Route::post('update/material', [PartnumberController::class, "materialupdate"])->name('material.update');
+    Route::delete('delete-part/{id}', [PartnumberController::class, 'deletePart'])->name('partsnumber.delete');
+    Route::post('replace-part', [PartnumberController::class, 'replacePart'])->name('partsnumber.replace');
+    Route::delete('force-delete-part/{id}', [PartnumberController::class, 'forceDeletePart'])->name('partsnumber.force');
 
 
     Route::get('delete-entry/{id}', [HomeController::class, "delete_entry"])->name('delete_entry');
