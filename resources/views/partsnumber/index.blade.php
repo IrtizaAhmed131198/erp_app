@@ -453,7 +453,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="hidebtn1">Update Part</button>
+                        <button type="submit" class="btn btn-primary" id="hidebtn1">Update Customer</button>
                     </div>
                 </form>
             </div>
@@ -503,7 +503,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="hidebtn3">Update Department</button>
+                        <button type="submit" class="btn btn-primary" id="hidebtn3">Update Work Center</button>
                     </div>
                 </form>
             </div>
