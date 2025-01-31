@@ -142,23 +142,27 @@
         }
 
         .custom-custom-picker select option:nth-child(01) {
-            background: #ffc107;
+            background: rgb(255, 255, 255);
         }
 
         .custom-custom-picker select option:nth-child(02) {
-            background: red;
+            background: rgb(255, 0, 0);
         }
 
         .custom-custom-picker select option:nth-child(03) {
-            background: #5252ff;
+            background: rgb(82, 82, 255);
         }
 
         .custom-custom-picker select option:nth-child(04) {
-            background: green;
+            background: rgb(0, 128, 0);
+        }
+
+        .custom-custom-picker select option:nth-child(05) {
+            background: rgb(255, 193, 7);
         }
 
         #btn_highlight_cell {
-            background-color: #ffc107;
+            background-color: rgb(255, 255, 255);
         }
     </style>
 @endsection
@@ -216,11 +220,11 @@
                                 <i class="fas fa-highlighter"></i>
                             </button>
                             <select id="highlight_color" class="form-control">
-                                <option value="#ffc107" selected></option>
-                                <option value="#dc3545"></option>
-                                <option value="#007bff"></option>
-                                <option value="#28a745"></option>
-                                <option value="#fff"></option>
+                                <option value="rgb(255, 255, 255)" selected></option>
+                                <option value="rgb(255, 0, 0)"></option>
+                                <option value="rgb(82, 82, 255)"></option>
+                                <option value="rgb(0, 128, 0)"></option>
+                                <option value="rgb(255, 193, 7)"></option>
                             </select>
                         </div>
 
@@ -271,6 +275,7 @@
                         <table class="table table-hover table-bordered" id="entries-table">
                             <thead>
                                 <tr class="colored-table-row">
+                                    <th style="display: none">Delete</th>
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
@@ -703,66 +708,131 @@
                     highlighted_cell_identifier]);
             }
 
-            $('#highlight_color').on('change', function() {
-                // Get selected color
-                let selectedColor = $(this).val();
+            // $('#highlight_color').on('change', function() {
+            //     // Get selected color
+            //     let selectedColor = $(this).val();
 
-                highlight_button_is_clicked = !(highlight_button_is_clicked);
+            //     highlight_button_is_clicked = !(highlight_button_is_clicked);
 
-                // Change background color of the dropdown
-                $('#btn_highlight_cell').css('background-color', selectedColor);
-            });
-
-            // $('#btn_highlight_cell').on('click', function() {
-            //     highlight_button_is_clicked = true;
+            //     // Change background color of the dropdown
+            //     $('#btn_highlight_cell').css('background-color', selectedColor);
             // });
 
-            $('.toggleable-1, .toggleable, .toggleable-2').on('click', function(event) {
-                if ($(event.target).is('.custom-dropdown-item')) {
-                    window.open($(event.target).attr('href'), '_blank');
-                }
+            // $('.toggleable-1, .toggleable, .toggleable-2').on('click', function(event) {
+            //     if ($(event.target).is('.custom-dropdown-item')) {
+            //         window.open($(event.target).attr('href'), '_blank');
+            //     }
 
-                if (!highlight_button_is_clicked) {
-                    return false;
-                }
+            //     if (!highlight_button_is_clicked) {
+            //         return false;
+            //     }
 
-                if ($(this).css('background-color') !== 'rgba(0, 0, 0, 0)') {
-                    $(this).css('background-color', 'rgba(0, 0, 0, 0)');
+            //     if ($(this).css('background-color') !== 'rgba(0, 0, 0, 0)') {
+            //         $(this).css('background-color', 'rgba(0, 0, 0, 0)');
 
+            //         $.ajax({
+            //             url: '',
+            //             method: 'POST',
+            //             data: {
+            //                 _token: '{{ csrf_token() }}',
+            //                 identifier: $(this).attr('id'),
+            //             },
+            //             success: (data) => {
+            //                 console.log('un highlighted!');
+            //             }
+            //         });
+
+            //         // highlight_button_is_clicked = false;
+            //         return false;
+            //     }
+
+            //     // Get selected color
+            //     let color = $('#highlight_color').val();
+            //     $(this).css('background-color', color);
+
+            //     $.ajax({
+            //         url: '{{ route('highlight_cell_for_me') }}',
+            //         method: 'POST',
+            //         data: {
+            //             _token: '{{ csrf_token() }}',
+            //             identifier: $(this).attr('id'),
+            //             color: color
+            //         },
+            //         success: (data) => {
+            //             console.log('highlighted!');
+            //         }
+            //     });
+
+            //     // highlight_button_is_clicked = false;
+            // });
+            $(document).ready(function() {
+                // Change the button color when selecting a color
+                $('#highlight_color').on('change', function() {
+                    let selectedColor = $(this).val();
+                    $('#btn_highlight_cell').css('background-color', selectedColor);
+                });
+
+                // Apply the selected color to the clicked cell
+                $('.toggleable-1, .toggleable, .toggleable-2').on('click', function(event) {
+                    // if ($(event.target).is('.custom-dropdown-item')) {
+                    //     window.open($(event.target).attr('href'), '_blank');
+                    // }
+                    let color = $('#highlight_color').val();
+
+                    // Functions to handle color conversions
+                    function hexToRgb(hex) {
+                        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+                        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+                            return r + r + g + g + b + b;
+                        });
+                        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                        return result ? {
+                            r: parseInt(result[1], 16),
+                            g: parseInt(result[2], 16),
+                            b: parseInt(result[3], 16)
+                        } : null;
+                    }
+
+                    function parseRgb(rgbStr) {
+                        var match = rgbStr.match(
+                            /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
+                        return match ? {
+                            r: parseInt(match[1], 10),
+                            g: parseInt(match[2], 10),
+                            b: parseInt(match[3], 10)
+                        } : null;
+                    }
+
+                    // Get current background and selected color in RGB format
+                    let bgColor = $(this).css('background-color');
+                    let selectedRgb = hexToRgb(color);
+                    let bgRgb = parseRgb(bgColor);
+
+                    // Check if colors match (RGB comparison)
+                    if (selectedRgb && bgRgb &&
+                        selectedRgb.r === bgRgb.r &&
+                        selectedRgb.g === bgRgb.g &&
+                        selectedRgb.b === bgRgb.b) {
+                        return; // Colors match, do nothing
+                    }
+
+                    // Apply the new color
+                    $(this).css('background-color', color);
+
+                    // Send the color update request
                     $.ajax({
-                        url: '{{ route('un_highlight_cell_for_me') }}',
+                        url: '{{ route('highlight_cell_for_me') }}',
                         method: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
                             identifier: $(this).attr('id'),
+                            color: color
                         },
                         success: (data) => {
-                            console.log('un highlighted!');
+                            console.log('Color updated!');
                         }
                     });
-
-                    // highlight_button_is_clicked = false;
-                    return false;
-                }
-
-                // Get selected color
-                let color = $('#highlight_color').val();
-                $(this).css('background-color', color);
-
-                $.ajax({
-                    url: '{{ route('highlight_cell_for_me') }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        identifier: $(this).attr('id'),
-                        color: color
-                    },
-                    success: (data) => {
-                        console.log('highlighted!');
-                    }
                 });
-
-                // highlight_button_is_clicked = false;
             });
 
         });
@@ -1232,17 +1302,46 @@
                 once: true
             }); // Use `{ once: true }` to ensure the listener is removed after firing once
         }
+
+        $(document).on('click', '.delete-entry', function() {
+            let entryId = $(this).data('id');
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-entry') }}/"+entryId,
+                        type: 'GET',
+                        success: function(response) {
+                            Swal.fire("Deleted!", response.message, "success");
+                            location.reload();
+                        },
+                        error: function(xhr) {
+                            Swal.fire("Error!", "Something went wrong.", "error");
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
     </script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
-        var pusher = new Pusher('baad692bd96332553a6d', {
-            cluster: 'ap2'
+        var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+            cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
         });
 
-        var channel = pusher.subscribe('erp-app');
+        var channel = pusher.subscribe("{{ env('PUSHER_APP_CHANNEL') }}");
         channel.bind('StockUpdate', function(data) {
             const targetElement = document.getElementById(data.dataTarget);
 

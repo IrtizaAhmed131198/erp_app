@@ -61,6 +61,8 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('update-production-total-not/{id}', [HomeController::class, 'update_production_total_not'])->name('update_production_total_not');
     Route::get('add-shipment-not/{id}', [HomeController::class, 'add_shipment_not'])->name('add_shipment_not');
 
+    Route::post('highlight-cell-for-me', [HomeController::class, 'highlight_cell_for_me'])->name('highlight_cell_for_me');
+
     Route::post('signin', [LoginController::class, 'signin'])->name('signin');
 
     Route::post('add-part-number', [TableController::class, 'add_part_number'])->name('add.part.number');
@@ -79,6 +81,8 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::post('update/material', [PartnumberController::class, "materialupdate"])->name('material.update');
 
 
+    Route::get('delete-entry/{id}', [HomeController::class, "delete_entry"])->name('delete_entry');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');
@@ -88,61 +92,61 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('addimg', [LoginController::class, 'addimg'])->name('addimg');
 
-Route::post('highlight-cell-for-me', function (\Illuminate\Http\Request $request) {
-    try {
-        $request->validate([
-            'identifier' => 'required'
-        ]);
+// Route::post('highlight-cell-for-me', function (\Illuminate\Http\Request $request) {
+//     try {
+//         $request->validate([
+//             'identifier' => 'required'
+//         ]);
 
-        \App\Models\HighlightedCell::create([
-            'user_id' => auth()->id(),
-            'identifier' => $request->identifier,
-            'color' => $request->color ?? '#ffc107',
-        ]);
+//         \App\Models\HighlightedCell::create([
+//             'user_id' => auth()->id(),
+//             'identifier' => $request->identifier,
+//             'color' => $request->color ?? '#ffc107',
+//         ]);
 
-        return response()->json([
-            'success' => true,
-            'data' => [],
-            'message' => 'Cell highlighted!',
-            'errors' => [],
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'data' => [],
-            'message' => $e->getMessage(),
-            'errors' => [],
-        ]);
-    }
-})->name('highlight_cell_for_me');
+//         return response()->json([
+//             'success' => true,
+//             'data' => [],
+//             'message' => 'Cell highlighted!',
+//             'errors' => [],
+//         ]);
+//     } catch (\Exception $e) {
+//         return response()->json([
+//             'success' => false,
+//             'data' => [],
+//             'message' => $e->getMessage(),
+//             'errors' => [],
+//         ]);
+//     }
+// })->name('highlight_cell_for_me');
 
-Route::post('un-highlight-cell-for-me', function (\Illuminate\Http\Request $request) {
-    try {
-        $request->validate([
-            'identifier' => 'required'
-        ]);
+// Route::post('un-highlight-cell-for-me', function (\Illuminate\Http\Request $request) {
+//     try {
+//         $request->validate([
+//             'identifier' => 'required'
+//         ]);
 
-        $record = \App\Models\HighlightedCell::where([
-            'user_id' => auth()->id(),
-            'identifier' => $request->identifier
-        ])->first();
+//         $record = \App\Models\HighlightedCell::where([
+//             'user_id' => auth()->id(),
+//             'identifier' => $request->identifier
+//         ])->first();
 
-        if ($record) {
-            $record->delete();
-        }
+//         if ($record) {
+//             $record->delete();
+//         }
 
-        return response()->json([
-            'success' => true,
-            'data' => [],
-            'message' => 'Cell un-highlighted!',
-            'errors' => [],
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'data' => [],
-            'message' => $e->getMessage(),
-            'errors' => [],
-        ]);
-    }
-})->name('un_highlight_cell_for_me');
+//         return response()->json([
+//             'success' => true,
+//             'data' => [],
+//             'message' => 'Cell un-highlighted!',
+//             'errors' => [],
+//         ]);
+//     } catch (\Exception $e) {
+//         return response()->json([
+//             'success' => false,
+//             'data' => [],
+//             'message' => $e->getMessage(),
+//             'errors' => [],
+//         ]);
+//     }
+// })->name('un_highlight_cell_for_me');

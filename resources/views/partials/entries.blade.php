@@ -1,6 +1,7 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
     <tr id="entry_number_{{ $data->id }}">
+        <td style="display: none"><button type="button" class="btn btn-danger delete-entry" data-id="{{ $data->id }}"><i class="fa fa-trash"></i></button></td>
         @if (Auth::user()->View_1 == 1)
             <td class="vertical-text highlighted">
             </td>
@@ -180,7 +181,7 @@
                                 <input type="text" name="rev" id="rev" class="data-w"
                                     value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('revision', this.value, event)"
-                                    onmouseover="showTextAbove(this)">
+                                    onmouseover="showTextAbove(this)" readonly>
                             </td>
                         @else
                             <td class="toggleable" id="{{ $data_target }}">{{ $data->revision }}</td>
@@ -194,7 +195,7 @@
                                 <input type="text" name="process" id="process" class="data-w"
                                     value="{{ $data->process ?? '' }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('process', this.value, event)"
-                                    onmouseover="showTextAbove(this)">
+                                    onmouseover="showTextAbove(this)" readonly>
                             </td>
                         @else
                             <td class="toggleable" id="{{ $data_target }}">{{ $data->process }}</td>
@@ -378,7 +379,7 @@
                                 <input type="text" step="any" name="wt_pc" id="wt_pc"
                                     value="{{ number_format($data->wt_pc, 3, '.', ',') }}"
                                     data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)"
-                                    onkeyup="sendAjaxRequest('wt_pc', this.value, event)">
+                                    onkeyup="sendAjaxRequest('wt_pc', this.value, event)" readonly>
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -390,7 +391,7 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                <select name="material" id="material" data-id="{{ $data->id }}"
+                                {{-- <select name="material" id="material" data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('material', this.value, event)">
                                     <option value="" disabled>Select</option>
                                     @foreach ($materials as $item)
@@ -399,7 +400,8 @@
                                             {{ $item->Package }}
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> --}}
+                                {{ $data->get_material->Package }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">{{ $data->get_material->Package }}
@@ -518,9 +520,9 @@
                 @endphp
                 <td class="toggleable-2" id="{{ $data_target }}">
                     <input type="text" step="any" name="future_raw" id="future_raw"
-                        value="{{ number_format($data->future_raw) }}" data-id="{{ $data->id }}"
+                        value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}" data-id="{{ $data->id }}"
                         onkeyup="sendAjaxRequest('future_raw', this.value, event)"
-                        oninput="formatAndPreventNegative(this)">
+                        oninput="formatAndPreventNegative(this)" readonly>
                 </td>
 
                 @php
@@ -530,7 +532,7 @@
                     <input type="text" step="any" name="price" id="price"
                         value="{{ number_format($data->price) }}" data-id="{{ $data->id }}"
                         onkeyup="sendAjaxRequest('price', this.value, event)"
-                        oninput="formatAndPreventNegative(this)">
+                        oninput="formatAndPreventNegative(this)" readonly>
                 </td>
 
                 @php

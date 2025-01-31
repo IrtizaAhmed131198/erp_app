@@ -19,6 +19,7 @@ use App\Models\Material;
 use App\Models\WorkCenterSelec;
 use App\Models\Vendor;
 use App\Models\ColumnPreferences;
+use App\Models\HighlightedCell;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -331,7 +332,7 @@ class HomeController extends Controller
             'moq' => 'nullable',
             'order_notes' => 'nullable|string',
             'part_notes' => 'nullable|string',
-            'future_raw' => 'nullable|string|max:255',
+            // 'future_raw' => 'nullable|string|max:255',
             'price' => 'nullable',
             'notes' => 'nullable|string',
             'rev' => 'nullable',
@@ -361,26 +362,26 @@ class HomeController extends Controller
 
             $work_centres = [
                 'work_centre_1' => $validatedData['work_centre_1'],
-                'work_centre_2' => $validatedData['work_centre_2'],
-                'work_centre_3' => $validatedData['work_centre_3'],
-                'work_centre_4' => $validatedData['work_centre_4'],
-                'work_centre_5' => $validatedData['work_centre_5'],
-                'work_centre_6' => $validatedData['work_centre_6'],
-                'work_centre_7' => $validatedData['work_centre_7'],
+                'work_centre_2' => $validatedData['work_centre_2'] ?? null,
+                'work_centre_3' => $validatedData['work_centre_3'] ?? null,
+                'work_centre_4' => $validatedData['work_centre_4'] ?? null,
+                'work_centre_5' => $validatedData['work_centre_5'] ?? null,
+                'work_centre_6' => $validatedData['work_centre_6'] ?? null,
+                'work_centre_7' => $validatedData['work_centre_7'] ?? null,
             ];
 
             $outside_processing = [
-                'outside_processing_1' => $validatedData['outside_processing_1'],
-                'outside_processing_2' => $validatedData['outside_processing_2'],
-                'outside_processing_3' => $validatedData['outside_processing_3'],
-                'outside_processing_4' => $validatedData['outside_processing_4'],
+                'outside_processing_1' => $validatedData['outside_processing_1'] ?? null,
+                'outside_processing_2' => $validatedData['outside_processing_2'] ?? null,
+                'outside_processing_3' => $validatedData['outside_processing_3'] ?? null,
+                'outside_processing_4' => $validatedData['outside_processing_4'] ?? null,
             ];
 
             $outside_processing_text = [
-                'outside_processing_text_1' => $validatedData['outside_processing_text_1'],
-                'outside_processing_text_2' => $validatedData['outside_processing_text_2'],
-                'outside_processing_text_3' => $validatedData['outside_processing_text_3'],
-                'outside_processing_text_4' => $validatedData['outside_processing_text_4'],
+                'outside_processing_text_1' => $validatedData['outside_processing_text_1'] ?? null,
+                'outside_processing_text_2' => $validatedData['outside_processing_text_2'] ?? null,
+                'outside_processing_text_3' => $validatedData['outside_processing_text_3'] ?? null,
+                'outside_processing_text_4' => $validatedData['outside_processing_text_4'] ?? null,
             ];
 
             // Get the entry ID
@@ -445,7 +446,7 @@ class HomeController extends Controller
             'moq' => 'nullable',
             'order_notes' => 'nullable|string',
             'part_notes' => 'nullable|string',
-            'future_raw' => 'nullable|string|max:255',
+            // 'future_raw' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
             'notes' => 'nullable|string',
             'rev' => 'nullable',
@@ -470,27 +471,27 @@ class HomeController extends Controller
 
             // Prepare work centers and outside processing data
             $work_centres = [
-                'work_centre_1' => $validatedData['work_centre_1'],
-                'work_centre_2' => $validatedData['work_centre_2'],
-                'work_centre_3' => $validatedData['work_centre_3'],
-                'work_centre_4' => $validatedData['work_centre_4'],
-                'work_centre_5' => $validatedData['work_centre_5'],
-                'work_centre_6' => $validatedData['work_centre_6'],
-                'work_centre_7' => $validatedData['work_centre_7'],
+                'work_centre_1' => $validatedData['work_centre_1'] ?? null,
+                'work_centre_2' => $validatedData['work_centre_2'] ?? null,
+                'work_centre_3' => $validatedData['work_centre_3'] ?? null,
+                'work_centre_4' => $validatedData['work_centre_4'] ?? null,
+                'work_centre_5' => $validatedData['work_centre_5'] ?? null,
+                'work_centre_6' => $validatedData['work_centre_6'] ?? null,
+                'work_centre_7' => $validatedData['work_centre_7'] ?? null,
             ];
 
             $outside_processing = [
-                'outside_processing_1' => $validatedData['outside_processing_1'],
-                'outside_processing_2' => $validatedData['outside_processing_2'],
-                'outside_processing_3' => $validatedData['outside_processing_3'],
-                'outside_processing_4' => $validatedData['outside_processing_4'],
+                'outside_processing_1' => $validatedData['outside_processing_1'] ?? null,
+                'outside_processing_2' => $validatedData['outside_processing_2'] ?? null,
+                'outside_processing_3' => $validatedData['outside_processing_3'] ?? null,
+                'outside_processing_4' => $validatedData['outside_processing_4'] ?? null,
             ];
 
             $outside_processing_text = [
-                'outside_processing_text_1' => $validatedData['outside_processing_text_1'],
-                'outside_processing_text_2' => $validatedData['outside_processing_text_2'],
-                'outside_processing_text_3' => $validatedData['outside_processing_text_3'],
-                'outside_processing_text_4' => $validatedData['outside_processing_text_4'],
+                'outside_processing_text_1' => $validatedData['outside_processing_text_1'] ?? null,
+                'outside_processing_text_2' => $validatedData['outside_processing_text_2'] ?? null,
+                'outside_processing_text_3' => $validatedData['outside_processing_text_3'] ?? null,
+                'outside_processing_text_4' => $validatedData['outside_processing_text_4'] ?? null,
             ];
 
             // Update work centers
@@ -1342,6 +1343,67 @@ class HomeController extends Controller
                 'errors' => []
             ]);
         }
+    }
+
+    public function highlight_cell_for_me(Request $request)
+    {
+        try {
+            $request->validate([
+                'identifier' => 'required'
+            ]);
+
+            if($request->color == 'rgb(255, 255, 255)') {
+                $record = HighlightedCell::where([
+                    'user_id' => auth()->id(),
+                    'identifier' => $request->identifier
+                ])->first();
+
+                if ($record) {
+                    $record->delete();
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [],
+                    'message' => 'Cell un-highlighted!',
+                    'errors' => [],
+                ]);
+            }
+
+
+            HighlightedCell::create([
+                'user_id' => auth()->id(),
+                'identifier' => $request->identifier,
+                'color' => $request->color,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Cell highlighted!',
+                'errors' => [],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => $e->getMessage(),
+                'errors' => [],
+            ]);
+        }
+    }
+
+    public function delete_entry($id)
+    {
+        $entry = Entries::find($id);
+
+        if (!$entry) {
+            return response()->json(['message' => 'Entry not found.'], 404);
+        }
+
+        $entry->delete();
+
+        return response()->json(['message' => 'Entry deleted successfully.']);
     }
 
 }

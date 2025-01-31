@@ -159,7 +159,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Existing order</th>
+                                                <th scope="col">In Stock</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -221,8 +221,8 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr class="">
-                                                <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">Existing order</th>
+                                                <th scope="col">Month 5-12</th>
+                                                <th scope="col">In Stock</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -653,6 +653,7 @@
             $('.btn[data-bs-toggle="collapse"]').prop('disabled', true);
 
             $('#partNumberSelect').on('change', function() {
+                $('.table-data').html('');
                 const selectedPartNumber = $(this).val(); // Get selected part number
                 console.log("Selected Part Number: ", selectedPartNumber);
 
@@ -886,7 +887,7 @@
 
                 let partNumber = $('#part_no').val();
 
-                let futureRaw = $('.future_raw').val();
+                let futureRaw = $('.future_raw').val() ?? 0;
 
                 let allEmpty = Object.values(weeksData).every(value => value == '');
 

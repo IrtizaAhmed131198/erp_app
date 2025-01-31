@@ -214,7 +214,7 @@
                                                 ->toArray();
                                         @endphp
 
-                                        @for ($i = 1; $i <= 7; $i++)
+                                        @for ($i = 1; $i <= 1; $i++)
                                             @php
                                                 $work_centre_id = 'work_centre_' . $i;
                                                 $selected_value = null;
@@ -286,7 +286,7 @@
                                     <thead>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 1; $i <= 4; $i++)
+                                        @for ($i = 1; $i <= 1; $i++)
                                             @php
                                                 $outside_processing_id = 'outside_processing_' . $i;
                                                 $selected_value = null;
@@ -387,13 +387,13 @@
                                             </td>
                                         </tr>
 
-                                        <tr>
+                                        {{-- <tr>
                                             <td>Future Raw</td>
                                             <td>
                                                 <input type="number" name="future_raw" value="{{ $data->future_raw }}"
                                                     id="">
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             <td>Price</td>
                                             <td>

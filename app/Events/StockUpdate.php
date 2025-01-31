@@ -28,7 +28,7 @@ class StockUpdate implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new Channel('erp-app');
-        return ['erp-app'];
+        return [env('PUSHER_APP_CHANNEL')];
     }
 
     public function broadcastAs()

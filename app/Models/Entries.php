@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Entries extends Model
 {
@@ -52,6 +53,19 @@ class Entries extends Model
         'currency',
         'last_updated_by'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($entry) {
+            DB::table('notifications')->where('reference_id', $entry->id)->delete();
+            // Delete related records
+            $entry->work_center()->delete();
+            $entry->out_source()->delete();
+            $entry->weeks_months()->delete();
+        });
+    }
 
     public function part()
     {
