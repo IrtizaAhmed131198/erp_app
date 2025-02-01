@@ -123,7 +123,7 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_id';
                         @endphp
-                        <td class="toggleable" id="{{ $data_target }}">ID# {{ $data->id }}</td>
+                        <td class="toggleable" id="{{ $data_target }}">{{ $data->ids ?? '' }}</td>
                     @elseif($region_1_column_configuration_item->column == 'part_number')
                         @php
                             $data_target = 'entries_' . $data->id . '_part_number';
@@ -458,19 +458,20 @@
                                     onkeyup="sendAjaxRequest('order_notes', this.value, event)">{{ $data->order_notes }}</textarea>
                             </td>
                         @else
-                            <td class="toggleable-1" id="{{ $data_target }}">{{ $data->order_notes }}</td>
+                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">{{ $data->order_notes }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'part_notes')
                         @php
                             $data_target = 'entries_' . $data->id . '_part_notes';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable-1" id="{{ $data_target }}">
-                                <textarea name="part_notes" id="part_notes" class="simple-textarea" value="{{ $data->part_notes }}"
-                                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('part_notes', this.value, event)">{{ $data->part_notes }}</textarea>
+                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">
+                                {{-- <textarea name="part_notes" id="part_notes" class="simple-textarea" value="{{ $data->part_notes }}"
+                                    data-id="{{ $data->id }}" onkeyup="sendAjaxRequest('part_notes', this.value, event)">{{ $data->part_notes }}</textarea> --}}
+                                {{ $data->part_notes }}
                             </td>
                         @else
-                            <td class="toggleable-1" id="{{ $data_target }}">{{ $data->part_notes }}</td>
+                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">{{ $data->part_notes }}</td>
                         @endif
                     @endif
                 @endif
@@ -556,7 +557,7 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_notes';
                 @endphp
-                <td class="toggleable-2" id="{{ $data_target }}">{{ $data->notes }}</td>
+                <td class="toggleable-2 custom-textarea" id="{{ $data_target }}">{{ $data->notes }}</td>
             @endif
         @endif
     </tr>

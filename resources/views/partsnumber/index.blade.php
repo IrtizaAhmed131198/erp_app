@@ -290,12 +290,8 @@
                                                             class="btn btn-success opendata3"
                                                             data-column="{{ $val->name }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                            <form action="#" method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    disabled>Delete</a>
-                                                            </form>
+                                                        <button type="button" class="btn btn-danger" id="delete-work"
+                                                            data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1412,6 +1408,44 @@
                 localStorage.setItem("openDiv", num);
             }
         }
+
+        $(document).on('click', '#delete-work', function() {
+            let id = $(this).data('id'); // Get the selected part ID
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-work') }}/" + id,
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The work center has been deleted.',
+                            }).then(() => {
+                                location.reload(); // Refresh page
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong while deleting the work center.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
 
         $(document).on('click', '#delete-part', function() {
             let partId = $(this).data('id'); // Get the selected part ID

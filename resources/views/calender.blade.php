@@ -159,7 +159,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Weekly 1-18 weeks</th>
-                                                <th scope="col">In Stock</th>
+                                                <th scope="col">Existing Amount</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -222,7 +222,7 @@
                                         <thead>
                                             <tr class="">
                                                 <th scope="col">Month 5-12</th>
-                                                <th scope="col">In Stock</th>
+                                                <th scope="col">Existing Amount</th>
                                                 <th scope="col">Update</th>
                                             </tr>
                                         </thead>
@@ -268,9 +268,24 @@
                                                 </td>
                                                 <td>
                                                     <input type='text' class='show_future_raw' disabled>
-                                                <td>
+                                                </td>
+                                                </td>
                                                     <input type="text" name="future_raw" class="future_raw"
                                                         oninput="formatNumberWithCommas(this)">
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class='weekdays-parent'>
+                                                        <span>Total Shipment</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="total_shipment" class="total_shipment" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type='text' class='' disabled>
                                                 </td>
                                             </tr>
 
@@ -512,6 +527,19 @@
                                                         strtotime('+31 days', strtotime($month5StartDate)),
                                                     );
                                                 @endphp
+                                                <tr>
+                                                    <td>
+                                                        <div class='weekdays-parent'>
+                                                            <span>Total Shipment</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="total_shipment" class="total_shipment" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input type='text' class='' disabled>
+                                                    </td>
+                                                </tr>
                                             @endfor
 
                                         </tbody>
@@ -633,6 +661,13 @@
                                         true);
                                     $(`#${key}`).val(formattedValue).prop('readonly', true);
                                 }
+
+                                let sum = Object.keys(data)
+                                    .filter(key => !key.includes('_date') && key !== 'past_due') // Exclude date keys and past_due
+                                    .reduce((total, key) => total + Number(data[key]), 0); // Sum the numeric values
+
+                                console.log("Total Sum:", sum);
+                                $('.total_shipment').val(sum);
                             },
                             error: function(xhr) {
                                 console.error("Error updating shipment: ", xhr
@@ -658,6 +693,8 @@
                 console.log("Selected Part Number: ", selectedPartNumber);
 
                 $('#part_no').val(selectedPartNumber);
+                $('#add_production').val(``);
+                $('#new_total').val(``);
 
                 $('.accordion-collapse').collapse('hide');
 
@@ -943,6 +980,21 @@
                                 $(`#${key}`).val(formattedValue).prop('readonly', true);
                                 $(`.show_future_raw`).val(response.future_raw);
                             }
+
+                            let sum = Object.keys(data)
+                                .filter(key =>
+                                    !key.includes('_date') &&
+                                    key !== 'past_due' &&
+                                    key !== 'id' &&
+                                    key !== 'user_id' &&
+                                    key !== 'part_number' &&
+                                    key !== 'created_at' &&
+                                    key !== 'updated_at'
+                                ) // Exclude unwanted keys
+                                .reduce((total, key) => total + Number(data[key] || 0), 0); // Sum the numeric values
+
+                            console.log("Total Sum:", sum);
+                            $(`.total_shipment`).val(sum);
                         }
                     },
                     error: function(xhr) {

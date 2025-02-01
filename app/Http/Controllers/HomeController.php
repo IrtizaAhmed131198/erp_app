@@ -308,7 +308,7 @@ class HomeController extends Controller
             'part_number' => 'required|unique:entries,part_number',
             'customer' => 'required',
             'revision' => 'required|string|max:255',
-            // 'ids' => 'required|string|max:255',
+            'ids' => 'nullable|string|max:255',
             'process' => 'nullable|string|max:255',
             'department' => 'nullable',
             'work_centre_1' => 'required',
@@ -423,6 +423,7 @@ class HomeController extends Controller
             'part_number' => 'required|unique:entries,part_number,' . $id,
             'customer' => 'required',
             'revision' => 'required|string|max:255',
+            'ids' => 'nullable|string|max:255',
             'process' => 'nullable|string|max:255',
             'department' => 'nullable',
             'work_centre_1' => 'required',
@@ -948,7 +949,7 @@ class HomeController extends Controller
                 continue;
             }
 
-            $data->$key = (float) str_replace(',', '', $value);
+            $data->$key = str_replace(',', '', $value);
 
             if ($isNewEntry) {
                 $data->{$key . '_date'} = $temp[$key];
@@ -1110,7 +1111,7 @@ class HomeController extends Controller
             }
         }
 
-        $array_1['month_12'] = null;
+        // $array_1['month_12'] = null;
 
         foreach ($array_1 as $key => $val) {
             $data->{$key} = $array_1[$key];

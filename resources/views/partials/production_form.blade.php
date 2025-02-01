@@ -7,7 +7,7 @@
     <table class="table table-hover remove-width add-production-table">
         <thead>
             <tr class="">
-                <th scope="col">Existing Amount</th>
+                <th scope="col">In Stock</th>
                 <td> <input type="text" name="existing_amount" id="existing_amount"
                         readonly oninput="formatNumberWithCommas(this)"></td>
 

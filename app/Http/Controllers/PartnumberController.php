@@ -19,14 +19,12 @@ class PartnumberController extends Controller
     public function index()
     {
 
-        $parts = DB::table('parts')->paginate(10);
-        $customer = DB::table('customers')->paginate(10);
-        $department = DB::table('department')->get();
-        $work_center_selector = DB::table('work_center_selector')->paginate(10);
-        $vendor = DB::table('vendor')->paginate(10);
-        $package = DB::table('package')->paginate(10);
-
-
+        $parts = Parts::paginate(10);
+        $customer = Customer::paginate(10);
+        $department = Department::get();
+        $work_center_selector = WorkCenterSelec::paginate(10);
+        $vendor = Vendor::paginate(10);
+        $package = Material::paginate(10);
         // dd($parts);
         return view('partsnumber.index', compact('parts', 'customer', 'department', 'work_center_selector', 'vendor', 'package'));
     }
@@ -298,6 +296,13 @@ class PartnumberController extends Controller
         // Now delete the part itself
         Parts::destroy($id);
         return response()->json(['success' => 'Part deleted permanently.']);
+    }
+
+    public function deleteWork($id)
+    {
+        // Delete the work
+        WorkCenterSelec::destroy($id);
+        return response()->json(['success' => 'Work center deleted successfully.']);
     }
 
 }

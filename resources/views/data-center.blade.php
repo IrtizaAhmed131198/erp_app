@@ -142,12 +142,12 @@
                                                     oninput="this.value = this.value.toUpperCase();" id="">
                                             </td>
                                         </tr>
-                                        {{-- <tr>
-                                        <td>ID</td>
-                                        <td>
-                                            <input type="text" name="ids" value="{{ old('ids') }}" id="">
-                                        </td>
-                                    </tr> --}}
+                                        <tr>
+                                            <td>ID</td>
+                                            <td>
+                                                <input type="text" name="ids" value="{{ old('ids') }}" id="">
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td>Process</td>
                                             <td>

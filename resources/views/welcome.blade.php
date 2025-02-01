@@ -1331,6 +1331,19 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+            $("textarea, .custom-textarea").on("dblclick", function() {
+                let currentValue = $(this).val().trim() || $(this).text().trim(); // Get the current textarea value
+
+                Swal.fire({
+                    title: "Order Notes",
+                    text: currentValue || "No notes available.",
+                    icon: "info",
+                    confirmButtonText: "OK"
+                });
+            });
+        });
     </script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
