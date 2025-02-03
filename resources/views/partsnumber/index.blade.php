@@ -64,6 +64,18 @@
             width: 60% !important;
             margin-top: 18px !important;
         }
+
+        .custom-btn-restore {
+            display: flex;
+            align-items: start;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .deletedRecordWork li,
+        .deletedRecordOut li {
+            margin-bottom: 9px;
+        }
     </style>
 @endsection
 
@@ -262,10 +274,17 @@
                     <div id="div4" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
-                                <div class="top-btn">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#formpartshow3">Add
-                                        Work</button>
+                                <div class="top-btn custom-btn-restore">
+                                    <div>
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formpartshow3">
+                                            Add Work
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#restoreModal1">
+                                            Restore Deleted Rec
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -307,10 +326,17 @@
                     <div id="div5" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
-                                <div class="top-btn">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#formpartshow4">Add
-                                        Vendor</button>
+                                <div class="top-btn custom-btn-restore">
+                                        <div>
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formpartshow4">
+                                                Add Vendor
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#restoreModal2">
+                                                Restore Deleted Rec
+                                            </button>
+                                        </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -335,12 +361,8 @@
                                                             class="btn btn-success opendata4"
                                                             data-column="{{ $val->name }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                            <form action="#" method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    disabled>Delete</a>
-                                                            </form>
+                                                        <button type="button" class="btn btn-danger" id="delete-out"
+                                                            data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -663,6 +685,20 @@
             </div>
         </div>
     </div>
+    <!-- Restore Modal -->
+    <div class="modal fade" id="restoreModal1" tabindex="-1" aria-labelledby="restoreModal1Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Deleted Records</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="deletedRecordWork"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal fade" id="formpartshow4" tabindex="-1" aria-labelledby="formpartshowLabel">
@@ -685,6 +721,21 @@
                         <button type="submit" class="btn btn-primary" id="hidebtn4">Add Vendor</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Modal -->
+    <div class="modal fade" id="restoreModal2" tabindex="-1" aria-labelledby="restoreModal2Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Deleted Records</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="deletedRecordOut"></ul>
+                </div>
             </div>
         </div>
     </div>
@@ -722,6 +773,114 @@
     {{-- add data ajax --}}
 
     <script>
+
+        $(document).ready(function () {
+            $('#restoreModal1').on('show.bs.modal', function () {
+                $.ajax({
+                    url: '{{ route('deleted_records_work') }}', // Correct route name
+                    type: 'GET',
+                    success: function(response) {
+                        let data = response;
+                        let list = $('.deletedRecordWork');
+                        list.empty();
+                        if (data.length === 0) {
+                            list.append('<li>No records found.</li>');
+                        } else {
+                            data.forEach(function (record) {
+                                list.append(`
+                                    <li>
+                                        ${record.name}
+                                        <button class="btn btn-sm btn-success restore-btn-work" data-id="${record.id}">Restore</button>
+                                    </li>
+                                `);
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetch records: ", xhr.responseText);
+                    }
+                });
+            });
+
+            $(document).on('click', '.restore-btn-work', function () {
+                let id = $(this).data('id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('restore/work') }}/"+ id,
+                    type: 'POST',
+                    data: {
+                        _token: token
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Restored',
+                            text: 'Data Restored Successfully',
+                        }).then(() => {
+                            location.reload(); // Refresh page
+                        });
+                        $('#restoreModal1').modal('hide');
+                    },
+                    error: function () {
+                        alert('Failed to restore the record.');
+                    }
+                });
+            });
+
+            $('#restoreModal2').on('show.bs.modal', function () {
+                $.ajax({
+                    url: '{{ route('deleted_records_out') }}', // Correct route name
+                    type: 'GET',
+                    success: function(response) {
+                        let data = response;
+                        let list = $('.deletedRecordOut');
+                        list.empty();
+                        if (data.length === 0) {
+                            list.append('<li>No records found.</li>');
+                        } else {
+                            data.forEach(function (record) {
+                                list.append(`
+                                    <li>
+                                        ${record.name}
+                                        <button class="btn btn-sm btn-success restore-btn-out" data-id="${record.id}">Restore</button>
+                                    </li>
+                                `);
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetch records: ", xhr.responseText);
+                    }
+                });
+            });
+
+            $(document).on('click', '.restore-btn-out', function () {
+                let id = $(this).data('id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('restore/out') }}/"+ id,
+                    type: 'POST',
+                    data: {
+                        _token: token
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Restored',
+                            text: 'Data Restored Successfully',
+                        }).then(() => {
+                            location.reload(); // Refresh page
+                        });
+                        $('#restoreModal2').modal('hide');
+                    },
+                    error: function () {
+                        alert('Failed to restore the record.');
+                    }
+                });
+            });
+        });
+
+
         $('#partshowform').submit(function(event) {
             event.preventDefault();
 
@@ -1431,6 +1590,44 @@
                                 icon: 'success',
                                 title: 'Deleted!',
                                 text: 'The work center has been deleted.',
+                            }).then(() => {
+                                location.reload(); // Refresh page
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong while deleting the work center.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#delete-out', function() {
+            let id = $(this).data('id'); // Get the selected part ID
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-out') }}/" + id,
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The outsource processing has been deleted.',
                             }).then(() => {
                                 location.reload(); // Refresh page
                             });

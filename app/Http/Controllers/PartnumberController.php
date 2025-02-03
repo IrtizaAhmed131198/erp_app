@@ -305,4 +305,41 @@ class PartnumberController extends Controller
         return response()->json(['success' => 'Work center deleted successfully.']);
     }
 
+    public function deleted_records_work()
+    {
+        $deletedRecords = WorkCenterSelec::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    // Restore a specific record
+    public function restore_work($id)
+    {
+        $record = WorkCenterSelec::onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return response()->json(['success' => 'Record restored successfully']);
+    }
+
+    public function deleteOut($id)
+    {
+        // Delete the work
+        Vendor::destroy($id);
+        return response()->json(['success' => 'Outsource processing successfully.']);
+    }
+
+    public function deleted_records_out()
+    {
+        $deletedRecords = Vendor::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    // Restore a specific record
+    public function restore_out($id)
+    {
+        $record = Vendor::onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return response()->json(['success' => 'Record restored successfully']);
+    }
+
 }
