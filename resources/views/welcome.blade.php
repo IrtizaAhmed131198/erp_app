@@ -242,17 +242,25 @@
             @php
                 $datesArray = [];
 
-                // Calculate the start date of week 16
+                // Calculate the start date of the current week (Monday)
                 $today = date('Y-m-d');
                 $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-                $mondayOfWeek = date('Y-m-d', strtotime('-' . $dayOfWeek . ' days', strtotime($today)));
+                $mondayOfWeek =
+                    $dayOfWeek == 0
+                        ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                        : date(
+                            'Y-m-d',
+                            strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today)),
+                        ); // Else, go back to Monday
+
+                // Calculate the start date of week 16
                 $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
                 // Calculate the end date of week 16
                 $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
 
                 // Calculate the start date of month 5 (the day after week 16 ends)
-                $month5StartDate = date('j-M', strtotime('+1 day', strtotime($week16EndDate)));
+                $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
 
                 //column configuration
                 $region_1_column_configuration_record = get_user_config('master_screen_region_1_column_configuration');
@@ -312,12 +320,12 @@
                                         <th scope="col" class="toggleable-2 toggle-header-department">PAST DUE <span
                                                 class="icon">▼</span></th>
                                         @for ($week = 1; $week <= 16; $week++)
-                                            <th scope="col" class="toggleable-2 toggle-header-department">
+                                            <th scope="col" class="toggleable-2 toggle-header-department" id="head_week_{{ $week }}">
                                                 {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
                                             </th>
                                         @endfor
                                         @for ($month = 5; $month <= 12; $month++)
-                                            <th scope="col" class="toggleable-2 toggle-header-department">
+                                            <th scope="col" class="toggleable-2 toggle-header-department" id="head_month_{{ $month }}">
                                                 {{ $month5StartDate }}</th>
                                             @php
                                                 $month5StartDate = date(
@@ -1356,11 +1364,46 @@
 
         var channel = pusher.subscribe("{{ env('PUSHER_APP_CHANNEL') }}");
         channel.bind('StockUpdate', function(data) {
-            const targetElement = document.getElementById(data.dataTarget);
+            console.log("Stock update received:", data);
+            console.log(data.stockUpdates);
 
-            if (targetElement) {
-                targetElement.textContent = new Intl.NumberFormat().format(data.inStockFinish || 0);
-            }
+            Object.keys(data.stockUpdates).forEach((key) => {
+                const tdElement = document.getElementById(key);
+
+                if (tdElement) {
+                    let value = data.stockUpdates[key];
+
+                    let formattedValue;
+
+                    // Check if value is a valid number
+                    if (!isNaN(value) && value !== null && value !== undefined && value !== "") {
+                        formattedValue = new Intl.NumberFormat().format(Number(value));
+                    } else {
+                        // Handle non-numeric values (keep as string or apply specific formatting)
+                        formattedValue = value ?? "N/A"; // Default to "N/A" if value is null/undefined
+                    }
+
+                    // Look for input, select, or textarea elements inside the <td>
+                    let inputElement = tdElement.querySelector("input");
+                    let selectElement = tdElement.querySelector("select");
+                    let textareaElement = tdElement.querySelector("textarea");
+
+                    if (inputElement) {
+                        inputElement.value = formattedValue; // Update input field value
+                    } else if (selectElement) {
+                        // If it's a select dropdown, find the option and set it as selected
+                        let optionExists = Array.from(selectElement.options).some(option => option.value == data.stockUpdates[key]);
+                        if (optionExists) {
+                            selectElement.value = data.stockUpdates[key];
+                        }
+                    } else if (textareaElement) {
+                        textareaElement.value = formattedValue; // Update textarea value
+                    } else {
+                        // If no input/select/textarea found, update the text inside the <td>
+                        tdElement.textContent = formattedValue;
+                    }
+                }
+            });
         });
     </script>
 @endsection

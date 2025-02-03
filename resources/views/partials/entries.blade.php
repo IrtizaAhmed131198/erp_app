@@ -119,9 +119,9 @@
                         @else
                             <td class="toggleable toggle-department" id="{{ $data_target }}">{{ $data->lot }}</td>
                         @endif
-                    @elseif($region_1_column_configuration_item->column == 'id')
+                    @elseif($region_1_column_configuration_item->column == 'ids')
                         @php
-                            $data_target = 'entries_' . $data->id . '_id';
+                            $data_target = 'entries_' . $data->id . '_ids';
                         @endphp
                         <td class="toggleable" id="{{ $data_target }}">{{ $data->ids ?? '' }}</td>
                     @elseif($region_1_column_configuration_item->column == 'part_number')

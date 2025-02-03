@@ -210,6 +210,12 @@ class HomeController extends Controller
 
             $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id], 'entries', $entry->id, $fieldName, $old, $value);
 
+            $data_updates = [
+                'entries_' . $dataId . '_' . $fieldName => $value
+            ];
+            // Broadcast the event
+            event(new StockUpdate($data_updates));
+
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
             return response()->json(['message' => 'Entry not found.'], 404);
@@ -233,6 +239,12 @@ class HomeController extends Controller
 
             $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value);
 
+            $data_updates = [
+                'entries_' . $dataId . '_' . $fieldName => $value
+            ];
+            // Broadcast the event
+            event(new StockUpdate($data_updates));
+
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
             return response()->json(['message' => 'Entry not found.'], 404);
@@ -255,6 +267,12 @@ class HomeController extends Controller
             $entry->save();
 
             $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id, $fieldName, $old, $value);
+
+            $data_updates = [
+                'entries_' . $dataId . '_' . $fieldName => $value
+            ];
+            // Broadcast the event
+            event(new StockUpdate($data_updates));
 
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
@@ -411,6 +429,7 @@ class HomeController extends Controller
             }
 
             $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.'], 'entries', $entryId);
+
             return redirect()->back()->with('success', 'Part created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -461,6 +480,9 @@ class HomeController extends Controller
         try {
             $entry = Entries::findOrFail($id);
 
+            // Store old values before update
+            $oldValues = $entry->toArray();
+
             // Update main entry data
             $validatedData['user_id'] = Auth::user()->id;
             $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
@@ -469,6 +491,19 @@ class HomeController extends Controller
             $entry->update($validatedData);
             $entry->last_updated_by = auth()->id();
             $entry->save();
+
+            // Track changed values for broadcasting
+            $data_updates = [];
+            foreach ($validatedData as $field => $newValue) {
+                if (isset($oldValues[$field]) && $oldValues[$field] != $newValue) {
+                    $data_updates['entries_' . $id . '_' . $field] = $newValue;
+                }
+            }
+
+            // Broadcast the event if any values changed
+            if (!empty($data_updates)) {
+                event(new StockUpdate($data_updates));
+            }
 
             // Prepare work centers and outside processing data
             $work_centres = [
@@ -905,14 +940,75 @@ class HomeController extends Controller
 
         $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no);
 
-        $data_target = 'entries_' . $data->id . '_in_stock_finished';
+        $data_updates = [
+            'entries_' . $data->id . '_in_stock_finished' => $data->in_stock_finish
+        ];
         // Broadcast the event
-        event(new StockUpdate($data_target, $data->in_stock_finish));
+        event(new StockUpdate($data_updates));
 
         return response()->json([
             'message' => 'Production total updated successfully!',
             'new_total' => $newTotal
         ]);
+    }
+
+    private function calculateWeeksMonths($data, $dataId)
+    {
+        $weeksDataFormatted = [];
+        $sumWeeks1To6 = array_sum([
+            $data->week_1,
+            $data->week_2,
+            $data->week_3,
+            $data->week_4,
+            $data->week_5,
+            $data->week_6,
+        ]);
+        $sumWeeks7To12 = array_sum([
+            $data->week_7,
+            $data->week_8,
+            $data->week_9,
+            $data->week_10,
+            $data->week_11,
+            $data->week_12,
+        ]);
+
+        $in_stock_finish = $data->in_stock_finish ?? 0;
+        $wt_pc = $data->wt_pc ?? 0;
+
+        if ($sumWeeks1To6 != 0 && $sumWeeks7To12 != 0) {
+            $WT_RQ = max(($sumWeeks1To6 + $sumWeeks7To12 - $in_stock_finish) * $wt_pc, 0);
+        } else {
+            $WT_RQ = 0;
+        }
+
+        $sum1_12 = $sumWeeks1To6 + $sumWeeks7To12;
+        $sumWeeks1To6 += ($data->past_due ?? 0);
+        $sum1_12_f = (($sum1_12 - $in_stock_finish) > 0) ? number_format(($sum1_12 - $in_stock_finish) * $wt_pc, 2) : 0;
+        // Add calculated values to broadcast payload
+        $weeksDataFormatted['entries_' . $dataId . '_past_due'] = $data->past_due ?? 0;
+        $weeksDataFormatted['entries_' . $dataId . '_reqd_1_6_weeks'] = $sumWeeks1To6;
+        $weeksDataFormatted['entries_' . $dataId . '_reqd_7_12_weeks'] = $sumWeeks7To12;
+        $weeksDataFormatted['entries_' . $dataId . '_wt_reqd_1_12_weeks'] = $sum1_12_f;
+        //dates
+        // $weeksDataFormatted = [];
+
+        // Format week headers dynamically from provided $data values
+        for ($week = 1; $week <= 16; $week++) {
+            $weekKey = "week_{$week}_date"; // Constructing property name
+            if (!empty($data->$weekKey)) {
+                $weeksDataFormatted["head_week_{$week}"] = date('j-M', strtotime($data->$weekKey));
+            }
+        }
+
+        // Format month headers dynamically from provided $data values
+        for ($month = 5; $month <= 12; $month++) {
+            $monthKey = "month_{$month}_date"; // Constructing property name
+            if (!empty($data->$monthKey)) {
+                $weeksDataFormatted["head_month_{$month}"] = date('j-M', strtotime($data->$monthKey));
+            }
+        }
+
+        return $weeksDataFormatted;
     }
 
     public function create_order(Request $request)
@@ -931,6 +1027,10 @@ class HomeController extends Controller
             ->where('part_number', $request->part_number)
             ->first();
 
+        $part = Entries::where('user_id', Auth::user()->id)
+            ->where('part_number', $request->part_number)
+            ->first();
+
         $isNewEntry = false;
 
         $weeksData = $data ? $request->weeks_edit : $request->weeks;
@@ -943,6 +1043,8 @@ class HomeController extends Controller
         }
 
         $temp = $isNewEntry ? $this->getWeekArr(date('Y-m-d')) : null;
+        // Prepare weeksData for broadcasting
+        $weeksDataFormatted = [];
 
         foreach ($weeksData as $key => $value) {
             if ($value === null) {
@@ -954,20 +1056,28 @@ class HomeController extends Controller
             if ($isNewEntry) {
                 $data->{$key . '_date'} = $temp[$key];
             }
+            // Format key to match your frontend structure
+            $weeksDataFormatted['entries_' . $part->id . '_' . $key] = str_replace(',', '', $value);
         }
 
         $data->past_due = $request->past_val;
         $data->save();
 
-        $part = Entries::where('user_id', Auth::user()->id)
-            ->where('part_number', $request->part_number)
-            ->first();
         if ($part) {
             $part->filter = 'pending';
             $part->future_raw = str_replace(',', '', $request->future_raw);
             $part->last_updated_by = Auth::user()->id;
             $part->save();
         }
+
+        $weeksDataFormatted['entries_' . $part->id . '_future_raw'] = str_replace(',', '', $request->future_raw);
+        // Perform calculations for weeks 1 to 6 and weeks 7 to 12
+
+        $calArr = $this->calculateWeeksMonths($data, $part->id);
+        $mergedData = array_merge($calArr, $weeksDataFormatted);
+
+        // Broadcast the updated values via Pusher
+        event(new StockUpdate($mergedData));
 
         // Send notification
         $message = $isNewEntry ? 'Order Created' : 'Order Updated';
@@ -1161,6 +1271,7 @@ class HomeController extends Controller
 
     public function save_shipment_data(Request $request)
     {
+        $weeksDataFormatted = [];
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
         $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
@@ -1169,9 +1280,11 @@ class HomeController extends Controller
                 if ($shipment['weekKey'] === 'past_due') {
                     // Update the past_due field in another table (e.g., PastDueTable)
                     $data->past_due = $shipment['value'];
+                    $weeksDataFormatted['entries_' . $entries->id . '_past_due'] = $shipment['value'];
                 } else {
                     // Update fields in the Weeks table
                     $data->{$shipment['weekKey']} = $shipment['value'];
+                    $weeksDataFormatted['entries_' . $entries->id . '_' . $shipment['weekKey']] = $shipment['value'];
                 }
             }
         }
@@ -1183,12 +1296,18 @@ class HomeController extends Controller
 
         $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id);
 
+        $weeksDataFormatted['entries_' . $entries->id . '_in_stock_finish'] = $entries->in_stock_finish;
+
+        // Broadcast the event
+        event(new StockUpdate($weeksDataFormatted));
+
         return response()->json(['message' => 'Shipment Amount Saved', 'data' => $data, 'existing_amount' => number_format($entries->in_stock_finish)]);
     }
 
     public function change_past_due(Request $request)
     {
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
@@ -1198,6 +1317,12 @@ class HomeController extends Controller
         $data->save();
 
         $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id);
+
+        $data_updates = [
+            'entries_' . $entries->id . '_past_due' => $data->past_due
+        ];
+        // Broadcast the event
+        event(new StockUpdate($data_updates));
 
         return response()->json(['message' => 'Past Due Changed', 'past_due' => $data->past_due]);
     }

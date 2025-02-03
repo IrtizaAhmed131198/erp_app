@@ -14,15 +14,13 @@ class StockUpdate implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $dataTarget;
-    public $inStockFinish;
+    public $stockUpdates;
 
-    public function __construct($dataTarget, $inStockFinish)
+    public function __construct(array $stockUpdates)
     {
-        $this->dataTarget = $dataTarget;
-        $this->inStockFinish = $inStockFinish;
-        \Log::info('Broadcasting event controller: ' . $this->dataTarget);
-        \Log::info('Broadcasting event controller: ' . $this->inStockFinish);
+        $this->stockUpdates = $stockUpdates; // Store multiple updates
+
+        \Log::info('Broadcasting event with data:', $this->stockUpdates);
     }
 
     public function broadcastOn()

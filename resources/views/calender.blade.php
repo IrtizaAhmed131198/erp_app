@@ -269,7 +269,7 @@
                                                 <td>
                                                     <input type='text' class='show_future_raw' disabled>
                                                 </td>
-                                                </td>
+                                                <td>
                                                     <input type="text" name="future_raw" class="future_raw"
                                                         oninput="formatNumberWithCommas(this)">
                                                 </td>
@@ -536,9 +536,9 @@
                                                     <td>
                                                         <input type="text" name="total_shipment" class="total_shipment" readonly>
                                                     </td>
-                                                    <td>
+                                                    {{-- <td>
                                                         <input type='text' class='' disabled>
-                                                    </td>
+                                                    </td> --}}
                                                 </tr>
                                             @endfor
 

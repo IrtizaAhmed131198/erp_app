@@ -39,7 +39,7 @@ function get_column_label($column)
     $column_label_map['status'] = 'Status';
     $column_label_map['job_number'] = 'Job #';
     $column_label_map['lot_number'] = 'Lot #';
-    $column_label_map['id'] = 'ID';
+    $column_label_map['ids'] = 'ID';
     $column_label_map['part_number'] = 'Part No.';
     $column_label_map['customer'] = 'Customer';
     $column_label_map['rev'] = 'Rev';

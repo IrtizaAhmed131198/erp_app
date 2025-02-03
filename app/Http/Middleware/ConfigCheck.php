@@ -52,7 +52,7 @@ class ConfigCheck
                         'visibility' => true
                     ],
                     [
-                        'column' => 'id',
+                        'column' => 'ids',
                         'order' => 7,
                         'visibility' => true
                     ],
