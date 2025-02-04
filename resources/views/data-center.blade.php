@@ -213,7 +213,7 @@
                                     <thead>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 1; $i <= 1; $i++)
+                                        @for ($i = 1; $i <= 4; $i++)
                                         <tr>
                                             @if (Auth::user()->role == 1)
                                                 <td data-bs-toggle="modal" data-bs-target="{{ $i == 1 ? '#outsideProcessingModal' : '' }}" data-outside-id="{{ $i }}">

@@ -336,7 +336,7 @@ class HomeController extends Controller
             'work_centre_5' => 'nullable',
             'work_centre_6' => 'nullable',
             'work_centre_7' => 'nullable',
-            'outside_processing_1' => 'required',
+            'outside_processing_1' => 'nullable',
             'outside_processing_2' => 'nullable',
             'outside_processing_3' => 'nullable',
             'outside_processing_4' => 'nullable',
@@ -358,7 +358,7 @@ class HomeController extends Controller
             'safety' => 'nullable',
             'min_ship' => 'nullable',
             'wt_pc' => 'required',
-            'currency' => 'required'
+            'currency' => 'required',
         ]);
 
         $existingEntry = Entries::where('customer', $validatedData['customer'])
@@ -373,6 +373,7 @@ class HomeController extends Controller
             $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
             $validatedData['safety'] = $this->removeCommas($validatedData['safety']);
             $validatedData['min_ship'] = $this->removeCommas($validatedData['min_ship']);
+            $validatedData['in_process_outside'] = $request->outside_processing_text_1;
 
             $entry = Entries::create($validatedData);
             $entry->last_updated_by = auth()->id();
@@ -452,7 +453,7 @@ class HomeController extends Controller
             'work_centre_5' => 'nullable',
             'work_centre_6' => 'nullable',
             'work_centre_7' => 'nullable',
-            'outside_processing_1' => 'required',
+            'outside_processing_1' => 'nullable',
             'outside_processing_2' => 'nullable',
             'outside_processing_3' => 'nullable',
             'outside_processing_4' => 'nullable',
@@ -488,6 +489,7 @@ class HomeController extends Controller
             $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
             $validatedData['safety'] = $this->removeCommas($validatedData['safety']);
             $validatedData['min_ship'] = $this->removeCommas($validatedData['min_ship']);
+            $validatedData['in_process_outside'] = $request->outside_processing_text_1;
             $entry->update($validatedData);
             $entry->last_updated_by = auth()->id();
             $entry->save();
