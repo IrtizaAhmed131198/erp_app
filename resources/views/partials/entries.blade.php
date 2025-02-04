@@ -73,7 +73,7 @@
                             <td class="toggleable toggle-department" id="{{ $data_target }}">
                                 <select name="status" id="status" data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('status', this.value, event)">
-                                    <option value="" disabled selected>Select</option>
+                                    {{-- <option value="" disabled selected>Select</option> --}}
                                     <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}
                                         style="background-color: #ff000087;">Running
                                     </option>
