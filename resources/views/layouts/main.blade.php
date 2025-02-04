@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.ico') }}">
+{{--    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.ico') }}">--}}
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/favicon.ico') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.ico') }}">
+{{--    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.ico') }}">--}}
 
     <title>Rita Shea</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -36,9 +36,9 @@
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg">
                         <div class="container-fluid p-0">
-                            <a class="navbar-brand" href="index.php">
-                                <img src="{{ asset('images/sidebarlogo.png') }}" class="img-fluid" alt="">
-                            </a>
+{{--                            <a class="navbar-brand" href="index.php">--}}
+{{--                                <img src="{{ asset('images/sidebarlogo.png') }}" class="img-fluid" alt="">--}}
+{{--                            </a>--}}
                             <form class="d-flex" role="search">
                                 <div class="parent-search-bar">
                                     <button>

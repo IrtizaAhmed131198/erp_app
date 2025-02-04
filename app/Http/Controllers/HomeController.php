@@ -336,7 +336,7 @@ class HomeController extends Controller
             'work_centre_5' => 'nullable',
             'work_centre_6' => 'nullable',
             'work_centre_7' => 'nullable',
-            'outside_processing_1' => 'required',
+            'outside_processing_1' => 'nullable',
             'outside_processing_2' => 'nullable',
             'outside_processing_3' => 'nullable',
             'outside_processing_4' => 'nullable',
@@ -358,7 +358,7 @@ class HomeController extends Controller
             'safety' => 'nullable',
             'min_ship' => 'nullable',
             'wt_pc' => 'required',
-            'currency' => 'required'
+            'currency' => 'required',
         ]);
 
         $existingEntry = Entries::where('customer', $validatedData['customer'])
@@ -373,6 +373,7 @@ class HomeController extends Controller
             $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
             $validatedData['safety'] = $this->removeCommas($validatedData['safety']);
             $validatedData['min_ship'] = $this->removeCommas($validatedData['min_ship']);
+            $validatedData['in_process_outside'] = $request->outside_processing_text_1;
 
             $entry = Entries::create($validatedData);
             $entry->last_updated_by = auth()->id();
@@ -452,7 +453,7 @@ class HomeController extends Controller
             'work_centre_5' => 'nullable',
             'work_centre_6' => 'nullable',
             'work_centre_7' => 'nullable',
-            'outside_processing_1' => 'required',
+            'outside_processing_1' => 'nullable',
             'outside_processing_2' => 'nullable',
             'outside_processing_3' => 'nullable',
             'outside_processing_4' => 'nullable',
@@ -488,6 +489,7 @@ class HomeController extends Controller
             $validatedData['moq'] = $this->removeCommas($validatedData['moq']);
             $validatedData['safety'] = $this->removeCommas($validatedData['safety']);
             $validatedData['min_ship'] = $this->removeCommas($validatedData['min_ship']);
+            $validatedData['in_process_outside'] = $request->outside_processing_text_1;
             $entry->update($validatedData);
             $entry->last_updated_by = auth()->id();
             $entry->save();
@@ -1405,57 +1407,57 @@ class HomeController extends Controller
     {
         try {
             // Default configurations for region 1
-            $region1Config = [
-                ['column' => 'department', 'order' => 1, 'visibility' => true],
-                ['column' => 'work_center', 'order' => 2, 'visibility' => true],
-                ['column' => 'planning_queue', 'order' => 3, 'visibility' => true],
-                ['column' => 'status', 'order' => 4, 'visibility' => true],
-                ['column' => 'job_number', 'order' => 5, 'visibility' => true],
-                ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
-                ['column' => 'id', 'order' => 7, 'visibility' => true],
-                ['column' => 'part_number', 'order' => 8, 'visibility' => true],
-                ['column' => 'customer', 'order' => 9, 'visibility' => true],
-                ['column' => 'rev', 'order' => 10, 'visibility' => true],
-                ['column' => 'process', 'order' => 11, 'visibility' => true]
-            ];
+            // $region1Config = [
+            //     ['column' => 'department', 'order' => 1, 'visibility' => true],
+            //     ['column' => 'work_center', 'order' => 2, 'visibility' => true],
+            //     ['column' => 'planning_queue', 'order' => 3, 'visibility' => true],
+            //     ['column' => 'status', 'order' => 4, 'visibility' => true],
+            //     ['column' => 'job_number', 'order' => 5, 'visibility' => true],
+            //     ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
+            //     ['column' => 'id', 'order' => 7, 'visibility' => true],
+            //     ['column' => 'part_number', 'order' => 8, 'visibility' => true],
+            //     ['column' => 'customer', 'order' => 9, 'visibility' => true],
+            //     ['column' => 'rev', 'order' => 10, 'visibility' => true],
+            //     ['column' => 'process', 'order' => 11, 'visibility' => true]
+            // ];
 
-            // Default configurations for region 2
-            $region2Config = [
-                ['column' => 'reqd_1_6_weeks', 'order' => 1, 'visibility' => true],
-                ['column' => 'reqd_7_12_weeks', 'order' => 2, 'visibility' => true],
-                ['column' => 'scheduled_total', 'order' => 3, 'visibility' => true],
-                ['column' => 'in_stock_finished', 'order' => 4, 'visibility' => true],
-                ['column' => 'live_inventory_finished', 'order' => 5, 'visibility' => true],
-                ['column' => 'live_inventory_wip', 'order' => 6, 'visibility' => true],
-                ['column' => 'in_process_out_side', 'order' => 7, 'visibility' => true],
-                ['column' => 'on_order_raw_matl', 'order' => 8, 'visibility' => true],
-                ['column' => 'in_stock_live', 'order' => 9, 'visibility' => true],
-                ['column' => 'wt_pc', 'order' => 10, 'visibility' => true],
-                ['column' => 'material_sort', 'order' => 11, 'visibility' => true],
-                ['column' => 'wt_reqd_1_12_weeks', 'order' => 12, 'visibility' => true],
-                ['column' => 'safety', 'order' => 13, 'visibility' => true],
-                ['column' => 'min_ship', 'order' => 14, 'visibility' => true],
-                ['column' => 'order_notes', 'order' => 15, 'visibility' => true],
-                ['column' => 'part_notes', 'order' => 16, 'visibility' => true]
-            ];
+            // // Default configurations for region 2
+            // $region2Config = [
+            //     ['column' => 'reqd_1_6_weeks', 'order' => 1, 'visibility' => true],
+            //     ['column' => 'reqd_7_12_weeks', 'order' => 2, 'visibility' => true],
+            //     ['column' => 'scheduled_total', 'order' => 3, 'visibility' => true],
+            //     ['column' => 'in_stock_finished', 'order' => 4, 'visibility' => true],
+            //     ['column' => 'live_inventory_finished', 'order' => 5, 'visibility' => true],
+            //     ['column' => 'live_inventory_wip', 'order' => 6, 'visibility' => true],
+            //     ['column' => 'in_process_out_side', 'order' => 7, 'visibility' => true],
+            //     ['column' => 'on_order_raw_matl', 'order' => 8, 'visibility' => true],
+            //     ['column' => 'in_stock_live', 'order' => 9, 'visibility' => true],
+            //     ['column' => 'wt_pc', 'order' => 10, 'visibility' => true],
+            //     ['column' => 'material_sort', 'order' => 11, 'visibility' => true],
+            //     ['column' => 'wt_reqd_1_12_weeks', 'order' => 12, 'visibility' => true],
+            //     ['column' => 'safety', 'order' => 13, 'visibility' => true],
+            //     ['column' => 'min_ship', 'order' => 14, 'visibility' => true],
+            //     ['column' => 'order_notes', 'order' => 15, 'visibility' => true],
+            //     ['column' => 'part_notes', 'order' => 16, 'visibility' => true]
+            // ];
 
             // Reset configurations
             UserConfig::where('user_id', auth()->id())
                 ->whereIn('key', ['master_screen_region_1_column_configuration', 'master_screen_region_2_column_configuration'])
                 ->delete();
 
-            // Insert default configurations
-            UserConfig::create([
-                'user_id' => auth()->id(),
-                'key' => 'master_screen_region_1_column_configuration',
-                'value' => json_encode($region1Config)
-            ]);
+            // // Insert default configurations
+            // UserConfig::create([
+            //     'user_id' => auth()->id(),
+            //     'key' => 'master_screen_region_1_column_configuration',
+            //     'value' => json_encode($region1Config)
+            // ]);
 
-            UserConfig::create([
-                'user_id' => auth()->id(),
-                'key' => 'master_screen_region_2_column_configuration',
-                'value' => json_encode($region2Config)
-            ]);
+            // UserConfig::create([
+            //     'user_id' => auth()->id(),
+            //     'key' => 'master_screen_region_2_column_configuration',
+            //     'value' => json_encode($region2Config)
+            // ]);
 
             return response()->json([
                 'success' => true,

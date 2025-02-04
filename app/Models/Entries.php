@@ -51,7 +51,8 @@ class Entries extends Model
         'min_ship',
         'wt_pc',
         'currency',
-        'last_updated_by'
+        'last_updated_by',
+        'in_process_outside'
     ];
 
     protected static function boot()

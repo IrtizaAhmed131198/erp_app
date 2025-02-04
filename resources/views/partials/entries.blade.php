@@ -73,7 +73,7 @@
                             <td class="toggleable toggle-department" id="{{ $data_target }}">
                                 <select name="status" id="status" data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('status', this.value, event)">
-                                    <option value="" disabled selected>Select</option>
+                                    {{-- <option value="" disabled selected>Select</option> --}}
                                     <option value="Running" {{ $data->status == 'Running' ? 'selected' : '' }}
                                         style="background-color: #ff000087;">Running
                                     </option>
@@ -333,9 +333,9 @@
                         @if (Auth::user()->stock_finished_column == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
                                 <input type="text" name="in_process_outside" id="in_process_outside"
-                                    value="{{ $data->out_source_one->in_process_outside ?? '' }}"
-                                    data-id="{{ $out_source_id ?? '' }}" data-entry-id = "{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest3('in_process_outside', this.value, event)">
+                                    value="{{ $data->in_process_outside ?? '' }}"
+                                    data-id="{{ $data->id }}"
+                                    onkeyup="sendAjaxRequest('in_process_outside', this.value, event)">
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
