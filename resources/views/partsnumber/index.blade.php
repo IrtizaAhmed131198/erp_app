@@ -73,7 +73,11 @@
         }
 
         .deletedRecordWork li,
-        .deletedRecordOut li {
+        .deletedRecordOut li,
+        .deletedRecorddata li,
+        .deletedRecorddepart li,
+        .deletedRecordCus li ,
+        .deletedRecordPart li{
             margin-bottom: 9px;
         }
     </style>
@@ -136,17 +140,25 @@
                     <div id="div1" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
-                                <div class="top-btn">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#formpartshow">Add
-                                        Parts Number</button>
+                                <div class="top-btn custom-btn-restore">
+                                    <div>
+                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#formpartshow">Add
+                                            Parts Number</button>
+                                    </div>
+                                    <div>
+                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#restoreModal6">
+                                                Restore Deleted Rec
+                                            </button>
+                                        </div>
+                                        
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
                                     <thead>
                                         <tr class="colored-table-row">
-                                            <th class="highlighted toggle-header">ID</th>
+                                            <!-- <th class="highlighted toggle-header">ID</th> -->
                                             <th class="toggleable toggle-header-planning">Part Name </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
@@ -154,7 +166,7 @@
                                     <tbody id="entries-table-body">
                                         @foreach ($parts as $val)
                                             <tr>
-                                                <td>{{ $val->id }}</td>
+                                                <!-- <td>{{ $val->id }}</td> -->
                                                 <td>{{ $val->Part_Number }}</td>
                                                 <td class="toggleable toggle-planning">
                                                     <div class="d-inline">
@@ -162,7 +174,8 @@
                                                             data-bs-target="#partNumber" class="btn btn-success opendata"
                                                             data-column="{{ $val->Part_Number }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                        <button type="button" class="btn btn-danger" id="delete-part" data-id="{{ $val->id }}">Delete</button>
+                                                            <button type="button" class="btn btn-danger" id="delete-part"
+                                                            data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -180,17 +193,24 @@
                     <div id="div2" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
-                                <div class="top-btn">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#formpartshow1">Add
-                                        Customer</button>
-                                </div>
+                                <div class="top-btn custom-btn-restore">
+                                    <div>
+                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#formpartshow1">Add
+                                            Customer</button>
+                                    </div>
+                                        <div>
+                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#restoreModal5">
+                                                Restore Deleted Rec
+                                            </button>
+                                        </div>
+                                    </div>
                             </div>
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
                                     <thead>
                                         <tr class="colored-table-row">
-                                            <th class="highlighted toggle-header">ID</th>
+                                            <!-- <th class="highlighted toggle-header">ID</th> -->
                                             <th class="toggleable toggle-header-planning">Customer </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
@@ -198,7 +218,7 @@
                                     <tbody id="entries-table-body">
                                         @foreach ($customer as $val)
                                             <tr>
-                                                <td>{{ $val->id }}</td>
+                                                <!-- <td>{{ $val->id }}</td> -->
                                                 <td>{{ $val->CustomerName }}</td>
                                                 <td class="toggleable toggle-planning">
                                                     <div class="d-inline">
@@ -206,12 +226,8 @@
                                                             class="btn btn-success opendata1"
                                                             data-column="{{ $val->CustomerName }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                        <form action="#" method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-danger"
-                                                                disabled>Delete</a>
-                                                        </form>
+                                                            <button type="button" class="btn btn-danger" id="delete-cus"
+                                                            data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -229,17 +245,24 @@
                     <div id="div3" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
-                                <div class="top-btn">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#formpartshow2">Add
-                                        Department</button>
+                                <div class="top-btn custom-btn-restore">
+                                    <div>
+                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#formpartshow2">Add
+                                            Department</button>
+                                    </div>
+                                        <div>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#restoreModal4">
+                                                    Restore Deleted Rec
+                                                </button>
+                                            </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
                                     <thead>
                                         <tr class="colored-table-row">
-                                            <th class="highlighted toggle-header">ID</th>
+                                            <!-- <th class="highlighted toggle-header">ID</th> -->
                                             <th class="toggleable toggle-header-planning">Department </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
@@ -247,7 +270,7 @@
                                     <tbody id="entries-table-body">
                                         @foreach ($department as $val)
                                             <tr>
-                                                <td>{{ $val->id }}</td>
+                                                <!-- <td>{{ $val->id }}</td> -->
                                                 <td>{{ $val->name }}</td>
                                                 <td class="toggleable toggle-planning">
                                                     <div class="d-inline">
@@ -256,12 +279,8 @@
                                                             class="btn btn-success opendata2"
                                                             data-column="{{ $val->name }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                        <form action="#" method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-danger"
-                                                                disabled>Delete</a>
-                                                        </form>
+                                                            <button type="button" class="btn btn-danger" id="delete-depart"
+                                                            data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -291,7 +310,7 @@
                                 <table class="table table-hover table-bordered" id="myTable">
                                     <thead>
                                         <tr class="colored-table-row">
-                                            <th class="highlighted toggle-header">ID</th>
+                                            <!-- <th class="highlighted toggle-header">ID</th> -->
                                             <th class="toggleable toggle-header-planning">Work Centre </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
@@ -300,7 +319,7 @@
 
                                         @foreach ($work_center_selector as $val)
                                             <tr>
-                                                <td>{{ $val->id }}</td>
+                                                <!-- <td>{{ $val->id }}</td> -->
                                                 <td>{{ $val->name }}</td>
                                                 <td class="toggleable toggle-planning">
                                                     <div class="d-inline">
@@ -343,7 +362,7 @@
                                 <table class="table table-hover table-bordered" id="myTable">
                                     <thead>
                                         <tr class="colored-table-row">
-                                            <th class="highlighted toggle-header">ID</th>
+                                            <!-- <th class="highlighted toggle-header">ID</th> -->
                                             <th class="toggleable toggle-header-planning">Vendor </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
@@ -352,7 +371,7 @@
 
                                         @foreach ($vendor as $val)
                                             <tr>
-                                                <td>{{ $val->id }}</td>
+                                                <!-- <td>{{ $val->id }}</td> -->
                                                 <td>{{ $val->name }}</td>
                                                 <td class="toggleable toggle-planning">
                                                     <div class="d-inline">
@@ -378,17 +397,24 @@
                     <div id="div6" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                         <div class="accordion-body px-0">
                             <div class="col-lg-12">
-                                <div class="top-btn">
+                                <div class="top-btn custom-btn-restore">
+                                <div>
                                     <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#formpartshow5">Add
-                                        Material</button>
-                                </div>
+                                            data-bs-target="#formpartshow5">Add
+                                            Material</button>
+                                </div>    
+                                        <div>
+                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#restoreModal3">
+                                                Restore Deleted Rec
+                                            </button>
+                                        </div>
+                                    </div>
                             </div>
                             <div class="col-lg-12">
                                 <table class="table table-hover table-bordered" id="myTable">
                                     <thead>
                                         <tr class="colored-table-row">
-                                            <th class="highlighted toggle-header">ID</th>
+                                            <!-- <th class="highlighted toggle-header">ID</th> -->
                                             <th class="toggleable toggle-header-planning">Material </th>
                                             <th class="toggleable toggle-header-planning">Action </th>
                                         </tr>
@@ -397,7 +423,7 @@
 
                                         @foreach ($package as $val)
                                             <tr>
-                                                <td>{{ $val->id }}</td>
+                                                <!-- <td>{{ $val->id }}</td> -->
                                                 <td>{{ $val->Package }}</td>
                                                 <td class="toggleable toggle-planning">
                                                     <div class="d-inline">
@@ -406,12 +432,8 @@
                                                             class="btn btn-success opendata5"
                                                             data-column="{{ $val->Package }}"
                                                             data-id="{{ $val->id }}">Edit</a>
-                                                            <form action="#" method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    disabled>Delete</a>
-                                                            </form>
+                                                            <button type="button" class="btn btn-danger" id="delete-data"
+                                                            data-id="{{ $val->id }}">Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -610,6 +632,20 @@
             </div>
         </div>
     </div>
+        <!-- Restore Modal -->
+        <div class="modal fade" id="restoreModal6" tabindex="-1" aria-labelledby="restoreModal6Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Deleted Records</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="deletedRecordPart"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal fade" id="formpartshow1" tabindex="-1" aria-labelledby="formpartshowLabel">
@@ -635,6 +671,20 @@
             </div>
         </div>
     </div>
+        <!-- Restore Modal -->
+        <div class="modal fade" id="restoreModal5" tabindex="-1" aria-labelledby="restoreModal5Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Deleted Records</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="deletedRecordCus"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal fade" id="formpartshow2" tabindex="-1" aria-labelledby="formpartshowLabel">
@@ -657,6 +707,20 @@
                         <button type="submit" class="btn btn-primary" id="hidebtn2">Add Customer</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+        <!-- Restore Modal -->
+        <div class="modal fade" id="restoreModal4" tabindex="-1" aria-labelledby="restoreModal4Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Deleted Records</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="deletedRecorddepart"></ul>
+                </div>
             </div>
         </div>
     </div>
@@ -761,6 +825,21 @@
                         <button type="submit" class="btn btn-primary" id="hidebtn5">Add Material</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Modal -->
+    <div class="modal fade" id="restoreModal3" tabindex="-1" aria-labelledby="restoreModal3Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Deleted Records</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="deletedRecorddata"></ul>
+                </div>
             </div>
         </div>
     </div>
@@ -878,7 +957,234 @@
                     }
                 });
             });
+        
+        
+            // record-deleted-data
+            
+            $('#restoreModal3').on('show.bs.modal', function () {
+                $.ajax({
+                    url: '{{ route('deleted_records_data') }}', // Correct route name
+                    type: 'GET',
+                    success: function(response) {
+                        let data = response;
+                        let list = $('.deletedRecorddata');
+                        list.empty();
+                        if (data.length === 0) {
+                            list.append('<li>No records found.</li>');
+                        } else {
+                            data.forEach(function (record) {
+                                console.log(record)
+                                list.append(`
+                                    <li>
+                                        ${record.Package}
+                                        <button class="btn btn-sm btn-success restore-btn-data" data-id="${record.id}">Restore</button>
+                                    </li>
+                                `);
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetch records: ", xhr.responseText);
+                    }
+                });
+            });
+
+            $(document).on('click', '.restore-btn-data', function () {
+                let id = $(this).data('id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('restore/data') }}/"+ id,
+                    type: 'POST',
+                    data: {
+                        _token: token
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Restored',
+                            text: 'Data Restored Successfully',
+                        }).then(() => {
+                            location.reload(); // Refresh page
+                        });
+                        $('#restoreModal3').modal('hide');
+                    },
+                    error: function () {
+                        alert('Failed to restore the record.');
+                    }
+                });
+            });
+            
+            // record-deleted-data
+        
+
+            // record-delete-depart
+
+            $('#restoreModal4').on('show.bs.modal', function () {
+                $.ajax({
+                    url: '{{ route('deleted_records_depart') }}', // Correct route name
+                    type: 'GET',
+                    success: function(response) {
+                        let data = response;
+                        let list = $('.deletedRecorddepart');
+                        list.empty();
+                        if (data.length === 0) {
+                            list.append('<li>No records found.</li>');
+                        } else {
+                            data.forEach(function (record) {
+                                list.append(`
+                                    <li>
+                                        ${record.name}
+                                        <button class="btn btn-sm btn-success restore-btn-depart" data-id="${record.id}">Restore</button>
+                                    </li>
+                                `);
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetch records: ", xhr.responseText);
+                    }
+                });
+            });
+
+            $(document).on('click', '.restore-btn-depart', function () {
+                let id = $(this).data('id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('restore/depart') }}/"+ id,
+                    type: 'POST',
+                    data: {
+                        _token: token
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Restored',
+                            text: 'Data Restored Successfully',
+                        }).then(() => {
+                            location.reload(); // Refresh page
+                        });
+                        $('#restoreModal4').modal('hide');
+                    },
+                    error: function () {
+                        alert('Failed to restore the record.');
+                    }
+                });
+            });
+
+            // record-delete-depart
+
+
+        // record-delete-customer
+
+        $('#restoreModal5').on('show.bs.modal', function () {
+        $.ajax({
+            url: '{{ route('deleted_records_cus') }}', // Correct route name
+            type: 'GET',
+            success: function(response) {
+                let data = response;
+                let list = $('.deletedRecordCus');
+                list.empty();
+                if (data.length === 0) {
+                    list.append('<li>No records found.</li>');
+                } else {
+                    data.forEach(function (record) {
+                        console.log(record)
+                        list.append(`
+                            <li>
+                                ${record.CustomerName}
+                                <button class="btn btn-sm btn-success restore-btn-cus" data-id="${record.id}">Restore</button>
+                            </li>
+                        `);
+                    });
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Error fetch records: ", xhr.responseText);
+                }
+                }); 
+            });
+
+            $(document).on('click', '.restore-btn-cus', function () {
+                let id = $(this).data('id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('restore/cus') }}/"+ id,
+                    type: 'POST',
+                    data: {
+                        _token: token
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Restored',
+                            text: 'Data Restored Successfully',
+                        }).then(() => {
+                            location.reload(); // Refresh page
+                        });
+                        $('#restoreModal5').modal('hide');
+                    },
+                    error: function () {
+                        alert('Failed to restore the record.');
+                    }
+                });
         });
+
+            // record-delete-customer
+
+            $('#restoreModal6').on('show.bs.modal', function () {
+        $.ajax({
+            url: '{{ route('deleted_records_part') }}', // Correct route name
+            type: 'GET',
+            success: function(response) {
+                let data = response;
+                let list = $('.deletedRecordPart');
+                list.empty();
+                if (data.length === 0) {
+                    list.append('<li>No records found.</li>');
+                } else {
+                    data.forEach(function (record) {
+                        list.append(`
+                            <li>
+                                ${record.Part_Number}
+                                <button class="btn btn-sm btn-success restore-btn-part" data-id="${record.id}">Restore</button>
+                            </li>
+                        `);
+                    });
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Error fetch records: ", xhr.responseText);
+                }
+                }); 
+            });
+
+            $(document).on('click', '.restore-btn-part', function () {
+                let id = $(this).data('id');
+                const token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('restore/part') }}/"+ id,
+                    type: 'POST',
+                    data: {
+                        _token: token
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Restored',
+                            text: 'Data Restored Successfully',
+                        }).then(() => {
+                            location.reload(); // Refresh page
+                        });
+                        $('#restoreModal6').modal('hide');
+                    },
+                    error: function () {
+                        alert('Failed to restore the record.');
+                    }
+                });
+        });
+        
+    });
+
 
 
         $('#partshowform').submit(function(event) {
@@ -1567,6 +1873,120 @@
                 localStorage.setItem("openDiv", num);
             }
         }
+
+        $(document).on('click', '#delete-data', function() {
+            let id = $(this).data('id'); // Get the selected part ID
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-data') }}/" + id,
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The work center has been deleted.',
+                            }).then(() => {
+                                location.reload(); // Refresh page
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong while deleting the work center.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#delete-cus', function() {
+            let id = $(this).data('id'); // Get the selected part ID
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-cus') }}/" + id,
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The work center has been deleted.',
+                            }).then(() => {
+                                location.reload(); // Refresh page
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong while deleting the work center.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#delete-depart', function() {
+            let id = $(this).data('id'); // Get the selected part ID
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('delete-depart') }}/" + id,
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The work center has been deleted.',
+                            }).then(() => {
+                                location.reload(); // Refresh page
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong while deleting the work center.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
 
         $(document).on('click', '#delete-work', function() {
             let id = $(this).data('id'); // Get the selected part ID

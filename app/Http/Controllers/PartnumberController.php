@@ -327,12 +327,6 @@ class PartnumberController extends Controller
         return response()->json(['success' => 'Outsource processing successfully.']);
     }
 
-    public function deleted_records_out()
-    {
-        $deletedRecords = Vendor::onlyTrashed()->get();
-        return response()->json($deletedRecords);
-    }
-
     // Restore a specific record
     public function restore_out($id)
     {
@@ -341,5 +335,94 @@ class PartnumberController extends Controller
 
         return response()->json(['success' => 'Record restored successfully']);
     }
+    
+    public function deleted_records_out()
+    {
+        $deletedRecords = Vendor::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    public function deleteData($id)
+    {
+        // Delete the work
+        Material::destroy($id);
+        return response()->json(['success' => 'Outsource processing successfully.']);
+    }
+
+    public function deleted_records_data()
+    {
+        $deletedRecords = Material::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    public function restore_data($id)
+    {
+        $record = Material::onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return response()->json(['success' => 'Record restored successfully']);
+    }
+
+    public function deletedepart($id)
+    {
+        // Delete the work
+        Department::destroy($id);
+        return response()->json(['success' => 'Outsource processing successfully.']);
+    }
+    public function deleted_records_depart()
+    {
+        $deletedRecords = Department::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    public function restore_depart($id)
+    {
+        $record = Department::onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return response()->json(['success' => 'Record restored successfully']);
+    }
+
+    public function deleteCus($id)
+    {
+        // Delete the work
+        Customer::destroy($id);
+        return response()->json(['success' => 'Outsource processing successfully.']);
+    }
+    public function deleted_records_cus()
+    {
+        $deletedRecords = Customer::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    public function restore_cus($id)
+    {
+        $record = Customer::onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return response()->json(['success' => 'Record restored successfully']);
+    }
+
+    
+    public function deletePartnum($id)
+    {
+        // Delete the work
+        Parts::destroy($id);
+        return response()->json(['success' => 'Outsource processing successfully.']);
+    }
+    public function deleted_records_part()
+    {
+        $deletedRecords = Parts::onlyTrashed()->get();
+        return response()->json($deletedRecords);
+    }
+
+    public function restore_part($id)
+    {
+        $record = Parts::onlyTrashed()->findOrFail($id);
+        $record->restore();
+
+        return response()->json(['success' => 'Record restored successfully']);
+    }
+
 
 }
