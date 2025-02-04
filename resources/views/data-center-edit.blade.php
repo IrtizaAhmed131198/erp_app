@@ -214,7 +214,7 @@
                                                 ->toArray();
                                         @endphp
 
-                                        @for ($i = 1; $i <= 1; $i++)
+                                        @for ($i = 1; $i <= 7; $i++)
                                             @php
                                                 $work_centre_id = 'work_centre_' . $i;
                                                 $selected_value = null;
