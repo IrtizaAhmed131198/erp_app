@@ -132,21 +132,23 @@
                                 <button class="custom-dropdown-toggle part-st" type="button">
                                     {{ $data->part->Part_Number ?? '' }}
                                 </button>
-                                <ul class="custom-dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('calender' , ['part_number' => $data->part->id]) }}" class="custom-dropdown-item"
-                                            data-part="{{ $data->part_number }}" data-url="{{ route('calender') }}">
-                                            Shipment & Production
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->part->id]) }}" class="custom-dropdown-item"
-                                            data-part="{{ $data->part_number }}"
-                                            data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
-                                            Part Number Input
-                                        </a>
-                                    </li>
-                                </ul>
+                                @if($data->part && $data->part->id)
+                                    <ul class="custom-dropdown-menu">
+                                        <li>
+                                            <a href="{{ route('calender' , ['part_number' => $data->part->id]) }}" class="custom-dropdown-item"
+                                                data-part="{{ $data->part_number }}" data-url="{{ route('calender') }}">
+                                                Shipment & Production
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->part->id]) }}" class="custom-dropdown-item"
+                                                data-part="{{ $data->part_number }}"
+                                                data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
+                                                Part Number Input
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @endif
                             </div>
                         </td>
                     @elseif($region_1_column_configuration_item->column == 'customer')
