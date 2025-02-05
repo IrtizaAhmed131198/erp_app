@@ -130,7 +130,7 @@
                         <td class="toggleable custom-toggleable" id="{{ $data_target }}">
                             <div class="custom-dropdown">
                                 <button class="custom-dropdown-toggle part-st" type="button">
-                                    {{ $data->part->Part_Number }}
+                                    {{ $data->part->Part_Number ?? '' }}
                                 </button>
                                 <ul class="custom-dropdown-menu">
                                     <li>
