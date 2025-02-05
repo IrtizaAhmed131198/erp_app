@@ -5,7 +5,7 @@
     .container-sm,
     .container-xl,
     .container-xxl {
-        max-width: 1758px;
+        /* max-width: 1758px; */
         margin: auto;
     }
 }

@@ -86,11 +86,24 @@ Route::middleware(['auth', 'config.check'])->group(function () {
 
     Route::delete('delete-work/{id}', [PartnumberController::class, 'deleteWork'])->name('work.delete');
     Route::delete('delete-out/{id}', [PartnumberController::class, 'deleteOut'])->name('out.delete');
+    Route::delete('delete-data/{id}', [PartnumberController::class, 'deleteData'])->name('data.delete');
+    Route::delete('delete-depart/{id}', [PartnumberController::class, 'deletedepart'])->name('depart.delete');
+    Route::delete('delete-cus/{id}', [PartnumberController::class, 'deleteCus'])->name('cus.delete');
+    Route::delete('delete-part/{id}', [PartnumberController::class, 'deletePartnum'])->name('part.delete');
+    
 
     Route::get('deleted-records/work', [PartnumberController::class, 'deleted_records_work'])->name('deleted_records_work');
     Route::post('restore/work/{id}', [PartnumberController::class, 'restore_work'])->name('restore_work');
     Route::get('deleted-records/out', [PartnumberController::class, 'deleted_records_out'])->name('deleted_records_out');
     Route::post('restore/out/{id}', [PartnumberController::class, 'restore_out'])->name('restore_out');
+    Route::get('deleted-records/data', [PartnumberController::class, 'deleted_records_data'])->name('deleted_records_data');
+    Route::post('restore/data/{id}', [PartnumberController::class, 'restore_data'])->name('restore_data');
+    Route::get('deleted-records/depart', [PartnumberController::class, 'deleted_records_depart'])->name('deleted_records_depart');
+    Route::post('restore/depart/{id}', [PartnumberController::class, 'restore_depart'])->name('restore_depart');
+    Route::get('deleted-records/cus', [PartnumberController::class, 'deleted_records_cus'])->name('deleted_records_cus');
+    Route::post('restore/cus/{id}', [PartnumberController::class, 'restore_cus'])->name('restore_cus');
+    Route::get('deleted-records/part', [PartnumberController::class, 'deleted_records_part'])->name('deleted_records_part');
+    Route::post('restore/part/{id}', [PartnumberController::class, 'restore_part'])->name('restore_part');
 
 
     Route::get('delete-entry/{id}', [HomeController::class, "delete_entry"])->name('delete_entry');
