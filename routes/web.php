@@ -89,8 +89,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::delete('delete-data/{id}', [PartnumberController::class, 'deleteData'])->name('data.delete');
     Route::delete('delete-depart/{id}', [PartnumberController::class, 'deletedepart'])->name('depart.delete');
     Route::delete('delete-cus/{id}', [PartnumberController::class, 'deleteCus'])->name('cus.delete');
-    Route::delete('delete-part/{id}', [PartnumberController::class, 'deletePartnum'])->name('part.delete');
-    
+
 
     Route::get('deleted-records/work', [PartnumberController::class, 'deleted_records_work'])->name('deleted_records_work');
     Route::post('restore/work/{id}', [PartnumberController::class, 'restore_work'])->name('restore_work');
