@@ -95,6 +95,8 @@ Route::middleware(['auth', 'config.check'])->group(function () {
 
     Route::get('delete-entry/{id}', [HomeController::class, "delete_entry"])->name('delete_entry');
 
+    Route::get('report', [HomeController::class, "report"])->name('report');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');

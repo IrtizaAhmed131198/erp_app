@@ -5,7 +5,6 @@
         @if (Auth::user()->View_1 == 1)
             <td class="vertical-text highlighted">
             </td>
-
             @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                 @if ($region_1_column_configuration_item->visibility)
                     @if ($region_1_column_configuration_item->column == 'department')

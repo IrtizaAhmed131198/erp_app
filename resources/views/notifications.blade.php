@@ -1,49 +1,154 @@
 @extends('layouts.main')
 
 @section('css')
-<style>
-    .profile-img-container {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-    }
-    .profile-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-    .admin-img {
-        border: 2px solid #ff6600; /* Optional: specific border color for admin */
-    }
+    <style>
+        .profile-img-container {
+            display: inline-block;
+            width: 35px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
 
-    .pagination-container {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-    .pagination {
-        list-style: none;
-        display: flex;
-        gap: 10px;
-    }
+        .admin-img {
+            border: 2px solid #ff6600;
+            /* Optional: specific border color for admin */
+        }
 
-    .pagination a {
-        text-decoration: none;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        color: #007bff;
-    }
+        .pagination-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
 
-    .pagination a:hover {
-        background-color: #f8f9fa;
-    }
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+        }
 
-</style>
+        .pagination a {
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #007bff;
+        }
+
+        .pagination a:hover {
+            background-color: #f8f9fa;
+        }
+
+        .container.bg-colored {
+            padding: 5rem;
+            margin: auto;
+            width: 75%;
+        }
+
+        .notification {
+            margin: 8px;
+            border-radius: 12px !important;
+            box-shadow: 0 0 14px 1px #00000029 !important;
+            gap: 20px;
+        }
+
+        .notification-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .notification-avatar_icon {
+            display: flex;
+            width: 83%;
+            flex-direction: column-reverse;
+        }
+
+        .notification_icons i {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px 1px #00000040;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .avatar.avatar-xl {
+            margin-top: 8px;
+        }
+
+        .avatar.avatar-xl img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-notification {
+            display: flex;
+            align-items: end;
+        }
+
+        .bg-success-soft {
+            background-color: #d1e7dd;
+        }
+
+        .bg-warning-soft {
+            background-color: #fff3cd;
+        }
+
+        .bg-info-soft {
+            background-color: #cff4fc;
+        }
+
+        .filter_search {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+            width: 50%;
+        }
+
+        .filter_search i {
+            position: absolute;
+            z-index: 0;
+            left: 8px;
+            top: 15px;
+            font-size: 15px;
+        }
+
+        .filter_search input {
+            padding: 10px 30px;
+        }
+
+        .filter_btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 10px;
+        }
+
+        .parent-filter {
+            margin: 0;
+        }
+
+        .select2.select2-container .select2-selection {
+            margin: 0;
+        }
+
+        .select2.select2-container .select2-selection .select2-selection__rendered {
+            padding-right: 50px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -57,16 +162,16 @@
                         <a class="nav-link" href="{{ route('notifications') }}">Notifications</a>
                     </nav>
                 </div>
-                <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-12 col-12">
+                {{-- <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-12 col-12">
                     <div class="parent-filter">
                         <select class="js-select2" id="userFilter">
-                            <option value="all" selected="">All</option>
-                            @foreach($users as $val)
+                            <option value="all" selected="">Select Users</option>
+                            @foreach ($users as $val)
                                 <option value="{{ $val->id }}">{{ $val->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <hr class="mt-0 mb-4">
@@ -76,7 +181,27 @@
                         <div class="bg-body-tertiary card-header highlighted">
                             <h5 class="mb-1 mb-md-0">Activity log</h5>
                         </div>
-                        <div class="p-0 card-body" id="notificationContainer">
+                        <div class="card-body" id="notificationContainer">
+                            <div class="filter_btn">
+                                <div class="filter_search">
+                                    <i class="fas fa-search text-muted me-2"></i>
+                                    <input type="text" class="border-0 w-100" placeholder="Search activities...">
+                                </div>
+                                <div class="filter_all_btn">
+                                    <button class="btn btn-primary">All</button>
+                                    <button class="btn btn-primary">User</button>
+                                    <button class="btn btn-primary">System</button>
+                                    <button class="btn btn-primary">Error</button>
+                                </div>
+                                <div class="parent-filter">
+                                    <select class="js-select2" id="userFilter">
+                                        <option value="all" selected="">Select Users</option>
+                                        @foreach ($users as $val)
+                                            <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             @include('partials.notification-ajax', ['notifications' => $notifications])
                         </div>
                         <div class="pagination-container">
@@ -90,24 +215,26 @@
 @endsection
 
 @section('js')
-<script>
-    $('#userFilter').on('change', function () {
-        const userId = $(this).val();
-        const container = $('#notificationContainer');
+    <script>
+        $('#userFilter').on('change', function() {
+            const userId = $(this).val();
+            const container = $('#notificationContainer');
 
-        $.ajax({
-            url: "{{ route('notifications') }}",
-            type: 'GET',
-            data: { user_id: userId },
-            success: function (response) {
-                container.html(response.html); // Replace container content
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching notifications:', error);
-                container.html('<p class="text-center p-3 text-danger">Failed to load notifications.</p>');
-            }
+            $.ajax({
+                url: "{{ route('notifications') }}",
+                type: 'GET',
+                data: {
+                    user_id: userId
+                },
+                success: function(response) {
+                    container.html(response.html); // Replace container content
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching notifications:', error);
+                    container.html(
+                        '<p class="text-center p-3 text-danger">Failed to load notifications.</p>');
+                }
+            });
         });
-    });
-
-</script>
+    </script>
 @endsection

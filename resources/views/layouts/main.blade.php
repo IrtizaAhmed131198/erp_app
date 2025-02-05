@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-{{--    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.ico') }}">--}}
+    {{--    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.ico') }}"> --}}
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/favicon.ico') }}">
-{{--    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.ico') }}">--}}
+    {{--    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.ico') }}"> --}}
 
     <title>Rita Shea</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -36,16 +36,17 @@
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg">
                         <div class="container-fluid p-0">
-{{--                            <a class="navbar-brand" href="index.php">--}}
-{{--                                <img src="{{ asset('images/sidebarlogo.png') }}" class="img-fluid" alt="">--}}
-{{--                            </a>--}}
+                            {{--                            <a class="navbar-brand" href="index.php"> --}}
+                            {{--                                <img src="{{ asset('images/sidebarlogo.png') }}" class="img-fluid" alt=""> --}}
+                            {{--                            </a> --}}
                             <form class="d-flex" role="search">
                                 <div class="parent-search-bar">
                                     <button>
                                         <img src="{{ asset('images/search-bar.png') }}" class="img-fluid"
                                             alt="">
                                     </button>
-                                    <input class="form-control" type="search" id="search-input" placeholder="Search" aria-label="Search">
+                                    <input class="form-control" type="search" id="search-input" placeholder="Search"
+                                        aria-label="Search">
                                 </div>
                             </form>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -102,7 +103,10 @@
                                    --}}
                                     <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number
                                             Input</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('report') }}">Report</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                     </li>
                                 @else

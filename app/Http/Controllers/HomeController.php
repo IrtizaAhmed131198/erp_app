@@ -1482,7 +1482,7 @@ class HomeController extends Controller
                 'identifier' => 'required'
             ]);
 
-            if($request->color == 'rgb(255, 255, 255)') {
+            if ($request->color == 'rgb(255, 255, 255)') {
                 $record = HighlightedCell::where([
                     'user_id' => auth()->id(),
                     'identifier' => $request->identifier
@@ -1536,4 +1536,8 @@ class HomeController extends Controller
         return response()->json(['message' => 'Entry deleted successfully.']);
     }
 
+    public function report()
+    {
+        return view('report');
+    }
 }
