@@ -118,12 +118,17 @@
             width: 50%;
         }
 
-        .filter_search i {
+        .filter_search .i_font {
             position: absolute;
             z-index: 0;
-            left: 8px;
-            top: 15px;
+            left: 2px;
+            top: 12px;
             font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
         }
 
         .filter_search input {
@@ -147,6 +152,16 @@
 
         .select2.select2-container .select2-selection .select2-selection__rendered {
             padding-right: 50px;
+        }
+
+        .notification_today {
+            margin: 25px 8px;
+        }
+
+        .notification_today h2 {
+            font-size: 30px;
+            font-weight: 700;
+            color: black;
         }
     </style>
 @endsection
@@ -184,8 +199,13 @@
                         <div class="card-body" id="notificationContainer">
                             <div class="filter_btn">
                                 <div class="filter_search">
-                                    <i class="fas fa-search text-muted me-2"></i>
-                                    <input type="text" class="border-0 w-100" placeholder="Search activities...">
+                                    <form action="">
+                                        <button class="i_font" type="submit">
+                                            <i class="fas fa-search text-muted me-2"></i>
+                                        </button>
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            class="border-0 w-100" placeholder="Search activities...">
+                                    </form>
                                 </div>
                                 <div class="filter_all_btn">
                                     <button class="btn btn-primary">All</button>

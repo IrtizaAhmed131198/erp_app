@@ -752,10 +752,26 @@ class HomeController extends Controller
 
     public function notifications(Request $request)
     {
+
+        $search = $request->input('search');
+
+
+        $notificationsQuery = Notification::with('user', 'target_cell');
+
+        if ($search) {
+            $notificationsQuery->where(function ($query) use ($search) {
+                $query->where('data', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+
         $users = User::where('role', 2)->get();
         $userId = $request->input('user_id');
 
-        $notificationsQuery = Notification::with('user');
 
         if (Auth::user()->role != 1) {
 
@@ -767,12 +783,28 @@ class HomeController extends Controller
 
         $notifications = $notificationsQuery->orderBy('created_at', 'desc')->paginate(10);
 
+        $today = now()->toDateString();
+        $yesterday = now()->subDay()->toDateString();
+
+        $filter = [
+            'Today' => $notifications->filter(fn($n) => $n->created_at->toDateString() === $today),
+            'Yesterday' => $notifications->filter(fn($n) => $n->created_at->toDateString() === $yesterday),
+        ];
+
+        $filtered = $notifications->reject(
+            fn($n) => $n->created_at->toDateString() === $today ||
+            $n->created_at->toDateString() === $yesterday
+        )->groupBy(fn($n) => $n->created_at->format('y-m-d'));
+
+        $filter = array_merge($filter, $filtered->toArray());
+
+
         if ($request->ajax()) {
             $html = view('partials.notification-ajax', ['notifications' => $notifications])->render();
             return response()->json(['html' => $html]);
         }
 
-        return view('notifications', compact('notifications', 'users'));
+        return view('notifications', compact('notifications', 'users', 'filter'));
     }
 
     public function visual_screen()
@@ -1407,57 +1439,57 @@ class HomeController extends Controller
     {
         try {
             // Default configurations for region 1
-            // $region1Config = [
-            //     ['column' => 'department', 'order' => 1, 'visibility' => true],
-            //     ['column' => 'work_center', 'order' => 2, 'visibility' => true],
-            //     ['column' => 'planning_queue', 'order' => 3, 'visibility' => true],
-            //     ['column' => 'status', 'order' => 4, 'visibility' => true],
-            //     ['column' => 'job_number', 'order' => 5, 'visibility' => true],
-            //     ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
-            //     ['column' => 'id', 'order' => 7, 'visibility' => true],
-            //     ['column' => 'part_number', 'order' => 8, 'visibility' => true],
-            //     ['column' => 'customer', 'order' => 9, 'visibility' => true],
-            //     ['column' => 'rev', 'order' => 10, 'visibility' => true],
-            //     ['column' => 'process', 'order' => 11, 'visibility' => true]
-            // ];
+            $region1Config = [
+                ['column' => 'department', 'order' => 1, 'visibility' => true],
+                ['column' => 'work_center', 'order' => 2, 'visibility' => true],
+                ['column' => 'planning_queue', 'order' => 3, 'visibility' => true],
+                ['column' => 'status', 'order' => 4, 'visibility' => true],
+                ['column' => 'job_number', 'order' => 5, 'visibility' => true],
+                ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
+                ['column' => 'id', 'order' => 7, 'visibility' => true],
+                ['column' => 'part_number', 'order' => 8, 'visibility' => true],
+                ['column' => 'customer', 'order' => 9, 'visibility' => true],
+                ['column' => 'rev', 'order' => 10, 'visibility' => true],
+                ['column' => 'process', 'order' => 11, 'visibility' => true]
+            ];
 
-            // // Default configurations for region 2
-            // $region2Config = [
-            //     ['column' => 'reqd_1_6_weeks', 'order' => 1, 'visibility' => true],
-            //     ['column' => 'reqd_7_12_weeks', 'order' => 2, 'visibility' => true],
-            //     ['column' => 'scheduled_total', 'order' => 3, 'visibility' => true],
-            //     ['column' => 'in_stock_finished', 'order' => 4, 'visibility' => true],
-            //     ['column' => 'live_inventory_finished', 'order' => 5, 'visibility' => true],
-            //     ['column' => 'live_inventory_wip', 'order' => 6, 'visibility' => true],
-            //     ['column' => 'in_process_out_side', 'order' => 7, 'visibility' => true],
-            //     ['column' => 'on_order_raw_matl', 'order' => 8, 'visibility' => true],
-            //     ['column' => 'in_stock_live', 'order' => 9, 'visibility' => true],
-            //     ['column' => 'wt_pc', 'order' => 10, 'visibility' => true],
-            //     ['column' => 'material_sort', 'order' => 11, 'visibility' => true],
-            //     ['column' => 'wt_reqd_1_12_weeks', 'order' => 12, 'visibility' => true],
-            //     ['column' => 'safety', 'order' => 13, 'visibility' => true],
-            //     ['column' => 'min_ship', 'order' => 14, 'visibility' => true],
-            //     ['column' => 'order_notes', 'order' => 15, 'visibility' => true],
-            //     ['column' => 'part_notes', 'order' => 16, 'visibility' => true]
-            // ];
+            // Default configurations for region 2
+            $region2Config = [
+                ['column' => 'reqd_1_6_weeks', 'order' => 1, 'visibility' => true],
+                ['column' => 'reqd_7_12_weeks', 'order' => 2, 'visibility' => true],
+                ['column' => 'scheduled_total', 'order' => 3, 'visibility' => true],
+                ['column' => 'in_stock_finished', 'order' => 4, 'visibility' => true],
+                ['column' => 'live_inventory_finished', 'order' => 5, 'visibility' => true],
+                ['column' => 'live_inventory_wip', 'order' => 6, 'visibility' => true],
+                ['column' => 'in_process_out_side', 'order' => 7, 'visibility' => true],
+                ['column' => 'on_order_raw_matl', 'order' => 8, 'visibility' => true],
+                ['column' => 'in_stock_live', 'order' => 9, 'visibility' => true],
+                ['column' => 'wt_pc', 'order' => 10, 'visibility' => true],
+                ['column' => 'material_sort', 'order' => 11, 'visibility' => true],
+                ['column' => 'wt_reqd_1_12_weeks', 'order' => 12, 'visibility' => true],
+                ['column' => 'safety', 'order' => 13, 'visibility' => true],
+                ['column' => 'min_ship', 'order' => 14, 'visibility' => true],
+                ['column' => 'order_notes', 'order' => 15, 'visibility' => true],
+                ['column' => 'part_notes', 'order' => 16, 'visibility' => true]
+            ];
 
             // Reset configurations
             UserConfig::where('user_id', auth()->id())
                 ->whereIn('key', ['master_screen_region_1_column_configuration', 'master_screen_region_2_column_configuration'])
                 ->delete();
 
-            // // Insert default configurations
-            // UserConfig::create([
-            //     'user_id' => auth()->id(),
-            //     'key' => 'master_screen_region_1_column_configuration',
-            //     'value' => json_encode($region1Config)
-            // ]);
+            // Insert default configurations
+            UserConfig::create([
+                'user_id' => auth()->id(),
+                'key' => 'master_screen_region_1_column_configuration',
+                'value' => json_encode($region1Config)
+            ]);
 
-            // UserConfig::create([
-            //     'user_id' => auth()->id(),
-            //     'key' => 'master_screen_region_2_column_configuration',
-            //     'value' => json_encode($region2Config)
-            // ]);
+            UserConfig::create([
+                'user_id' => auth()->id(),
+                'key' => 'master_screen_region_2_column_configuration',
+                'value' => json_encode($region2Config)
+            ]);
 
             return response()->json([
                 'success' => true,

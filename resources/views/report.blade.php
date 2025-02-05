@@ -276,12 +276,16 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td></td>
-
+                                    <td>User Login Successful</td>
                                 </tr>
                                 <tr>
-
-                                    <td></td>
+                                    <td>New User Registered</td>
+                                </tr>
+                                <tr>
+                                    <td>System Update Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>Admin Approved Your Request</td>
                                 </tr>
                             </tbody>
                             <tfoot>
