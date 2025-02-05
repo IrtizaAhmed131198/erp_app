@@ -13,22 +13,111 @@ use Illuminate\Http\Request;
 use App\Models\WorkCenterSelec;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class PartnumberController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            if ($request->has('source')) {
+                $source = $request->input('source');
 
-        $parts = Parts::paginate(10);
+                switch ($source) {
+                    case 'parts':
+                        $data = Parts::select(['id', 'Part_Number']);
+                        return DataTables::of($data)
+                            ->addColumn('action', function ($row) {
+                                return '<a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#partNumber" class="btn btn-success opendata"
+                                            data-column="' . $row->Part_Number . '"
+                                            data-id="' . $row->id . '">Edit</a>
+                                        <button type="button" class="btn btn-danger delete-part"
+                                            data-id="' . $row->id . '">Delete</button>';
+                            })
+                            ->rawColumns(['action'])
+                            ->make(true);
+                    case 'customer':
+                        $data = Customer::select(['id', 'CustomerName']);
+                        return DataTables::of($data)
+                            ->addColumn('action', function ($row) {
+                                return '<a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#customer1" class="btn btn-success opendata1"
+                                            data-column="' . $row->CustomerName . '"
+                                            data-id="' . $row->id . '">Edit</a>
+                                        <button type="button" class="btn btn-danger" id="delete-cus"
+                                            data-id="' . $row->id . '">Delete</button>';
+                            })
+                            ->rawColumns(['action'])
+                            ->make(true);
+                    case 'out':
+                        $data = Vendor::select(['id', 'name']);
+                        return DataTables::of($data)
+                            ->addColumn('action', function ($row) {
+                                return '<a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#partNumber4" class="btn btn-success opendata4"
+                                            data-column="' . $row->name . '"
+                                            data-id="' . $row->id . '">Edit</a>
+                                        <button type="button" class="btn btn-danger" id="delete-out"
+                                            data-id="' . $row->id . '">Delete</button>';
+                            })
+                            ->rawColumns(['action'])
+                            ->make(true);
+                    case 'department':
+                        $data = Department::select(['id', 'name']);
+                        return DataTables::of($data)
+                            ->addColumn('action', function ($row) {
+                                return '<a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#partNumber2" class="btn btn-success opendata2"
+                                            data-column="' . $row->name . '"
+                                            data-id="' . $row->id . '">Edit</a>
+                                        <button type="button" class="btn btn-danger" id="delete-depart"
+                                            data-id="' . $row->id . '">Delete</button>';
+                            })
+                            ->rawColumns(['action'])
+                            ->make(true);
+                    case 'work':
+                        $data = WorkCenterSelec::select(['id', 'name']);
+                        return DataTables::of($data)
+                            ->addColumn('action', function ($row) {
+                                return '<a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#partNumber3" class="btn btn-success opendata3"
+                                            data-column="' . $row->name . '"
+                                            data-id="' . $row->id . '">Edit</a>
+                                        <button type="button" class="btn btn-danger" id="delete-work"
+                                            data-id="' . $row->id . '">Delete</button>';
+                            })
+                            ->rawColumns(['action'])
+                            ->make(true);
+                    case 'material':
+                        $data = Material::select(['id', 'Package']);
+                        return DataTables::of($data)
+                            ->addColumn('action', function ($row) {
+                                return '<a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#partNumber5" class="btn btn-success opendata5"
+                                            data-column="' . $row->Package . '"
+                                            data-id="' . $row->id . '">Edit</a>
+                                        <button type="button" class="btn btn-danger" id="delete-data"
+                                            data-id="' . $row->id . '">Delete</button>';
+                            })
+                            ->rawColumns(['action'])
+                            ->make(true);
+                    // Add more cases as needed for other data sources
+                    default:
+                        return response()->json(['message' => 'Invalid source'], 400);
+                }
+            }
+        }
+
+        // For non-ajax requests, just return the view with other data
         $customer = Customer::paginate(10);
         $department = Department::get();
         $work_center_selector = WorkCenterSelec::paginate(10);
         $vendor = Vendor::paginate(10);
         $package = Material::paginate(10);
-        // dd($parts);
-        return view('partsnumber.index', compact('parts', 'customer', 'department', 'work_center_selector', 'vendor', 'package'));
-    }
 
+        return view('partsnumber.index', compact('customer', 'department', 'work_center_selector', 'vendor', 'package'));
+    }
 
     public function partupdate(Request $request)
     {
@@ -335,7 +424,7 @@ class PartnumberController extends Controller
 
         return response()->json(['success' => 'Record restored successfully']);
     }
-    
+
     public function deleted_records_out()
     {
         $deletedRecords = Vendor::onlyTrashed()->get();
@@ -403,7 +492,7 @@ class PartnumberController extends Controller
         return response()->json(['success' => 'Record restored successfully']);
     }
 
-    
+
     public function deletePartnum($id)
     {
         // Delete the work
