@@ -117,4 +117,9 @@ class Entries extends Model
     {
         return $this->belongsTo(User::class, 'last_updated_by');
     }
+
+    public function weeksHistory()
+    {
+        return $this->hasMany(WeeksHistory::class, 'entry_id');
+    }
 }

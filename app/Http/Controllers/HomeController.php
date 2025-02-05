@@ -20,6 +20,7 @@ use App\Models\WorkCenterSelec;
 use App\Models\Vendor;
 use App\Models\ColumnPreferences;
 use App\Models\HighlightedCell;
+use App\Models\WeeksHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ use Carbon\Carbon;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Validator;
 use App\Events\StockUpdate;
+use Yajra\DataTables\Facades\DataTables;
 
 class HomeController extends Controller
 {
@@ -572,7 +574,11 @@ class HomeController extends Controller
             abort(403, 'You do not have permission to access this resource.');
         }
         // $parts = Parts::all();
-        $parts = Entries::with('part')->get();
+        if(Auth::user()->role == 1){
+            $parts = Entries::with('part')->get();
+        }else{
+            $parts = Entries::with('part')->where('user_id', Auth::user()->id)->get();
+        }
         $weeks = [
             'Week 1',
             'Week 2',
@@ -1123,6 +1129,14 @@ class HomeController extends Controller
             $request->part_number
         );
 
+        WeeksHistory::create([
+            'user_id' => Auth::user()->id,
+            'entry_id' => $part->id,
+            'week_values' => json_encode($weeksData), // Assuming $weekValues is an array.
+            'past_due' => $request->past_val,
+            'updated_by' => Auth::user()->id,
+        ]);
+
         return response()->json(['message' => $message, 'future_raw' => number_format((float) $part->future_raw), 'data' => $data]);
     }
 
@@ -1571,5 +1585,134 @@ class HomeController extends Controller
     public function report()
     {
         return view('report');
+    }
+
+    public function getReportData(Request $request)
+    {
+        $data = WeeksHistory::with([
+            'entry.get_department',
+            'entry.get_customer',
+            'entry.part'
+        ])->select('weeks_history.*');
+
+        return DataTables::of($data)
+            ->addColumn('department', function ($row) {
+                return $row->entry->get_department->name ?? 'N/A';
+            })
+            ->addColumn('customer', function ($row) {
+                return $row->entry->get_customer->CustomerName ?? 'N/A';
+            })
+            ->addColumn('part_number', function ($row) {
+                return $row->entry->part->Part_Number ?? 'N/A';
+            })
+            ->addColumn('date_search', function ($row) {
+                return $row->created_at ?? '';
+            })
+            ->addColumn('in_stock', function ($row) {
+                return $row->entry->in_stock_finish ?? '';
+            })
+            ->addColumn('past_due', function ($row) {
+                return $row->past_due ?? '';
+            })
+            ->addColumn('balance_schedule', function ($row) {
+                $total_weeks = Weeks::selectRaw('
+                    COALESCE(week_1, 0) + COALESCE(week_2, 0) + COALESCE(week_3, 0) + COALESCE(week_4, 0) +
+                    COALESCE(week_5, 0) + COALESCE(week_6, 0) + COALESCE(week_7, 0) + COALESCE(week_8, 0) +
+                    COALESCE(week_9, 0) + COALESCE(week_10, 0) + COALESCE(week_11, 0) + COALESCE(week_12, 0) +
+                    COALESCE(week_13, 0) + COALESCE(week_14, 0) + COALESCE(week_15, 0) + COALESCE(week_16, 0) +
+                    COALESCE(month_5, 0) + COALESCE(month_6, 0) + COALESCE(month_7, 0) + COALESCE(month_8, 0) +
+                    COALESCE(month_9, 0) + COALESCE(month_10, 0) + COALESCE(month_11, 0) + COALESCE(month_12, 0) AS total
+                ')->where('part_number', $row->entry->part->id)->first();
+
+                $weekValues = json_decode($row->week_values, true);
+
+                // Initialize total
+                $total = 0;
+
+                // Add the week and month data dynamically
+                $weeksData = [];
+                for ($i = 1; $i <= 16; $i++) {
+                    $value = $weekValues["week_$i"] ?? 0;
+                    $weeksData["week_$i"] = $value;
+                    $total += (int) $value;
+                }
+
+                for ($i = 5; $i <= 12; $i++) {
+                    $value = $weekValues["month_$i"] ?? 0;
+                    $weeksData["month_$i"] = $value;
+                    $total += (int) $value;
+                }
+
+                $final = $total_weeks->total - $total;
+
+                return $final ?? '';
+            })
+            ->addColumn('week_values', function ($row) {
+                $weekValues = json_decode($row->week_values, true);
+
+                // Add the week and month data dynamically
+                $weeksData = [];
+                for ($i = 1; $i <= 16; $i++) {
+                    $weeksData["week_$i"] = $weekValues["week_$i"] ?? '';
+                }
+
+                for ($i = 5; $i <= 12; $i++) {
+                    $weeksData["month_$i"] = $weekValues["month_$i"] ?? '';
+                }
+
+                return $weeksData;
+            })
+            ->make(true);
+    }
+
+    private function generateWeekColumns()
+    {
+        $columns = [];
+        $today = date('Y-m-d');
+        $dayOfWeek = date('w', strtotime($today));
+        $mondayOfWeek = $dayOfWeek == 0
+            ? date('Y-m-d', strtotime('-6 days', strtotime($today)))
+            : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today)));
+
+        for ($week = 1; $week <= 16; $week++) {
+            $weekKey = "week_$week";
+            $columns[$weekKey] = function ($row) use ($weekKey) {
+                $weekValues = json_decode($row->week_values, true);
+                return $weekValues[$weekKey] ?? '';
+            };
+        }
+
+        return $columns;
+    }
+
+    /**
+     * Generates dynamic month columns (month_5 to month_12)
+     */
+    private function generateMonthColumns()
+    {
+        $columns = [];
+
+        // Calculate the start date of week 16
+        $today = date('Y-m-d');
+        $dayOfWeek = date('w', strtotime($today));
+        $mondayOfWeek = $dayOfWeek == 0
+            ? date('Y-m-d', strtotime('-6 days', strtotime($today)))
+            : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today)));
+
+        $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+        $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+        $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+
+        for ($month = 5; $month <= 12; $month++) {
+            $monthKey = "month_$month";
+            $columns[$monthKey] = function ($row) use ($monthKey) {
+                $weekValues = json_decode($row->week_values, true);
+                return $weekValues[$monthKey] ?? '';
+            };
+
+            $month5StartDate = date('Y-m-d', strtotime('+31 days', strtotime($month5StartDate)));
+        }
+
+        return $columns;
     }
 }
