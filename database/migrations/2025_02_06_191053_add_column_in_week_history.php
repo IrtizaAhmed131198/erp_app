@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('weeks_history', function (Blueprint $table) {
-            //
+            $table->integer('customer')->after('entry_id');
+            $table->integer('department')->after('customer');
+            $table->integer('part_number')->after('department');
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('weeks_history', function (Blueprint $table) {
-            //
+            $table->dropColumn('customer');
+            $table->dropColumn('department');
+            $table->dropColumn('part_number');
         });
     }
 };

@@ -1599,6 +1599,14 @@ class HomeController extends Controller
                 ->whereDate('weeks_history.created_at', '<=', $request->end_date);
         }
 
+        if ($request->has('group') && $request->group == 'customer') {
+            $query->orderBy('weeks_history.customer', 'asc');
+        }else if ($request->has('group') && $request->group == 'part_number') {
+            $query->orderBy('weeks_history.part_number', 'asc');
+        }else if ($request->has('group') && $request->group == 'department') {
+            $query->orderBy('weeks_history.department', 'asc');
+        }
+
         return DataTables::of($query)
             ->addColumn('department', function ($row) {
                 return $row->entry->get_department->name ?? 'N/A';
@@ -1643,7 +1651,6 @@ class HomeController extends Controller
             })
             ->make(true);
     }
-
 
     private function generateWeekColumns()
     {
