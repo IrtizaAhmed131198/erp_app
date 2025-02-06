@@ -218,6 +218,14 @@ class HomeController extends Controller
             // Broadcast the event
             event(new StockUpdate($data_updates));
 
+            if($fieldName == 'department'){
+                $weeks_histroy = WeeksHistory::where('entry_id', $dataId)->get();
+                foreach ($weeks_histroy as $weeks_histroy) {
+                    $weeks_histroy->department = $validatedData['department'];
+                    $weeks_histroy->save();
+                }
+            }
+
             return response()->json(['message' => 'Field updated successfully.']);
         } else {
             return response()->json(['message' => 'Entry not found.'], 404);
@@ -560,6 +568,14 @@ class HomeController extends Controller
                     $data->outside_processing_text_id = $textKey ?? null;
                     $data->save();
                 }
+            }
+
+            $weeks_histroy = WeeksHistory::where('entry_id', $id)->get();
+            foreach ($weeks_histroy as $weeks_histroy) {
+                $weeks_histroy->part_number = $validatedData['part_number'];
+                $weeks_histroy->customer = $validatedData['customer'];
+                $weeks_histroy->department = $validatedData['department'];
+                $weeks_histroy->save();
             }
 
             $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.'], 'entries', $entry->id, 'update');
@@ -1599,11 +1615,11 @@ class HomeController extends Controller
                 ->whereDate('weeks_history.created_at', '<=', $request->end_date);
         }
 
-        if ($request->has('group') && $request->group == 'customer') {
+        if ($request->has('filter') && $request->filter == 'customer') {
             $query->orderBy('weeks_history.customer', 'asc');
-        } else if ($request->has('group') && $request->group == 'part_number') {
+        }else if ($request->has('filter') && $request->filter == 'part_number') {
             $query->orderBy('weeks_history.part_number', 'asc');
-        } else if ($request->has('group') && $request->group == 'department') {
+        }else if ($request->has('filter') && $request->filter == 'department') {
             $query->orderBy('weeks_history.department', 'asc');
         }
 

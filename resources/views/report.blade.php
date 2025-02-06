@@ -162,23 +162,14 @@
 
 
 
-    {{-- <section class="report_sec">
+    <section class="report_sec">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
+                </div>
+                <div class="col-lg-6">
                     <div class="parent-filter">
-                        <select class="js-select2">
-                            <option value="All">ALL DEPARTMENT</option>
-                            <option value="All">RFM</option>
-                            <option value="All">EXTENSION</option>
-                            <option value="All">WIREFORM&lt;.200</option>
-                            <option value="All"> WIREFORM&gt;.200</option>
-                            <option value="All"> MULTI-SLIDE</option>
-                            <option value="All"> PRESS</option>
-                            <option value="All"> OUTSOURCED</option>
-                            <option value="All"> TORSION</option>
-                            <option value="All"> ASSEMBL</option>
-                        </select>
+                        <input type="text" name="daterange" value="" id="daterange_entries" />
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -233,7 +224,7 @@
         </div>
     </section>
 
-    <section class="report_sec">
+    {{-- <section class="report_sec">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -283,7 +274,6 @@
     </section> --}}
 @endsection
 
-
 @section('js')
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
@@ -322,6 +312,7 @@
                         if(filter) {
                             d.filter = filter;
                         }
+
                     }
                 },
                 columns: [
@@ -339,15 +330,19 @@
                     @endfor
                     { data: 'balance_schedule', name: 'balance_schedule' }
                 ],
-                paging: true,
-                info: true,
+                paging: false,
+                info: false,
                 rowGroup: {
                     dataSrc: null, // Default: No grouping
                     startRender: function (rows, group) {
-                        var firstRow = rows.data()[0]; // Get first row in the group
+                        if (typeof group === 'object') {
+                            return $('<tr></tr>');
+                        }
+                        var groupValue = group; // Default to the group value (e.g., 'customer' or 'department')
+
                         var colspan = $('#example thead tr th').length; // Full column span
 
-                        return $('<tr class="group"><td colspan="' + colspan + '"><strong>' + group + '</strong></td></tr>');
+                        return $('<tr class="group"><td colspan="' + colspan + '"><strong>' + groupValue + '</strong></td></tr>');
                     }
                 }
             });
@@ -356,29 +351,38 @@
             $('#filter').change(function () {
                 var selectedFilter = $(this).val();
 
+                // Disable row grouping by default
+                table.rowGroup().dataSrc(null);
+
                 if (selectedFilter === "All") {
-                    table.rowGroup().dataSrc(null); // No grouping
+                    // No grouping
                     table.column('.department-column').visible(true);
                     table.column('.customer-column').visible(true);
                     table.column('.part-number-column').visible(true);
                 } else if (selectedFilter === "customer") {
-                    table.rowGroup().dataSrc('customer'); // Group by customer
+                    // Group by customer
+                    table.rowGroup().dataSrc('customer');
                     table.column('.department-column').visible(false);
                     table.column('.customer-column').visible(true);
                     table.column('.part-number-column').visible(true);
+
                 } else if (selectedFilter === "department") {
-                    table.rowGroup().dataSrc('department'); // Group by department
+                    // Group by department
+                    table.rowGroup().dataSrc('department');
                     table.column('.department-column').visible(true);
                     table.column('.customer-column').visible(false);
                     table.column('.part-number-column').visible(true);
+                    $('.part-number-column').text('');
                 } else if (selectedFilter === "part_number") {
-                    table.rowGroup().dataSrc('part_number'); // Group by part number
+                    // Group by part number
+                    table.rowGroup().dataSrc('part_number');
                     table.column('.department-column').visible(false);
                     table.column('.customer-column').visible(false);
                     table.column('.part-number-column').visible(true);
+                    $('.department-column').text('');
                 }
 
-                table.draw(); // Redraw table
+                table.draw(); // Redraw table to apply changes
             });
 
             $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
@@ -389,6 +393,7 @@
                 table.draw();
             });
         });
+
 
     </script>
 @endsection
