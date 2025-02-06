@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class NotificationService
 {
-    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $post_type = null, $field = null, $old = null, $new = null)
+    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $field = null, $old = null, $new = null, $post_type = null)
     {
         // dd($userId, $type, $data, $referenceTable, $referenceId, $field, $old, $new, $post_type);
         $notification = Notification::create([

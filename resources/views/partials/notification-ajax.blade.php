@@ -76,9 +76,9 @@
                             </p>
                         </div>
                     </div>
-                    <div class="notification_show">
+                    {{-- <div class="notification_show">
                         <h5>User Login Successful</h5>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="notifiaction_time">
                     <span

@@ -278,7 +278,7 @@
                             $data_target = 'entries_' . $data->id . '_scheduled_total';
                         @endphp
                         <td class="toggleable-1 schedule_total" id="{{ $data_target }}">
-                            {{ number_format($sumWeeks1To6 + $sumWeeks7To12) }}</td>
+                            {{ number_format((float)$sumWeeks1To6 + (float)$sumWeeks7To12) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'in_stock_finished')
                         @php
                             $data_target = 'entries_' . $data->id . '_in_stock_finished';
