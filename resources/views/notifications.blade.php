@@ -102,8 +102,8 @@
             background-color: #d1e7dd;
         }
 
-        .bg-warning-soft {
-            background-color: #fff3cd;
+        .bg-danger-soft {
+            background-color: #f8d7da;
         }
 
         .bg-info-soft {
@@ -204,28 +204,29 @@
                         <div class="bg-body-tertiary card-header highlighted">
                             <h5 class="mb-1 mb-md-0">Activity log</h5>
                         </div>
-                        <div class="card-body" id="notificationContainer">
-                            <div class="filter_btn">
-                                <div class="filter_search">
-                                    <form class="search-form" action="{{ route('notifications') }}">
-                                        <i class="fas fa-search text-muted me-2"></i>
-                                        <input type="text" name="search" value="{{ request('search') }}"
-                                            class="border-0 w-100" placeholder="Search activities...">
-                                        <button type="submit" class="btn btn-primary">Search</button>
-                                    </form>
-                                </div>
+                        <div class="filter_btn">
+                            <div class="filter_search">
+                                <form class="search-form" action="{{ route('notifications') }}">
+                                    <i class="fas fa-search text-muted me-2"></i>
+                                    <input type="text" name="search" value="{{ request('search') }}"
+                                        class="border-0 w-100" placeholder="Search activities...">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </form>
+                            </div>
+                            <div class="parent-filter">
+                                <select class="js-select2" id="userFilter">
+                                    <option value="all" selected="">Select Users</option>
+                                    @foreach ($users as $val)
+                                        <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                    @endforeach
+                                </select>
                                 <div class="filter_all_btn">
-                                    <button class="btn btn-primary">Reset</button>
-                                </div>
-                                <div class="parent-filter">
-                                    <select class="js-select2" id="userFilter">
-                                        <option value="all" selected="">Select Users</option>
-                                        @foreach ($users as $val)
-                                            <option value="{{ $val->id }}">{{ $val->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <a class="btn btn-primary" href="{{ route('notifications') }}">Reset</a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-body" id="notificationContainer">
+
                             @include('partials.notification-ajax', ['notifications' => $notifications])
                         </div>
                         <div class="pagination-container">

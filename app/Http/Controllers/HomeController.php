@@ -1601,9 +1601,9 @@ class HomeController extends Controller
 
         if ($request->has('group') && $request->group == 'customer') {
             $query->orderBy('weeks_history.customer', 'asc');
-        }else if ($request->has('group') && $request->group == 'part_number') {
+        } else if ($request->has('group') && $request->group == 'part_number') {
             $query->orderBy('weeks_history.part_number', 'asc');
-        }else if ($request->has('group') && $request->group == 'department') {
+        } else if ($request->has('group') && $request->group == 'department') {
             $query->orderBy('weeks_history.department', 'asc');
         }
 
@@ -1639,10 +1639,10 @@ class HomeController extends Controller
                 $weekValues = json_decode($row->week_values, true);
                 $total = 0;
                 for ($i = 1; $i <= 16; $i++) {
-                    $total += (int)($weekValues["week_$i"] ?? 0);
+                    $total += (int) ($weekValues["week_$i"] ?? 0);
                 }
                 for ($i = 5; $i <= 12; $i++) {
-                    $total += (int)($weekValues["month_$i"] ?? 0);
+                    $total += (int) ($weekValues["month_$i"] ?? 0);
                 }
                 return $total_weeks->total - $total;
             })

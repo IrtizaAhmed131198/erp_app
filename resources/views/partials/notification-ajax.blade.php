@@ -1,5 +1,5 @@
 @foreach ($filter as $date => $notifications)
-    @if ($notifications)
+    @if (count($notifications) > 0)
         <div class="notification_today">
             <h2 class="notification-date-header">
                 {{ is_numeric($date) ? \Carbon\Carbon::parse($date)->format('F j, Y') : $date }}
@@ -37,22 +37,26 @@
             <a class="notification border-x-0 border-bottom-0 border-300 rounded-0" href="{{ $href }}">
                 <div class="notification_icons">
                     {{-- @dump($notification['post_type']); --}}
-                    @if ($notification->post_type == 'add')
+                    @if ($notification['post_type'] == 'add')
                         <div class="activity-icon bg-success-soft text-success">
                             <i class="fas fa-user-check"></i>
                         </div>
-                    @elseif ($notification->post_type == 'update')
+                    @elseif ($notification['post_type'] == 'update')
                         <div class="activity-icon bg-info-soft text-info">
                             <i class="fas fa-cog"></i>
+                        </div>
+                    @elseif ($notification['post_type'] == 'delete')
+                        <div class="activity-icon bg-danger-soft text-danger">
+                            <i class="fas fa-exclamation-circle"></i>
                         </div>
                     @endif
 
                     {{-- <div class="activity-icon bg-warning-soft text-warning">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <div class="activity-icon bg-info-soft text-info">
-                <i class="fas fa-cog"></i>
-            </div> --}}
+                    <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="activity-icon bg-info-soft text-info">
+                        <i class="fas fa-cog"></i>
+                </div> --}}
                 </div>
                 <div class="notification-avatar_icon">
                     <div class="flex-notification">
