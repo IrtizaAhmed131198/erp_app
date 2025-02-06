@@ -1146,6 +1146,9 @@ class HomeController extends Controller
         WeeksHistory::create([
             'user_id' => Auth::user()->id,
             'entry_id' => $part->id,
+            'customer' => $part->customer,
+            'department' => $part->department,
+            'part_number' => $part->part_number,
             'week_values' => json_encode($weeksData), // Assuming $weekValues is an array.
             'past_due' => $request->past_val,
             'updated_by' => Auth::user()->id,

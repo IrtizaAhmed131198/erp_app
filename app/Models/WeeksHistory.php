@@ -16,6 +16,9 @@ class WeeksHistory extends Model
     protected $fillable = [
         'user_id',
         'entry_id',
+        'customer',
+        'department',
+        'part_number',
         'week_values',
         'past_due',
         'updated_by'
