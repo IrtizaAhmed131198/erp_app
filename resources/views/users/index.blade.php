@@ -79,8 +79,10 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger"
-                                                        onclick="deleted({{ $val->id }})">Delete</a>
+                                                        onclick="deleted({{ $val->id }})">Delete</button>
                                                 </form>
+                                                <a href="{{ route('report', ['userId' => $val->id]) }}"
+                                                    class="btn btn-warning">Report</a>
                                             </div>
                                         </td>
                                     </tr>

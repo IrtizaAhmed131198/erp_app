@@ -106,8 +106,8 @@
                                             Input</a></li>
                                     <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ route('report') }}">Report</a>
-                                    </li>
+                                    {{-- <li><a class="dropdown-item" href="{{ route('report') }}">Report</a>
+                                    </li> --}}
                                     <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                     </li>
                                 @else

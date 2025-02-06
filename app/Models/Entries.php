@@ -122,4 +122,9 @@ class Entries extends Model
     {
         return $this->hasMany(WeeksHistory::class, 'entry_id');
     }
+
+    public function entryHistory()
+    {
+        return $this->hasMany(EntryHistory::class, 'entry_id');
+    }
 }

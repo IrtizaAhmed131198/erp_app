@@ -1596,9 +1596,10 @@ class HomeController extends Controller
         return response()->json(['message' => 'Entry deleted successfully.']);
     }
 
-    public function report()
+    public function report($userId)
     {
-        return view('report');
+        $parts = Parts::all();
+        return view('report', compact('parts','userId'));
     }
 
     public function getReportData(Request $request)
@@ -1608,6 +1609,10 @@ class HomeController extends Controller
             'entry.get_customer',
             'entry.part'
         ])->select('weeks_history.*');
+
+        if ($request->has('userId')) {
+            $query->where('weeks_history.user_id', $request->userId);
+        }
 
         // Apply date range filter
         if ($request->has('start_date') && $request->has('end_date')) {

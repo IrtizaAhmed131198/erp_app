@@ -77,6 +77,7 @@
     $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
 
     @endphp
+    <input type="hidden" id="user_id" name="user_id" value="{{ $userId ?? '' }}">
     <section class="report_sec">
         <div class="container">
             <div class="row">
@@ -162,10 +163,17 @@
 
 
 
-    <section class="report_sec">
+    {{-- <section class="report_sec">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
+                    <div class="parent-filter">
+                        <select class="js-select2" id="part">
+                            @foreach ($parts as $part)
+                                <option value="{{ $part->id }}">{{ $part->Part_Number }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="parent-filter">
@@ -178,43 +186,50 @@
                             <thead>
                                 <tr>
                                     <th>DEPARTMENT</th>
+                                    <th>WORK CENTER</th>
                                     <th>PLANNING QUEUE </th>
                                     <th>STATUS</th>
                                     <th>JOB</th>
-                                    <th>WORK CENTER</th>
+                                    <th>LOT</th>
+                                    <th>ID</th>
+                                    <th>CUSTOMER</th>
                                     <th>REV</th>
-                                    <th>PROCESS </th>
+                                    <th>PROCESS</th>
+                                    <th>IN PROCESS OUTSIDE</th>
+                                    <th>ON ORDER RAW MAT`L</th>
+                                    <th>WT/PC</th>
+                                    <th>MATERIAL</th>
+                                    <th>SAFETY</th>
+                                    <th>ORDER NOTES</th>
+                                    <th>PART NOTES</th>
+                                    <th>FUTURE RAW</th>
+                                    <th>NOTES</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <th>DEPARTMENT</th>
+                                    <th>WORK CENTER</th>
                                     <th>PLANNING QUEUE </th>
                                     <th>STATUS</th>
                                     <th>JOB</th>
-                                    <th>WORK CENTER</th>
+                                    <th>LOT</th>
+                                    <th>ID</th>
+                                    <th>CUSTOMER</th>
                                     <th>REV</th>
-                                    <th>PROCESS </th>
+                                    <th>PROCESS</th>
+                                    <th>IN PROCESS OUTSIDE</th>
+                                    <th>ON ORDER RAW MAT`L</th>
+                                    <th>WT/PC</th>
+                                    <th>MATERIAL</th>
+                                    <th>SAFETY</th>
+                                    <th>ORDER NOTES</th>
+                                    <th>PART NOTES</th>
+                                    <th>FUTURE RAW</th>
+                                    <th>NOTES</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -222,7 +237,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- <section class="report_sec">
         <div class="container">
@@ -278,6 +293,7 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
     <script>
+        const userId = $('#user_id').val();
         // Get current date
         const today = new Date();
         const tomorrow = new Date(today);
@@ -312,6 +328,8 @@
                         if(filter) {
                             d.filter = filter;
                         }
+
+                        d.userId = userId;
 
                     }
                 },
