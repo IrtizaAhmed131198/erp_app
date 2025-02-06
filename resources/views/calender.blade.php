@@ -527,20 +527,20 @@
                                                         strtotime('+31 days', strtotime($month5StartDate)),
                                                     );
                                                 @endphp
-                                                <tr>
-                                                    <td>
-                                                        <div class='weekdays-parent'>
-                                                            <span>Total Shipment</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="total_shipment" class="total_shipment" readonly>
-                                                    </td>
-                                                    {{-- <td>
-                                                        <input type='text' class='' disabled>
-                                                    </td> --}}
-                                                </tr>
                                             @endfor
+                                            <tr>
+                                                <td>
+                                                    <div class='weekdays-parent'>
+                                                        <span>Total Shipment</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="total_shipment" class="total_shipment" readonly>
+                                                </td>
+                                                {{-- <td>
+                                                    <input type='text' class='' disabled>
+                                                </td> --}}
+                                            </tr>
 
                                         </tbody>
                                     </table>
