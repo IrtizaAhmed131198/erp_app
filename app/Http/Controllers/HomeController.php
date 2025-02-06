@@ -1589,13 +1589,19 @@ class HomeController extends Controller
 
     public function getReportData(Request $request)
     {
-        $data = WeeksHistory::with([
+        $query = WeeksHistory::with([
             'entry.get_department',
             'entry.get_customer',
             'entry.part'
         ])->select('weeks_history.*');
 
-        return DataTables::of($data)
+        // Apply date range filter
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereDate('weeks_history.created_at', '>=', $request->start_date)
+                ->whereDate('weeks_history.created_at', '<=', $request->end_date);
+        }
+
+        return DataTables::of($query)
             ->addColumn('department', function ($row) {
                 return $row->entry->get_department->name ?? 'N/A';
             })
@@ -1606,7 +1612,7 @@ class HomeController extends Controller
                 return $row->entry->part->Part_Number ?? 'N/A';
             })
             ->addColumn('date_search', function ($row) {
-                return $row->created_at ?? '';
+                return $row->created_at->format('Y-m-d') ?? '';
             })
             ->addColumn('in_stock', function ($row) {
                 return $row->entry->in_stock_finish ?? '';
@@ -1625,45 +1631,21 @@ class HomeController extends Controller
                 ')->where('part_number', $row->entry->part->id)->first();
 
                 $weekValues = json_decode($row->week_values, true);
-
-                // Initialize total
                 $total = 0;
-
-                // Add the week and month data dynamically
-                $weeksData = [];
                 for ($i = 1; $i <= 16; $i++) {
-                    $value = $weekValues["week_$i"] ?? 0;
-                    $weeksData["week_$i"] = $value;
-                    $total += (int) $value;
+                    $total += (int)($weekValues["week_$i"] ?? 0);
                 }
-
                 for ($i = 5; $i <= 12; $i++) {
-                    $value = $weekValues["month_$i"] ?? 0;
-                    $weeksData["month_$i"] = $value;
-                    $total += (int) $value;
+                    $total += (int)($weekValues["month_$i"] ?? 0);
                 }
-
-                $final = $total_weeks->total - $total;
-
-                return $final ?? '';
+                return $total_weeks->total - $total;
             })
             ->addColumn('week_values', function ($row) {
-                $weekValues = json_decode($row->week_values, true);
-
-                // Add the week and month data dynamically
-                $weeksData = [];
-                for ($i = 1; $i <= 16; $i++) {
-                    $weeksData["week_$i"] = $weekValues["week_$i"] ?? '';
-                }
-
-                for ($i = 5; $i <= 12; $i++) {
-                    $weeksData["month_$i"] = $weekValues["month_$i"] ?? '';
-                }
-
-                return $weeksData;
+                return json_decode($row->week_values, true);
             })
             ->make(true);
     }
+
 
     private function generateWeekColumns()
     {

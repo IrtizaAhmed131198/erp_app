@@ -11,6 +11,8 @@ class WeeksHistory extends Model
 
     protected $table = "weeks_history";
 
+    protected $appends = ['new_customer'];
+
     protected $fillable = [
         'user_id',
         'entry_id',
@@ -36,5 +38,10 @@ class WeeksHistory extends Model
     public function entry()
     {
         return $this->belongsTo(Entries::class, 'entry_id');
+    }
+
+    public function getNewCustomerAttribute()
+    {
+        return $this->entry ? $this->entry->customer : null;
     }
 }
