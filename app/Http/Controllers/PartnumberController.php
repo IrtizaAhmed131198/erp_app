@@ -14,9 +14,22 @@ use App\Models\WorkCenterSelec;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
+use App\Services\NotificationService;
+use App\Models\Notification;
+
 
 class PartnumberController extends Controller
 {
+
+
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -149,11 +162,14 @@ class PartnumberController extends Controller
         $part->part_number = $request->part_number;
         $part->save();
 
+        $this->notificationService->sendNotification(Auth::user()->id, 'update_customer', ['message' => 'part number has been update.'], 'parts', $part->id, 'update');
+
         return response()->json([
             'success' => true,
             'message' => 'Part number updated successfully.',
             'part_number' => $part,
         ]);
+
     }
 
     public function customerupdate(Request $request)

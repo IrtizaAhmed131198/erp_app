@@ -118,18 +118,26 @@
             width: 50%;
         }
 
-        .filter_search .i_font {
+        .search-form {
+            position: relative;
+            z-index: 0;
+        }
+
+        .filter_search i {
             position: absolute;
             z-index: 0;
-            left: 2px;
-            top: 12px;
+            left: 8px;
+            top: 14px;
             font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: none;
         }
+
+        .search-form .btn-primary {
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            top: 3px;
+        }
+
 
         .filter_search input {
             padding: 10px 30px;
@@ -199,19 +207,15 @@
                         <div class="card-body" id="notificationContainer">
                             <div class="filter_btn">
                                 <div class="filter_search">
-                                    <form action="">
-                                        <button class="i_font" type="submit">
-                                            <i class="fas fa-search text-muted me-2"></i>
-                                        </button>
+                                    <form class="search-form" action="{{ route('notifications') }}">
+                                        <i class="fas fa-search text-muted me-2"></i>
                                         <input type="text" name="search" value="{{ request('search') }}"
                                             class="border-0 w-100" placeholder="Search activities...">
+                                        <button type="submit" class="btn btn-primary">Search</button>
                                     </form>
                                 </div>
                                 <div class="filter_all_btn">
-                                    <button class="btn btn-primary">All</button>
-                                    <button class="btn btn-primary">User</button>
-                                    <button class="btn btn-primary">System</button>
-                                    <button class="btn btn-primary">Error</button>
+                                    <button class="btn btn-primary">Reset</button>
                                 </div>
                                 <div class="parent-filter">
                                     <select class="js-select2" id="userFilter">

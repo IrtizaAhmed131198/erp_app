@@ -8,8 +8,8 @@
         <thead>
             <tr class="">
                 <th scope="col">In Stock</th>
-                <td> <input type="text" name="existing_amount" id="existing_amount"
-                        readonly oninput="formatNumberWithCommas(this)"></td>
+                <td> <input type="text" name="existing_amount" id="existing_amount" readonly
+                        oninput="formatNumberWithCommas(this)"></td>
 
             </tr>
         </thead>

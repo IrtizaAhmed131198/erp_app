@@ -102,7 +102,8 @@
             background-image: none !important;
         }
 
-        table.dataTable th, table.dataTable td {
+        table.dataTable th,
+        table.dataTable td {
             border: 1px solid #000000;
         }
     </style>
@@ -394,7 +395,7 @@
     {{-- edit data modal --}}
 
 
-    <div class="modal fade" id="partNumber" tabindex="-1" aria-labelledby="partNumberLabel" >
+    <div class="modal fade" id="partNumber" tabindex="-1" aria-labelledby="partNumberLabel">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -806,29 +807,71 @@
         }
 
         $(document).ready(function() {
-            var partColumns = [
-                { data: 'Part_Number', name: 'Part_Number' }, // Specific to Parts
-                { data: 'action', name: 'action', orderable: false, searchable: false } // Action buttons
+            var partColumns = [{
+                    data: 'Part_Number',
+                    name: 'Part_Number'
+                }, // Specific to Parts
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                } // Action buttons
             ];
-            var customerColumns = [
-                { data: 'CustomerName', name: 'CustomerName' }, // Specific to Parts
-                { data: 'action', name: 'action', orderable: false, searchable: false } // Action buttons
+            var customerColumns = [{
+                    data: 'CustomerName',
+                    name: 'CustomerName'
+                }, // Specific to Parts
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                } // Action buttons
             ];
-            var departmentColumns = [
-                { data: 'name', name: 'name' }, // Specific to Parts
-                { data: 'action', name: 'action', orderable: false, searchable: false } // Action buttons
+            var departmentColumns = [{
+                    data: 'name',
+                    name: 'name'
+                }, // Specific to Parts
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                } // Action buttons
             ];
-            var workColumns = [
-                { data: 'name', name: 'name' }, // Specific to Parts
-                { data: 'action', name: 'action', orderable: false, searchable: false } // Action buttons
+            var workColumns = [{
+                    data: 'name',
+                    name: 'name'
+                }, // Specific to Parts
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                } // Action buttons
             ];
-            var outColumns = [
-                { data: 'name', name: 'name' }, // Specific to Parts
-                { data: 'action', name: 'action', orderable: false, searchable: false } // Action buttons
+            var outColumns = [{
+                    data: 'name',
+                    name: 'name'
+                }, // Specific to Parts
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                } // Action buttons
             ];
-            var materialColumns = [
-                { data: 'Package', name: 'Package' }, // Specific to Parts
-                { data: 'action', name: 'action', orderable: false, searchable: false } // Action buttons
+            var materialColumns = [{
+                    data: 'Package',
+                    name: 'Package'
+                }, // Specific to Parts
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                } // Action buttons
             ];
             initializeDataTable('#myTable', 'parts', partColumns);
             initializeDataTable('#customerTable', 'customer', customerColumns);
@@ -1461,9 +1504,9 @@
 
     <script>
         $(document).on('click', '.opendata', function() {
-                $('#partNumberId').val($(this).data('id'));
-                $('#partNumberInput').val($(this).data('column'));
-                $('#partNumber').show();
+            $('#partNumberId').val($(this).data('id'));
+            $('#partNumberInput').val($(this).data('column'));
+            $('#partNumber').show();
         });
 
         $('#partNumberForm').submit(function(event) {
@@ -2124,7 +2167,7 @@
                                         if (!selectedPart) {
                                             Swal.showValidationMessage(
                                                 'Please select a replacement part!'
-                                                );
+                                            );
                                         }
                                         return selectedPart;
                                     }
@@ -2148,7 +2191,7 @@
                                                     text: 'Entries updated, and the part has been deleted.',
                                                 }).then(() => {
                                                     location
-                                                    .reload(); // Refresh page
+                                                        .reload(); // Refresh page
                                                 });
                                             },
                                             error: function(error) {
@@ -2214,7 +2257,7 @@
                 }
             });
         });
-        </script>
+    </script>
 
     {{-- pagination script --}}
 @endsection

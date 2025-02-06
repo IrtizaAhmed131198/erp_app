@@ -210,7 +210,7 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id], 'entries', $entry->id, $fieldName, $old, $value);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id], 'entries', $entry->id, $fieldName, $old, $value, 'add');
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -239,7 +239,7 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'add');
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -268,7 +268,7 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id, $fieldName, $old, $value);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id, $fieldName, $old, $value, 'add');
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -363,6 +363,7 @@ class HomeController extends Controller
             'currency' => 'required',
         ]);
 
+
         $existingEntry = Entries::where('customer', $validatedData['customer'])
             ->where('part_number', $validatedData['part_number'])
             ->first();
@@ -431,7 +432,7 @@ class HomeController extends Controller
                 }
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.'], 'entries', $entryId);
+            $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.'], 'entries', $entryId, 'add');
 
             return redirect()->back()->with('success', 'Part created successfully!');
         } catch (\Exception $e) {
@@ -561,7 +562,7 @@ class HomeController extends Controller
                 }
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.'], 'entries', $entry->id);
+            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.'], 'entries', $entry->id, 'update');
             return redirect()->back()->with('success', 'Part updated successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -574,9 +575,9 @@ class HomeController extends Controller
             abort(403, 'You do not have permission to access this resource.');
         }
         // $parts = Parts::all();
-        if(Auth::user()->role == 1){
+        if (Auth::user()->role == 1) {
             $parts = Entries::with('part')->get();
-        }else{
+        } else {
             $parts = Entries::with('part')->where('user_id', Auth::user()->id)->get();
         }
         $weeks = [
@@ -758,15 +759,14 @@ class HomeController extends Controller
 
     public function notifications(Request $request)
     {
-
         $search = $request->input('search');
-
 
         $notificationsQuery = Notification::with('user', 'target_cell');
 
         if ($search) {
             $notificationsQuery->where(function ($query) use ($search) {
                 $query->where('data', 'like', '%' . $search . '%')
+                    ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.some_key')) LIKE ?", ["%{$search}%"])
                     ->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%')
                             ->orWhere('email', 'like', '%' . $search . '%');
@@ -774,10 +774,8 @@ class HomeController extends Controller
             });
         }
 
-
         $users = User::where('role', 2)->get();
         $userId = $request->input('user_id');
-
 
         if (Auth::user()->role != 1) {
 
@@ -803,7 +801,6 @@ class HomeController extends Controller
         )->groupBy(fn($n) => $n->created_at->format('y-m-d'));
 
         $filter = array_merge($filter, $filtered->toArray());
-
 
         if ($request->ajax()) {
             $html = view('partials.notification-ajax', ['notifications' => $notifications])->render();
@@ -978,7 +975,7 @@ class HomeController extends Controller
         $data->last_updated_by = Auth::user()->id;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no);
+        $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no, 'update');
 
         $data_updates = [
             'entries_' . $data->id . '_in_stock_finished' => $data->in_stock_finish
@@ -1126,7 +1123,8 @@ class HomeController extends Controller
             'create_shipment_order',
             ['message' => $message],
             'entries',
-            $request->part_number
+            $request->part_number,
+            $isNewEntry ? 'add' : 'update',
         );
 
         WeeksHistory::create([
@@ -1162,7 +1160,7 @@ class HomeController extends Controller
         }
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'add_shipment', ['message' => 'Shipment Added.'], 'entries', $request->part_number);
+        $this->notificationService->sendNotification(Auth::user()->id, 'add_shipment', ['message' => 'Shipment Added.'], 'entries', $request->part_number, 'add');
 
         return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
     }
@@ -1342,7 +1340,7 @@ class HomeController extends Controller
         $entries->in_stock_finish -= (float) $request->shipped_amount;
         $entries->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id);
+        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id, 'add');
 
         $weeksDataFormatted['entries_' . $entries->id . '_in_stock_finish'] = $entries->in_stock_finish;
 
@@ -1364,7 +1362,7 @@ class HomeController extends Controller
         $data->past_due = $request->past_due;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id);
+        $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id, 'update');
 
         $data_updates = [
             'entries_' . $entries->id . '_past_due' => $data->past_due
@@ -1381,7 +1379,7 @@ class HomeController extends Controller
         $data->{$request->id} = $request->value;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_week_or_month', ['message' => 'Weeks or Month Updated'], 'weeks', $data->id);
+        $this->notificationService->sendNotification(Auth::user()->id, 'update_week_or_month', ['message' => 'Weeks or Month Updated'], 'weeks', $data->id, 'update');
 
         return response()->json([
             'success' => true,

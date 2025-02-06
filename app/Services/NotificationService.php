@@ -9,30 +9,19 @@ use Carbon\Carbon;
 
 class NotificationService
 {
-    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $field = null, $old = null, $new = null)
+    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $post_type = null, $field = null, $old = null, $new = null)
     {
-//        $target_cell_check = TargetCell::where([
-//            'table' => $referenceTable,
-//            'ref_id' => $referenceId,
-//            'field' => $field,
-//            'old' => $old,
-//        ])->where('created_at', '>=', Carbon::parse(Carbon::now()->subSeconds(10)))->get();
-//
-//        if (count($target_cell_check)) {
-//            foreach ($target_cell_check as $target_cell_record) {
-//                $del_noti = $target_cell_record->notification;
-//                $target_cell_record->delete();
-//                $del_noti->delete();
-//            }
-//        }
-
+        // dd($userId, $type, $data, $referenceTable, $referenceId, $field, $old, $new, $post_type);
         $notification = Notification::create([
             'user_id' => $userId,
             'type' => $type,
+            'post_type' => $post_type,
             'data' => json_encode($data),
             'reference_table' => $referenceTable,
             'reference_id' => $referenceId,
         ]);
+
+        // dd($notification);
 
         if ($type == 'add_manual_entries' && !is_null($referenceTable) && !is_null($referenceId)) {
             TargetCell::firstOrCreate([

@@ -10,9 +10,19 @@ use App\Models\Department;
 use App\Models\Material;
 use App\Models\WorkCenterSelec;
 use App\Models\Vendor;
+use App\Services\NotificationService;
+use App\Models\Notification;
 
 class TableController extends Controller
 {
+
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function add_part_number(Request $request)
     {
         $request->validate([
@@ -31,11 +41,15 @@ class TableController extends Controller
         $partNumber->part_number = $request->part_number;
         $partNumber->save();
 
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_part', ['message' => 'Part number has been added.'], 'parts', $partNumber->id, 'add');
+
         return response()->json([
             'success' => true,
             'message' => 'Part number added successfully.',
             'part_number' => $partNumber,
         ]);
+
     }
 
     public function add_customer(Request $request)
@@ -55,6 +69,9 @@ class TableController extends Controller
         $customer = new Customer();
         $customer->CustomerName = $request->customer_name;
         $customer->save();
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_customer', ['message' => 'Customer has been added.'], 'customers', $customer->id, 'add');
+
 
         return response()->json([
             'success' => true,
@@ -81,6 +98,9 @@ class TableController extends Controller
         $department->name = $request->name;
         $department->save();
 
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_department', ['message' => 'Department has been added.'], 'department', $department->id, 'add');
+
+
         return response()->json([
             'success' => true,
             'message' => 'Department added successfully.',
@@ -105,6 +125,8 @@ class TableController extends Controller
         $material = new Material();
         $material->Package = $request->package;
         $material->save();
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_material', ['message' => 'Material has been added.'], 'package', $material->id, 'add');
 
         return response()->json([
             'success' => true,
@@ -131,6 +153,9 @@ class TableController extends Controller
         $workCenter->name = $request->name;
         $workCenter->save();
 
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_workCenter', ['message' => 'Work center has been added.'], 'work_center_selector', $workCenter->id, 'add');
+
+
         return response()->json([
             'success' => true,
             'message' => 'Work Center added successfully.',
@@ -155,6 +180,9 @@ class TableController extends Controller
         $outsideProcessing = new Vendor();
         $outsideProcessing->name = $request->name;
         $outsideProcessing->save();
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'create_vendor', ['message' => 'Vendor has been added.'], 'vendor', $outsideProcessing->id, 'add');
+
 
         return response()->json([
             'success' => true,
