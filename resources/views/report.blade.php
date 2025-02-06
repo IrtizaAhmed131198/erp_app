@@ -83,15 +83,15 @@
                     <div class="parent-filter">
                         <select class="js-select2">
                             <option value="All" selected>ALL SCHEDULE</option>
-                            <option value="All">CUSTOMER</option>
-                            <option value="All">DEPARTMENT</option>
-                            <option value="All">PART NUMBER</option>
+                            <option value="customer">CUSTOMER</option>
+                            <option value="department">DEPARTMENT</option>
+                            <option value="part_number">PART NUMBER</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="parent-filter">
-                        <input type="text" name="daterange" value="" />
+                        <input type="text" name="daterange" value="" id="daterange" />
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -286,36 +286,108 @@
 @section('js')
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
+        // Get current date
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        // Format dates in yyyy-mm-dd format
+        const formatDate = (date) => date.toISOString().split('T')[0];
+
+        // Set the input value to "start date - end date"
+        document.getElementById('daterange').value = `${formatDate(today)} - ${formatDate(tomorrow)}`;
+
+        document.getElementById('daterange').setAttribute('min', formatDate(today));
+
+
         $(document).ready(function () {
-            $('#example').DataTable({
-                processing: true,
-                serverSide: true,
-                ordering: false,
-                searching: false,
-                ajax: "{{ route('getReportData') }}",
-                columns: [
-                    { data: 'department', name: 'department' },
-                    { data: 'customer', name: 'customer' },
-                    { data: 'part_number', name: 'part_number' },
-                    { data: 'date_search', name: 'date_search' },
-                    { data: 'in_stock', name: 'in_stock' },
-                    { data: 'past_due', name: 'past_due' },
+            var table = $('#example').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: false,
+            searching: false,
+            ajax: {
+                url: "{{ route('getReportData') }}",
+                data: function (d) {
+                    // Add daterange filter data to the request
+                    var daterange = $('input[name="daterange"]').val();
+                    if (daterange) {
+                        var dates = daterange.split(' - ');
+                        d.start_date = dates[0]; // Start date
+                        d.end_date = dates[1]; // End date
+                    }
 
-                    // Dynamically generate weeks
-                    @for ($week = 1; $week <= 16; $week++)
-                        { data: 'week_values.week_{{ $week }}', name: 'week_{{ $week }}' },
-                    @endfor
-
-                    // Dynamically generate months
-                    @for ($month = 5; $month <= 12; $month++)
-                        { data: 'week_values.month_{{ $month }}', name: 'month_{{ $month }}' },
-                    @endfor
-
-                    { data: 'balance_schedule', name: 'balance_schedule' }
-                ],
-                paging: true, // Keep pagination enabled
-                info: true
-            });
+                    // Add filter data for customer selection
+                    // var filterType = $('select.js-select2').val();
+                    // if (filterType !== 'All') {
+                    //     d.filter = filterType; // Send selected filter to backend
+                    // }
+                }
+            },
+            columns: [
+                { data: 'department', name: 'department' },
+                { data: 'customer', name: 'customer' },
+                { data: 'part_number', name: 'part_number' },
+                { data: 'date_search', name: 'date_search' },
+                { data: 'in_stock', name: 'in_stock' },
+                { data: 'past_due', name: 'past_due' },
+                // Dynamically generate weeks
+                @for ($week = 1; $week <= 16; $week++)
+                    { data: 'week_values.week_{{ $week }}', name: 'week_{{ $week }}' },
+                @endfor
+                // Dynamically generate months
+                @for ($month = 5; $month <= 12; $month++)
+                    { data: 'week_values.month_{{ $month }}', name: 'month_{{ $month }}' },
+                @endfor
+                { data: 'balance_schedule', name: 'balance_schedule' }
+            ],
+            paging: true,
+            info: true,
+            drawCallback: function(settings) {
+                // Trigger grouping by customer after the table is redrawn
+                if ($('select.js-select2').val() === 'CUSTOMER') {
+                    groupRowsByCustomer();
+                }
+            }
         });
+
+        // Trigger the table reload when a new date range is selected
+        $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+            table.draw();
+        });
+
+        // Handle the select dropdown change for customer filter
+        $('select.js-select2').change(function () {
+            table.draw(); // Reload table with the selected filter
+        });
+
+        // Group rows by customer name
+        function groupRowsByCustomer() {
+            var rows = table.rows().nodes();
+            var lastCustomerName = '';
+            var groupStart = null;
+
+            rows.each(function(row, index) {
+                var customerName = $(row).find('.customer').text().trim();
+
+                if (customerName !== lastCustomerName) {
+                    lastCustomerName = customerName;
+
+                    // Collapse previous group
+                    if (groupStart !== null) {
+                        $(groupStart).nextUntil('.customer').hide();
+                    }
+
+                    // Show this group and start a new group
+                    groupStart = row;
+                    $(row).nextUntil('.customer').show();
+                } else {
+                    // Hide the row if customer name is the same
+                    $(row).hide();
+                }
+            });
+        }
+    });
+
     </script>
 @endsection

@@ -150,6 +150,17 @@
         });
     </script>
 
+    <script>
+        $(function () {
+            $('input[name="daterange"]').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD' // Customize date format as needed
+                },
+                // Optionally, specify any other configuration options you need
+            });
+        });
+    </script>
+
     @yield('js')
 
     <script>
@@ -181,16 +192,6 @@
             });
             $(".js-select2-multi").select2({
                 closeOnSelect: true
-            });
-        });
-    </script>
-
-    <script>
-        $(function() {
-            $('input[name="daterange"]').daterangepicker({
-                opens: 'left'
-            }, function(start, end, label) {
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             });
         });
     </script>
