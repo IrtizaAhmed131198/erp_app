@@ -12,7 +12,7 @@ class Notification extends Model
 
     protected $table = "notifications";
 
-    protected $fillable = ['user_id', 'type', 'data', 'reference_table', 'reference_id', 'is_read', 'post_type'];
+    protected $fillable = ['user_id', 'type', 'data', 'reference_table', 'reference_id', 'is_read', 'post_type', 'info'];
 
     protected static function boot()
     {

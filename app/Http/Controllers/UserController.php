@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NotificationService;
 
 class UserController extends Controller
 {
-    public function __construct()
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
     {
-        $this->middleware('user.maintenance');
+        $this->middleware('user.maintenance'); // Move middleware call inside the constructor
+        $this->notificationService = $notificationService;
     }
     /**
      * Display a listing of the resource.
@@ -121,6 +125,10 @@ class UserController extends Controller
     {
         $data = User::find($id);
         $data->delete();
+
+        $info = '"' . $data->name.'" user has been deleted.';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'delete_user', ['message' => 'User deleted.'], 'users', $data->id, '', '', '', 'delete', $info);
 
         return redirect()->back();
     }

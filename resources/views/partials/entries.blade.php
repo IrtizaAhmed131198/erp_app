@@ -523,7 +523,6 @@
                 <td class="toggleable-2" id="{{ $data_target }}">
                     <input type="text" step="any" name="future_raw" id="future_raw"
                         value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}" data-id="{{ $data->id }}"
-                        onkeyup="sendAjaxRequest('future_raw', this.value, event)"
                         oninput="formatAndPreventNegative(this)" readonly>
                 </td>
 

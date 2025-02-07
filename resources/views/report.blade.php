@@ -293,6 +293,15 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
     <script>
+        $(function () {
+            $('input[name="daterange"]').daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD' // Customize date format as needed
+                },
+                minDate: moment().startOf('day'),
+                // Optionally, specify any other configuration options you need
+            });
+        });
         const userId = $('#user_id').val();
         // Get current date
         const today = new Date();
@@ -390,14 +399,12 @@
                     table.column('.department-column').visible(true);
                     table.column('.customer-column').visible(false);
                     table.column('.part-number-column').visible(true);
-                    $('.part-number-column').text('');
                 } else if (selectedFilter === "part_number") {
                     // Group by part number
                     table.rowGroup().dataSrc('part_number');
                     table.column('.department-column').visible(false);
                     table.column('.customer-column').visible(false);
                     table.column('.part-number-column').visible(true);
-                    $('.department-column').text('');
                 }
 
                 table.draw(); // Redraw table to apply changes

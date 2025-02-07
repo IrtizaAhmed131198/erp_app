@@ -74,6 +74,8 @@ function master_data_editable_column_map($column)
         'status' => 'status',
         'job' => 'job_number',
         'lot' => 'lot_number',
+        'ids' => 'ids',
+        'part_number' => 'part_number',
         'customer' => 'customer',
         'rev' => 'rev',
         'process' => 'process',

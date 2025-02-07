@@ -551,49 +551,24 @@
                             key: 'master_screen_region_2_column_configuration',
                             value: region_2_column_configuration,
                         },
-                        // success: (data) => {
-                        //     if (data.success) {
-                        //         Swal.fire({
-                        //             icon: 'success',
-                        //             title: 'Success',
-                        //             text: data.message,
-                        //         });
-                        //
-                        //         $('#filter3').modal('hide');
-                        //
-                        //         window.location.reload();
-                        //     } else {
-                        //         Swal.fire({
-                        //             icon: 'error',
-                        //             title: 'Error',
-                        //             text: data.message,
-                        //         });
-                        //
-                        //         $('#filter3').modal('hide');
-                        //     }
-                        // },
-                        // error: (e) => {
-                        //     Swal.fire({
-                        //         icon: 'error',
-                        //         title: 'Error',
-                        //         text: e.message,
-                        //     });
-                        //
-                        //     $('#filter3').modal('hide');
-                        // }
                     });
                 }
+
+
+                // $('#filter3').modal('hide');
 
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
                     text: 'Changes saved!',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setTimeout(() => {
+                            location.reload(); // Reload the page after 1-second delay
+                        }, 1000);
+                    }
                 });
-
-                $('#filter3').modal('hide');
-
-                window.location.reload();
-
             });
 
             //reset changes
@@ -618,10 +593,15 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Success',
-                                        text: data.message
+                                        text: data.message,
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            setTimeout(() => {
+                                                location.reload(); // Reload the page after 1-second delay
+                                            }, 1000);
+                                        }
                                     });
-
-                                    window.location.reload();
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
@@ -874,7 +854,7 @@
         let typingTimer3;
         const typingTimeout = 500; // 2 seconds of no typing
 
-        function sendAjaxRequest(field, value, event) {
+        function sendAjaxRequest(field, value, event, text = '') {
             const inputElement = event.target;
             const dataId = inputElement.getAttribute('data-id');
 
@@ -893,7 +873,8 @@
             const data = {
                 id: dataId,
                 field: field,
-                value: value
+                value: value,
+                text: text
             };
 
             if (value == "") {

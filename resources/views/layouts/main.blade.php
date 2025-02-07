@@ -150,17 +150,6 @@
         });
     </script>
 
-    <script>
-        $(function () {
-            $('input[name="daterange"]').daterangepicker({
-                locale: {
-                    format: 'YYYY-MM-DD' // Customize date format as needed
-                },
-                // Optionally, specify any other configuration options you need
-            });
-        });
-    </script>
-
     @yield('js')
 
     <script>

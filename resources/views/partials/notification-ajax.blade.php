@@ -12,12 +12,13 @@
                 $name = $notification->user->name ?? null;
                 $notificationData = json_decode($notification->data ?? '{}');
                 $message = $notificationData->message ?? 'No message available';
+                $info = $notification->info ?? 'No info available';
                 $avatar =
                     $role == 1
                         ? asset('images/admin-image.jpg')
                         : ($user_img
                             ? asset($user_img)
-                            : asset('images/profile-pic.jpg'));
+                            : asset('images/profile-pic.png'));
             @endphp
 
             @if ($notification->target_cell ?? false)
@@ -71,14 +72,14 @@
                         </div>
                         <div class="notification-body">
                             <p class="mb-1">
-                                <strong>{{ $name }}</strong>
-                                {{ $message }}
+                                <strong>({{ $name }})</strong>
+                                {{ $info }}
                             </p>
                         </div>
                     </div>
-                    {{-- <div class="notification_show">
-                        <h5>User Login Successful</h5>
-                    </div> --}}
+                    <div class="notification_show">
+                        <h5>{{ $message }}</h5>
+                    </div>
                 </div>
                 <div class="notifiaction_time">
                     <span

@@ -202,15 +202,40 @@ class HomeController extends Controller
         $value = $request->input('value');
 
         // Find the entry by its ID
-        $entry = Entries::find($dataId);
+        $entry = Entries::with(['get_customer', 'part', 'get_department'])->find($dataId);
 
         if ($entry) {
+            if($entry->{$fieldName} == $value){
+                return response()->json(['message' => 'Field updated successfully.']);
+            }
             // Update the specific field
             $old = $entry->{$fieldName};
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id], 'entries', $entry->id, $fieldName, $old, $value, 'add');
+            if($fieldName == 'department'){
+                $new_old = $entry->get_department->name;
+                $new_value = Department::find($value)->name;
+            }else if($fieldName == 'customer'){
+                $new_old = $entry->get_customer->CustomerName;
+                $new_value = Customer::find($value)->CustomerName;
+            }else if($fieldName == 'part'){
+                $new_old = $entry->part->Part_Number;
+                $new_value = Parts::find($value)->Part_Number;
+            }else{
+                $new_old = $old;
+                $new_value = $value;
+            }
+
+            $fieldNameFormatted = ucwords(str_replace('_', ' ', $fieldName));
+            if($new_old == ''){
+                $info = '"' . $new_value . '" has been added to ' . $fieldNameFormatted;
+            }else{
+                $info = $fieldNameFormatted . ' value changes from "' . $new_old . '" to "' . $new_value . '"';
+            }
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id],
+                'entries', $entry->id, $fieldName, $old, $value, 'add', $info);
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -221,7 +246,7 @@ class HomeController extends Controller
             if($fieldName == 'department'){
                 $weeks_histroy = WeeksHistory::where('entry_id', $dataId)->get();
                 foreach ($weeks_histroy as $weeks_histroy) {
-                    $weeks_histroy->department = $validatedData['department'];
+                    $weeks_histroy->department = $value;
                     $weeks_histroy->save();
                 }
             }
@@ -239,15 +264,23 @@ class HomeController extends Controller
         $value = $request->input('value');
 
         // Find the entry by its ID
-        $entry = WorkCenter::find($dataId);
+        $entry = WorkCenter::with('work_select')->find($dataId);
 
         if ($entry) {
+            if($entry->{$fieldName} == $value){
+                return response()->json(['message' => 'Field updated successfully.']);
+            }
             // Update the specific field
             $old = $entry->{$fieldName};
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'add');
+            $new_old = $entry->work_select->name;
+            $new_value = WorkCenterSelec::find($value)->name;
+            $fieldNameFormatted = ucwords(str_replace('_', ' ', $fieldName));
+            $info = 'WorkCenter value changes from "' . $new_old . '" to "' . $new_value . '"';
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'update', $info);
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -268,13 +301,21 @@ class HomeController extends Controller
         $value = $request->input('value');
 
         // Find the entry by its ID
-        $entry = OutSource::find($dataId);
+        return $entry = OutSource::find($dataId);
 
         if ($entry) {
+            if($entry->{$fieldName} == $value){
+                return response()->json(['message' => 'Field updated successfully.']);
+            }
             // Update the specific field
             $old = $entry->{$fieldName};
             $entry->{$fieldName} = $value;
             $entry->save();
+
+            // $new_old = $entry->work_select->name;
+            // $new_value = WorkCenterSelec::find($value)->name;
+            // $fieldNameFormatted = ucwords(str_replace('_', ' ', $fieldName));
+            // $info = 'WorkCenter value changes from ' . $new_old . ' to ' . $new_value;
 
             $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'outsource', $entry->id, $fieldName, $old, $value, 'add');
 
@@ -377,7 +418,7 @@ class HomeController extends Controller
             ->first();
 
         if ($existingEntry) {
-            return redirect()->back()->with('error', 'This Part Number already exists.');
+            return redirect()->back()->with('error', 'This Part Number entry already exists.');
         }
         try {
             $validatedData['user_id'] = Auth::user()->id;
@@ -440,7 +481,11 @@ class HomeController extends Controller
                 }
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.'], 'entries', $entryId, 'add');
+            $part = Parts::find($validatedData['part_number'])->Part_Number;
+
+            $info = 'New entry has been created for part number: "' . $part . '"';
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'create_entries', ['message' => 'Entries has been added.'], 'entries', $entryId, '', '', '', 'add', $info);
 
             return redirect()->back()->with('success', 'Part created successfully!');
         } catch (\Exception $e) {
@@ -578,7 +623,11 @@ class HomeController extends Controller
                 $weeks_histroy->save();
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.'], 'entries', $entry->id, 'update');
+            $part = Parts::find($validatedData['part_number'])->Part_Number;
+
+            $info = 'Entry has been updated for part number: "' . $part . '"';
+
+            $this->notificationService->sendNotification(Auth::user()->id, 'update_entries', ['message' => 'Entries have been updated.'], 'entries', $entry->id, '', '', '', 'update', $info);
             return redirect()->back()->with('success', 'Part updated successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
@@ -985,13 +1034,15 @@ class HomeController extends Controller
         $newTotal = $request->input('new_total');
         $part_no = $request->input('part_no');
 
-        $data = Entries::where('part_number', $part_no)->where('user_id', Auth::user()->id)->first();
+        $data = Entries::with('part')->where('part_number', $part_no)->where('user_id', Auth::user()->id)->first();
 
         $data->in_stock_finish = $newTotal;
         $data->last_updated_by = Auth::user()->id;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no, 'update');
+        $info = 'Production total has been change "' . $existingAmount . '" to "' . $newTotal . '" for part number: "' . $data->part->Part_Number . '"';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'update_production_total', ['message' => 'Production Total Updated'], 'entries', $part_no, '', '', '', 'update', $info);
 
         $data_updates = [
             'entries_' . $data->id . '_in_stock_finished' => $data->in_stock_finish
@@ -1080,7 +1131,7 @@ class HomeController extends Controller
             ->where('part_number', $request->part_number)
             ->first();
 
-        $part = Entries::where('user_id', Auth::user()->id)
+        $part = Entries:: with('part')->where('user_id', Auth::user()->id)
             ->where('part_number', $request->part_number)
             ->first();
 
@@ -1132,15 +1183,21 @@ class HomeController extends Controller
         // Broadcast the updated values via Pusher
         event(new StockUpdate($mergedData));
 
+
         // Send notification
         $message = $isNewEntry ? 'Order Created' : 'Order Updated';
+        $info = '"' . $part->part->Part_Number . '" ' . $message;
         $this->notificationService->sendNotification(
             Auth::user()->id,
             'create_shipment_order',
             ['message' => $message],
             'entries',
             $request->part_number,
+            '',
+            '',
+            '',
             $isNewEntry ? 'add' : 'update',
+            $info
         );
 
         WeeksHistory::create([
@@ -1169,7 +1226,7 @@ class HomeController extends Controller
         if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
         }
-        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::with('part')->where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         foreach ($request->weeks as $key => $value) {
             if ($value != '' && $value != null) {
@@ -1179,7 +1236,9 @@ class HomeController extends Controller
         }
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'add_shipment', ['message' => 'Shipment Added.'], 'entries', $request->part_number, 'add');
+        $info = 'Shipment Order has been added for part number: "' . $entries->part->Part_Number . '"';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'add_shipment', ['message' => 'Shipment Added.'], 'entries', $request->part_number, '', '', '', 'add', $info);
 
         return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
     }
@@ -1338,7 +1397,7 @@ class HomeController extends Controller
     {
         $weeksDataFormatted = [];
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::with('part')->where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         foreach ($request->shipmentData as $shipment) {
             if ($shipment['value'] != '' && $shipment['value'] != null) {
@@ -1359,7 +1418,13 @@ class HomeController extends Controller
         $entries->in_stock_finish -= (float) $request->shipped_amount;
         $entries->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id, 'add');
+        $info = 'Shipment Amount ('.$request->shipped_amount.') has been added for part number: "' . $entries->part->Part_Number . '"';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id, '', '', '', 'add', $info);
+
+        $info = 'In Stock Amount ('.$entries->in_stock_finish.') has been updated for part number: "' . $entries->part->Part_Number . '"';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'detect_production', ['message' => 'Weeks In Stock Updated'], 'weeks', $data->id, '', '', '', 'update', $info);
 
         $weeksDataFormatted['entries_' . $entries->id . '_in_stock_finish'] = $entries->in_stock_finish;
 
@@ -1372,16 +1437,19 @@ class HomeController extends Controller
     public function change_past_due(Request $request)
     {
         $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::with('part')->where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
 
         if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
         }
 
+        $old_past_due = $data->past_due;
         $data->past_due = $request->past_due;
         $data->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id, 'update');
+        $info = 'Past Due changed "'.$old_past_due.'" to "'.$data->past_due.'"  for part number: "' . $entries->part->Part_Number . '"';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id, '', '', '', 'update', $info);
 
         $data_updates = [
             'entries_' . $entries->id . '_past_due' => $data->past_due
@@ -1477,7 +1545,7 @@ class HomeController extends Controller
                 ['column' => 'status', 'order' => 4, 'visibility' => true],
                 ['column' => 'job_number', 'order' => 5, 'visibility' => true],
                 ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
-                ['column' => 'id', 'order' => 7, 'visibility' => true],
+                ['column' => 'ids', 'order' => 7, 'visibility' => true],
                 ['column' => 'part_number', 'order' => 8, 'visibility' => true],
                 ['column' => 'customer', 'order' => 9, 'visibility' => true],
                 ['column' => 'rev', 'order' => 10, 'visibility' => true],

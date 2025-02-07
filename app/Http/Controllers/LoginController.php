@@ -7,11 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Services\NotificationService;
 
 class LoginController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function signin(Request $request)
     {
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users|max:250',
@@ -47,6 +56,10 @@ class LoginController extends Controller
             'View_2' => $request->filled('View_2') ? 1 : 0,
             'View_3' => $request->filled('View_3') ? 1 : 0,
         ]);
+
+        $info = 'Add new user: "' . $user->name . '"';
+
+        $this->notificationService->sendNotification(Auth::user()->id, 'add_new_user', ['message' => 'Add new user.'], 'users', $user->id, '', '', '', 'add', $info);
         // dd($user);
         // auth()->login($user);
         return redirect()->back()->with('success', 'User added!');
