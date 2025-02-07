@@ -620,6 +620,7 @@
                         }
 
                         $(`.show_future_raw`).val(response.future_raw);
+                        $(`input[name='existing_amount']`).val(response.in_stock_finish);
 
                         // $('#past_due').val(response.in_stock_finish);
 
