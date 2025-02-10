@@ -205,7 +205,7 @@ class HomeController extends Controller
         $entry = Entries::with(['get_customer', 'part', 'get_department'])->find($dataId);
 
         if ($entry) {
-            if($entry->{$fieldName} == $value){
+            if ($entry->{$fieldName} == $value) {
                 return response()->json(['message' => 'Field updated successfully.']);
             }
             // Update the specific field
@@ -213,29 +213,39 @@ class HomeController extends Controller
             $entry->{$fieldName} = $value;
             $entry->save();
 
-            if($fieldName == 'department'){
+            if ($fieldName == 'department') {
                 $new_old = $entry->get_department->name;
                 $new_value = Department::find($value)->name;
-            }else if($fieldName == 'customer'){
+            } else if ($fieldName == 'customer') {
                 $new_old = $entry->get_customer->CustomerName;
                 $new_value = Customer::find($value)->CustomerName;
-            }else if($fieldName == 'part'){
+            } else if ($fieldName == 'part') {
                 $new_old = $entry->part->Part_Number;
                 $new_value = Parts::find($value)->Part_Number;
-            }else{
+            } else {
                 $new_old = $old;
                 $new_value = $value;
             }
 
             $fieldNameFormatted = ucwords(str_replace('_', ' ', $fieldName));
-            if($new_old == ''){
+            if ($new_old == '') {
                 $info = '"' . $new_value . '" has been added to ' . $fieldNameFormatted;
-            }else{
+            } else {
                 $info = $fieldNameFormatted . ' value changes from "' . $new_old . '" to "' . $new_value . '"';
             }
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.', 'entries', $entry->id],
-                'entries', $entry->id, $fieldName, $old, $value, 'add', $info);
+            $this->notificationService->sendNotification(
+                Auth::user()->id,
+                'add_manual_entries',
+                ['message' => 'Manual entries has been added.', 'entries', $entry->id],
+                'entries',
+                $entry->id,
+                $fieldName,
+                $old,
+                $value,
+                'add',
+                $info
+            );
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -243,7 +253,7 @@ class HomeController extends Controller
             // Broadcast the event
             event(new StockUpdate($data_updates));
 
-            if($fieldName == 'department'){
+            if ($fieldName == 'department') {
                 $weeks_histroy = WeeksHistory::where('entry_id', $dataId)->get();
                 foreach ($weeks_histroy as $weeks_histroy) {
                     $weeks_histroy->department = $value;
@@ -267,7 +277,7 @@ class HomeController extends Controller
         $entry = WorkCenter::with('work_select')->find($dataId);
 
         if ($entry) {
-            if($entry->{$fieldName} == $value){
+            if ($entry->{$fieldName} == $value) {
                 return response()->json(['message' => 'Field updated successfully.']);
             }
             // Update the specific field
@@ -304,7 +314,7 @@ class HomeController extends Controller
         return $entry = OutSource::find($dataId);
 
         if ($entry) {
-            if($entry->{$fieldName} == $value){
+            if ($entry->{$fieldName} == $value) {
                 return response()->json(['message' => 'Field updated successfully.']);
             }
             // Update the specific field
@@ -1050,7 +1060,7 @@ class HomeController extends Controller
         }
 
         $sum1_12 = $sumWeeks1To6 + $sumWeeks7To12;
-        $sumWeeks1To6 += ($data->past_due ?? 0);
+        $sumWeeks1To6 += ((float) $data->past_due ?? 0);
         $sum1_12_f = (($sum1_12 - $in_stock_finish) > 0) ? number_format(($sum1_12 - $in_stock_finish) * $wt_pc, 2) : 0;
         // Add calculated values to broadcast payload
         $weeksDataFormatted['entries_' . $dataId . '_past_due'] = $data->past_due ?? 0;
@@ -1095,7 +1105,7 @@ class HomeController extends Controller
             ->where('part_number', $request->part_number)
             ->first();
 
-        $part = Entries:: with('part')->where('user_id', Auth::user()->id)
+        $part = Entries::with('part')->where('user_id', Auth::user()->id)
             ->where('part_number', $request->part_number)
             ->first();
 
@@ -1382,11 +1392,11 @@ class HomeController extends Controller
         $entries->in_stock_finish -= (float) $request->shipped_amount;
         $entries->save();
 
-        $info = 'Shipment Amount ('.$request->shipped_amount.') has been added for part number: "' . $entries->part->Part_Number . '"';
+        $info = 'Shipment Amount (' . $request->shipped_amount . ') has been added for part number: "' . $entries->part->Part_Number . '"';
 
         $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id, '', '', '', 'add', $info);
 
-        $info = 'In Stock Amount ('.$entries->in_stock_finish.') has been updated for part number: "' . $entries->part->Part_Number . '"';
+        $info = 'In Stock Amount (' . $entries->in_stock_finish . ') has been updated for part number: "' . $entries->part->Part_Number . '"';
 
         $this->notificationService->sendNotification(Auth::user()->id, 'detect_production', ['message' => 'Weeks In Stock Updated'], 'weeks', $data->id, '', '', '', 'update', $info);
 
@@ -1411,7 +1421,7 @@ class HomeController extends Controller
         $data->past_due = $request->past_due;
         $data->save();
 
-        $info = 'Past Due changed "'.$old_past_due.'" to "'.$data->past_due.'"  for part number: "' . $entries->part->Part_Number . '"';
+        $info = 'Past Due changed "' . $old_past_due . '" to "' . $data->past_due . '"  for part number: "' . $entries->part->Part_Number . '"';
 
         $this->notificationService->sendNotification(Auth::user()->id, 'change_past_due', ['message' => 'Past Due Changed'], 'weeks', $data->id, '', '', '', 'update', $info);
 
@@ -1634,7 +1644,7 @@ class HomeController extends Controller
     public function report($userId)
     {
         $parts = Parts::all();
-        return view('report', compact('parts','userId'));
+        return view('report', compact('parts', 'userId'));
     }
 
     public function getReportData(Request $request)
@@ -1657,9 +1667,9 @@ class HomeController extends Controller
 
         if ($request->has('filter') && $request->filter == 'customer') {
             $query->orderBy('weeks_history.customer', 'asc');
-        }else if ($request->has('filter') && $request->filter == 'part_number') {
+        } else if ($request->has('filter') && $request->filter == 'part_number') {
             $query->orderBy('weeks_history.part_number', 'asc');
-        }else if ($request->has('filter') && $request->filter == 'department') {
+        } else if ($request->has('filter') && $request->filter == 'department') {
             $query->orderBy('weeks_history.department', 'asc');
         }
 

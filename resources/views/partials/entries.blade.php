@@ -1,7 +1,8 @@
 @foreach ($entries as $index => $data)
     <input type="hidden" name="id" id="data_id" value="{{ $data->id }}">
     <tr id="entry_number_{{ $data->id }}">
-        <td style="display: none"><button type="button" class="btn btn-danger delete-entry" data-id="{{ $data->id }}"><i class="fa fa-trash"></i></button></td>
+        <td style="display: none"><button type="button" class="btn btn-danger delete-entry"
+                data-id="{{ $data->id }}"><i class="fa fa-trash"></i></button></td>
         @if (Auth::user()->View_1 == 1)
             <td class="vertical-text highlighted">
             </td>
@@ -132,17 +133,18 @@
                                 <button class="custom-dropdown-toggle part-st" type="button">
                                     {{ $data->part->Part_Number ?? '' }}
                                 </button>
-                                @if($data->part && $data->part->id)
+                                @if ($data->part && $data->part->id)
                                     <ul class="custom-dropdown-menu">
                                         <li>
-                                            <a href="{{ route('calender' , ['part_number' => $data->part->id]) }}" class="custom-dropdown-item"
-                                                data-part="{{ $data->part_number }}" data-url="{{ route('calender') }}">
+                                            <a href="{{ route('calender', ['part_number' => $data->part->id]) }}"
+                                                class="custom-dropdown-item" data-part="{{ $data->part_number }}"
+                                                data-url="{{ route('calender') }}">
                                                 Shipment & Production
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->part->id]) }}" class="custom-dropdown-item"
-                                                data-part="{{ $data->part_number }}"
+                                            <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->part->id]) }}"
+                                                class="custom-dropdown-item" data-part="{{ $data->part_number }}"
                                                 data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
                                                 Part Number Input
                                             </a>
@@ -212,6 +214,7 @@
 
             @php
                 $weeksArr = $data->weeks_months;
+
                 if ($weeksArr) {
                     $sumWeeks1To6 = array_sum([
                         $weeksArr['week_1'],
@@ -221,6 +224,7 @@
                         $weeksArr['week_5'],
                         $weeksArr['week_6'],
                     ]);
+
                     $sumWeeks7To12 = array_sum([
                         $weeksArr['week_7'],
                         $weeksArr['week_8'],
@@ -254,11 +258,11 @@
                     ->whereIn('status', ['new', 'returned'])
                     ->where('location', '=', 'WIP')
                     ->sum('container_qty');
-                $in_stock_live = \DB::table('inventory')
-                    ->where('Part_No', $data->part_number)
-                    ->sum('weight');
-
-                $sumWeeks1To6 = $sumWeeks1To6 + ($data->weeks_months->past_due ?? 0);
+                $in_stock_live = \DB::table('inventory')->where('Part_No', $data->part_number)->sum('weight');
+                $sumWeeks1To6 =
+                    (float) $sumWeeks1To6 +
+                    (float) (isset($data->weeks_months->past_due) ? $data->weeks_months->past_due : 0);
+                // dd($sumWeeks1To6);
             @endphp
 
             @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
@@ -267,7 +271,8 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_reqd_1_6_weeks';
                         @endphp
-                        <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($sumWeeks1To6) }}</td>
+                        <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($sumWeeks1To6) }}
+                        </td>
                     @elseif($region_2_column_configuration_item->column == 'reqd_7_12_weeks')
                         @php
                             $data_target = 'entries_' . $data->id . '_reqd_7_12_weeks';
@@ -278,7 +283,7 @@
                             $data_target = 'entries_' . $data->id . '_scheduled_total';
                         @endphp
                         <td class="toggleable-1 schedule_total" id="{{ $data_target }}">
-                            {{ number_format((float)$sumWeeks1To6 + (float)$sumWeeks7To12) }}</td>
+                            {{ number_format((float) $sumWeeks1To6 + (float) $sumWeeks7To12) }}</td>
                     @elseif($region_2_column_configuration_item->column == 'in_stock_finished')
                         @php
                             $data_target = 'entries_' . $data->id . '_in_stock_finished';
@@ -303,7 +308,7 @@
                                     data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('live_inventory_finish', this.value, event)"
                                     oninput="formatAndPreventNegative(this)"> --}}
-                                    {{ number_format($data->live_inventory_finish) }}
+                                {{ number_format($data->live_inventory_finish) }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -320,7 +325,7 @@
                                     data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('live_inventory_wip', this.value, event)"
                                     oninput="formatAndPreventNegative(this)"> --}}
-                                    {{ number_format($data->live_inventory_wip) }}
+                                {{ number_format($data->live_inventory_wip) }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -334,8 +339,7 @@
                         @if (Auth::user()->stock_finished_column == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
                                 <input type="text" name="in_process_outside" id="in_process_outside"
-                                    value="{{ $data->in_process_outside ?? '' }}"
-                                    data-id="{{ $data->id }}"
+                                    value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('in_process_outside', this.value, event)">
                             </td>
                         @else
@@ -365,7 +369,7 @@
                                     value="{{ number_format($data->in_stock_live) }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('in_stock_live', this.value, event)"
                                     oninput="formatAndPreventNegative(this)"> --}}
-                                    {{ number_format($data->in_stock_live) }}
+                                {{ number_format($data->in_stock_live) }}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -414,10 +418,12 @@
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                {{ (($sum1_12 - $data->in_stock_finish) > 0) ? number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc, 2) : 0 }}</td>
+                                {{ $sum1_12 - $data->in_stock_finish > 0 ? number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc, 2) : 0 }}
+                            </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                {{ (($sum1_12 - $data->in_stock_finish) > 0) ? number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc, 2) : 0 }}</td>
+                                {{ $sum1_12 - $data->in_stock_finish > 0 ? number_format(($sum1_12 - $data->in_stock_finish) * $data->wt_pc, 2) : 0 }}
+                            </td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'safety')
                         @php
@@ -459,7 +465,8 @@
                                     onkeyup="sendAjaxRequest('order_notes', this.value, event)">{{ $data->order_notes }}</textarea>
                             </td>
                         @else
-                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">{{ $data->order_notes }}</td>
+                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">
+                                {{ $data->order_notes }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'part_notes')
                         @php
@@ -472,7 +479,8 @@
                                 {{ $data->part_notes }}
                             </td>
                         @else
-                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">{{ $data->part_notes }}</td>
+                            <td class="toggleable-1 custom-textarea" id="{{ $data_target }}">
+                                {{ $data->part_notes }}</td>
                         @endif
                     @endif
                 @endif
@@ -487,9 +495,8 @@
                 $data_target = 'entries_' . $data->id . '_past_due';
             @endphp
             <td class="toggleable-2" id="{{ $data_target }}">
-                {{ number_format($data->weeks_months->past_due ?? 0) }}
+                {{ number_format((float) (isset($data->weeks_months->past_due) ? $data->weeks_months->past_due : 0)) }}
             </td>
-
             @for ($week = 1; $week <= 16; $week++)
                 @php
                     $weekKey = 'week_' . $week;
@@ -522,8 +529,8 @@
                 @endphp
                 <td class="toggleable-2" id="{{ $data_target }}">
                     <input type="text" step="any" name="future_raw" id="future_raw"
-                        value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}" data-id="{{ $data->id }}"
-                        oninput="formatAndPreventNegative(this)" readonly>
+                        value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}"
+                        data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)" readonly>
                 </td>
 
                 @php
@@ -532,8 +539,8 @@
                 <td class="toggleable-2" id="{{ $data_target }}">
                     <input type="text" step="any" name="price" id="price"
                         value="{{ number_format($data->price) }}" data-id="{{ $data->id }}"
-                        onkeyup="sendAjaxRequest('price', this.value, event)"
-                        oninput="formatAndPreventNegative(this)" readonly>
+                        onkeyup="sendAjaxRequest('price', this.value, event)" oninput="formatAndPreventNegative(this)"
+                        readonly>
                 </td>
 
                 @php
