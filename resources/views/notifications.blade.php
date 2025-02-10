@@ -160,6 +160,7 @@
 
         .select2.select2-container .select2-selection .select2-selection__rendered {
             padding-right: 50px;
+            width: 150px !important;
         }
 
         .notification_today {
@@ -170,6 +171,10 @@
             font-size: 30px;
             font-weight: 700;
             color: black;
+        }
+
+        .parent-filter {
+            align-items: center;
         }
     </style>
 @endsection
@@ -213,9 +218,17 @@
                                     <button type="submit" class="btn btn-primary">Search</button>
                                 </form>
                             </div>
+                            <div class="status-dropdown">
+                                <select class="js-select2" id="statusFilter">
+                                    <option value="" selected="">Select Status</option>
+                                    <option value="add">Add</option>
+                                    <option value="update">Update</option>
+                                    <option value="delete">Delete</option>
+                                </select>
+                            </div>
                             <div class="parent-filter">
                                 <select class="js-select2" id="userFilter">
-                                    <option value="all" selected="">Select Users</option>
+                                    <option value="" selected=""></option>
                                     @foreach ($users as $val)
                                         <option value="{{ $val->id }}">{{ $val->name }}</option>
                                     @endforeach
@@ -226,12 +239,12 @@
                             </div>
                         </div>
                         <div class="card-body" id="notificationContainer">
-
                             @include('partials.notification-ajax', ['notifications' => $notifications])
+                            <div class="pagination-container mt-5">
+                                {{ $notifications->links() }}
+                            </div>
                         </div>
-                        <div class="pagination-container">
-                            {{ $notifications->links() }}
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -242,9 +255,12 @@
 @section('js')
     <script>
         $('#userFilter').on('change', function() {
+
             const userId = $(this).val();
             const container = $('#notificationContainer');
-
+            if (userId == "") {
+                return false;
+            }
             $.ajax({
                 url: "{{ route('notifications') }}",
                 type: 'GET',
@@ -253,6 +269,7 @@
                 },
                 success: function(response) {
                     container.html(response.html); // Replace container content
+
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching notifications:', error);
@@ -261,5 +278,28 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        $('#statusFilter').on('change', function() {
+            const stauscheck = $(this).val();
+            const container = $('#notificationContainer');
+
+            $.ajax({
+                url: "{{ route('notifications') }}",
+                type: 'GET',
+                data: {
+                    post_type: stauscheck
+                },
+                success: function(response) {
+                    container.html(response.html);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching notifications:', error);
+                    container.html(
+                        '<p class="text-center p-3 text-danger">Failed to load notifications.</p>');
+                }
+            })
+        })
     </script>
 @endsection

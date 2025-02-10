@@ -798,13 +798,15 @@ class HomeController extends Controller
 
     public function notifications(Request $request)
     {
+
         $search = $request->input('search');
+        $posttype = $request->input('post_type');
+
 
         $notificationsQuery = Notification::with('user', 'target_cell');
-
         if ($search) {
             $notificationsQuery->where(function ($query) use ($search) {
-                $query->where('data', 'like', '%' . $search . '%')
+                $query->where('data', 'like', '%' . $search . '%')->orwhere('info', 'like', '%' . $search . '%')
                     ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.some_key')) LIKE ?", ["%{$search}%"])
                     ->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%')
@@ -813,7 +815,13 @@ class HomeController extends Controller
             });
         }
 
+
+        if ($posttype) {
+            $notificationsQuery->where('post_type', $posttype);
+        }
+
         $users = User::where('role', 2)->get();
+
         $userId = $request->input('user_id');
 
         if (Auth::user()->role != 1) {
@@ -839,14 +847,18 @@ class HomeController extends Controller
             $n->created_at->toDateString() === $yesterday
         )->groupBy(fn($n) => $n->created_at->format('y-m-d'));
 
-        $filter = array_merge($filter, $filtered->toArray());
+        $filters = array_merge($filter, $filtered->toArray());
+
+
+
 
         if ($request->ajax()) {
-            $html = view('partials.notification-ajax', ['notifications' => $notifications])->render();
+            $html = view('partials.notification-ajax', ['notifications' => $notifications, 'filters' => $filters])->render();
             return response()->json(['html' => $html]);
         }
 
-        return view('notifications', compact('notifications', 'users', 'filter'));
+        return view('notifications', compact('notifications', 'users', 'filters'));
+
     }
 
     public function visual_screen()

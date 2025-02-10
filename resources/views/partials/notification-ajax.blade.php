@@ -1,4 +1,4 @@
-@foreach ($filter as $date => $notifications)
+@foreach ($filters as $date => $notifications)
     @if (count($notifications) > 0)
         <div class="notification_today">
             <h2 class="notification-date-header">
@@ -6,6 +6,7 @@
             </h2>
         </div>
         @foreach ($notifications as $notification)
+            {{-- @dd($notifications); --}}
             @php
                 $role = $notification->user->role ?? null;
                 $user_img = $notification->user->user_img ?? null;
