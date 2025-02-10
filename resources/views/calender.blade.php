@@ -596,42 +596,43 @@
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    if (response.data && Object.values(response.data).every(value => value === null)) {
-                        console.log("Response contains only null values.");
-                        return false;
-                    }
-
                     if (response.data) {
-                        let weeksData = {};
                         let data = response.data;
                         let temp = @json($datesArray);
                         let temp1 = @json($datesArray);
+                        let weeksData = {};
+
+                        // Check if all values are null
+                        if (Object.values(data).every(value => value === null)) {
+                            console.log("Response contains only null values.");
+
+                            // Set all related fields to null
+                            for (let key in data) {
+                                $(`#edit_${key}`).val(null).prop('readonly', true);
+                                $(`#${key}`).val(null).prop('readonly', true);
+                            }
+
+                            $(`.show_future_raw`).val(response.future_raw);
+                            $(`input[name='existing_amount']`).val(response.in_stock_finish);
+                            $(`.total_shipment`).val('');
+
+                            return false;
+                        }
+
                         // Iterate through the response data object
                         for (let key in data) {
                             let value = data[key];
-
-                            let formattedValue = new Intl.NumberFormat('en-US').format(value);
+                            let formattedValue = value !== null ? new Intl.NumberFormat('en-US').format(value) : null;
 
                             $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
                             $(`#${key}`).val(formattedValue).prop('readonly', true);
-                            weeksData[`${key}`] = value;
-                            temp[`${key}`] = value;
-                            temp[`${key}_date`] = temp1[`${key}`];
+                            weeksData[key] = value;
+                            temp[key] = value;
+                            temp[`${key}_date`] = temp1[key];
                         }
 
                         $(`.show_future_raw`).val(response.future_raw);
                         $(`input[name='existing_amount']`).val(response.in_stock_finish);
-
-                        // $('#past_due').val(response.in_stock_finish);
-
-
-
-                        // $('.change-amount').each(function () {
-                        //     const weekKey = $(this).data('week-change');
-                        //     const weekValue = $(this).val();
-                        //     console.log(weekKey, weekValue);
-                        //     weeksData[`${weekKey}`] = weekValue;
-                        // });
 
                         $.ajax({
                             url: "{{ route('update_past_due') }}",
