@@ -689,43 +689,7 @@ class HomeController extends Controller
             })
             ->get();
 
-        $com2 = WorkCenter::with(['entries.get_customer', 'entries.part'])
-            ->where('com', 'COM 2')
-            ->when(Auth::user()->role != 1, function ($query) {
-                return $query->whereHas('entries', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
-                });
-            })
-            ->get();
-
-        $com3 = WorkCenter::with(['entries.get_customer', 'entries.part'])
-            ->where('com', 'COM 3')
-            ->when(Auth::user()->role != 1, function ($query) {
-                return $query->whereHas('entries', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
-                });
-            })
-            ->get();
-
         $out1 = OutSource::with(['entries_data.get_customer', 'entries_data.part', 'out_source'])
-            ->when(Auth::user()->role != 1, function ($query) {
-                return $query->whereHas('entries_data', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
-                });
-            })
-            ->get();
-
-        $out2 = OutSource::with(['entries_data.get_customer', 'entries_data.part'])
-            ->where('out', 'OUT 2')
-            ->when(Auth::user()->role != 1, function ($query) {
-                return $query->whereHas('entries_data', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
-                });
-            })
-            ->get();
-
-        $out3 = OutSource::with(['entries_data.get_customer', 'entries_data.part'])
-            ->where('out', 'OUT 3')
             ->when(Auth::user()->role != 1, function ($query) {
                 return $query->whereHas('entries_data', function ($query) {
                     $query->where('user_id', Auth::user()->id);
@@ -737,7 +701,7 @@ class HomeController extends Controller
 
         $parts = Parts::get();
 
-        return view('input-screen', compact('com1', 'com2', 'com3', 'out1', 'out2', 'out3', 'customers', 'parts'));
+        return view('input-screen', compact('com1', 'out1', 'customers', 'parts'));
     }
 
     public function save_table_data(Request $request)

@@ -27,6 +27,12 @@ class PartnumberController extends Controller
     public function __construct(NotificationService $notificationService)
     {
         $this->notificationService = $notificationService;
+        $this->middleware(function ($request, $next) {
+            if (Auth::check() && Auth::user()->role != 1) {
+                abort(403, 'You do not have permission to access this resource.');
+            }
+            return $next($request);
+        });
     }
 
 

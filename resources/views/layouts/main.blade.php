@@ -104,8 +104,10 @@
                                    --}}
                                     <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number
                                             Input</a></li>
+                                    @if (Auth::user()->role == 1)
                                     <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a>
                                     </li>
+                                    @endif
                                     {{-- <li><a class="dropdown-item" href="{{ route('report') }}">Report</a>
                                     </li> --}}
                                     <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
