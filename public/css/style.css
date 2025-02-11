@@ -8,11 +8,11 @@ body {
 }
 
 .toggleable-1.collapsible {
-    display: none;
+    display: none !important;!i;!;
 }
 
 .toggleable-2.collapsible {
-    display: none;
+    display: none !important;!i;!;
 }
 
 .toggle-header {
@@ -1054,7 +1054,7 @@ select.form-select.filter-services {
 }
 
 .toggleable.collapsible {
-    display: none;
+    display: none !important;
 }
 
 td.toggleable.toggle-department.active-td {

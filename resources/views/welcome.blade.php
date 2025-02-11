@@ -164,6 +164,84 @@
         #btn_highlight_cell {
             background-color: rgb(255, 255, 255);
         }
+
+        .parent-table table thead {
+            position: relative;
+            z-index: 100;
+        }
+
+        .parent-table table tr.colored-table-row {
+            position: sticky;
+            top: 0;
+            z-index: 9;
+        }
+
+        .parent-table table {
+            overflow: unset;
+        }
+
+        #department {
+            font-size: 12px;
+        }
+
+        select#work-center {
+            font-size: 12px;
+        }
+
+        tbody#entries-table-body select {
+            font-size: 12px;
+            width: 80px;
+        }
+
+        table.table tr th {
+            font-size: 12px;
+            width: 100px !important;
+            display: inline-block;
+        }
+
+        .parent-table table input,
+        .parent-table table textarea {}
+
+        tbody#entries-table-body td {
+            font-size: 12px;
+        }
+
+        .part-st {
+            font-size: 12px;
+        }
+
+        table#entries-table td {
+            height: 40px !important;
+            display: inline-block;
+            width: 100px;
+            overflow: auto;
+        }
+
+        table#entries-table td::-webkit-scrollbar {
+            height: 1px;
+        }
+
+        .parent-table table textarea::-webkit-scrollbar {
+            width: 1px;
+        }
+
+        .highlighted.toggle-header {
+            width: 40px !important;
+
+        }
+
+        td.vertical-text.highlighted {
+            width: 40px !important;
+        }
+
+        .highlighted.toggle-header-1 {
+            width: 40px !important;
+
+        }
+
+        .highlighted.toggle-header-2 {
+            width: 40px !important;
+        }
     </style>
 @endsection
 
@@ -598,7 +676,8 @@
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             setTimeout(() => {
-                                                location.reload(); // Reload the page after 1-second delay
+                                                location
+                                                    .reload(); // Reload the page after 1-second delay
                                             }, 1000);
                                         }
                                     });
@@ -1163,6 +1242,9 @@
             });
         });
 
+
+
+
         // $('body').on('click', '.custom-dropdown-item', function(e) {
         //     alert();
         //     window.open($(this).attr('href'), '_blank');
@@ -1323,7 +1405,7 @@
         $(document).ready(function() {
             $("textarea, .custom-textarea").on("dblclick", function() {
                 let currentValue = $(this).val().trim() || $(this).text()
-            .trim(); // Get the current textarea value
+                    .trim(); // Get the current textarea value
 
                 Swal.fire({
                     title: "Order Notes",
