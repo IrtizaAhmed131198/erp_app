@@ -199,6 +199,7 @@
             display: inline-block;
             overflow: auto;
             height: 35px;
+
         }
 
         .parent-table table input,
@@ -217,6 +218,7 @@
             display: inline-block;
             width: 100px;
             overflow: auto;
+            position: relative;
         }
 
         table#entries-table td::-webkit-scrollbar {
@@ -247,6 +249,15 @@
 
         table.table tr th::-webkit-scrollbar {
             height: 1px;
+        }
+
+        .custom-toggleable {
+            overflow: unset !important;
+            width: 150px !important;
+        }
+
+        .custom-dropdown-menu {
+            position: absolute;
         }
     </style>
 @endsection
@@ -1189,6 +1200,8 @@
             });
         });
     </script>
+
+
 
 
     <script>
