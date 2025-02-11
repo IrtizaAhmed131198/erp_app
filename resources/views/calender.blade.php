@@ -634,6 +634,8 @@
                         $(`.show_future_raw`).val(response.future_raw);
                         $(`input[name='existing_amount']`).val(response.in_stock_finish);
 
+                        let future = parseFloat(response.future_raw) || 0;
+
                         $.ajax({
                             url: "{{ route('update_past_due') }}",
                             method: 'POST',
@@ -669,7 +671,7 @@
                                     .reduce((total, key) => total + Number(data[key]), 0); // Sum the numeric values
 
                                 console.log("Total Sum:", sum);
-                                $('.total_shipment').val(sum);
+                                $(`.total_shipment`).val(sum + future);
                             },
                             error: function(xhr) {
                                 console.error("Error updating shipment: ", xhr
@@ -996,7 +998,8 @@
                                 .reduce((total, key) => total + Number(data[key] || 0), 0); // Sum the numeric values
 
                             console.log("Total Sum:", sum);
-                            $(`.total_shipment`).val(sum);
+                            let future = parseFloat(response.future_raw) || 0;
+                            $(`.total_shipment`).val(sum + future);
                         }
                     },
                     error: function(xhr) {
