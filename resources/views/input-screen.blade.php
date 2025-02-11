@@ -75,7 +75,7 @@
                                                             $status = $entry['entries']['status'];
                                                             $customer = $entry['entries']['get_customer']['CustomerName'] ?? null;
                                                             $part_number = $entry['entries']['part']['Part_Number'] ?? null;
-                                                            $in_stock_finish = $entry['entries']['in_stock_finish'] ?? null;
+                                                            $planning = $entry['entries']['planning'] ?? null;
                                                             $job = $entry['entries']['job'];
                                                             $lot = $entry['entries']['lot'];
                                                             $id = $entry['id'] ?? null;
@@ -92,9 +92,21 @@
                                                             </td>
                                                             <td class="customer_val">{{ $customer }}</td>
                                                             <td class="part_number_val">{{ $part_number }}</td>
-                                                            <td class="quantity_val">{{ $in_stock_finish }}</td>
-                                                            <td class="job_val">{{ $job }}</td>
-                                                            <td class="lot_val">{{ $lot }}</td>
+                                                            <td class="quantity_val">{{ $planning }}</td>
+                                                            <td class="job_val">
+                                                                {{-- @if(Auth::user()->role == 1) --}}
+                                                                    <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                {{-- @else
+                                                                    {{ $job }}
+                                                                @endif --}}
+                                                            </td>
+                                                            <td class="lot_val">
+                                                                {{-- @if(Auth::user()->role == 1) --}}
+                                                                    <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                {{-- @else
+                                                                    {{ $lot }}
+                                                                @endif --}}
+                                                            </td>
                                                             <td style="display: none" class="type">{{ $work_select }}</td>
                                                             <td style="display: none">{{ $id }}</td>
                                                         </tr>
@@ -126,7 +138,7 @@
                                             $job = $entry['entries_data']['job'] ?? null;
                                             $lot = $entry['entries_data']['lot'] ?? null;
 
-                                            if ($status !== null && $job !== null && $lot !== null) {
+                                            if ($status !== null && $planning !== null) {
                                                 $hasValidEntry = true;
                                                 break; // No need to check further if at least one entry is valid
                                             }
@@ -165,13 +177,13 @@
                                                                     $customer_id = $entry['entries_data']['get_customer']['id'] ?? null;
                                                                     $part_number = $entry['entries_data']['part']['Part_Number'] ?? null;
                                                                     $part_number_id = $entry['entries_data']['part']['id'] ?? null;
-                                                                    $in_stock_finish = $entry['entries_data']['in_stock_finish'] ?? null;
+                                                                    $planning = $entry['entries_data']['planning'] ?? null;
                                                                     $job = $entry['entries_data']['job'] ?? null;
                                                                     $lot = $entry['entries_data']['lot'] ?? null;
                                                                     $id = $entry['id'] ?? null;
                                                                     $out_source = $entry['out_source']['name']  ?? null;
                                                                 @endphp
-                                                                @if ($status !== null && $job !== null && $lot !== null)
+                                                                @if ($status !== null && $planning !== null)
                                                                     <tr>
                                                                         <td>
                                                                             <select name="status" id="status">
@@ -188,13 +200,21 @@
                                                                                 {{ $part_number }}
                                                                         </td>
                                                                         <td class="quantity_val">
-                                                                                {{ $in_stock_finish }}
+                                                                                {{ $planning }}
                                                                         </td>
                                                                         <td class="job_val">
+                                                                            {{-- @if(Auth::user()->role == 1) --}}
+                                                                                <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                            {{-- @else
                                                                                 {{ $job }}
+                                                                            @endif --}}
                                                                         </td>
                                                                         <td class="lot_val">
+                                                                            {{-- @if(Auth::user()->role == 1) --}}
+                                                                                <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                            {{-- @else
                                                                                 {{ $lot }}
+                                                                            @endif --}}
                                                                         </td>
                                                                         <td style="display: none" class="type">{{ $out_source }}</td>
                                                                         <td style="display: none">{{ $id }}</td>

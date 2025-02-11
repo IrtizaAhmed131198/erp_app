@@ -41,16 +41,16 @@ class ConfigCheck
                         'order' => 4,
                         'visibility' => true
                     ],
-                    [
-                        'column' => 'job_number',
-                        'order' => 5,
-                        'visibility' => true
-                    ],
-                    [
-                        'column' => 'lot_number',
-                        'order' => 6,
-                        'visibility' => true
-                    ],
+                    // [
+                    //     'column' => 'job_number',
+                    //     'order' => 5,
+                    //     'visibility' => true
+                    // ],
+                    // [
+                    //     'column' => 'lot_number',
+                    //     'order' => 6,
+                    //     'visibility' => true
+                    // ],
                     [
                         'column' => 'ids',
                         'order' => 7,
