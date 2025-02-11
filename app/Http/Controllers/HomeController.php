@@ -798,15 +798,17 @@ class HomeController extends Controller
 
     public function notifications(Request $request)
     {
-
         $search = $request->input('search');
-        $posttype = $request->input('post_type');
-
+        // $posttype = $request->input('post_type');
+        $userId = $request->input('user_id');
+        $status = $request->input('status'); // Get status filter
 
         $notificationsQuery = Notification::with('user', 'target_cell');
+
         if ($search) {
             $notificationsQuery->where(function ($query) use ($search) {
-                $query->where('data', 'like', '%' . $search . '%')->orwhere('info', 'like', '%' . $search . '%')
+                $query->where('data', 'like', '%' . $search . '%')
+                    ->orWhere('info', 'like', '%' . $search . '%')
                     ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.some_key')) LIKE ?", ["%{$search}%"])
                     ->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%')
@@ -815,24 +817,22 @@ class HomeController extends Controller
             });
         }
 
+        // if ($posttype) {
+        //     $notificationsQuery->where('post_type', $posttype);
+        // }
 
-        if ($posttype) {
-            $notificationsQuery->where('post_type', $posttype);
+        if ($status) {
+            $notificationsQuery->where('post_type', $status);
         }
 
-        $users = User::where('role', 2)->get();
-
-        $userId = $request->input('user_id');
-
         if (Auth::user()->role != 1) {
-
             $notificationsQuery->where('user_id', Auth::id());
         } elseif ($userId && $userId !== 'all') {
-
             $notificationsQuery->where('user_id', $userId);
         }
 
         $notifications = $notificationsQuery->orderBy('created_at', 'desc')->paginate(10);
+        $users = User::where('role', 2)->get();
 
         $today = now()->toDateString();
         $yesterday = now()->subDay()->toDateString();
@@ -844,13 +844,10 @@ class HomeController extends Controller
 
         $filtered = $notifications->reject(
             fn($n) => $n->created_at->toDateString() === $today ||
-            $n->created_at->toDateString() === $yesterday
+                $n->created_at->toDateString() === $yesterday
         )->groupBy(fn($n) => $n->created_at->format('y-m-d'));
 
         $filters = array_merge($filter, $filtered->toArray());
-
-
-
 
         if ($request->ajax()) {
             $html = view('partials.notification-ajax', ['notifications' => $notifications, 'filters' => $filters])->render();
@@ -858,7 +855,6 @@ class HomeController extends Controller
         }
 
         return view('notifications', compact('notifications', 'users', 'filters'));
-
     }
 
     public function visual_screen()

@@ -220,7 +220,7 @@
                             </div>
                             <div class="status-dropdown">
                                 <select class="js-select2" id="statusFilter">
-                                    <option value="" selected="">Select Status</option>
+                                    <option value="" selected>Select Status</option>
                                     <option value="add">Add</option>
                                     <option value="update">Update</option>
                                     <option value="delete">Delete</option>
@@ -228,7 +228,7 @@
                             </div>
                             <div class="parent-filter">
                                 <select class="js-select2" id="userFilter">
-                                    <option value="" selected=""></option>
+                                    <option value="" selected>Select User</option>
                                     @foreach ($users as $val)
                                         <option value="{{ $val->id }}">{{ $val->name }}</option>
                                     @endforeach
@@ -254,52 +254,38 @@
 
 @section('js')
     <script>
-        $('#userFilter').on('change', function() {
+        $(document).ready(function () {
+            function fetchNotifications() {
+                const userId = $('#userFilter').val();
+                const status = $('#statusFilter').val();
+                const searchQuery = $('input[name="search"]').val();
 
-            const userId = $(this).val();
-            const container = $('#notificationContainer');
-            if (userId == "") {
-                return false;
+                $.ajax({
+                    url: "{{ route('notifications') }}",
+                    type: 'GET',
+                    data: {
+                        user_id: userId,
+                        status: status,
+                        search: searchQuery
+                    },
+                    success: function (response) {
+                        $('#notificationContainer').html(response.html);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching notifications:', error);
+                        $('#notificationContainer').html(
+                            '<p class="text-center p-3 text-danger">Failed to load notifications.</p>'
+                        );
+                    }
+                });
             }
-            $.ajax({
-                url: "{{ route('notifications') }}",
-                type: 'GET',
-                data: {
-                    user_id: userId
-                },
-                success: function(response) {
-                    container.html(response.html); // Replace container content
 
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching notifications:', error);
-                    container.html(
-                        '<p class="text-center p-3 text-danger">Failed to load notifications.</p>');
-                }
+            $('#userFilter, #statusFilter').on('change', fetchNotifications);
+            $('.search-form').on('submit', function (e) {
+                e.preventDefault(); // Prevent full-page reload
+                fetchNotifications();
             });
         });
-    </script>
 
-    <script>
-        $('#statusFilter').on('change', function() {
-            const stauscheck = $(this).val();
-            const container = $('#notificationContainer');
-
-            $.ajax({
-                url: "{{ route('notifications') }}",
-                type: 'GET',
-                data: {
-                    post_type: stauscheck
-                },
-                success: function(response) {
-                    container.html(response.html);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching notifications:', error);
-                    container.html(
-                        '<p class="text-center p-3 text-danger">Failed to load notifications.</p>');
-                }
-            })
-        })
     </script>
 @endsection
