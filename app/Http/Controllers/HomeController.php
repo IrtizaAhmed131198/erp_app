@@ -1692,7 +1692,7 @@ class HomeController extends Controller
                 return $row->entry->part->Part_Number ?? 'N/A';
             })
             ->addColumn('date_search', function ($row) {
-                return $row->created_at->format('Y-m-d') ?? '';
+                return $row->created_at ?? '';
             })
             ->addColumn('in_stock', function ($row) {
                 return $row->entry->in_stock_finish ?? '';
