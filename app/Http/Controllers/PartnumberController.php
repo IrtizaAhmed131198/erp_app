@@ -168,7 +168,7 @@ class PartnumberController extends Controller
         $part->part_number = $request->part_number;
         $part->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_part_number', ['message' => 'part number has been update.'], 'parts', $part->id, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_part_number', ['message' => 'part number has been update.'], 'parts', $part->id, 'update');
 
         return response()->json([
             'success' => true,
@@ -208,7 +208,7 @@ class PartnumberController extends Controller
         $customer->CustomerName = $request->CustomerName;
         $customer->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_customer', ['message' => 'customer number has been update.'], 'customers', $customer->id, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_customer', ['message' => 'customer number has been update.'], 'customers', $customer->id, 'update');
 
 
         return response()->json([
@@ -248,7 +248,7 @@ class PartnumberController extends Controller
         $department->name = $request->name;
         $department->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_department', ['message' => 'department has been update.'], 'department', $department->id, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_department', ['message' => 'department has been update.'], 'department', $department->id, 'update');
 
         return response()->json([
             'success' => true,
@@ -287,7 +287,7 @@ class PartnumberController extends Controller
         $work_center->name = $request->name;
         $work_center->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_work_center_selector', ['message' => 'work center has been update.'], 'work_center_selector', $work_center->id, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_work_center_selector', ['message' => 'work center has been update.'], 'work_center_selector', $work_center->id, 'update');
 
 
         return response()->json([
@@ -327,7 +327,7 @@ class PartnumberController extends Controller
         $vendor->name = $request->name;
         $vendor->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_vendor', ['message' => 'vendor has been update.'], 'vendor', $vendor->id, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_vendor', ['message' => 'vendor has been update.'], 'vendor', $vendor->id, 'update');
 
 
         return response()->json([
@@ -367,7 +367,7 @@ class PartnumberController extends Controller
         $material->Package = $request->Package;
         $material->save();
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_material', ['message' => 'material has been update.'], 'package', $material->id, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_material', ['message' => 'material has been update.'], 'package', $material->id, 'update');
 
 
         return response()->json([
@@ -390,7 +390,7 @@ class PartnumberController extends Controller
 
         // Delete the part
         Parts::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'part has been deleted.'], 'parts', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'part has been deleted.'], 'parts', $id, 'delete');
 
         return response()->json(['success' => 'Part deleted successfully.']);
     }
@@ -407,7 +407,7 @@ class PartnumberController extends Controller
         Entries::where('part_number', $oldPartId)->update(['part_number' => $newPartId]);
         Weeks::where('part_number', $oldPartId)->update(['part_number' => $newPartId]);
         Parts::destroy($oldPartId);
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_part', ['message' => 'part has been updated.'], 'parts', $newPartId, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_part', ['message' => 'part has been updated.'], 'parts', $newPartId, 'update');
 
         return response()->json(['success' => 'Entries updated, and the part has been deleted.']);
     }
@@ -423,7 +423,7 @@ class PartnumberController extends Controller
 
         // Now delete the part itself
         Parts::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'Part deleted permanently.'], 'parts', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'Part deleted permanently.'], 'parts', $id, 'delete');
         return response()->json(['success' => 'Part deleted permanently.']);
     }
 
@@ -432,7 +432,7 @@ class PartnumberController extends Controller
         // Delete the work
         WorkCenterSelec::destroy($id);
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_work_center_selector', ['message' => 'Work center deleted.'], 'work_center_selector', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_work_center_selector', ['message' => 'Work center deleted.'], 'work_center_selector', $id, 'delete');
 
         return response()->json(['success' => 'Work center deleted successfully.']);
     }
@@ -440,7 +440,7 @@ class PartnumberController extends Controller
     public function deleted_records_work()
     {
         $deletedRecords = WorkCenterSelec::onlyTrashed()->get();
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_work_center_selector', ['message' => 'Work center deleted.'], 'work_center_selector', $deletedRecords, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_work_center_selector', ['message' => 'Work center deleted.'], 'work_center_selector', $deletedRecords, 'delete');
 
         return response()->json($deletedRecords);
     }
@@ -450,7 +450,7 @@ class PartnumberController extends Controller
     {
         $record = WorkCenterSelec::onlyTrashed()->findOrFail($id);
         $record->restore();
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_work_center_selector', ['message' => 'Work center Record restored successfully.'], 'work_center_selector', $record, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_work_center_selector', ['message' => 'Work center Record restored successfully.'], 'work_center_selector', $record, 'update');
         return response()->json(['success' => 'Record restored successfully']);
     }
 
@@ -458,7 +458,7 @@ class PartnumberController extends Controller
     {
         // Delete the work
         Vendor::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_vendor', ['message' => 'Outsource deleted successfully.'], 'vendor', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_vendor', ['message' => 'Outsource deleted successfully.'], 'vendor', $id, 'delete');
         return response()->json(['success' => 'Outsource processing successfully.']);
     }
 
@@ -467,14 +467,14 @@ class PartnumberController extends Controller
     {
         $record = Vendor::onlyTrashed()->findOrFail($id);
         $record->restore();
-        $this->notificationService->sendNotification(Auth::user()->id, 'upate_vendor', ['message' => 'Outsource upated successfully.'], 'vendor', $record, 'upate');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'upate_vendor', ['message' => 'Outsource upated successfully.'], 'vendor', $record, 'upate');
         return response()->json(['success' => 'Record restored successfully']);
     }
 
     public function deleted_records_out()
     {
         $deletedRecords = Vendor::onlyTrashed()->get();
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_vendor', ['message' => 'Outsource deleted successfully.'], 'vendor', $deletedRecords, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_vendor', ['message' => 'Outsource deleted successfully.'], 'vendor', $deletedRecords, 'delete');
         return response()->json($deletedRecords);
     }
 
@@ -482,14 +482,14 @@ class PartnumberController extends Controller
     {
         // Delete the work
         Material::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_package', ['message' => 'Package Outsource deleted successfully.'], 'package', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_package', ['message' => 'Package Outsource deleted successfully.'], 'package', $id, 'delete');
         return response()->json(['success' => 'Outsource processing successfully.']);
     }
 
     public function deleted_records_data()
     {
         $deletedRecords = Material::onlyTrashed()->get();
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_package', ['message' => 'Package Outsource deleted successfully.'], 'package', $deletedRecords, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_package', ['message' => 'Package Outsource deleted successfully.'], 'package', $deletedRecords, 'delete');
         return response()->json($deletedRecords);
     }
 
@@ -497,7 +497,7 @@ class PartnumberController extends Controller
     {
         $record = Material::onlyTrashed()->findOrFail($id);
         $record->restore();
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_package', ['message' => 'Package Outsource updated successfully.'], 'package', $record, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_package', ['message' => 'Package Outsource updated successfully.'], 'package', $record, 'update');
         return response()->json(['success' => 'Record restored successfully']);
     }
 
@@ -505,13 +505,13 @@ class PartnumberController extends Controller
     {
         // Delete the work
         Department::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_department', ['message' => 'Department Outsource deleted successfully.'], 'department', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_department', ['message' => 'Department Outsource deleted successfully.'], 'department', $id, 'delete');
         return response()->json(['success' => 'Outsource processing successfully.']);
     }
     public function deleted_records_depart()
     {
         $deletedRecords = Department::onlyTrashed()->get();
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_department', ['message' => 'Department Outsource deleted successfully.'], 'department', $deletedRecords, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_department', ['message' => 'Department Outsource deleted successfully.'], 'department', $deletedRecords, 'delete');
         return response()->json($deletedRecords);
     }
 
@@ -519,7 +519,7 @@ class PartnumberController extends Controller
     {
         $record = Department::onlyTrashed()->findOrFail($id);
         $record->restore();
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_department', ['message' => 'Department Outsource updated successfully.'], 'department', $record, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_department', ['message' => 'Department Outsource updated successfully.'], 'department', $record, 'update');
         return response()->json(['success' => 'Record restored successfully']);
     }
 
@@ -527,13 +527,13 @@ class PartnumberController extends Controller
     {
         // Delete the work
         Customer::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_customer', ['message' => 'Customer Outsource deleted successfully.'], 'customers', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_customer', ['message' => 'Customer Outsource deleted successfully.'], 'customers', $id, 'delete');
         return response()->json(['success' => 'Outsource processing successfully.']);
     }
     public function deleted_records_cus()
     {
         $deletedRecords = Customer::onlyTrashed()->get();
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_customer', ['message' => 'Customer Outsource deleted successfully.'], 'customers', $deletedRecords, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_customer', ['message' => 'Customer Outsource deleted successfully.'], 'customers', $deletedRecords, 'delete');
         return response()->json($deletedRecords);
     }
 
@@ -541,7 +541,7 @@ class PartnumberController extends Controller
     {
         $record = Customer::onlyTrashed()->findOrFail($id);
         $record->restore();
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_customer', ['message' => 'Customer Outsource updated successfully.'], 'customers', $record, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_customer', ['message' => 'Customer Outsource updated successfully.'], 'customers', $record, 'update');
         return response()->json(['success' => 'Record restored successfully']);
     }
 
@@ -550,13 +550,14 @@ class PartnumberController extends Controller
     {
         // Delete the work
         Parts::destroy($id);
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'part Outsource deleted successfully.'], 'parts', $id, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'part Outsource deleted successfully.'], 'parts', $id, 'delete');
         return response()->json(['success' => 'Outsource processing successfully.']);
     }
+
     public function deleted_records_part()
     {
         $deletedRecords = Parts::onlyTrashed()->get();
-        $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'part Outsource deleted successfully.'], 'parts', $deletedRecords, 'delete');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'delete_part', ['message' => 'part Outsource deleted successfully.'], 'parts', $deletedRecords, 'delete');
         return response()->json($deletedRecords);
     }
 
@@ -564,7 +565,7 @@ class PartnumberController extends Controller
     {
         $record = Parts::onlyTrashed()->findOrFail($id);
         $record->restore();
-        $this->notificationService->sendNotification(Auth::user()->id, 'update_part', ['message' => 'part Outsource updated successfully.'], 'parts', $record, 'update');
+        // $this->notificationService->sendNotification(Auth::user()->id, 'update_part', ['message' => 'part Outsource updated successfully.'], 'parts', $record, 'update');
         return response()->json(['success' => 'Record restored successfully']);
     }
 
