@@ -197,6 +197,8 @@
             font-size: 12px;
             width: 100px !important;
             display: inline-block;
+            overflow: auto;
+            height: 35px;
         }
 
         .parent-table table input,
@@ -241,6 +243,10 @@
 
         .highlighted.toggle-header-2 {
             width: 40px !important;
+        }
+
+        table.table tr th::-webkit-scrollbar {
+            height: 1px;
         }
     </style>
 @endsection
@@ -366,43 +372,42 @@
 
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                                             <th scope="col" id="column-department"
-                                                class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                                class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}disabled>
                                                 {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
-                                                <span class="icon">▼</span>
+                                                {{-- <span class="icon">▼</span> --}}
                                             </th>
                                         @endforeach
                                     @endif
                                     @if (Auth::user()->View_2 == 1)
                                         <th scope="col" class="highlighted toggle-header-1">
-                                            <span class="icon">▼
-                                            </span>
+                                            <span class="icon">▼</span>
                                         </th>
 
                                         @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                                             <th scope="col" id="column-department"
-                                                class="toggleable-1 toggle-header-department" {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}>
+                                                class="toggleable-1 toggle-header-department"
+                                                {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}disabled>
                                                 {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
-                                                <span class="icon">▼</span>
+                                                {{-- <span class="icon">▼</span> --}}
                                             </th>
                                         @endforeach
                                     @endif
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header-2">
-                                            <span class="icon">▼
-                                            </span>
+                                            <span class="icon">▼</span>
                                         </th>
 
-                                        <th scope="col" class="toggleable-2 toggle-header-department">PAST DUE <span
-                                                class="icon">▼</span></th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>PAST DUE
+                                            {{-- <span class="icon">▼</span> --}}</th>
                                         @for ($week = 1; $week <= 16; $week++)
                                             <th scope="col" class="toggleable-2 toggle-header-department"
-                                                id="head_week_{{ $week }}">
+                                                id="head_week_{{ $week }}" disabled>
                                                 {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
                                             </th>
                                         @endfor
                                         @for ($month = 5; $month <= 12; $month++)
                                             <th scope="col" class="toggleable-2 toggle-header-department"
-                                                id="head_month_{{ $month }}">
+                                                id="head_month_{{ $month }}" disabled>
                                                 {{ $month5StartDate }}</th>
                                             @php
                                                 $month5StartDate = date(
@@ -411,12 +416,12 @@
                                                 );
                                             @endphp
                                         @endfor
-                                        <th scope="col" class="toggleable-2 toggle-header-department">FUTURE RAW <span
-                                                class="icon">▼</span></th>
-                                        <th scope="col" class="toggleable-2 toggle-header-department">PRICE <span
-                                                class="icon">▼</span></th>
-                                        <th scope="col" class="toggleable-2 toggle-header-department">NOTES <span
-                                                class="icon">▼</span></th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE RAW
+                                            {{-- <span class="icon">▼</span> --}}</th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>PRICE
+                                            {{-- <span class="icon">▼</span> --}}</th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>NOTES
+                                            {{-- <span class="icon">▼</span> --}}</th>
                                     @endif
                                 </tr>
                             </thead>
@@ -1172,6 +1177,7 @@
                 const columnClass = "toggleable"; // Class of the cells in the column
                 const icon = this.querySelector(".icon"); // Dropdown icon
 
+
                 // Toggle the collapsible state of the column
                 const cells = document.querySelectorAll(`.${columnClass}`);
                 cells.forEach(cell => {
@@ -1227,7 +1233,7 @@
             header.addEventListener("click", function() {
                 const columnClass = "toggle-department"; // Class of the cells in the column
                 const icon = this.querySelector(".icon"); // Dropdown icon
-
+                return false;
                 // Toggle the collapsible state of the column
                 const cells = document.querySelectorAll(`.${columnClass}`);
                 cells.forEach(cell => {
