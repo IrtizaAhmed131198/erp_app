@@ -211,6 +211,7 @@
 
         .part-st {
             font-size: 12px;
+            display: contents;
         }
 
         table#entries-table td {
@@ -253,7 +254,7 @@
 
         .custom-toggleable {
             overflow: unset !important;
-            width: 150px !important;
+            /* width: 150px !important; */
         }
 
         .custom-dropdown-menu {
@@ -380,7 +381,6 @@
                                         <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
                                         </th>
-
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                                             <th scope="col" id="column-department"
                                                 class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}disabled>
