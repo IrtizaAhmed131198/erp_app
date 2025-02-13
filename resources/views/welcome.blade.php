@@ -275,7 +275,7 @@
         }
     @endphp
     <section class="master-data-section">
-        <div class="container bg-colored pt-0">
+        <div class="container-fluid bg-colored pt-0">
             <div class="row align-items-center custom-row justify-content-center">
                 <div class="col-lg-8 col-md-9 col-12">
                     <div class="title">
