@@ -103,6 +103,38 @@
         $sumWeeks1To6 =
             (float) $sumWeeks1To6 + (float) (isset($query->weeks_months->past_due) ? $query->weeks_months->past_due : 0);
         // dd($sumWeeks1To6);
+
+        $datesArray = [];
+
+        // Calculate the start date of the current week (Monday)
+        $today = date('Y-m-d');
+        $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+        $mondayOfWeek =
+            $dayOfWeek == 0
+                ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today))); // Else, go back to Monday
+
+        // Calculate the start date of week 16
+        $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+
+        // Calculate the end date of week 16
+        $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+
+        // Calculate the start date of month 5 (the day after week 16 ends)
+        $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+
+        //column configuration
+        $region_1_column_configuration_record = get_user_config('master_screen_region_1_column_configuration');
+        $region_1_column_configuration = json_decode($region_1_column_configuration_record->value);
+        usort($region_1_column_configuration, function ($a, $b) {
+            return $a->order < $b->order ? -1 : 1;
+        });
+
+        $region_2_column_configuration_record = get_user_config('master_screen_region_2_column_configuration');
+        $region_2_column_configuration = json_decode($region_2_column_configuration_record->value);
+        usort($region_2_column_configuration, function ($a, $b) {
+            return $a->order < $b->order ? -1 : 1;
+        });
     @endphp
 
     <section class="report_sec">
@@ -195,10 +227,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ $sumWeeks1To6 }}</td>
-                                    <td>{{ $sumWeeks7To12 }}</td>
-                                    <td>{{ $sum1_12 }}</td>
-                                    <td>{{ $query->in_stock_finish }}</td>
+                                    <td>{{ number_format($sumWeeks1To6) }}</td>
+                                    <td>{{ number_format($sumWeeks7To12) }}</td>
+                                    <td>{{ number_format($sum1_12) }}</td>
+                                    <td>{{ number_format($query->in_stock_finish) }}</td>
                                     <td>{{ $query->live_inventory_finish }}</td>
                                     <td>{{ $query->live_inventory_wip }}</td>
                                     <td>{{ $query->in_process_outside }}</td>
@@ -206,11 +238,68 @@
                                     <td>{{ $query->in_stock_live }}</td>
                                     <td>{{ $query->wt_pc }}</td>
                                     <td>{{ $query->get_material->Package }}</td>
-                                    <td>{{ $query }}</td>
-                                    <td>{{ $query->safety }}</td>
+                                    <td>{{ $sum1_12 - $query->in_stock_finish > 0 ? number_format(($sum1_12 - $query->in_stock_finish) * $query->wt_pc, 2) : 0 }}</td>
+                                    <td>{{ number_format($query->safety) }}</td>
                                     <td>{{ $query->min_ship }}</td>
                                     <td>{{ $query->order_notes }}</td>
                                     <td>{{ $query->part_notes }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="control-table">
+                        <table id="example2" class="table table-striped report-query-show">
+                            <thead>
+                                <tr>
+                                    <th>PAST DUE</th>
+                                    @for ($week = 1; $week <= 16; $week++)
+                                        <th id="head_week_{{ $week }}">
+                                            {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
+                                        </th>
+                                    @endfor
+                                    @for ($month = 5; $month <= 12; $month++)
+                                        <th id="head_month_{{ $month }}">
+                                            {{ $month5StartDate }}</th>
+                                        @php
+                                            $month5StartDate = date(
+                                                'j-M',
+                                                strtotime('+31 days', strtotime($month5StartDate)),
+                                            );
+                                        @endphp
+                                    @endfor
+                                    <th>PRICE</th>
+                                    <th>NOTES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ number_format((float) (isset($query->weeks_months->past_due) ? $query->weeks_months->past_due : 0)) }}</td>
+                                    @for ($week = 1; $week <= 16; $week++)
+                                        @php
+                                            $weekKey = 'week_' . $week;
+                                            $weekValue = $query->weeks_months->$weekKey ?? '';
+                                            $formattedWeekValue = is_numeric($weekValue) ? number_format($weekValue) : $weekValue;
+                                        @endphp
+                                        <td>
+                                            {{ $formattedWeekValue }}
+                                        </td>
+                                    @endfor
+
+                                    @for ($month = 5; $month <= 12; $month++)
+                                        @php
+                                            $monthKey = 'month_' . $month;
+                                            $monthValue = $query->weeks_months->$monthKey ?? '';
+                                            $formattedMonthValue = is_numeric($monthValue) ? number_format($monthValue) : $monthValue;
+                                        @endphp
+                                        <td>
+                                            {{ $formattedMonthValue }}
+                                        </td>
+                                    @endfor
+
+                                    <td>{{ number_format($query->price) }}</td>
+                                    <td>{{ $query->notes }}</td>
                                 </tr>
                             </tbody>
                         </table>

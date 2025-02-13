@@ -527,11 +527,11 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_future_raw';
                 @endphp
-                <td class="toggleable-2" id="{{ $data_target }}">
+                {{-- <td class="toggleable-2" id="{{ $data_target }}">
                     <input type="text" step="any" name="future_raw" id="future_raw"
                         value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}"
                         data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)" readonly>
-                </td>
+                </td> --}}
 
                 @php
                     $data_target = 'entries_' . $data->id . '_price';
