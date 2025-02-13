@@ -333,10 +333,18 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                        <input type="text"
-                                                            name="outside_processing_text_{{ $i }}"
-                                                            value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
-                                                            id="">
+                                                        @if ($i == 1)
+                                                            <!-- Show the input field only for the first row -->
+                                                            <input type="text"
+                                                                name="outside_processing_text_{{ $i }}"
+                                                                value="{{ $data->in_process_outside ?? '' }}"
+                                                                id="">
+                                                        @else
+                                                            <input type="text"
+                                                                name="outside_processing_text_{{ $i }}"
+                                                                value="{{ $selected_value ? $selected_out_source['in_process_outside'] : '' }}"
+                                                                id="">
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>

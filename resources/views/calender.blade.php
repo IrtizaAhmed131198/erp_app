@@ -278,7 +278,7 @@
                                             <tr>
                                                 <td>
                                                     <div class='weekdays-parent'>
-                                                        <span>Total Shipment</span>
+                                                        <span>Total</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -528,19 +528,19 @@
                                                     );
                                                 @endphp
                                             @endfor
-                                            <tr>
+                                            {{-- <tr>
                                                 <td>
                                                     <div class='weekdays-parent'>
-                                                        <span>Total Shipment</span>
+                                                        <span>Total</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <input type="text" name="total_shipment" class="total_shipment" readonly>
                                                 </td>
-                                                {{-- <td>
+                                                <td>
                                                     <input type='text' class='' disabled>
-                                                </td> --}}
-                                            </tr>
+                                                </td>
+                                            </tr> --}}
 
                                         </tbody>
                                     </table>
@@ -670,6 +670,7 @@
                                     .reduce((total, key) => total + Number(data[key]), 0); // Sum the numeric values
 
                                 console.log("Total Sum:", sum);
+                                sum = isNaN(sum) ? 0 : sum;
                                 let past_due_val = parseFloat(response.past_due_val) || 0;
                                 $(`.total_shipment`).val(sum + future + past_due_val);
                             },
@@ -1180,6 +1181,23 @@
 
                                 $(`#edit_${key}`).val(formattedValue);
                             }
+
+                            // let sum = Object.keys(data)
+                            //     .filter(key =>
+                            //         !key.includes('_date') &&
+                            //         key !== 'past_due' &&
+                            //         key !== 'id' &&
+                            //         key !== 'user_id' &&
+                            //         key !== 'part_number' &&
+                            //         key !== 'created_at' &&
+                            //         key !== 'updated_at'
+                            //     ) // Exclude unwanted keys
+                            //     .reduce((total, key) => total + Number(data[key] || 0), 0); // Sum the numeric values
+
+                            // console.log("Total Sum:", sum);
+                            // let future = parseFloat(response.future_raw) || 0;
+                            // let past_due_val = parseFloat(response.past_due) || 0;
+                            // $(`.total_shipment`).val(sum + future + past_due_val);
                         },
                         error: function(error) {
                             console.error('Error saving data:', error);

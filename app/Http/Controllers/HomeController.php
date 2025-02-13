@@ -859,11 +859,12 @@ class HomeController extends Controller
 
     public function visual_screen()
     {
-        if (Auth::user()->role == 1) {
-            $visuals = Visual::all()->groupBy('status');
-        } else {
-            $visuals = Visual::where('user_id', Auth::user()->id)->get()->groupBy('status');
-        }
+        $visuals = Visual::with('part')
+            ->when(Auth::user()->role != 1, function ($query) {
+                return $query->where('user_id', Auth::id());
+            })
+            ->get()
+            ->groupBy('status');
 
         // Define the desired order
         $desiredOrder = ['Running', 'Pending Order', 'Pause', 'Closed'];
@@ -983,7 +984,7 @@ class HomeController extends Controller
     public function add_shipment_not($id)
     {
         $add_shipment = Notification::with('user')
-            ->where('type', 'add_shipment')
+            ->where('type', 'detect_production')
             ->where('reference_id', $id)
             ->orderBy('id', 'desc')
             ->first();
@@ -1400,11 +1401,11 @@ class HomeController extends Controller
 
         $info = 'Shipment Amount (' . $request->shipped_amount . ') has been added for part number: "' . $entries->part->Part_Number . '"';
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $data->id, '', '', '', 'add', $info);
+        $this->notificationService->sendNotification(Auth::user()->id, 'save_shipment_data', ['message' => 'Shipment Amount Saved'], 'weeks', $entries->part_number, '', '', '', 'add', $info);
 
         $info = 'In Stock Amount (' . $entries->in_stock_finish . ') has been updated for part number: "' . $entries->part->Part_Number . '"';
 
-        $this->notificationService->sendNotification(Auth::user()->id, 'detect_production', ['message' => 'Weeks In Stock Updated'], 'weeks', $data->id, '', '', '', 'update', $info);
+        $this->notificationService->sendNotification(Auth::user()->id, 'detect_production', ['message' => 'Weeks In Stock Updated'], 'weeks', $entries->part_number, '', '', '', 'update', $info);
 
         $weeksDataFormatted['entries_' . $entries->id . '_in_stock_finish'] = $entries->in_stock_finish;
 
@@ -1645,6 +1646,11 @@ class HomeController extends Controller
         $entry->delete();
 
         return response()->json(['message' => 'Entry deleted successfully.']);
+    }
+
+    public function get_qa($part)
+    {
+        return view('qa');
     }
 
     public function report($userId)

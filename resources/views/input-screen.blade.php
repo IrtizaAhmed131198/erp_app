@@ -91,18 +91,18 @@
                                                                 </select>
                                                             </td>
                                                             <td class="customer_val">{{ $customer }}</td>
-                                                            <td class="part_number_val">{{ $part_number }}</td>
+                                                            <td class="part_number_val"><input type="hidden" name="part" value="{{ $entry['entries']['part_number'] }}">{{ $part_number }}</td>
                                                             <td class="quantity_val">{{ $planning }}</td>
-                                                            <td class="job_val">
+                                                            <td>
                                                                 {{-- @if(Auth::user()->role == 1) --}}
-                                                                    <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                    <input type="text" name="job" class="job job_val" value="{{ $job }}">
                                                                 {{-- @else
                                                                     {{ $job }}
                                                                 @endif --}}
                                                             </td>
-                                                            <td class="lot_val">
+                                                            <td>
                                                                 {{-- @if(Auth::user()->role == 1) --}}
-                                                                    <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                    <input type="text" name="lot" class="lot lot_val" value="{{ $lot }}">
                                                                 {{-- @else
                                                                     {{ $lot }}
                                                                 @endif --}}
@@ -197,21 +197,22 @@
                                                                                 {{ $customer }}
                                                                         </td>
                                                                         <td class="part_number_val">
+                                                                            <input type="hidden" name="part" value="{{ $entry['entries_data']['part_number'] }}">
                                                                                 {{ $part_number }}
                                                                         </td>
                                                                         <td class="quantity_val">
                                                                                 {{ $planning }}
                                                                         </td>
-                                                                        <td class="job_val">
+                                                                        <td>
                                                                             {{-- @if(Auth::user()->role == 1) --}}
-                                                                                <input type="text" name="job" class="job" value="{{ $job }}">
+                                                                                <input type="text" name="job" class="job job_val" value="{{ $job }}">
                                                                             {{-- @else
                                                                                 {{ $job }}
                                                                             @endif --}}
                                                                         </td>
-                                                                        <td class="lot_val">
+                                                                        <td>
                                                                             {{-- @if(Auth::user()->role == 1) --}}
-                                                                                <input type="text" name="lot" class="lot" value="{{ $lot }}">
+                                                                                <input type="text" name="lot" class="lot lot_val" value="{{ $lot }}">
                                                                             {{-- @else
                                                                                 {{ $lot }}
                                                                             @endif --}}
@@ -265,10 +266,10 @@
                         let entry = {
                             status: row.find('select[name="status"]').val(),
                             customer: row.find('.customer_val').text() ?? null,
-                            part_number: row.find('.part_number_val').text() ?? null,
+                            part_number: row.find('[name="part"]').val() ?? null,
                             quantity: row.find('.quantity_val').text() ?? null,
-                            job: row.find('.job_val').text() ?? null,
-                            lot: row.find('.lot_val').text() ?? null,
+                            job: row.find('.job_val').val() ?? null,
+                            lot: row.find('.lot_val').val() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
                             type_id: row.find('td:eq(7)').text().trim()
                         };
@@ -322,10 +323,10 @@
                         let entry = {
                             status: row.find('select[name="status"]').val(),
                             customer: row.find('.customer_val').text() ?? null,
-                            part_number: row.find('.part_number_val').text() ?? null,
+                            part_number: row.find('[name="part"]').val() ?? null,
                             quantity: row.find('.quantity_val').text() ?? null,
-                            job: row.find('.job_val').text() ?? null,
-                            lot: row.find('.lot_val').text() ?? null,
+                            job: row.find('.job_val').val() ?? null,
+                            lot: row.find('.lot_val').val() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
                             type_id: row.find('td:eq(7)').text().trim()
                         };

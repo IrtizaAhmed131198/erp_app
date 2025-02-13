@@ -109,6 +109,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
 
     Route::get('report/{userId}', [HomeController::class, "report"])->name('report');
     Route::get('get-report-data', [HomeController::class, "getReportData"])->name('getReportData');
+    Route::get('get-qa/{part}', [HomeController::class, "get_qa"])->name('get_qa');
 
 });
 #login route

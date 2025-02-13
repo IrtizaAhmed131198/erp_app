@@ -49,7 +49,7 @@
                                         <tr>
                                             <td>{{ $entry->type }}</td>
                                             <td>{{ $entry->customer }}</td>
-                                            <td>{{ $entry->part_number }}</td>
+                                            <td>{{ $entry->part->Part_Number }}</td>
                                             <td>{{ $entry->quantity }}</td>
                                             <td>{{ $entry->job }}</td>
                                             <td>{{ $entry->lot }}</td>

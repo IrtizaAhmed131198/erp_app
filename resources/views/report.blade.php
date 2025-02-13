@@ -154,32 +154,6 @@
                             <tbody>
 
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>DEPARTMENT</th>
-                                    <th>CUSTOMER</th>
-                                    <th>PART NUMBER </th>
-                                    <th>DATE <br> SEARCH</th>
-                                    <th>IN STOCK</th>
-                                    <th>PAST<br> Due</th>
-                                    @for ($week = 1; $week <= 16; $week++)
-                                        <th>
-                                            {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
-                                        </th>
-                                    @endfor
-                                    @for ($month = 5; $month <= 12; $month++)
-                                        <th>
-                                            {{ $month5StartDate }}</th>
-                                        @php
-                                            $month5StartDate = date(
-                                                'j-M',
-                                                strtotime('+31 days', strtotime($month5StartDate)),
-                                            );
-                                        @endphp
-                                    @endfor
-                                    <th>Balance of <br> Schedule </th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

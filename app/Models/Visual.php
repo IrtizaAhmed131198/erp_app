@@ -22,4 +22,9 @@ class Visual extends Model
         "user_id",
         "type_id"
     ];
+
+    public function part()
+    {
+        return $this->hasOne(Parts::class, 'id', 'part_number');
+    }
 }

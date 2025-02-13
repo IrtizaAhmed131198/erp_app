@@ -31,7 +31,7 @@
                         @endif
                     @elseif($region_1_column_configuration_item->column == 'work_center')
                         @php
-                            $data_target = 'work_center_' . $data->id . '_work_center';
+                            $data_target = 'entries_' . $data->id . '_work_centre_1';
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable toggle-work-center" id="{{ $data_target }}">
@@ -334,7 +334,7 @@
                     @elseif($region_2_column_configuration_item->column == 'in_process_out_side')
                         @php
                             $out_source_id = $data->out_source_one->id ?? 0;
-                            $data_target = 'outsource_' . $out_source_id . '_in_process_out_side';
+                            $data_target = 'entries_' . $data->id . '_in_process_outside';
                         @endphp
                         @if (Auth::user()->stock_finished_column == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -392,11 +392,11 @@
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'material_sort')
                         @php
-                            $data_target = 'entries_' . $data->id . '_material_sort';
+                            $data_target = 'entries_' . $data->id . '_material';
                         @endphp
                         @if (Auth::user()->role == 1)
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                {{-- <select name="material" id="material" data-id="{{ $data->id }}"
+                                <select name="material" id="material" class="simple-select" data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('material', this.value, event)">
                                     <option value="" disabled>Select</option>
                                     @foreach ($materials as $item)
@@ -405,8 +405,8 @@
                                             {{ $item->Package }}
                                         </option>
                                     @endforeach
-                                </select> --}}
-                                {{ $data->get_material->Package }}
+                                </select>
+                                {{-- {{ $data->get_material->Package }} --}}
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">{{ $data->get_material->Package }}
