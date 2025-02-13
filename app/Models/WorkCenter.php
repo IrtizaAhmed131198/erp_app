@@ -12,6 +12,8 @@ class WorkCenter extends Model
 
     protected $table = "work_center";
 
+    protected $appends = ['com_name'];
+
     protected static function boot()
     {
         parent::boot();
@@ -29,5 +31,10 @@ class WorkCenter extends Model
     public function work_select()
     {
         return $this->hasOne(WorkCenterSelec::class, 'id', 'com');
+    }
+
+    public function getComNameAttribute()
+    {
+        return $this->work_select ? $this->work_select->name : null;
     }
 }
