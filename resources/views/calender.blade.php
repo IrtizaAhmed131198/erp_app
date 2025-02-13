@@ -649,7 +649,6 @@
                                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                             },
                             success: function(response) {
-                                console.log('Total Past Value:', response.totalPastValue);
                                 // alert(response.message);
                                 let data = response.data;
                                 $('.past_due_val').val(response.past_due_val);
@@ -671,7 +670,8 @@
                                     .reduce((total, key) => total + Number(data[key]), 0); // Sum the numeric values
 
                                 console.log("Total Sum:", sum);
-                                $(`.total_shipment`).val(sum + future);
+                                let past_due_val = parseFloat(response.past_due_val) || 0;
+                                $(`.total_shipment`).val(sum + future + past_due_val);
                             },
                             error: function(xhr) {
                                 console.error("Error updating shipment: ", xhr
@@ -984,6 +984,7 @@
                                 $(`#${key}`).val(formattedValue).prop('readonly', true);
                                 $(`.show_future_raw`).val(response.future_raw);
                             }
+                            $(`.past_due_show`).val(response.past_due);
 
                             let sum = Object.keys(data)
                                 .filter(key =>
@@ -999,7 +1000,8 @@
 
                             console.log("Total Sum:", sum);
                             let future = parseFloat(response.future_raw) || 0;
-                            $(`.total_shipment`).val(sum + future);
+                            let past_due_val = parseFloat(response.past_due) || 0;
+                            $(`.total_shipment`).val(sum + future + past_due_val);
                         }
                     },
                     error: function(xhr) {

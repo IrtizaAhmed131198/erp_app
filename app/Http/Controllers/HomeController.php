@@ -650,11 +650,11 @@ class HomeController extends Controller
             abort(403, 'You do not have permission to access this resource.');
         }
         // $parts = Parts::all();
-        if (Auth::user()->role == 1) {
+        // if (Auth::user()->role == 1) {
             $parts = Entries::with('part')->get();
-        } else {
-            $parts = Entries::with('part')->where('user_id', Auth::user()->id)->get();
-        }
+        // } else {
+        //     $parts = Entries::with('part')->where('user_id', Auth::user()->id)->get();
+        // }
         $weeks = [
             'Week 1',
             'Week 2',
@@ -896,7 +896,7 @@ class HomeController extends Controller
     {
         $partNumber = $request->get('part_number');
 
-        $entries = Entries::with('last_updated_by_user')->where('part_number', $partNumber)->where('user_id', Auth::user()->id)->first();
+        $entries = Entries::with('last_updated_by_user')->where('part_number', $partNumber)->first();
 
         if (!$entries) {
             return response()->json(['message' => 'No entry found for the provided part number.']);
@@ -1016,7 +1016,7 @@ class HomeController extends Controller
         $newTotal = $request->input('new_total');
         $part_no = $request->input('part_no');
 
-        $data = Entries::with('part')->where('part_number', $part_no)->where('user_id', Auth::user()->id)->first();
+        $data = Entries::with('part')->where('part_number', $part_no)->first();
 
         $data->in_stock_finish = $newTotal;
         $data->last_updated_by = Auth::user()->id;
@@ -1109,12 +1109,10 @@ class HomeController extends Controller
             'past_val' => 'nullable'
         ]);
 
-        $data = Weeks::where('user_id', Auth::user()->id)
-            ->where('part_number', $request->part_number)
+        $data = Weeks::where('part_number', $request->part_number)
             ->first();
 
-        $part = Entries::with('part')->where('user_id', Auth::user()->id)
-            ->where('part_number', $request->part_number)
+        $part = Entries::with('part')->where('part_number', $request->part_number)
             ->first();
 
         $isNewEntry = false;
@@ -1188,12 +1186,12 @@ class HomeController extends Controller
             'customer' => $part->customer,
             'department' => $part->department,
             'part_number' => $part->part_number,
-            'week_values' => json_encode($weeksData), // Assuming $weekValues is an array.
+            'week_values' => json_encode($weeksData),
             'past_due' => $request->past_val,
             'updated_by' => Auth::user()->id,
         ]);
 
-        return response()->json(['message' => $message, 'future_raw' => number_format((float) $part->future_raw), 'data' => $data]);
+        return response()->json(['message' => $message, 'past_due' => $request->past_val, 'future_raw' => number_format((float) $part->future_raw), 'data' => $data]);
     }
 
     public function add_shipment(Request $request)
@@ -1204,11 +1202,11 @@ class HomeController extends Controller
             'part_number' => 'required'
         ]);
 
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $data = Weeks::where('part_number', $request->part_number)->first();
         if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
         }
-        $entries = Entries::with('part')->where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $entries = Entries::with('part')->where('part_number', $request->part_number)->first();
 
         foreach ($request->weeks as $key => $value) {
             if ($value != '' && $value != null) {
@@ -1227,8 +1225,8 @@ class HomeController extends Controller
 
     public function get_weeks(Request $request)
     {
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $entries = Entries::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $data = Weeks::where('part_number', $request->part_number)->first();
+        $entries = Entries::where('part_number', $request->part_number)->first();
 
         $Arr = [
             "week_1" => $data->week_1 ?? null,
@@ -1273,7 +1271,7 @@ class HomeController extends Controller
         $partNumber = $validatedData['part_number'];
 
         // Fetch the record's data
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $partNumber)->first();
+        $data = Weeks::where('part_number', $partNumber)->first();
         $keys_to_remove = ['id', 'user_id', 'part_number', 'created_at', 'updated_at'];
         foreach ($keys_to_remove as $key) {
             unset($data[$key]);
@@ -1378,8 +1376,8 @@ class HomeController extends Controller
     public function save_shipment_data(Request $request)
     {
         $weeksDataFormatted = [];
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $entries = Entries::with('part')->where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $data = Weeks::where('part_number', $request->part_number)->first();
+        $entries = Entries::with('part')->where('part_number', $request->part_number)->first();
 
         foreach ($request->shipmentData as $shipment) {
             if ($shipment['value'] != '' && $shipment['value'] != null) {
@@ -1418,8 +1416,8 @@ class HomeController extends Controller
 
     public function change_past_due(Request $request)
     {
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
-        $entries = Entries::with('part')->where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $data = Weeks::where('part_number', $request->part_number)->first();
+        $entries = Entries::with('part')->where('part_number', $request->part_number)->first();
 
         if (!$data) {
             return response()->json(['error' => true, 'message' => 'No weeks data found for the provided part number.']);
@@ -1444,7 +1442,7 @@ class HomeController extends Controller
 
     public function update_week_or_month(Request $request)
     {
-        $data = Weeks::where('user_id', Auth::user()->id)->where('part_number', $request->part_number)->first();
+        $data = Weeks::where('part_number', $request->part_number)->first();
         $data->{$request->id} = $request->value;
         $data->save();
 
@@ -1702,10 +1700,6 @@ class HomeController extends Controller
             })
             ->addColumn('balance_schedule', function ($row) {
                 $total_weeks = Weeks::selectRaw('
-                    COALESCE(week_1, 0) + COALESCE(week_2, 0) + COALESCE(week_3, 0) + COALESCE(week_4, 0) +
-                    COALESCE(week_5, 0) + COALESCE(week_6, 0) + COALESCE(week_7, 0) + COALESCE(week_8, 0) +
-                    COALESCE(week_9, 0) + COALESCE(week_10, 0) + COALESCE(week_11, 0) + COALESCE(week_12, 0) +
-                    COALESCE(week_13, 0) + COALESCE(week_14, 0) + COALESCE(week_15, 0) + COALESCE(week_16, 0) +
                     COALESCE(month_5, 0) + COALESCE(month_6, 0) + COALESCE(month_7, 0) + COALESCE(month_8, 0) +
                     COALESCE(month_9, 0) + COALESCE(month_10, 0) + COALESCE(month_11, 0) + COALESCE(month_12, 0) AS total
                 ')->where('part_number', $row->entry->part->id)->first();
@@ -1718,7 +1712,7 @@ class HomeController extends Controller
                 for ($i = 5; $i <= 12; $i++) {
                     $total += (int) ($weekValues["month_$i"] ?? 0);
                 }
-                return $total_weeks->total - $total;
+                return $total_weeks->total + $total;
             })
             ->addColumn('week_values', function ($row) {
                 return json_decode($row->week_values, true);
