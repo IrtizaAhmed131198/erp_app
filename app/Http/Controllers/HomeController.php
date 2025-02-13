@@ -1650,8 +1650,7 @@ class HomeController extends Controller
 
     public function get_qa($part)
     {
-
-        return $query = Entries::with([
+ $query = Entries::with([
             'part',
             'weeks_months',
             'work_center_one',

@@ -104,11 +104,15 @@
                                 <tr>
                                     <td>{{ $query->department }}</td>
                                     <td>{{ $query->work_center_one->com }}</td>
-                                    <td>{{ $query->department }}</td>
-                                    <td>{{ $query->department }}</td>
-                                    <td>{{ $query->department }}</td>
-                                    <td>{{ $query->department }}</td>
-                                    <td>{{ $query->department }}</td>
+                                    <td>{{ $query->planning }}</td>
+                                    <td>{{ $query->status }}</td>
+                                    <td>{{ $query->job }}</td>
+                                    <td>{{ $query->lot }}</td>
+                                    <td>{{ $query->ids }}</td>
+                                    <td>{{ $query->part_number }}</td>
+                                    <td>{{ $query->customer }}</td>
+                                    <td>{{ $query->rev }}</td>
+                                    <td>{{ $query->process }}</td>
                                 </tr>
                             </tbody>
                         </table>
