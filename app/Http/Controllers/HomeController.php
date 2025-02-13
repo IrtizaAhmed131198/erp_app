@@ -651,7 +651,7 @@ class HomeController extends Controller
         }
         // $parts = Parts::all();
         // if (Auth::user()->role == 1) {
-            $parts = Entries::with('part')->get();
+        $parts = Entries::with('part')->get();
         // } else {
         //     $parts = Entries::with('part')->where('user_id', Auth::user()->id)->get();
         // }
@@ -844,7 +844,7 @@ class HomeController extends Controller
 
         $filtered = $notifications->reject(
             fn($n) => $n->created_at->toDateString() === $today ||
-                $n->created_at->toDateString() === $yesterday
+            $n->created_at->toDateString() === $yesterday
         )->groupBy(fn($n) => $n->created_at->format('y-m-d'));
 
         $filters = array_merge($filter, $filtered->toArray());
@@ -1650,7 +1650,18 @@ class HomeController extends Controller
 
     public function get_qa($part)
     {
-        return view('qa');
+
+        return $query = Entries::with([
+            'part',
+            'weeks_months',
+            'work_center_one',
+            'out_source_one',
+            'get_department',
+            'get_customer',
+            'get_material'
+        ])->where('part_number', $part)->first();
+
+        return view('qa', compact('query'));
     }
 
     public function report($userId)
