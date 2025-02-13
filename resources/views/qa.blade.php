@@ -8,7 +8,7 @@
         }
 
         .control-table {
-            overflow: hidden;
+            overflow: auto;
         }
 
         .report_sec #example_wrapper {
