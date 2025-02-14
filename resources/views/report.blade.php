@@ -135,12 +135,17 @@
                                     <th>PAST<br> Due</th>
                                     @for ($week = 1; $week <= 16; $week++)
                                         <th>
-                                            {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
+                                            {{ 'Week '.$week }} <br> {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
                                         </th>
                                     @endfor
                                     @for ($month = 5; $month <= 12; $month++)
                                         <th>
-                                            {{ $month5StartDate }}</th>
+                                            @if (preg_match("/^\d{4}-\d{2}-\d{2}$/", $month5StartDate))
+                                                {{ 'Month '.$month }} <br> {{ date("j-M", strtotime($month5StartDate)) }}
+                                            @else
+                                                {{ 'Month '.$month }} <br>{{ $month5StartDate }}
+                                            @endif
+                                        </th>
                                         @php
                                             $month5StartDate = date(
                                                 'j-M',
