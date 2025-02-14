@@ -40,7 +40,7 @@
                             @php
                                 // Filter entries that meet the condition
                                 $validEntries = collect($entries)->filter(function ($entry) {
-                                    return isset($entry['entries']['status'], $entry['entries']['job'], $entry['entries']['lot']);
+                                    return isset($entry['entries']['status'], $entry['entries']['planning']);
                                 });
                             @endphp
 
@@ -137,6 +137,7 @@
                                             $status = $entry['entries_data']['status'] ?? null;
                                             $job = $entry['entries_data']['job'] ?? null;
                                             $lot = $entry['entries_data']['lot'] ?? null;
+                                            $planning = $entry['entries_data']['planning'] ?? null;
 
                                             if ($status !== null && $planning !== null) {
                                                 $hasValidEntry = true;
