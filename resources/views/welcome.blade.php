@@ -412,14 +412,19 @@
                                             {{-- <span class="icon">▼</span> --}}</th>
                                         @for ($week = 1; $week <= 16; $week++)
                                             <th scope="col" class="toggleable-2 toggle-header-department"
-                                                id="head_week_{{ $week }}" disabled>
+                                                id="head_week_{{ $week }}">
                                                 {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
                                             </th>
                                         @endfor
                                         @for ($month = 5; $month <= 12; $month++)
                                             <th scope="col" class="toggleable-2 toggle-header-department"
-                                                id="head_month_{{ $month }}" disabled>
-                                                {{ $month5StartDate }}</th>
+                                                id="head_month_{{ $month }}">
+                                                @if (preg_match("/^\d{4}-\d{2}-\d{2}$/", $month5StartDate))
+                                                   {{ date("j-M", strtotime($month5StartDate)) }}
+                                                @else
+                                                    {{ $month5StartDate }}
+                                                @endif
+                                            </th>
                                             @php
                                                 $month5StartDate = date(
                                                     'j-M',

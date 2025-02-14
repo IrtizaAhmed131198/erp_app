@@ -261,7 +261,12 @@
                                     @endfor
                                     @for ($month = 5; $month <= 12; $month++)
                                         <th id="head_month_{{ $month }}">
-                                            {{ $month5StartDate }}</th>
+                                            @if (preg_match("/^\d{4}-\d{2}-\d{2}$/", $month5StartDate))
+                                                {{ date("j-M", strtotime($month5StartDate)) }}
+                                            @else
+                                                {{ $month5StartDate }}
+                                            @endif
+                                        </th>
                                         @php
                                             $month5StartDate = date(
                                                 'j-M',
