@@ -53,7 +53,7 @@
                                                 @if ($status === 'Closed')
                                                     <a href="{{ route('get_qa', $entry->part->id) }}">{{ $entry->part->Part_Number }}</a>
                                                 @else
-                                                    {{ $entry->part->Part_Number }}
+                                                    {{ $entry->part->Part_Number ?? '' }}
                                                 @endif
                                             </td>
                                             <td>{{ $entry->quantity }}</td>
