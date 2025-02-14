@@ -86,6 +86,9 @@
                                     <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}
                                         style="background-color: #719ff4">Closed
                                     </option>
+                                    <option value="Neutral" {{ $data->status == 'Neutral' ? 'selected' : '' }}
+                                        style="background-color: #bfef72">Neutral
+                                    </option>
                                 </select>
                             </td>
                         @else
