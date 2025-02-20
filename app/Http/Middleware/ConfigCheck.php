@@ -53,27 +53,7 @@ class ConfigCheck
                     // ],
                     [
                         'column' => 'ids',
-                        'order' => 7,
-                        'visibility' => true
-                    ],
-                    [
-                        'column' => 'part_number',
-                        'order' => 8,
-                        'visibility' => true
-                    ],
-                    [
-                        'column' => 'customer',
-                        'order' => 9,
-                        'visibility' => true
-                    ],
-                    [
-                        'column' => 'rev',
-                        'order' => 10,
-                        'visibility' => true
-                    ],
-                    [
-                        'column' => 'process',
-                        'order' => 11,
+                        'order' => 5,
                         'visibility' => true
                     ]
                 ]),
@@ -86,83 +66,103 @@ class ConfigCheck
                 'key' => 'master_screen_region_2_column_configuration',
                 'value' => json_encode([
                     [
-                        'column' => 'reqd_1_6_weeks',
+                        'column' => 'part_number',
                         'order' => 1,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'reqd_7_12_weeks',
+                        'column' => 'customer',
                         'order' => 2,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'scheduled_total',
+                        'column' => 'rev',
                         'order' => 3,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'in_stock_finished',
+                        'column' => 'process',
                         'order' => 4,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'live_inventory_finished',
+                        'column' => 'reqd_1_6_weeks',
                         'order' => 5,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'live_inventory_wip',
+                        'column' => 'reqd_7_12_weeks',
                         'order' => 6,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'in_process_out_side',
+                        'column' => 'scheduled_total',
                         'order' => 7,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'on_order_raw_matl',
+                        'column' => 'in_stock_finished',
                         'order' => 8,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'in_stock_live',
+                        'column' => 'live_inventory_finished',
                         'order' => 9,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'wt_pc',
+                        'column' => 'live_inventory_wip',
                         'order' => 10,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'material_sort',
+                        'column' => 'in_process_out_side',
                         'order' => 11,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'wt_reqd_1_12_weeks',
+                        'column' => 'on_order_raw_matl',
                         'order' => 12,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'safety',
+                        'column' => 'in_stock_live',
                         'order' => 13,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'min_ship',
+                        'column' => 'wt_pc',
                         'order' => 14,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'order_notes',
+                        'column' => 'material_sort',
                         'order' => 15,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'part_notes',
+                        'column' => 'wt_reqd_1_12_weeks',
                         'order' => 16,
+                        'visibility' => true
+                    ],
+                    [
+                        'column' => 'safety',
+                        'order' => 17,
+                        'visibility' => true
+                    ],
+                    [
+                        'column' => 'min_ship',
+                        'order' => 18,
+                        'visibility' => true
+                    ],
+                    [
+                        'column' => 'order_notes',
+                        'order' => 19,
+                        'visibility' => true
+                    ],
+                    [
+                        'column' => 'part_notes',
+                        'order' => 20,
                         'visibility' => true
                     ]
                 ]),

@@ -111,6 +111,9 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('get-report-data', [HomeController::class, "getReportData"])->name('getReportData');
     Route::get('get-qa/{part}', [HomeController::class, "get_qa"])->name('get_qa');
 
+    Route::get('get-all-report', [HomeController::class, "get_all_report"])->name('get_all_report');
+    Route::get('get-all-report/ajax', [HomeController::class, "ajax_report"])->name('ajax_report');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');

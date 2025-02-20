@@ -214,29 +214,6 @@
                             <tbody>
 
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>DEPARTMENT</th>
-                                    <th>WORK CENTER</th>
-                                    <th>PLANNING QUEUE </th>
-                                    <th>STATUS</th>
-                                    <th>JOB</th>
-                                    <th>LOT</th>
-                                    <th>ID</th>
-                                    <th>CUSTOMER</th>
-                                    <th>REV</th>
-                                    <th>PROCESS</th>
-                                    <th>IN PROCESS OUTSIDE</th>
-                                    <th>ON ORDER RAW MAT`L</th>
-                                    <th>WT/PC</th>
-                                    <th>MATERIAL</th>
-                                    <th>SAFETY</th>
-                                    <th>ORDER NOTES</th>
-                                    <th>PART NOTES</th>
-                                    <th>FUTURE RAW</th>
-                                    <th>NOTES</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

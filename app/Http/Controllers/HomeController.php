@@ -161,7 +161,7 @@ class HomeController extends Controller
             });
         }
 
-        $entries = $query->get();
+        $entries = $query->where('active', 1)->orderBy('id', 'desc')->get();
 
         $department = Department::get();
 
@@ -420,6 +420,7 @@ class HomeController extends Controller
             'min_ship' => 'nullable',
             'wt_pc' => 'required',
             'currency' => 'required',
+            'active' => 'sometimes|boolean',
         ]);
 
 
@@ -542,6 +543,7 @@ class HomeController extends Controller
             'min_ship' => 'nullable',
             'wt_pc' => 'required',
             'currency' => 'required',
+            'active' => 'boolean',
         ]);
 
         try {
@@ -1662,6 +1664,42 @@ class HomeController extends Controller
 
         return view('qa', compact('query'));
     }
+
+    public function get_all_report(Request $request)
+    {
+        // Get today's date
+        $today = date('Y-m-d');
+
+        // Filter notifications (or weeks_history, adjust accordingly) for today
+        $activity_by_user = Notification::with('user')
+            ->whereDate('created_at', $today)
+            ->get()
+            ->groupBy('user_id');
+
+        return view('all-reports', compact('activity_by_user'));
+    }
+
+    public function ajax_report(Request $request)
+    {
+        $query = Notification::with('user');
+
+        if ($request->filled('daterange')) {
+            // Expect daterange in "YYYY-MM-DD - YYYY-MM-DD" format
+            $dates = explode(' - ', $request->input('daterange'));
+            if (count($dates) === 2) {
+                $startDate = $dates[0];
+                $endDate = $dates[1];
+                $query->whereDate('created_at', '>=', $startDate)
+                    ->whereDate('created_at', '<=', $endDate);
+            }
+        }
+
+        $activity_by_user = $query->get()->groupBy('user_id');
+
+        // Return the partial view with the filtered data
+        return view('partials.report_data', compact('activity_by_user'));
+    }
+
 
     public function report($userId)
     {

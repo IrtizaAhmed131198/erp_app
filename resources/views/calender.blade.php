@@ -694,6 +694,9 @@
 
             $('#partNumberSelect').on('change', function() {
                 $('.table-data').html('');
+                $('#order_past_due').val('');
+                $('#change_past_due').hide();
+                $('.shipment-input-two').val('');
                 const selectedPartNumber = $(this).val(); // Get selected part number
                 console.log("Selected Part Number: ", selectedPartNumber);
 

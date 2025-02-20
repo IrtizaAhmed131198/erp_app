@@ -52,7 +52,8 @@ class Entries extends Model
         'wt_pc',
         'currency',
         'last_updated_by',
-        'in_process_outside'
+        'in_process_outside',
+        'active'
     ];
 
     protected static function boot()

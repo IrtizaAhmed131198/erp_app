@@ -44,6 +44,55 @@
         .select2.select2-container .select2-selection .select2-selection__arrow {
             height: 22px;
         }
+        /* The switch - the box around the slider */
+        .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        }
+
+        /* The slider */
+        .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+        }
+
+        .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+        }
+
+        /* Toggle when checked */
+        input:checked + .slider {
+        background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+        transform: translateX(26px);
+        }
+
     </style>
 @endsection
 
@@ -361,6 +410,17 @@
                                                 {{--                                                value="{{ old('wt_pc') }}"> --}}
                                                 <input type="text" step="any" name="wt_pc" id="wt_pc"
                                                     value="{{ old('wt_pc') }}" oninput="decimalPlaces(this)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Active</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="hidden" name="active" value="0">
+                                                    <input type="checkbox" name="active" id="active" value="1"
+                                                        {{ old('active', '1') == '1' ? 'checked' : '' }}>
+                                                    <span class="slider round"></span>
+                                                </label>
                                             </td>
                                         </tr>
                                     </tbody>

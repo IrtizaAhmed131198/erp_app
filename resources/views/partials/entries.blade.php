@@ -127,85 +127,6 @@
                             $data_target = 'entries_' . $data->id . '_ids';
                         @endphp
                         <td class="toggleable" id="{{ $data_target }}">{{ $data->ids ?? '' }}</td>
-                    @elseif($region_1_column_configuration_item->column == 'part_number')
-                        @php
-                            $data_target = 'entries_' . $data->id . '_part_number';
-                        @endphp
-                        <td class="toggleable custom-toggleable" id="{{ $data_target }}">
-                            <div class="custom-dropdown">
-                                <button class="custom-dropdown-toggle part-st" type="button">
-                                    {{ $data->part->Part_Number ?? '' }}
-                                </button>
-                                @if ($data->part && $data->part->id)
-                                    <ul class="custom-dropdown-menu">
-                                        <li>
-                                            <a href="{{ route('calender', ['part_number' => $data->part->id]) }}"
-                                                class="custom-dropdown-item" data-part="{{ $data->part_number }}"
-                                                data-url="{{ route('calender') }}">
-                                                Shipment & Production
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->part->id]) }}"
-                                                class="custom-dropdown-item" data-part="{{ $data->part_number }}"
-                                                data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
-                                                Part Number Input
-                                            </a>
-                                        </li>
-                                    </ul>
-                                @endif
-                            </div>
-                        </td>
-                    @elseif($region_1_column_configuration_item->column == 'customer')
-                        @php
-                            $data_target = 'entries_' . $data->id . '_customer';
-                        @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable" id="{{ $data_target }}">
-                                <select name="customer" id="customer" class="simple-select"
-                                    data-id="{{ $data->id }}"
-                                    onchange="sendAjaxRequest('customer', this.value, event)">
-                                    <option value="" disabled>Select</option>
-                                    @foreach ($customers as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ $data->customer == $item->id ? 'selected' : '' }}>
-                                            {{ $item->CustomerName }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        @else
-                            <td class="toggleable" id="{{ $data_target }}">{{ $data->get_customer->CustomerName }}
-                            </td>
-                        @endif
-                    @elseif($region_1_column_configuration_item->column == 'rev')
-                        @php
-                            $data_target = 'entries_' . $data->id . '_rev';
-                        @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable targetshow" id="{{ $data_target }}">
-                                <input type="text" name="rev" id="rev" class="data-w"
-                                    value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('revision', this.value, event)"
-                                    onmouseover="showTextAbove(this)" readonly>
-                            </td>
-                        @else
-                            <td class="toggleable" id="{{ $data_target }}">{{ $data->revision }}</td>
-                        @endif
-                    @elseif($region_1_column_configuration_item->column == 'process')
-                        @php
-                            $data_target = 'entries_' . $data->id . '_process';
-                        @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable targetshow" id="{{ $data_target }}">
-                                <input type="text" name="process" id="process" class="data-w"
-                                    value="{{ $data->process ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('process', this.value, event)"
-                                    onmouseover="showTextAbove(this)" readonly>
-                            </td>
-                        @else
-                            <td class="toggleable" id="{{ $data_target }}">{{ $data->process }}</td>
-                        @endif
                     @endif
                 @endif
             @endforeach
@@ -270,7 +191,86 @@
 
             @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                 @if ($region_2_column_configuration_item->visibility)
-                    @if ($region_2_column_configuration_item->column == 'reqd_1_6_weeks')
+                    @if($region_2_column_configuration_item->column == 'part_number')
+                        @php
+                            $data_target = 'entries_' . $data->id . '_part_number';
+                        @endphp
+                        <td class="toggleable custom-toggleable" id="{{ $data_target }}">
+                            <div class="custom-dropdown">
+                                <button class="custom-dropdown-toggle part-st" type="button">
+                                    {{ $data->part->Part_Number ?? '' }}
+                                </button>
+                                @if ($data->part && $data->part->id)
+                                    <ul class="custom-dropdown-menu">
+                                        <li>
+                                            <a href="{{ route('calender', ['part_number' => $data->part->id]) }}"
+                                                class="custom-dropdown-item" data-part="{{ $data->part_number }}"
+                                                data-url="{{ route('calender') }}">
+                                                Shipment & Production
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('data_center_edit', ['id' => $data->id, 'part_number' => $data->part->id]) }}"
+                                                class="custom-dropdown-item" data-part="{{ $data->part_number }}"
+                                                data-url="{{ route('data_center_edit', ['id' => $data->id]) }}">
+                                                Part Number Input
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @endif
+                            </div>
+                        </td>
+                    @elseif($region_2_column_configuration_item->column == 'customer')
+                        @php
+                            $data_target = 'entries_' . $data->id . '_customer';
+                        @endphp
+                        @if (Auth::user()->role == 1)
+                            <td class="toggleable" id="{{ $data_target }}">
+                                <select name="customer" id="customer" class="simple-select"
+                                    data-id="{{ $data->id }}"
+                                    onchange="sendAjaxRequest('customer', this.value, event)">
+                                    <option value="" disabled>Select</option>
+                                    @foreach ($customers as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ $data->customer == $item->id ? 'selected' : '' }}>
+                                            {{ $item->CustomerName }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        @else
+                            <td class="toggleable" id="{{ $data_target }}">{{ $data->get_customer->CustomerName }}
+                            </td>
+                        @endif
+                    @elseif($region_2_column_configuration_item->column == 'rev')
+                        @php
+                            $data_target = 'entries_' . $data->id . '_rev';
+                        @endphp
+                        @if (Auth::user()->role == 1)
+                            <td class="toggleable targetshow" id="{{ $data_target }}">
+                                <input type="text" name="rev" id="rev" class="data-w"
+                                    value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"
+                                    onkeyup="sendAjaxRequest('revision', this.value, event)"
+                                    onmouseover="showTextAbove(this)" readonly>
+                            </td>
+                        @else
+                            <td class="toggleable" id="{{ $data_target }}">{{ $data->revision }}</td>
+                        @endif
+                    @elseif($region_2_column_configuration_item->column == 'process')
+                        @php
+                            $data_target = 'entries_' . $data->id . '_process';
+                        @endphp
+                        @if (Auth::user()->role == 1)
+                            <td class="toggleable targetshow" id="{{ $data_target }}">
+                                <input type="text" name="process" id="process" class="data-w"
+                                    value="{{ $data->process ?? '' }}" data-id="{{ $data->id }}"
+                                    onkeyup="sendAjaxRequest('process', this.value, event)"
+                                    onmouseover="showTextAbove(this)" readonly>
+                            </td>
+                        @else
+                            <td class="toggleable" id="{{ $data_target }}">{{ $data->process }}</td>
+                        @endif
+                    @elseif ($region_2_column_configuration_item->column == 'reqd_1_6_weeks')
                         @php
                             $data_target = 'entries_' . $data->id . '_reqd_1_6_weeks';
                         @endphp

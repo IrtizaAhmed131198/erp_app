@@ -432,8 +432,7 @@
                                                 );
                                             @endphp
                                         @endfor
-                                        {{-- <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE RAW
-                                             <span class="icon">▼</span> </th>--}}
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE RAW</th>
                                         <th scope="col" class="toggleable-2 toggle-header-department" disabled>PRICE
                                             {{-- <span class="icon">▼</span> --}}</th>
                                         <th scope="col" class="toggleable-2 toggle-header-department" disabled>NOTES
