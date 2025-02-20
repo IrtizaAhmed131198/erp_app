@@ -87,6 +87,8 @@
                                                     </li>
                                                 @endif
                                     </li>
+                                    <li><a class="dropdown-item" href="{{ route('get_all_report') }}">All User Reports</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment &
                                             Production</a>
                                     </li>

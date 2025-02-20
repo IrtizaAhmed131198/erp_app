@@ -1667,6 +1667,9 @@ class HomeController extends Controller
 
     public function get_all_report(Request $request)
     {
+        if(Auth::user()->role != 1){
+            abort(403);
+        }
         // Get today's date
         $today = date('Y-m-d');
 

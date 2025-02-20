@@ -5,16 +5,17 @@
                 @forelse ($activity_by_user as $user_id => $notifications)
                     @php
                         $user = $notifications->first()->user;
+                        $isFirst = $loop->first;
                     @endphp
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{ $user_id }}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse{{ $user_id }}" aria-expanded="true"
+                            <button class="accordion-button {{ $isFirst ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ $user_id }}" aria-expanded="{{ $isFirst ? 'true' : 'false' }}"
                                 aria-controls="collapse{{ $user_id }}">
                                 <strong>{{ $user ? $user->name : 'Unknown User' }}</strong>
                             </button>
                         </h2>
-                        <div id="collapse{{ $user_id }}" class="accordion-collapse collapse"
+                        <div id="collapse{{ $user_id }}" class="accordion-collapse collapse {{ $isFirst ? 'show' : '' }}"
                             aria-labelledby="heading{{ $user_id }}" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <table class="table table-hover table-bordered">
