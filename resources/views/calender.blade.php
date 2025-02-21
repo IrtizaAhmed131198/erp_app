@@ -29,6 +29,29 @@
         .side_btn .custom-btn {
             margin: unset;
         }
+
+        .weekly-section .parent-table tr th {
+            font-size: 12px !important;
+            padding: 2px 15px !important;
+        }
+
+        .weekly-section .parent-table tr td:first-child {
+            font-size: 12px !important;
+            padding: 2px 15px !important;
+        }
+
+        .parent-table table input,
+        .parent-table table textarea {
+            font-size: 12px !important;
+        }
+
+        .parent-table-calender.full-view-port td {
+            padding: 2px 16px !important;
+        }
+
+        .weekly-section .parent-table {
+            margin-top: 10px !important;
+        }
     </style>
 @endsection
 
@@ -282,7 +305,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="total_shipment" class="total_shipment" readonly>
+                                                    <input type="text" name="total_shipment" class="total_shipment"
+                                                        readonly>
                                                 </td>
                                                 <td>
                                                     <input type='text' class='' disabled>
@@ -622,7 +646,8 @@
                         // Iterate through the response data object
                         for (let key in data) {
                             let value = data[key];
-                            let formattedValue = value !== null ? new Intl.NumberFormat('en-US').format(value) : null;
+                            let formattedValue = value !== null ? new Intl.NumberFormat('en-US').format(
+                                value) : null;
 
                             $(`#edit_${key}`).val(formattedValue).prop('readonly', true);
                             $(`#${key}`).val(formattedValue).prop('readonly', true);
@@ -666,8 +691,10 @@
                                 }
 
                                 let sum = Object.keys(data)
-                                    .filter(key => !key.includes('_date') && key !== 'past_due') // Exclude date keys and past_due
-                                    .reduce((total, key) => total + Number(data[key]), 0); // Sum the numeric values
+                                    .filter(key => !key.includes('_date') && key !==
+                                        'past_due') // Exclude date keys and past_due
+                                    .reduce((total, key) => total + Number(data[key]),
+                                        0); // Sum the numeric values
 
                                 console.log("Total Sum:", sum);
                                 sum = isNaN(sum) ? 0 : sum;
@@ -1000,7 +1027,8 @@
                                     key !== 'created_at' &&
                                     key !== 'updated_at'
                                 ) // Exclude unwanted keys
-                                .reduce((total, key) => total + Number(data[key] || 0), 0); // Sum the numeric values
+                                .reduce((total, key) => total + Number(data[key] || 0),
+                                    0); // Sum the numeric values
 
                             console.log("Total Sum:", sum);
                             let future = parseFloat(response.future_raw) || 0;
@@ -1017,7 +1045,8 @@
                         });
                     },
                     complete: function() {
-                        $button.prop('disabled', false); // Re-enable button after AJAX completes
+                        $button.prop('disabled',
+                            false); // Re-enable button after AJAX completes
                     }
                 });
             });
