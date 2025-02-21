@@ -35,6 +35,10 @@ return new class extends Migration
             $table->string('future_raw')->nullable();
             $table->string('price')->nullable();
             $table->text('notes')->nullable();
+            $table->text('min_ship')->nullable();
+            $table->text('currency')->nullable();
+            $table->text('moq')->nullable();
+            $table->text('in_stock_finish')->nullable();
             $table->timestamps();
         });
     }

@@ -21,12 +21,14 @@ use App\Models\Vendor;
 use App\Models\ColumnPreferences;
 use App\Models\HighlightedCell;
 use App\Models\WeeksHistory;
+use App\Models\Reports;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Schema;
 use App\Events\StockUpdate;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -291,7 +293,7 @@ class HomeController extends Controller
             $fieldNameFormatted = ucwords(str_replace('_', ' ', $fieldName));
             $info = 'WorkCenter value changes from "' . $new_old . '" to "' . $new_value . '"';
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'update', $info, 1);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'update', $info, 1, $entry->entry_id);
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -568,6 +570,53 @@ class HomeController extends Controller
             foreach ($validatedData as $field => $newValue) {
                 if (isset($oldValues[$field]) && $oldValues[$field] != $newValue) {
                     $data_updates['entries_' . $id . '_' . $field] = $newValue;
+                }
+
+                if (array_key_exists($field, $oldValues) && $oldValues[$field] != $newValue) {
+                    // Check if a report for this entry, user and field exists today.
+                    $existingReport = Reports::where('user_id', Auth::user()->id)
+                        ->where('entry_id', $id)
+                        ->whereDate('created_at', Carbon::today())
+                        ->first();
+
+                    if ($existingReport) {
+                        // Update the field with the new value.
+                        if($field == 'revision') {
+                            $field = 'rev';
+                        }else if($field == 'work_centre_1') {
+                            $field = 'work_center';
+                        }
+
+                        if (Schema::hasColumn('reports', $field)) {
+                            $existingReport->{$field} = $newValue;
+                            $existingReport->save();
+                        }
+                    } else {
+                        // Create a new report record.
+                        $report = new Reports();
+                        $report->user_id = Auth::user()->id;
+                        $report->entry_id = $id;
+                        $report->department    = $field == 'department' ? $newValue : null;
+                        $report->work_center   = $field == 'work_centre_1' ? $newValue : null;
+                        $report->planning      = $field == 'planning' ? $newValue : null;
+                        $report->status        = $field == 'status' ? $newValue : null;
+                        $report->job           = $field == 'job' ? $newValue : null;
+                        $report->lot           = $field == 'lot' ? $newValue : null;
+                        $report->ids           = $field == 'ids' ? $newValue : null;
+                        $report->customer      = $field == 'customer' ? $newValue : null;
+                        $report->rev           = $field == 'rev' ? $newValue : null;
+                        $report->process       = $field == 'process' ? $newValue : null;
+                        $report->in_process_outside = $field == 'in_process_outside' ? $newValue : null;
+                        $report->raw_mat       = $field == 'raw_mat' ? $newValue : null;
+                        $report->wt_pc         = $field == 'wt_pc' ? $newValue : null;
+                        $report->material      = $field == 'material' ? $newValue : null;
+                        $report->safety        = $field == 'safety' ? $newValue : null;
+                        $report->order_notes   = $field == 'order_notes' ? $newValue : null;
+                        $report->part_notes    = $field == 'part_notes' ? $newValue : null;
+                        $report->price         = $field == 'price' ? $newValue : null;
+                        $report->notes         = $field == 'notes' ? $newValue : null;
+                        $report->save();
+                    }
                 }
             }
 
@@ -1036,6 +1085,24 @@ class HomeController extends Controller
         // Broadcast the event
         event(new StockUpdate($data_updates));
 
+        $existingReport = Reports::where('user_id', Auth::user()->id)
+            ->where('entry_id', $data->id)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if ($existingReport) {
+            // Update the existing record
+            $existingReport->in_stock_finish = $data->in_stock_finish;
+            $existingReport->save();
+        } else {
+            // Create a new record
+            $reports = new Reports();
+            $reports->user_id = Auth::user()->id;
+            $reports->entry_id = $data->id;
+            $reports->in_stock_finish = $data->in_stock_finish;
+            $reports->save();
+        }
+
         return response()->json([
             'message' => 'Production total updated successfully!',
             'new_total' => $newTotal
@@ -1195,6 +1262,24 @@ class HomeController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
+        $existingReport = Reports::where('user_id', Auth::user()->id)
+                ->where('entry_id', $part->id)
+                ->whereDate('created_at', Carbon::today())
+                ->first();
+
+        if ($existingReport) {
+            // Update the existing record
+            $existingReport->future_raw = $part->future_raw;
+            $existingReport->save();
+        } else {
+            // Create a new record
+            $reports = new Reports();
+            $reports->user_id = Auth::user()->id;
+            $reports->entry_id = $part->id;
+            $reports->future_raw = $part->future_raw;
+            $reports->save();
+        }
+
         return response()->json(['message' => $message, 'past_due' => $request->past_val, 'future_raw' => number_format((float) $part->future_raw), 'data' => $data]);
     }
 
@@ -1223,6 +1308,24 @@ class HomeController extends Controller
         $info = 'Shipment Order has been added for part number: "' . $entries->part->Part_Number . '"';
 
         $this->notificationService->sendNotification(Auth::user()->id, 'add_shipment', ['message' => 'Shipment Added.'], 'entries', $request->part_number, '', '', '', 'add', $info);
+
+        $existingReport = Reports::where('user_id', Auth::user()->id)
+            ->where('entry_id', $entries->id)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if ($existingReport) {
+            // Update the existing record
+            $existingReport->in_stock_finish = $entries->in_stock_finish;
+            $existingReport->save();
+        } else {
+            // Create a new record
+            $reports = new Reports();
+            $reports->user_id = Auth::user()->id;
+            $reports->entry_id = $entries->id;
+            $reports->in_stock_finish = $entries->in_stock_finish;
+            $reports->save();
+        }
 
         return response()->json(['message' => 'Shipment Order Created', 'data' => $data]);
     }
@@ -1685,24 +1788,44 @@ class HomeController extends Controller
 
     public function ajax_report(Request $request)
     {
-        $query = Notification::with('user');
+        if ($request->ajax()) {
+            // Start building the query
+            $query = Reports::query();
 
-        if ($request->filled('daterange')) {
-            // Expect daterange in "YYYY-MM-DD - YYYY-MM-DD" format
-            $dates = explode(' - ', $request->input('daterange'));
-            if (count($dates) === 2) {
-                $startDate = $dates[0];
-                $endDate = $dates[1];
-                $query->whereDate('created_at', '>=', $startDate)
-                    ->whereDate('created_at', '<=', $endDate);
+            // Apply date range filtering if provided
+            if ($request->has('start_date') && $request->has('end_date') && !empty($request->start_date) && !empty($request->end_date)) {
+                $query->whereDate('created_at', '>=', $request->start_date)
+                    ->whereDate('created_at', '<=', $request->end_date);
             }
+
+            // Fetch the filtered records
+            $reports = $query->get();
+
+            // Return the data as a DataTable response
+            return DataTables::of($reports)->make(true);
         }
-
-        $activity_by_user = $query->get()->groupBy('user_id');
-
-        // Return the partial view with the filtered data
-        return view('partials.report_data', compact('activity_by_user'));
     }
+
+    // public function ajax_report(Request $request)
+    // {
+    //     $query = Notification::with('user');
+
+    //     if ($request->filled('daterange')) {
+    //         // Expect daterange in "YYYY-MM-DD - YYYY-MM-DD" format
+    //         $dates = explode(' - ', $request->input('daterange'));
+    //         if (count($dates) === 2) {
+    //             $startDate = $dates[0];
+    //             $endDate = $dates[1];
+    //             $query->whereDate('created_at', '>=', $startDate)
+    //                 ->whereDate('created_at', '<=', $endDate);
+    //         }
+    //     }
+
+    //     $activity_by_user = $query->get()->groupBy('user_id');
+
+    //     // Return the partial view with the filtered data
+    //     return view('partials.report_data', compact('activity_by_user'));
+    // }
 
 
     public function report($userId)

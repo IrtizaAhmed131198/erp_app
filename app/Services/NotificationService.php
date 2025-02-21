@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class NotificationService
 {
-    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $field = null, $old = null, $new = null, $post_type = null, $info = null, $report = 0)
+    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $field = null, $old = null, $new = null, $post_type = null, $info = null, $report = 0, $referenceId2 = null)
     {
         // dd($userId, $type, $data, $referenceTable, $referenceId, $field, $old, $new, $post_type);
         $notification = Notification::create([
@@ -47,6 +47,10 @@ class NotificationService
         }
 
         if ($report == 1) {
+            if($field == 'com'){
+                $field = 'work_center';
+                $referenceId = $referenceId2;
+            }
             // Check if there's an existing report for the same user, entry and today
             $existingReport = Reports::where('user_id', $userId)
                 ->where('entry_id', $referenceId)

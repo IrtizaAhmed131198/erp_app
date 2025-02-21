@@ -195,7 +195,7 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_part_number';
                         @endphp
-                        <td class="toggleable custom-toggleable" id="{{ $data_target }}">
+                        <td class="toggleable-1 custom-toggleable" id="{{ $data_target }}">
                             <div class="custom-dropdown">
                                 <button class="custom-dropdown-toggle part-st" type="button">
                                     {{ $data->part->Part_Number ?? '' }}
@@ -225,7 +225,7 @@
                             $data_target = 'entries_' . $data->id . '_customer';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable" id="{{ $data_target }}">
+                            <td class="toggleable-1" id="{{ $data_target }}">
                                 <select name="customer" id="customer" class="simple-select"
                                     data-id="{{ $data->id }}"
                                     onchange="sendAjaxRequest('customer', this.value, event)">
@@ -239,7 +239,7 @@
                                 </select>
                             </td>
                         @else
-                            <td class="toggleable" id="{{ $data_target }}">{{ $data->get_customer->CustomerName }}
+                            <td class="toggleable-1" id="{{ $data_target }}">{{ $data->get_customer->CustomerName }}
                             </td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'rev')
@@ -247,28 +247,28 @@
                             $data_target = 'entries_' . $data->id . '_rev';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable targetshow" id="{{ $data_target }}">
+                            <td class="toggleable-1 targetshow" id="{{ $data_target }}">
                                 <input type="text" name="rev" id="rev" class="data-w"
                                     value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('revision', this.value, event)"
                                     onmouseover="showTextAbove(this)" readonly>
                             </td>
                         @else
-                            <td class="toggleable" id="{{ $data_target }}">{{ $data->revision }}</td>
+                            <td class="toggleable-1" id="{{ $data_target }}">{{ $data->revision }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'process')
                         @php
                             $data_target = 'entries_' . $data->id . '_process';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable targetshow" id="{{ $data_target }}">
+                            <td class="toggleable-1 targetshow" id="{{ $data_target }}">
                                 <input type="text" name="process" id="process" class="data-w"
                                     value="{{ $data->process ?? '' }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('process', this.value, event)"
                                     onmouseover="showTextAbove(this)" readonly>
                             </td>
                         @else
-                            <td class="toggleable" id="{{ $data_target }}">{{ $data->process }}</td>
+                            <td class="toggleable-1" id="{{ $data_target }}">{{ $data->process }}</td>
                         @endif
                     @elseif ($region_2_column_configuration_item->column == 'reqd_1_6_weeks')
                         @php
