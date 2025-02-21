@@ -25,7 +25,7 @@ class Reports extends Model
 
     public function getDepartmentNameAttribute()
     {
-        $department = department::where('id', $this->department)->first();
+        $department = Department::where('id', $this->department)->first();
         return $department ? $department->name : '';
     }
 
