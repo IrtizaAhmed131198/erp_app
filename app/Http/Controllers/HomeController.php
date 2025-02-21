@@ -244,7 +244,8 @@ class HomeController extends Controller
                 $old,
                 $value,
                 'add',
-                $info
+                $info,
+                1
             );
 
             $data_updates = [
@@ -290,7 +291,7 @@ class HomeController extends Controller
             $fieldNameFormatted = ucwords(str_replace('_', ' ', $fieldName));
             $info = 'WorkCenter value changes from "' . $new_old . '" to "' . $new_value . '"';
 
-            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'update', $info);
+            $this->notificationService->sendNotification(Auth::user()->id, 'add_manual_entries', ['message' => 'Manual entries has been added.'], 'work_center', $entry->id, $fieldName, $old, $value, 'update', $info, 1);
 
             $data_updates = [
                 'entries_' . $dataId . '_' . $fieldName => $value
@@ -1526,33 +1527,33 @@ class HomeController extends Controller
                 ['column' => 'work_center', 'order' => 2, 'visibility' => true],
                 ['column' => 'planning_queue', 'order' => 3, 'visibility' => true],
                 ['column' => 'status', 'order' => 4, 'visibility' => true],
-                ['column' => 'job_number', 'order' => 5, 'visibility' => true],
-                ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
-                ['column' => 'ids', 'order' => 7, 'visibility' => true],
-                ['column' => 'part_number', 'order' => 8, 'visibility' => true],
-                ['column' => 'customer', 'order' => 9, 'visibility' => true],
-                ['column' => 'rev', 'order' => 10, 'visibility' => true],
-                ['column' => 'process', 'order' => 11, 'visibility' => true]
+                // ['column' => 'job_number', 'order' => 5, 'visibility' => true],
+                // ['column' => 'lot_number', 'order' => 6, 'visibility' => true],
+                ['column' => 'ids', 'order' => 5, 'visibility' => true]
             ];
 
             // Default configurations for region 2
             $region2Config = [
-                ['column' => 'reqd_1_6_weeks', 'order' => 1, 'visibility' => true],
-                ['column' => 'reqd_7_12_weeks', 'order' => 2, 'visibility' => true],
-                ['column' => 'scheduled_total', 'order' => 3, 'visibility' => true],
-                ['column' => 'in_stock_finished', 'order' => 4, 'visibility' => true],
-                ['column' => 'live_inventory_finished', 'order' => 5, 'visibility' => true],
-                ['column' => 'live_inventory_wip', 'order' => 6, 'visibility' => true],
-                ['column' => 'in_process_out_side', 'order' => 7, 'visibility' => true],
-                ['column' => 'on_order_raw_matl', 'order' => 8, 'visibility' => true],
-                ['column' => 'in_stock_live', 'order' => 9, 'visibility' => true],
-                ['column' => 'wt_pc', 'order' => 10, 'visibility' => true],
-                ['column' => 'material_sort', 'order' => 11, 'visibility' => true],
-                ['column' => 'wt_reqd_1_12_weeks', 'order' => 12, 'visibility' => true],
-                ['column' => 'safety', 'order' => 13, 'visibility' => true],
-                ['column' => 'min_ship', 'order' => 14, 'visibility' => true],
-                ['column' => 'order_notes', 'order' => 15, 'visibility' => true],
-                ['column' => 'part_notes', 'order' => 16, 'visibility' => true]
+                ['column' => 'part_number', 'order' => 1, 'visibility' => true],
+                ['column' => 'customer', 'order' => 2, 'visibility' => true],
+                ['column' => 'rev', 'order' => 3, 'visibility' => true],
+                ['column' => 'process', 'order' => 4, 'visibility' => true],
+                ['column' => 'reqd_1_6_weeks', 'order' => 5, 'visibility' => true],
+                ['column' => 'reqd_7_12_weeks', 'order' => 6, 'visibility' => true],
+                ['column' => 'scheduled_total', 'order' => 7, 'visibility' => true],
+                ['column' => 'in_stock_finished', 'order' => 8, 'visibility' => true],
+                ['column' => 'live_inventory_finished', 'order' => 9, 'visibility' => true],
+                ['column' => 'live_inventory_wip', 'order' => 10, 'visibility' => true],
+                ['column' => 'in_process_out_side', 'order' => 11, 'visibility' => true],
+                ['column' => 'on_order_raw_matl', 'order' => 12, 'visibility' => true],
+                ['column' => 'in_stock_live', 'order' => 13, 'visibility' => true],
+                ['column' => 'wt_pc', 'order' => 14, 'visibility' => true],
+                ['column' => 'material_sort', 'order' => 15, 'visibility' => true],
+                ['column' => 'wt_reqd_1_12_weeks', 'order' => 16, 'visibility' => true],
+                ['column' => 'safety', 'order' => 17, 'visibility' => true],
+                ['column' => 'min_ship', 'order' => 18, 'visibility' => true],
+                ['column' => 'order_notes', 'order' => 19, 'visibility' => true],
+                ['column' => 'part_notes', 'order' => 20, 'visibility' => true]
             ];
 
             // Reset configurations

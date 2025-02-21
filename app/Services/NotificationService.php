@@ -5,11 +5,12 @@ namespace App\Services;
 use App\Models\Notification;
 use App\Models\TargetCell;
 use App\Models\TargetRow;
+use App\Models\Reports;
 use Carbon\Carbon;
 
 class NotificationService
 {
-    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $field = null, $old = null, $new = null, $post_type = null, $info = null)
+    public function sendNotification($userId, $type, $data, $referenceTable = null, $referenceId = null, $field = null, $old = null, $new = null, $post_type = null, $info = null, $report = 0)
     {
         // dd($userId, $type, $data, $referenceTable, $referenceId, $field, $old, $new, $post_type);
         $notification = Notification::create([
@@ -44,6 +45,28 @@ class NotificationService
                 'ref_id' => $referenceId,
             ]);
         }
+
+        if ($report == 1) {
+            // Check if there's an existing report for the same user, entry and today
+            $existingReport = Reports::where('user_id', $userId)
+                ->where('entry_id', $referenceId)
+                ->whereDate('created_at', Carbon::today())
+                ->first();
+
+            if ($existingReport) {
+                // Update the existing record
+                $existingReport->{$field} = $new;
+                $existingReport->save();
+            } else {
+                // Create a new record
+                $reports = new Reports();
+                $reports->user_id = $userId;
+                $reports->entry_id = $referenceId;
+                $reports->{$field} = $new;
+                $reports->save();
+            }
+        }
+
     }
 
     public function markNotificationAsRead($notificationId)

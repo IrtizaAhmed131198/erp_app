@@ -382,8 +382,10 @@
                                             <span class="icon">▼</span>
                                         </th>
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
-                                            <th scope="col" id="column-department"
-                                                class="toggleable toggle-header-department" {!! $region_1_column_configuration_item->visibility ? '' : 'hidden' !!}disabled>
+                                            <th scope="col"
+                                                id="column-{{ $region_1_column_configuration_item->column }}"
+                                                class="toggleable toggle-header-{{ $region_1_column_configuration_item->column }}"
+                                                @if (!$region_1_column_configuration_item->visibility) hidden @endif>
                                                 {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
                                                 {{-- <span class="icon">▼</span> --}}
                                             </th>
@@ -395,9 +397,10 @@
                                         </th>
 
                                         @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
-                                            <th scope="col" id="column-department"
-                                                class="toggleable-1 toggle-header-department"
-                                                {!! $region_2_column_configuration_item->visibility ? '' : 'hidden' !!}disabled>
+                                            <th scope="col"
+                                                id="column-{{ $region_2_column_configuration_item->column }}"
+                                                class="toggleable-1 toggle-header-{{ $region_2_column_configuration_item->column }}"
+                                                @if (!$region_2_column_configuration_item->visibility) hidden @endif>
                                                 {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
                                                 {{-- <span class="icon">▼</span> --}}
                                             </th>
