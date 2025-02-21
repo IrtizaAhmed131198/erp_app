@@ -46,7 +46,7 @@ class NotificationService
             ]);
         }
 
-        if ($report == 1) {
+        if ($report == 1 && $field != 'active') {
             if($field == 'com'){
                 $field = 'work_center';
                 $referenceId = $referenceId2;

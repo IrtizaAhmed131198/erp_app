@@ -163,7 +163,11 @@ class HomeController extends Controller
             });
         }
 
-        $entries = $query->where('active', 1)->orderBy('id', 'desc')->get();
+        if (Auth::user()->role != 1) {
+            $query->where('active', 1);
+        }
+
+        $entries = $query->orderBy('id', 'desc')->get();
 
         $department = Department::get();
 

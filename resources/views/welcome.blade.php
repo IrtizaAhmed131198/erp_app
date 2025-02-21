@@ -377,6 +377,7 @@
                             <thead>
                                 <tr class="colored-table-row">
                                     <th style="display: none">Delete</th>
+                                    @if(Auth::user()->role == 1)<th>Active/InActive</th>@endif
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
