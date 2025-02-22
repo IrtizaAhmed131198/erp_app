@@ -206,7 +206,7 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_part_number';
                         @endphp
-                        <td class="toggleable-1 custom-toggleable" id="{{ $data_target }}">
+                        <td class="toggleable-1 custom-toggleable entries_part_number" id="{{ $data_target }}">
                             <div class="custom-dropdown">
                                 <button class="custom-dropdown-toggle part-st" type="button">
                                     {{ $data->part->Part_Number ?? '' }}

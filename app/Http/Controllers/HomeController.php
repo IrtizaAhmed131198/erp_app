@@ -1778,6 +1778,7 @@ class HomeController extends Controller
         if(Auth::user()->role != 1){
             abort(403);
         }
+        $parts = Parts::all();
         // Get today's date
         $today = date('Y-m-d');
 
@@ -1787,7 +1788,7 @@ class HomeController extends Controller
             ->get()
             ->groupBy('user_id');
 
-        return view('all-reports', compact('activity_by_user'));
+        return view('all-reports', compact('activity_by_user', 'parts'));
     }
 
     public function ajax_report(Request $request)
@@ -1808,6 +1809,73 @@ class HomeController extends Controller
             // Return the data as a DataTable response
             return DataTables::of($reports)->make(true);
         }
+    }
+
+    public function ajax_report_all(Request $request)
+    {
+        $query = WeeksHistory::with([
+            'entry.get_department',
+            'entry.get_customer',
+            'entry.part'
+        ])->select('weeks_history.*');
+
+        // if ($request->has('userId')) {
+        //     $query->where('weeks_history.user_id', $request->userId);
+        // }
+
+        // Apply date range filter
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereDate('weeks_history.created_at', '>=', $request->start_date)
+                ->whereDate('weeks_history.created_at', '<=', $request->end_date);
+        }
+
+        if ($request->has('filter') && $request->filter == 'customer') {
+            $query->orderBy('weeks_history.customer', 'asc');
+        } else if ($request->has('filter') && $request->filter == 'part_number') {
+            $query->orderBy('weeks_history.part_number', 'asc');
+        } else if ($request->has('filter') && $request->filter == 'department') {
+            $query->orderBy('weeks_history.department', 'asc');
+        }
+
+        return DataTables::of($query)
+            ->addColumn('department', function ($row) {
+                return $row->entry->get_department->name ?? 'N/A';
+            })
+            ->addColumn('customer', function ($row) {
+                return $row->entry->get_customer->CustomerName ?? 'N/A';
+            })
+            ->addColumn('part_number', function ($row) {
+                return $row->entry->part->Part_Number ?? 'N/A';
+            })
+            ->addColumn('date_search', function ($row) {
+                return $row->created_at ?? '';
+            })
+            ->addColumn('in_stock', function ($row) {
+                return $row->entry->in_stock_finish ?? '';
+            })
+            ->addColumn('past_due', function ($row) {
+                return $row->past_due ?? '';
+            })
+            ->addColumn('balance_schedule', function ($row) {
+                $total_weeks = Weeks::selectRaw('
+                    COALESCE(month_5, 0) + COALESCE(month_6, 0) + COALESCE(month_7, 0) + COALESCE(month_8, 0) +
+                    COALESCE(month_9, 0) + COALESCE(month_10, 0) + COALESCE(month_11, 0) + COALESCE(month_12, 0) AS total
+                ')->where('part_number', $row->entry->part->id)->first();
+
+                $weekValues = json_decode($row->week_values, true);
+                $total = 0;
+                for ($i = 1; $i <= 16; $i++) {
+                    $total += (int) ($weekValues["week_$i"] ?? 0);
+                }
+                for ($i = 5; $i <= 12; $i++) {
+                    $total += (int) ($weekValues["month_$i"] ?? 0);
+                }
+                return $total_weeks->total + $total;
+            })
+            ->addColumn('week_values', function ($row) {
+                return json_decode($row->week_values, true);
+            })
+            ->make(true);
     }
 
     // public function ajax_report(Request $request)

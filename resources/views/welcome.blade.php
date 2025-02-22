@@ -260,6 +260,20 @@
         .custom-dropdown-menu {
             position: absolute;
         }
+
+        .parent-table .table #column-part_number {
+            position: sticky;
+            left: 0;
+            background-color: #fff;
+            z-index: 99999;
+        }
+
+        #entries-table-body .entries_part_number {
+            position: sticky;
+            left: 0;
+            background-color: #fff;
+            z-index: 5;
+        }
     </style>
 @endsection
 
