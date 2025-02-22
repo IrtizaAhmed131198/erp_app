@@ -194,7 +194,7 @@
     <section class="report_sec">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                {{-- <div class="col-lg-6">
                     <div class="parent-filter">
                         <input type="text" name="daterange2" id="daterange2" class="form-control"
                             placeholder="Select date range" />
@@ -202,7 +202,7 @@
                 </div>
                 <div class="col-lg-2">
                     <button id="filter2" class="btn btn-primary">Filter</button>
-                </div>
+                </div> --}}
                 <div class="col-lg-12">
                     <div class="control-table">
                         <table id="reports-table" class="table table-striped report-data-show">
@@ -419,7 +419,7 @@
                     url: "{{ route('ajax_report') }}",
                     data: function(d) {
                         // If the date range input is empty, default to today's date.
-                        var dateRange = $('#daterange2').val();
+                        var dateRange = $('input[name="daterange"]').val();
                         if (dateRange) {
                             var dates = dateRange.split(' - ');
                             d.start_date = dates[0];
@@ -537,7 +537,7 @@
                 ]
             });
 
-            $('#filter2').click(function() {
+            $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
                 table.draw();
             });
         });

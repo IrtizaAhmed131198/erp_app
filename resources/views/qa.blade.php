@@ -49,6 +49,17 @@
             white-space: nowrap;
             overflow: auto;
         }
+
+        table.table tr th {
+            background: #719ff4 !important;
+            color: white;
+            white-space: nowrap;
+        }
+
+        table#reports-table tr TH,
+        td {
+            border: 1px solid #00000026;
+        }
     </style>
 @endsection
 
