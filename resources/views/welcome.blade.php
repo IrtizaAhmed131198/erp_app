@@ -387,7 +387,7 @@
                 });
             @endphp
 
-            <button onclick="exportTableToExcel()">Export to Excel</button>
+            <button onclick="exportTableToExcel()" class="btn btn-success mb-3">Export to Excel</button>
 
             <div class="row align-items-center">
                 <div class="col-lg-12">
@@ -1464,17 +1464,69 @@
             });
         });
 
+
+        // function exportTableToExcel() {
+        //     let table = document.getElementById("entries-table");
+        //     let clonedTable = table.cloneNode(true); // Clone table to avoid modifying the original
+
+        //     // Process each table cell
+        //     let cells = clonedTable.getElementsByTagName("td");
+        //     for (let cell of cells) {
+        //         // If the cell contains a <select> dropdown
+        //         let select = cell.querySelector("select");
+        //         if (select) {
+        //             cell.innerHTML = select.options[select.selectedIndex].text; // Extract selected option text
+        //         } else {
+        //             cell.innerHTML = cell.textContent; // Keep only text, remove any HTML tags
+        //         }
+        //     }
+
+        //     let ws = XLSX.utils.table_to_sheet(clonedTable);
+        //     let wb = XLSX.utils.book_new();
+        //     XLSX.utils.book_append_sheet(wb, ws, "Entries");
+
+        //     // Save the file
+        //     XLSX.writeFile(wb, "table_data.xlsx");
+        // }
+
         function exportTableToExcel() {
             let table = document.getElementById("entries-table");
-            let ws = XLSX.utils.table_to_sheet(table);
+            let clonedTable = table.cloneNode(true); // Clone table to avoid modifying the original
+
+            // Process each table cell
+            let cells = clonedTable.getElementsByTagName("td");
+            for (let cell of cells) {
+                // Remove hover divs/tooltips if they exist
+                let hoverDiv = cell.querySelector(".custom-dropdown-menu"); // Change this selector if needed
+                if (hoverDiv) {
+                    hoverDiv.remove(); // Remove hover div before exporting
+                }
+
+                // Check for select dropdowns and extract selected option text
+                let select = cell.querySelector("select");
+                if (select) {
+                    cell.textContent = select.options[select.selectedIndex].text; // Use only selected text
+                    continue;
+                }
+
+                // Check for input fields and extract their values
+                let input = cell.querySelector("input");
+                if (input) {
+                    cell.textContent = input.value; // Extract and set input value
+                    continue;
+                }
+
+                // Ensure only text remains (remove any HTML tags)
+                cell.textContent = cell.textContent.trim();
+            }
+
+            let ws = XLSX.utils.table_to_sheet(clonedTable);
             let wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Entries");
 
             // Save the file
             XLSX.writeFile(wb, "table_data.xlsx");
         }
-
-
     </script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
