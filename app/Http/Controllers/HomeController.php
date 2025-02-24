@@ -1673,7 +1673,7 @@ class HomeController extends Controller
 //                'user_id' => auth()->id(),
 //                'key' => 'master_screen_region_1_column_configuration',
 //                'value' => json_encode($region1Config)
-//            ]);
+//            ]);wel
 //
 //            UserConfig::create([
 //                'user_id' => auth()->id(),

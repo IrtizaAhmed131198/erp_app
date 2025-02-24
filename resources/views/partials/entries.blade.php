@@ -4,19 +4,18 @@
         <td style="display: none"><button type="button" class="btn btn-danger delete-entry"
                 data-id="{{ $data->id }}"><i class="fa fa-trash"></i></button></td>
 
-        @if(Auth::user()->role == 1)
-            <td>
-                <select name="active" id="active" data-id="{{ $data->id }}"
-                    onchange="sendAjaxRequest('active', this.value, event)">
-                    <option value="1" {{ $data->active == 1 ? 'selected' : '' }}>Active</option>
-                    <option value="0" {{ $data->active == 0 ? 'selected' : '' }}>Inactive</option>
-                </select>
-            </td>
-        @endif
-
         @if (Auth::user()->View_1 == 1)
             <td class="vertical-text highlighted">
             </td>
+            @if(Auth::user()->role == 1)
+                <td class="toggleable toggle-department">
+                    <select name="active" id="active" data-id="{{ $data->id }}"
+                            onchange="sendAjaxRequest('active', this.value, event)">
+                        <option value="1" {{ $data->active == 1 ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ $data->active == 0 ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </td>
+            @endif
             @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                 @if ($region_1_column_configuration_item->visibility)
                     @if($region_1_column_configuration_item->column == 'planning_queue')
@@ -157,6 +156,8 @@
                     (float) (isset($data->weeks_months->past_due) ? $data->weeks_months->past_due : 0);
                 // dd($sumWeeks1To6);
             @endphp
+
+
 
             @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                 @if ($region_2_column_configuration_item->visibility)
