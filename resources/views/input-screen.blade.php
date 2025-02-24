@@ -91,7 +91,7 @@
                                                                 </select>
                                                             </td>
                                                             <td class="customer_val">{{ $customer }}</td>
-                                                            <td class="part_number_val"><input type="hidden" name="part" value="{{ $entry['entries']['part_number'] }}">{{ $part_number }}</td>
+                                                            <td class="part_number_val"><a href="{{ route('get_qa', $entry['entries']['id']) }}"><input type="hidden" name="part" value="{{ $entry['entries']['part_number'] }}">{{ $part_number }}</a></td>
                                                             <td class="quantity_val">{{ $planning }}</td>
                                                             <td>
                                                                 {{-- @if(Auth::user()->role == 1) --}}
@@ -198,8 +198,10 @@
                                                                                 {{ $customer }}
                                                                         </td>
                                                                         <td class="part_number_val">
+                                                                            <a href="{{ route('get_qa', $entry['entries_data']['id']) }}">
                                                                             <input type="hidden" name="part" value="{{ $entry['entries_data']['part_number'] }}">
                                                                                 {{ $part_number }}
+                                                                            </a>
                                                                         </td>
                                                                         <td class="quantity_val">
                                                                                 {{ $planning }}
