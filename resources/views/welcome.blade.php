@@ -327,6 +327,7 @@
                             data-bs-target="#filter3" title="Show/Hide Columns">
                             <i class="fas fa-eye"></i>
                         </button>
+                        <button onclick="exportTableToExcel()" class="btn btn-success mb-3"><i class="fa-solid fa-file-export"></i></button>
                         <!-- Color Selection -->
                         <div class="custom-custom-picker">
                             <button type="button" id="btn_highlight_cell" class="btn ml-4"
@@ -387,7 +388,7 @@
                 });
             @endphp
 
-            <button onclick="exportTableToExcel()" class="btn btn-success mb-3">Export to Excel</button>
+
 
             <div class="row align-items-center">
                 <div class="col-lg-12">

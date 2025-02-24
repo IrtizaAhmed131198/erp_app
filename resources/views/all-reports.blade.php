@@ -144,12 +144,11 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="parent-filter">
+                    <div class="parent-filter" style="justify-content: end">
                         <input type="text" name="daterange" value="" id="daterange" />
+                        <button id="download-excel-1" class="btn btn-success mb-2"><i
+                                class="fa-solid fa-file-export"></i></button>
                     </div>
-                </div>
-                <div class="col-lg-12 text-end mt-3 mb-3">
-                    <button id="download-excel-1" class="btn btn-success mb-2">Download Excel</button>
                 </div>
                 <div class="col-lg-12">
                     <div class="control-table">
@@ -209,7 +208,8 @@
                     <button id="filter2" class="btn btn-primary">Filter</button>
                 </div> --}}
                 <div class="col-lg-12 text-end mt-3 mb-3">
-                    <button id="download-excel-2" class="btn btn-success mb-2">Download Excel</button>
+                    <button id="download-excel-2" class="btn btn-success mb-2"><i
+                            class="fa-solid fa-file-export"></i></button>
                 </div>
                 <div class="col-lg-12">
                     <div class="control-table">
