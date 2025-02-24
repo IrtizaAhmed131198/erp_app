@@ -258,30 +258,30 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_rev';
                         @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable-1 targetshow" id="{{ $data_target }}">
-                                <input type="text" name="rev" id="rev" class="data-w"
-                                    value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('revision', this.value, event)"
-                                    onmouseover="showTextAbove(this)" readonly>
-                            </td>
-                        @else
+{{--                        @if (Auth::user()->role == 1)--}}
+{{--                            <td class="toggleable-1 targetshow" id="{{ $data_target }}">--}}
+{{--                                <input type="text" name="rev" id="rev" class="data-w"--}}
+{{--                                    value="{{ $data->revision ?? '' }}" data-id="{{ $data->id }}"--}}
+{{--                                    onkeyup="sendAjaxRequest('revision', this.value, event)"--}}
+{{--                                    onmouseover="showTextAbove(this)" readonly>--}}
+{{--                            </td>--}}
+{{--                        @else--}}
                             <td class="toggleable-1" id="{{ $data_target }}">{{ $data->revision }}</td>
-                        @endif
+{{--                        @endif--}}
                     @elseif($region_2_column_configuration_item->column == 'process')
                         @php
                             $data_target = 'entries_' . $data->id . '_process';
                         @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable-1 targetshow" id="{{ $data_target }}">
-                                <input type="text" name="process" id="process" class="data-w"
-                                    value="{{ $data->process ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('process', this.value, event)"
-                                    onmouseover="showTextAbove(this)" readonly>
-                            </td>
-                        @else
+{{--                        @if (Auth::user()->role == 1)--}}
+{{--                            <td class="toggleable-1 targetshow" id="{{ $data_target }}">--}}
+{{--                                <input type="text" name="process" id="process" class="data-w"--}}
+{{--                                    value="{{ $data->process ?? '' }}" data-id="{{ $data->id }}"--}}
+{{--                                    onkeyup="sendAjaxRequest('process', this.value, event)"--}}
+{{--                                    onmouseover="showTextAbove(this)" readonly>--}}
+{{--                            </td>--}}
+{{--                        @else--}}
                             <td class="toggleable-1" id="{{ $data_target }}">{{ $data->process }}</td>
-                        @endif
+{{--                        @endif--}}
                     @elseif ($region_2_column_configuration_item->column == 'reqd_1_6_weeks')
                         @php
                             $data_target = 'entries_' . $data->id . '_reqd_1_6_weeks';
@@ -394,17 +394,17 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_wt_pc';
                         @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="text" step="any" name="wt_pc" id="wt_pc"
-                                    value="{{ number_format($data->wt_pc, 3, '.', ',') }}"
-                                    data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)"
-                                    onkeyup="sendAjaxRequest('wt_pc', this.value, event)" readonly>
-                            </td>
-                        @else
+{{--                        @if (Auth::user()->role == 1)--}}
+{{--                            <td class="toggleable-1" id="{{ $data_target }}">--}}
+{{--                                <input type="text" step="any" name="wt_pc" id="wt_pc"--}}
+{{--                                    value="{{ number_format($data->wt_pc, 3, '.', ',') }}"--}}
+{{--                                    data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)"--}}
+{{--                                    onkeyup="sendAjaxRequest('wt_pc', this.value, event)" readonly>--}}
+{{--                            </td>--}}
+{{--                        @else--}}
                             <td class="toggleable-1" id="{{ $data_target }}">
                                 {{ number_format($data->wt_pc, 3, '.', ',') }}</td>
-                        @endif
+{{--                        @endif--}}
                     @elseif($region_2_column_configuration_item->column == 'material_sort')
                         @php
                             $data_target = 'entries_' . $data->id . '_material';
@@ -444,32 +444,32 @@
                         @php
                             $data_target = 'entries_' . $data->id . '_safety';
                         @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="text" step="any" name="safety" id="safety"
-                                    value="{{ number_format($data->safety ?? 0) }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('safety', this.value, event)" class="simple-text">
+{{--                        @if (Auth::user()->role == 1)--}}
+{{--                            <td class="toggleable-1" id="{{ $data_target }}">--}}
+{{--                                <input type="text" step="any" name="safety" id="safety"--}}
+{{--                                    value="{{ number_format($data->safety ?? 0) }}" data-id="{{ $data->id }}"--}}
+{{--                                    onkeyup="sendAjaxRequest('safety', this.value, event)" class="simple-text">--}}
 
-                            </td>
-                        @else
+{{--                            </td>--}}
+{{--                        @else--}}
                             <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($data->safety) }}
                             </td>
-                        @endif
+{{--                        @endif--}}
                     @elseif($region_2_column_configuration_item->column == 'min_ship')
                         @php
                             $data_target = 'entries_' . $data->id . '_min_ship';
                         @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable-1" id="{{ $data_target }}">
-                                <input type="text" step="any" name="min_ship" id="min_ship"
-                                    value="{{ number_format($data->min_ship) }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('min_ship', this.value, event)"
-                                    oninput="formatAndPreventNegative(this)" class="simple-text">
-                            </td>
-                        @else
+{{--                        @if (Auth::user()->role == 1)--}}
+{{--                            <td class="toggleable-1" id="{{ $data_target }}">--}}
+{{--                                <input type="text" step="any" name="min_ship" id="min_ship"--}}
+{{--                                    value="{{ number_format($data->min_ship) }}" data-id="{{ $data->id }}"--}}
+{{--                                    onkeyup="sendAjaxRequest('min_ship', this.value, event)"--}}
+{{--                                    oninput="formatAndPreventNegative(this)" class="simple-text">--}}
+{{--                            </td>--}}
+{{--                        @else--}}
                             <td class="toggleable-1" id="{{ $data_target }}">{{ number_format($data->min_ship) }}
                             </td>
-                        @endif
+{{--                        @endif--}}
                     @elseif($region_2_column_configuration_item->column == 'order_notes')
                         @php
                             $data_target = 'entries_' . $data->id . '_order_notes';
@@ -542,21 +542,23 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_future_raw';
                 @endphp
-                <td class="toggleable-2" id="{{ $data_target }}">
-                    <input type="text" step="any" name="future_raw" id="future_raw"
-                        value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}"
-                        data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)" readonly>
-                </td>
+{{--                <td class="toggleable-2" id="{{ $data_target }}">--}}
+{{--                    <input type="text" step="any" name="future_raw" id="future_raw"--}}
+{{--                        value="{{ $data->future_raw ? number_format($data->future_raw) : 0 }}"--}}
+{{--                        data-id="{{ $data->id }}" oninput="formatAndPreventNegative(this)" readonly>--}}
+{{--                </td>--}}
+                <td class="toggleable-2" id="{{ $data_target }}">{{ $data->future_raw }}</td>
 
                 @php
                     $data_target = 'entries_' . $data->id . '_price';
                 @endphp
-                <td class="toggleable-2" id="{{ $data_target }}">
-                    <input type="text" step="any" name="price" id="price"
-                        value="{{ number_format($data->price) }}" data-id="{{ $data->id }}"
-                        onkeyup="sendAjaxRequest('price', this.value, event)" oninput="formatAndPreventNegative(this)"
-                        readonly>
-                </td>
+{{--                <td class="toggleable-2" id="{{ $data_target }}">--}}
+{{--                    <input type="text" step="any" name="price" id="price"--}}
+{{--                        value="{{ number_format($data->price) }}" data-id="{{ $data->id }}"--}}
+{{--                        onkeyup="sendAjaxRequest('price', this.value, event)" oninput="formatAndPreventNegative(this)"--}}
+{{--                        readonly>--}}
+{{--                </td>--}}
+                <td class="toggleable-2" id="{{ $data_target }}">{{ $data->price }}</td>
 
                 @php
                     $data_target = 'entries_' . $data->id . '_notes';
@@ -574,7 +576,7 @@
                 @php
                     $data_target = 'entries_' . $data->id . '_price';
                 @endphp
-                <td class="toggleable-2" id="{{ $data_target }}">${{ $data->price }}</td>
+                <td class="toggleable-2" id="{{ $data_target }}">{{ $data->price }}</td>
 
                 @php
                     $data_target = 'entries_' . $data->id . '_notes';
