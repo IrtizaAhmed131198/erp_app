@@ -128,9 +128,11 @@
 
     @endphp
     <input type="hidden" id="user_id" name="user_id" value="{{ $userId ?? '' }}">
+
     <section class="report_sec">
         <div class="container-fluid">
             <div class="row">
+
                 <div class="col-lg-6">
                     <div class="parent-filter">
                         <select class="js-select2" id="filter">
@@ -145,6 +147,9 @@
                     <div class="parent-filter">
                         <input type="text" name="daterange" value="" id="daterange" />
                     </div>
+                </div>
+                <div class="col-lg-12 text-end mt-3 mb-3">
+                    <button id="download-excel-1" class="btn btn-success mb-2">Download Excel</button>
                 </div>
                 <div class="col-lg-12">
                     <div class="control-table">
@@ -203,6 +208,9 @@
                 <div class="col-lg-2">
                     <button id="filter2" class="btn btn-primary">Filter</button>
                 </div> --}}
+                <div class="col-lg-12 text-end mt-3 mb-3">
+                    <button id="download-excel-2" class="btn btn-success mb-2">Download Excel</button>
+                </div>
                 <div class="col-lg-12">
                     <div class="control-table">
                         <table id="reports-table" class="table table-striped report-data-show">
@@ -249,6 +257,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
 
 
     <script>
@@ -573,5 +582,56 @@
         //         });
         //     });
         // });
+    </script>
+
+
+    <script>
+        function downloadTableAsExcel(tableID, filename) {
+            let table = document.getElementById(tableID);
+            let workbook = XLSX.utils.book_new();
+            let sheetData = [];
+
+            // Extract Headers
+            let headers = [];
+            table.querySelectorAll("thead tr th").forEach(th => {
+                headers.push(th.innerText.trim());
+            });
+            sheetData.push(headers); // Add headers to sheet data
+
+            // Extract Table Rows (Remove Empty Rows)
+            table.querySelectorAll("tbody tr").forEach(row => {
+                let rowData = [];
+                row.querySelectorAll("td").forEach(td => {
+                    rowData.push(td.innerText.trim());
+                });
+
+                // Only push rows that contain actual data (No fully empty rows)
+                if (rowData.some(cell => cell !== "")) {
+                    sheetData.push(rowData);
+                }
+            });
+
+            // Convert to SheetJS format
+            let worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+            // Auto-size columns
+            let columnWidths = headers.map(header => ({
+                wch: header.length + 5
+            }));
+            worksheet["!cols"] = columnWidths;
+
+            // Add worksheet to workbook and export
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, filename);
+        }
+
+        // Attach event listeners to buttons
+        document.getElementById("download-excel-1").addEventListener("click", function() {
+            downloadTableAsExcel("example", "Report1.xlsx");
+        });
+
+        document.getElementById("download-excel-2").addEventListener("click", function() {
+            downloadTableAsExcel("reports-table", "Report2.xlsx");
+        });
     </script>
 @endsection
