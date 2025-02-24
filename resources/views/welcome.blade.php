@@ -1493,32 +1493,56 @@
             let table = document.getElementById("entries-table");
             let clonedTable = table.cloneNode(true); // Clone table to avoid modifying the original
 
-            // Process each table cell
-            let cells = clonedTable.getElementsByTagName("td");
-            for (let cell of cells) {
-                // Remove hover divs/tooltips if they exist
-                let hoverDiv = cell.querySelector(".custom-dropdown-menu"); // Change this selector if needed
-                if (hoverDiv) {
-                    hoverDiv.remove(); // Remove hover div before exporting
-                }
+            // Find column indexes to exclude
+            let headers = clonedTable.querySelectorAll("thead th");
+            let excludeIndexes = [];
 
-                // Check for select dropdowns and extract selected option text
-                let select = cell.querySelector("select");
-                if (select) {
-                    cell.textContent = select.options[select.selectedIndex].text; // Use only selected text
-                    continue;
+            headers.forEach((header, index) => {
+                // Exclude columns based on class or text content
+                if (
+                    header.classList.contains("highlighted") ||
+                    header.classList.contains("toggle-header") ||
+                    header.classList.contains("toggle-header-1") ||
+                    header.classList.contains("toggle-header-2") ||
+                    header.textContent.trim().toLowerCase() === "delete"
+                ) {
+                    excludeIndexes.push(index); // Store column index to exclude
                 }
+            });
 
-                // Check for input fields and extract their values
-                let input = cell.querySelector("input");
-                if (input) {
-                    cell.textContent = input.value; // Extract and set input value
-                    continue;
-                }
+            // Process each row to remove unwanted columns
+            let rows = clonedTable.querySelectorAll("tr");
+            rows.forEach(row => {
+                let cells = row.querySelectorAll("td, th");
+                excludeIndexes.reverse().forEach(index => {
+                    if (cells[index]) {
+                        cells[index].remove(); // Remove the unwanted columns
+                    }
+                });
 
-                // Ensure only text remains (remove any HTML tags)
-                cell.textContent = cell.textContent.trim();
-            }
+                cells.forEach(cell => {
+                    // Remove hover divs/tooltips
+                    let hoverDiv = cell.querySelector(".custom-dropdown-menu");
+                    if (hoverDiv) hoverDiv.remove();
+
+                    // Handle <select> dropdowns (extract selected value)
+                    let select = cell.querySelector("select");
+                    if (select) {
+                        cell.textContent = select.options[select.selectedIndex].text;
+                        return;
+                    }
+
+                    // Handle <input> fields (extract input value)
+                    let input = cell.querySelector("input");
+                    if (input) {
+                        cell.textContent = input.value;
+                        return;
+                    }
+
+                    // Remove any remaining HTML tags and keep only text
+                    cell.textContent = cell.textContent.trim();
+                });
+            });
 
             let ws = XLSX.utils.table_to_sheet(clonedTable);
             let wb = XLSX.utils.book_new();
