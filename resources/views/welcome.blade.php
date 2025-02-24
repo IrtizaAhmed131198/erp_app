@@ -260,6 +260,8 @@
 
         .custom-dropdown-menu {
             position: absolute;
+            left: 95px;
+            top: 0;
         }
 
         .parent-table .table #column-part_number {
@@ -397,7 +399,9 @@
                                         <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
                                         </th>
-                                        @if(Auth::user()->role == 1)<th scope="col" class="toggleable toggle-header-active">Active/InActive</th>@endif
+                                        @if (Auth::user()->role == 1)
+                                            <th scope="col" class="toggleable toggle-header-active">Active/InActive</th>
+                                        @endif
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                                             <th scope="col" id="column-{{ $region_1_column_configuration_item->column }}"
                                                 class="toggleable toggle-header-{{ $region_1_column_configuration_item->column }}"
