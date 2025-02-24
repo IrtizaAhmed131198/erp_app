@@ -976,6 +976,7 @@
             const dataId = inputElement.getAttribute('data-id');
 
             const isDropdown = inputElement.tagName === 'SELECT';
+            console.log(isDropdown);
 
             if (field === 'planning' || field === 'live_inventory_wip' ||
                 field === 'live_inventory_finish' || field === 'in_stock_live' || 'wt_pc' ||

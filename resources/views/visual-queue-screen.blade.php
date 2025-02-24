@@ -50,11 +50,11 @@
                                             <td>{{ $entry->type }}</td>
                                             <td>{{ $entry->customer }}</td>
                                             <td>
-                                                @if ($status === 'Closed')
+                                                {{-- @if ($status === 'Closed')
                                                     <a href="{{ route('get_qa', $entry->part->id) }}">{{ $entry->part->Part_Number }}</a>
-                                                @else
+                                                @else --}}
                                                     {{ $entry->part->Part_Number ?? '' }}
-                                                @endif
+                                                {{-- @endif --}}
                                             </td>
                                             <td>{{ $entry->quantity }}</td>
                                             <td>{{ $entry->job }}</td>
