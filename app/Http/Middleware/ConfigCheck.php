@@ -22,23 +22,13 @@ class ConfigCheck
                 'key' => 'master_screen_region_1_column_configuration',
                 'value' => json_encode([
                     [
-                        'column' => 'department',
+                        'column' => 'planning_queue',
                         'order' => 1,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'work_center',
-                        'order' => 2,
-                        'visibility' => true
-                    ],
-                    [
-                        'column' => 'planning_queue',
-                        'order' => 3,
-                        'visibility' => true
-                    ],
-                    [
                         'column' => 'status',
-                        'order' => 4,
+                        'order' => 2,
                         'visibility' => true
                     ],
                     // [
@@ -53,7 +43,7 @@ class ConfigCheck
                     // ],
                     [
                         'column' => 'ids',
-                        'order' => 5,
+                        'order' => 3,
                         'visibility' => true
                     ]
                 ]),
@@ -66,103 +56,113 @@ class ConfigCheck
                 'key' => 'master_screen_region_2_column_configuration',
                 'value' => json_encode([
                     [
-                        'column' => 'part_number',
+                        'column' => 'department',
                         'order' => 1,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'customer',
+                        'column' => 'work_center',
                         'order' => 2,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'rev',
+                        'column' => 'part_number',
                         'order' => 3,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'process',
+                        'column' => 'customer',
                         'order' => 4,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'reqd_1_6_weeks',
+                        'column' => 'rev',
                         'order' => 5,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'reqd_7_12_weeks',
+                        'column' => 'process',
                         'order' => 6,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'scheduled_total',
+                        'column' => 'reqd_1_6_weeks',
                         'order' => 7,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'in_stock_finished',
+                        'column' => 'reqd_7_12_weeks',
                         'order' => 8,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'live_inventory_finished',
+                        'column' => 'scheduled_total',
                         'order' => 9,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'live_inventory_wip',
+                        'column' => 'in_stock_finished',
                         'order' => 10,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'in_process_out_side',
+                        'column' => 'live_inventory_finished',
                         'order' => 11,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'on_order_raw_matl',
+                        'column' => 'live_inventory_wip',
                         'order' => 12,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'in_stock_live',
+                        'column' => 'in_process_out_side',
                         'order' => 13,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'wt_pc',
+                        'column' => 'on_order_raw_matl',
                         'order' => 14,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'material_sort',
+                        'column' => 'in_stock_live',
                         'order' => 15,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'wt_reqd_1_12_weeks',
+                        'column' => 'wt_pc',
                         'order' => 16,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'safety',
+                        'column' => 'material_sort',
                         'order' => 17,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'min_ship',
+                        'column' => 'wt_reqd_1_12_weeks',
                         'order' => 18,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'order_notes',
+                        'column' => 'safety',
                         'order' => 19,
                         'visibility' => true
                     ],
                     [
-                        'column' => 'part_notes',
+                        'column' => 'min_ship',
                         'order' => 20,
+                        'visibility' => true
+                    ],
+                    [
+                        'column' => 'order_notes',
+                        'order' => 21,
+                        'visibility' => true
+                    ],
+                    [
+                        'column' => 'part_notes',
+                        'order' => 22,
                         'visibility' => true
                     ]
                 ]),

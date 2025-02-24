@@ -19,49 +19,7 @@
             </td>
             @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                 @if ($region_1_column_configuration_item->visibility)
-                    @if ($region_1_column_configuration_item->column == 'department')
-                        @php
-                            $data_target = 'entries_' . $data->id . '_department';
-                        @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable toggle-department" id="{{ $data_target }}">
-                                <select name="department" id="department" data-id="{{ $data->id }}"
-                                    onchange="sendAjaxRequest('department', this.value, event)" {!! isset($singleton) && $singleton == true && $index != 0 ? 'hidden' : '' !!}>
-                                    <option value="" disabled>Select</option>
-                                    @foreach ($department as $dept)
-                                        <option value="{{ $dept->id }}"
-                                            {{ $data->department == $dept->id ? 'selected' : '' }}>
-                                            {{ $dept->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        @else
-                            <td class="toggleable toggle-department" id="{{ $data_target }}">
-                                {{ $data->get_department->name }}</td>
-                        @endif
-                    @elseif($region_1_column_configuration_item->column == 'work_center')
-                        @php
-                            $data_target = 'entries_' . $data->id . '_work_centre_1';
-                        @endphp
-                        @if (Auth::user()->role == 1)
-                            <td class="toggleable toggle-work-center" id="{{ $data_target }}">
-                                <select name="work-center" id="work-center" data-id="{{ $data->work_center_one->id }}"
-                                    onchange="sendAjaxRequest2('com', this.value, event)">
-                                    <option value="" disabled>Select</option>
-                                    @foreach ($work_selector as $val)
-                                        <option value="{{ $val->id }}"
-                                            {{ $data->work_center_one->com == $val->id ? 'selected' : '' }}>
-                                            {{ $val->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        @else
-                            <td class="toggleable toggle-work-center" id="{{ $data_target }}">
-                                {{ $data->work_center_one->com ?? 'N/A' }}</td>
-                        @endif
-                    @elseif($region_1_column_configuration_item->column == 'planning_queue')
+                    @if($region_1_column_configuration_item->column == 'planning_queue')
                         @php
                             $data_target = 'entries_' . $data->id . '_planning_queue';
                         @endphp
@@ -202,7 +160,49 @@
 
             @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                 @if ($region_2_column_configuration_item->visibility)
-                    @if($region_2_column_configuration_item->column == 'part_number')
+                    @if ($region_2_column_configuration_item->column == 'department')
+                        @php
+                            $data_target = 'entries_' . $data->id . '_department';
+                        @endphp
+                        @if (Auth::user()->role == 1)
+                            <td class="toggleable toggle-department" id="{{ $data_target }}">
+                                <select name="department" id="department" data-id="{{ $data->id }}"
+                                        onchange="sendAjaxRequest('department', this.value, event)" {!! isset($singleton) && $singleton == true && $index != 0 ? 'hidden' : '' !!}>
+                                    <option value="" disabled>Select</option>
+                                    @foreach ($department as $dept)
+                                        <option value="{{ $dept->id }}"
+                                            {{ $data->department == $dept->id ? 'selected' : '' }}>
+                                            {{ $dept->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        @else
+                            <td class="toggleable toggle-department" id="{{ $data_target }}">
+                                {{ $data->get_department->name }}</td>
+                        @endif
+                    @elseif($region_2_column_configuration_item->column == 'work_center')
+                        @php
+                            $data_target = 'entries_' . $data->id . '_work_centre_1';
+                        @endphp
+                        @if (Auth::user()->role == 1)
+                            <td class="toggleable toggle-work-center" id="{{ $data_target }}">
+                                <select name="work-center" id="work-center" data-id="{{ $data->work_center_one->id }}"
+                                        onchange="sendAjaxRequest2('com', this.value, event)">
+                                    <option value="" disabled>Select</option>
+                                    @foreach ($work_selector as $val)
+                                        <option value="{{ $val->id }}"
+                                            {{ $data->work_center_one->com == $val->id ? 'selected' : '' }}>
+                                            {{ $val->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        @else
+                            <td class="toggleable toggle-work-center" id="{{ $data_target }}">
+                                {{ $data->work_center_one->com ?? 'N/A' }}</td>
+                        @endif
+                    @elseif($region_2_column_configuration_item->column == 'part_number')
                         @php
                             $data_target = 'entries_' . $data->id . '_part_number';
                         @endphp
