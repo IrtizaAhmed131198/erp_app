@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.4.1/css/rowGroup.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.4.1/css/rowGroup.dataTables.min.css">
     <style>
         .report_sec {
-            padding: 50px 200px;
+            padding: 50px 0px;
         }
 
         .control-table {
@@ -55,27 +55,28 @@
 
 
 @section('content')
-
     <section class="report_sec">
-        <div class="row align-items-center mb-2">
-            <div class="col-lg-12 col-md-12 col-12">
-                <div class="parent-pagination">
-                    <div class="pagination">
-                        <a href="{{ route('index') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd"
-                                class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z" />
-                            </svg>
-                            <span class="pagination-heading">
-                                Return To Master Data
-                            </span>
-                        </a>
-                    </div>
-                    <div class="title">
-                        <h1 class="heading-1">
-                            {{ App\Models\User::find($userId)->name ?? 'User' }} Report
-                        </h1>
+        <div class="container-fluid">
+            <div class="row align-items-center mb-2">
+                <div class="col-lg-12 col-md-12 col-12">
+                    <div class="parent-pagination">
+                        <div class="pagination">
+                            <a href="{{ route('index') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd"
+                                    class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z" />
+                                </svg>
+                                <span class="pagination-heading">
+                                    Return To Master Data
+                                </span>
+                            </a>
+                        </div>
+                        <div class="title">
+                            <h1 class="heading-1">
+                                {{ App\Models\User::find($userId)->name ?? 'User' }} Report
+                            </h1>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,29 +84,29 @@
     </section>
 
     @php
-    $datesArray = [];
+        $datesArray = [];
 
-    // Calculate the start date of the current week (Monday)
-    $today = date('Y-m-d');
-    $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
-    $mondayOfWeek =
-        $dayOfWeek == 0
-            ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
-            : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today))); // Else, go back to Monday
+        // Calculate the start date of the current week (Monday)
+        $today = date('Y-m-d');
+        $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+        $mondayOfWeek =
+            $dayOfWeek == 0
+                ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today))); // Else, go back to Monday
 
-    // Calculate the start date of week 16
-    $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+        // Calculate the start date of week 16
+        $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
 
-    // Calculate the end date of week 16
-    $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+        // Calculate the end date of week 16
+        $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
 
-    // Calculate the start date of month 5 (the day after week 16 ends)
-    $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+        // Calculate the start date of month 5 (the day after week 16 ends)
+        $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
 
     @endphp
     <input type="hidden" id="user_id" name="user_id" value="{{ $userId ?? '' }}">
     <section class="report_sec">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="parent-filter">
@@ -135,15 +136,16 @@
                                     <th>PAST<br> Due</th>
                                     @for ($week = 1; $week <= 16; $week++)
                                         <th>
-                                            {{ 'Week '.$week }} <br> {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
+                                            {{ 'Week ' . $week }} <br>
+                                            {{ date('j-M', strtotime('+' . ($week - 1) * 7 . ' days', strtotime($mondayOfWeek))) }}
                                         </th>
                                     @endfor
                                     @for ($month = 5; $month <= 12; $month++)
                                         <th>
                                             @if (preg_match("/^\d{4}-\d{2}-\d{2}$/", $month5StartDate))
-                                                {{ 'Month '.$month }} <br> {{ date("j-M", strtotime($month5StartDate)) }}
+                                                {{ 'Month ' . $month }} <br> {{ date('j-M', strtotime($month5StartDate)) }}
                                             @else
-                                                {{ 'Month '.$month }} <br>{{ $month5StartDate }}
+                                                {{ 'Month ' . $month }} <br>{{ $month5StartDate }}
                                             @endif
                                         </th>
                                         @php
@@ -272,10 +274,10 @@
 @endsection
 
 @section('js')
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
     <script>
-        $(function () {
+        $(function() {
             $('input[name="daterange"]').daterangepicker({
                 locale: {
                     format: 'YYYY-MM-DD' // Customize date format as needed
@@ -299,7 +301,7 @@
         document.getElementById('daterange').setAttribute('min', formatDate(today));
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             var table = $('#example').DataTable({
                 processing: true,
                 serverSide: true,
@@ -307,7 +309,7 @@
                 searching: false,
                 ajax: {
                     url: "{{ route('getReportData') }}",
-                    data: function (d) {
+                    data: function(d) {
                         var daterange = $('input[name="daterange"]').val();
                         if (daterange) {
                             var dates = daterange.split(' - ');
@@ -316,7 +318,7 @@
                         }
 
                         var filter = $('#filter').val();
-                        if(filter) {
+                        if (filter) {
                             d.filter = filter;
                         }
 
@@ -324,40 +326,70 @@
 
                     }
                 },
-                columns: [
-                    { data: 'department', name: 'department', className: "department-column" },
-                    { data: 'customer', name: 'customer', className: "customer-column" },
-                    { data: 'part_number', name: 'part_number', className: "part-number-column" },
-                    { data: 'date_search', name: 'date_search' },
-                    { data: 'in_stock', name: 'in_stock' },
-                    { data: 'past_due', name: 'past_due' },
+                columns: [{
+                        data: 'department',
+                        name: 'department',
+                        className: "department-column"
+                    },
+                    {
+                        data: 'customer',
+                        name: 'customer',
+                        className: "customer-column"
+                    },
+                    {
+                        data: 'part_number',
+                        name: 'part_number',
+                        className: "part-number-column"
+                    },
+                    {
+                        data: 'date_search',
+                        name: 'date_search'
+                    },
+                    {
+                        data: 'in_stock',
+                        name: 'in_stock'
+                    },
+                    {
+                        data: 'past_due',
+                        name: 'past_due'
+                    },
                     @for ($week = 1; $week <= 16; $week++)
-                        { data: 'week_values.week_{{ $week }}', name: 'week_{{ $week }}' },
+                        {
+                            data: 'week_values.week_{{ $week }}',
+                            name: 'week_{{ $week }}'
+                        },
                     @endfor
                     @for ($month = 5; $month <= 12; $month++)
-                        { data: 'week_values.month_{{ $month }}', name: 'month_{{ $month }}' },
-                    @endfor
-                    { data: 'balance_schedule', name: 'balance_schedule' }
+                        {
+                            data: 'week_values.month_{{ $month }}',
+                            name: 'month_{{ $month }}'
+                        },
+                    @endfor {
+                        data: 'balance_schedule',
+                        name: 'balance_schedule'
+                    }
                 ],
                 paging: false,
                 info: false,
                 rowGroup: {
                     dataSrc: null, // Default: No grouping
-                    startRender: function (rows, group) {
+                    startRender: function(rows, group) {
                         if (typeof group === 'object') {
                             return $('<tr></tr>');
                         }
-                        var groupValue = group; // Default to the group value (e.g., 'customer' or 'department')
+                        var groupValue =
+                        group; // Default to the group value (e.g., 'customer' or 'department')
 
                         var colspan = $('#example thead tr th').length; // Full column span
 
-                        return $('<tr class="group"><td colspan="' + colspan + '"><strong>' + groupValue + '</strong></td></tr>');
+                        return $('<tr class="group"><td colspan="' + colspan + '"><strong>' +
+                            groupValue + '</strong></td></tr>');
                     }
                 }
             });
 
             // Handle filter change
-            $('#filter').change(function () {
+            $('#filter').change(function() {
                 var selectedFilter = $(this).val();
 
                 // Disable row grouping by default
@@ -392,15 +424,13 @@
                 table.draw(); // Redraw table to apply changes
             });
 
-            $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+            $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
                 table.draw();
             });
 
-            $('select.js-select2').change(function () {
+            $('select.js-select2').change(function() {
                 table.draw();
             });
         });
-
-
     </script>
 @endsection

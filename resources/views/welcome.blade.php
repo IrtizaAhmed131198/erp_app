@@ -212,6 +212,7 @@
         .part-st {
             font-size: 12px;
             display: contents;
+            white-space: normal;
         }
 
         table#entries-table td {
@@ -273,6 +274,7 @@
             left: 0;
             background-color: #fff;
             z-index: 5;
+            padding: 0;
         }
     </style>
 @endsection
@@ -391,14 +393,15 @@
                             <thead>
                                 <tr class="colored-table-row">
                                     <th style="display: none">Delete</th>
-                                    @if(Auth::user()->role == 1)<th>Active/InActive</th>@endif
+                                    @if (Auth::user()->role == 1)
+                                        <th>Active/InActive</th>
+                                    @endif
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header">
                                             <span class="icon">▼</span>
                                         </th>
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
-                                            <th scope="col"
-                                                id="column-{{ $region_1_column_configuration_item->column }}"
+                                            <th scope="col" id="column-{{ $region_1_column_configuration_item->column }}"
                                                 class="toggleable toggle-header-{{ $region_1_column_configuration_item->column }}"
                                                 @if (!$region_1_column_configuration_item->visibility) hidden @endif>
                                                 {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
@@ -412,8 +415,7 @@
                                         </th>
 
                                         @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
-                                            <th scope="col"
-                                                id="column-{{ $region_2_column_configuration_item->column }}"
+                                            <th scope="col" id="column-{{ $region_2_column_configuration_item->column }}"
                                                 class="toggleable-1 toggle-header-{{ $region_2_column_configuration_item->column }}"
                                                 @if (!$region_2_column_configuration_item->visibility) hidden @endif>
                                                 {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
@@ -438,7 +440,7 @@
                                             <th scope="col" class="toggleable-2 toggle-header-department"
                                                 id="head_month_{{ $month }}">
                                                 @if (preg_match("/^\d{4}-\d{2}-\d{2}$/", $month5StartDate))
-                                                   {{ date("j-M", strtotime($month5StartDate)) }}
+                                                    {{ date('j-M', strtotime($month5StartDate)) }}
                                                 @else
                                                     {{ $month5StartDate }}
                                                 @endif
@@ -450,7 +452,8 @@
                                                 );
                                             @endphp
                                         @endfor
-                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE RAW</th>
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE RAW
+                                        </th>
                                         <th scope="col" class="toggleable-2 toggle-header-department" disabled>PRICE
                                             {{-- <span class="icon">▼</span> --}}</th>
                                         <th scope="col" class="toggleable-2 toggle-header-department" disabled>NOTES

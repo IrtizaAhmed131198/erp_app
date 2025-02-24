@@ -7,7 +7,7 @@
 
     <style>
         .report_sec {
-            padding: 50px 200px;
+            padding: 50px 0px;
         }
 
         .control-table {
@@ -72,7 +72,7 @@
 
 @section('content')
     <section class="visual-queue-screen">
-        <div class="container bg-colored">
+        <div class="container-fluid bg-colored">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="parent-pagination">
@@ -129,7 +129,7 @@
     @endphp
     <input type="hidden" id="user_id" name="user_id" value="{{ $userId ?? '' }}">
     <section class="report_sec">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="parent-filter">
@@ -192,7 +192,7 @@
     </section>
 
     <section class="report_sec">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 {{-- <div class="col-lg-6">
                     <div class="parent-filter">
