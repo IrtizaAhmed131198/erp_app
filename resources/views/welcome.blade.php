@@ -387,6 +387,7 @@
                 });
             @endphp
 
+            <button onclick="exportTableToExcel()">Export to Excel</button>
 
             <div class="row align-items-center">
                 <div class="col-lg-12">
@@ -1462,6 +1463,18 @@
                 });
             });
         });
+
+        function exportTableToExcel() {
+            let table = document.getElementById("entries-table");
+            let ws = XLSX.utils.table_to_sheet(table);
+            let wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Entries");
+
+            // Save the file
+            XLSX.writeFile(wb, "table_data.xlsx");
+        }
+
+
     </script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
