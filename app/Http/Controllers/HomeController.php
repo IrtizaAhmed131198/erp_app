@@ -167,7 +167,16 @@ class HomeController extends Controller
             $query->where('active', 1);
         }
 
-        $entries = $query->orderBy('id', 'desc')->get();
+        
+
+        $entries = $query->orderBy(
+                // This subquery selects the part number for the current entry
+                Parts::select('Part_Number')
+                    ->whereColumn('parts.id', 'entries.part_number')
+                    ->limit(1)
+            , 'asc')
+            ->orderBy('id', 'desc')->get();
+    
 
         $department = Department::get();
 
