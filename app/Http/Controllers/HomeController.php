@@ -165,6 +165,10 @@ class HomeController extends Controller
 
         if (Auth::user()->role != 1) {
             $query->where('active', 1);
+        }else if(Auth::user()->role == 1 && $request->has('a_status') && $request->a_status == 'inactive'){
+            $query->whereIn('active', [1,0]);
+        }else{
+            $query->where('active', 1);
         }
 
         
