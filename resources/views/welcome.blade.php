@@ -331,8 +331,7 @@
                                 class="fa-solid fa-file-export"></i></button>
 
                         @if (request('a_status') == 'inactive')
-                            <a href="{{ route('index', ['a_status' => 'active']) }}" id="filter-4"
-                                class="btn btn-primary ml-4">
+                            <a href="{{ route('index') }}" id="filter-4" class="btn btn-primary ml-4">
                                 Show Active
                             </a>
                         @else
@@ -341,7 +340,6 @@
                                 Show Inactive
                             </a>
                         @endif
-
                         <!-- Color Selection -->
                         <div class="custom-custom-picker">
                             <button type="button" id="btn_highlight_cell" class="btn ml-4"
