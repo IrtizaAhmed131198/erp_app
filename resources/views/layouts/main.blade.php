@@ -41,16 +41,18 @@
                             {{--                            <a class="navbar-brand" href="index.php"> --}}
                             {{--                                <img src="{{ asset('images/sidebarlogo.png') }}" class="img-fluid" alt=""> --}}
                             {{--                            </a> --}}
-                            <form class="d-flex" role="search">
-                                <div class="parent-search-bar">
-                                    <button>
-                                        <img src="{{ asset('images/search-bar.png') }}" class="img-fluid"
-                                            alt="">
-                                    </button>
-                                    <input class="form-control" type="search" id="search-input" placeholder="Search"
-                                        aria-label="Search">
-                                </div>
-                            </form>
+                            @if(Route::currentRouteName() === 'index')
+                                <form class="d-flex" role="search">
+                                    <div class="parent-search-bar">
+                                        <button>
+                                            <img src="{{ asset('images/search-bar.png') }}" class="img-fluid"
+                                                alt="">
+                                        </button>
+                                        <input class="form-control" type="search" id="search-input" placeholder="Search"
+                                            aria-label="Search">
+                                    </div>
+                                </form>
+                            @endif
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">

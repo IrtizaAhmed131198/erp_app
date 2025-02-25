@@ -1868,12 +1868,23 @@ class HomeController extends Controller
                 ->whereDate('weeks_history.created_at', '<=', $request->end_date);
         }
 
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereDate('weeks_history.created_at', '>=', $request->start_date)
+                ->whereDate('weeks_history.created_at', '<=', $request->end_date);
+        }
+
         if ($request->has('filter') && $request->filter == 'customer') {
             $query->orderBy('weeks_history.customer', 'asc');
         } else if ($request->has('filter') && $request->filter == 'part_number') {
             $query->orderBy('weeks_history.part_number', 'asc');
         } else if ($request->has('filter') && $request->filter == 'department') {
             $query->orderBy('weeks_history.department', 'asc');
+        }
+
+        if ($request->has('part_number') && $request->part_number !== "All") {
+            $query->whereHas('entry.part', function ($q) use ($request) {
+                $q->where('id', $request->part_number);
+            });
         }
 
         return DataTables::of($query)
