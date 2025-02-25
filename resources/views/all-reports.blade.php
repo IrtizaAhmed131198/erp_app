@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.4.1/css/rowGroup.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css">
+
 
     <style>
         .report_sec {
@@ -66,6 +68,43 @@
         table#reports-table tr TH,
         td {
             border: 1px solid #00000026;
+        }
+
+        .scroll-table td:nth-child(3) {
+            position: sticky;
+            left: 0px;
+            z-index: 1;
+            background: white;
+        }
+
+        .scroll-table th:nth-child(3) {
+            position: sticky;
+            left: 0px;
+            z-index: 11;
+            background: white;
+        }
+
+        table.table.table-striped.report-data-show.scroll-table.dataTable.no-footer {
+            position: relative;
+            z-index: 0;
+        }
+        .scroll-table td:nth-child(2) {
+            position: sticky;
+            left: 0px;
+            z-index: 1;
+            background: white;
+        }
+
+        .scroll-table th:nth-child(2) {
+            position: sticky;
+            left: 0px;
+            z-index: 11;
+            background: white;
+        }
+
+        table.table.table-striped.report-data-show.scroll_table.dataTable.no-footer {
+            position: relative;
+            z-index: 0;
         }
     </style>
 @endsection
@@ -152,7 +191,7 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="control-table">
-                        <table id="example" class="table table-striped report-data-show">
+                        <table id="example" class="table table-striped report-data-show scroll-table">
                             <thead>
                                 <tr>
                                     <th>DEPARTMENT</th>
@@ -213,7 +252,7 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="control-table">
-                        <table id="reports-table" class="table table-striped report-data-show">
+                        <table id="reports-table" class="table table-striped report-data-show scroll_table">
                             <thead>
                                 <tr>
                                     <th>Username</th>
@@ -258,6 +297,8 @@
     <script src="https://cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+
 
 
     <script>
@@ -280,6 +321,9 @@
                 serverSide: true,
                 ordering: false,
                 searching: false,
+                scrollY: "300px",
+                scrollX: true,
+                fixedHeader: true,
                 ajax: {
                     url: "{{ route('ajax_report_all') }}",
                     data: function(d) {
@@ -424,6 +468,9 @@
             var table = $('#reports-table').DataTable({
                 processing: true,
                 serverSide: true,
+                scrollY: "300px",
+                scrollX: true,
+                fixedHeader: true,
                 ajax: {
                     url: "{{ route('ajax_report') }}",
                     data: function(d) {
