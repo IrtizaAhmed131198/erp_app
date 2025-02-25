@@ -70,14 +70,14 @@
             border: 1px solid #00000026;
         }
 
-        .scroll-table td:nth-child(3) {
+        .scroll-table td.part-number-column {
             position: sticky;
             left: 0px;
             z-index: 1;
             background: white;
         }
 
-        .scroll-table th:nth-child(3) {
+        .scroll-table th.part-number-column {
             position: sticky;
             left: 0px;
             z-index: 11;
@@ -88,14 +88,14 @@
             position: relative;
             z-index: 0;
         }
-        .scroll-table td:nth-child(2) {
+        .scroll_table td:nth-child(2) {
             position: sticky;
             left: 0px;
             z-index: 1;
             background: white;
         }
 
-        .scroll-table th:nth-child(2) {
+        .scroll_table th:nth-child(2) {
             position: sticky;
             left: 0px;
             z-index: 11;
@@ -106,6 +106,10 @@
             position: relative;
             z-index: 0;
         }
+        .dataTables_scrollBody {
+    height: 550px !important;
+    max-height: 550px !important;
+}
     </style>
 @endsection
 
