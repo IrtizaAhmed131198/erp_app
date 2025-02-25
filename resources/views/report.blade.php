@@ -119,8 +119,10 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="parent-filter">
+                    <div class="parent-filter" style="justify-content: end">
                         <input type="text" name="daterange" value="" id="daterange" />
+                        <button id="download-excel-1" class="btn btn-success mb-2"><i
+                                class="fa-solid fa-file-export"></i></button>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -378,7 +380,7 @@
                             return $('<tr></tr>');
                         }
                         var groupValue =
-                        group; // Default to the group value (e.g., 'customer' or 'department')
+                            group; // Default to the group value (e.g., 'customer' or 'department')
 
                         var colspan = $('#example thead tr th').length; // Full column span
 
@@ -431,6 +433,52 @@
             $('select.js-select2').change(function() {
                 table.draw();
             });
+        });
+    </script>
+
+    <script>
+        function downloadTableAsExcel(tableID, filename) {
+            let table = document.getElementById(tableID);
+            let workbook = XLSX.utils.book_new();
+            let sheetData = [];
+
+            // Extract Headers
+            let headers = [];
+            table.querySelectorAll("thead tr th").forEach(th => {
+                headers.push(th.innerText.trim());
+            });
+            sheetData.push(headers); // Add headers to sheet data
+
+            // Extract Table Rows (Remove Empty Rows)
+            table.querySelectorAll("tbody tr").forEach(row => {
+                let rowData = [];
+                row.querySelectorAll("td").forEach(td => {
+                    rowData.push(td.innerText.trim());
+                });
+
+                // Only push rows that contain actual data (No fully empty rows)
+                if (rowData.some(cell => cell !== "")) {
+                    sheetData.push(rowData);
+                }
+            });
+
+            // Convert to SheetJS format
+            let worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+            // Auto-size columns
+            let columnWidths = headers.map(header => ({
+                wch: header.length + 5
+            }));
+            worksheet["!cols"] = columnWidths;
+
+            // Add worksheet to workbook and export
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, filename);
+        }
+
+        // Attach event listeners to buttons
+        document.getElementById("download-excel-1").addEventListener("click", function() {
+            downloadTableAsExcel("example", "Report1.xlsx");
         });
     </script>
 @endsection
