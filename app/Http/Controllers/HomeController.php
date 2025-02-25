@@ -171,7 +171,7 @@ class HomeController extends Controller
             $query->where('active', 1);
         }
 
-        
+
 
         $entries = $query->orderBy(
                 // This subquery selects the part number for the current entry
@@ -180,7 +180,7 @@ class HomeController extends Controller
                     ->limit(1)
             , 'asc')
             ->orderBy('id', 'desc')->get();
-    
+
 
         $department = Department::get();
 
