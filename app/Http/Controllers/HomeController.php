@@ -104,7 +104,8 @@ class HomeController extends Controller
         }
 
         // Apply search query
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->has('search') && !empty($request->search) &&
+            $request->search != 'active' && $request->search != 'inactive') {
             $query->where(function ($query) use ($request) {
                 $search = $request->search;
 
@@ -160,24 +161,28 @@ class HomeController extends Controller
                 $query->orWhereHas('work_center_one', function ($q) use ($search) {
                     $q->where('com', 'LIKE', "%$search%");
                 });
-
-                if (strtolower($search) === 'active') {
-                    $query->orWhere('active', 1);
-                } elseif (strtolower($search) === 'inactive') {
-                    $query->orWhere('active', 0);
-                }
             });
         }
 
         if (Auth::user()->role != 1) {
             $query->where('active', 1);
         }else if(Auth::user()->role == 1 && $request->has('a_status') && $request->a_status == 'inactive'){
-            $query->whereIn('active', [1,0]);
+            if (strtolower($request->search) == 'active') {
+                $query->where('active', 1);
+            } elseif (strtolower($request->search) == 'inactive') {
+                $query->where('active', 0);
+            }else{
+                $query->whereIn('active', [1,0]);
+            }
         }else{
-            $query->where('active', 1);
+            if (strtolower($request->search) == 'active') {
+                $query->where('active', 1);
+            } elseif (strtolower($request->search) == 'inactive') {
+                $query->where('active', 0);
+            }else{
+                $query->where('active', 1);
+            }
         }
-
-
 
         $entries = $query->orderBy(
                 // This subquery selects the part number for the current entry
@@ -948,8 +953,15 @@ class HomeController extends Controller
         $visuals = $visuals->sortBy(function ($entries, $status) use ($desiredOrder) {
             return array_search($status, $desiredOrder);
         });
+
+        // Sort each group by Work Centre in ascending order
+        $visuals = $visuals->map(function ($entries) {
+            return $entries->sortBy('type'); // Assuming 'type' is Work Centre
+        });
+
         return view('visual-queue-screen', compact('visuals'));
     }
+
     public function visual_screen_1()
     {
         return view('visual-queue-screen-1');
@@ -1792,6 +1804,14 @@ class HomeController extends Controller
         return view('qa', compact('query'));
     }
 
+    public function remove_input_screen(Request $request)
+    {
+        $id = $request->id;
+        $data = WorkCenter::find($id);
+        $data->delete();
+        return response()->json(['success' => true, 'message' => 'Work Center removed successfully.']);
+    }
+
     public function get_all_report(Request $request)
     {
         if(Auth::user()->role != 1){
@@ -1848,12 +1868,23 @@ class HomeController extends Controller
                 ->whereDate('weeks_history.created_at', '<=', $request->end_date);
         }
 
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereDate('weeks_history.created_at', '>=', $request->start_date)
+                ->whereDate('weeks_history.created_at', '<=', $request->end_date);
+        }
+
         if ($request->has('filter') && $request->filter == 'customer') {
             $query->orderBy('weeks_history.customer', 'asc');
         } else if ($request->has('filter') && $request->filter == 'part_number') {
             $query->orderBy('weeks_history.part_number', 'asc');
         } else if ($request->has('filter') && $request->filter == 'department') {
             $query->orderBy('weeks_history.department', 'asc');
+        }
+
+        if ($request->has('part_number') && $request->part_number !== "All") {
+            $query->whereHas('entry.part', function ($q) use ($request) {
+                $q->where('id', $request->part_number);
+            });
         }
 
         return DataTables::of($query)

@@ -83,11 +83,13 @@
                                                         @endphp
                                                         <tr>
                                                             <td>
-                                                                <select name="status" class="status">
+                                                                <select name="status" class="status" data-id="{{ $id }}">
                                                                     <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
                                                                     <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
                                                                     <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
                                                                     <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                    <option value="Neutral" {{ $status == 'Neutral' ? 'selected' : '' }}>Neutral</option>
+                                                                    <option value="Remove" {{ $status == 'Remove' ? 'selected' : '' }}>Remove</option>
                                                                 </select>
                                                             </td>
                                                             <td class="customer_val">{{ $customer }}</td>
@@ -187,11 +189,13 @@
                                                                 @if ($status !== null && $planning !== null)
                                                                     <tr>
                                                                         <td>
-                                                                            <select name="status" id="status">
+                                                                            <select name="status" id="status" data-id="{{ $id }}">
                                                                                 <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
                                                                                 <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
                                                                                 <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
                                                                                 <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                                <option value="Neutral" {{ $status == 'Neutral' ? 'selected' : '' }}>Neutral</option>
+                                                                                <option value="Remove" {{ $status == 'Remove' ? 'selected' : '' }}>Remove</option>
                                                                             </select>
                                                                         </td>
                                                                         <td class="customer_val">
@@ -365,6 +369,51 @@
                 } else {
                     console.error('No target specified for collapse.');
                     $button.prop('disabled', false);
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $('.status').on('change', function() {
+                let selectedValue = $(this).val();
+                let selectElement = $(this);
+                let id = $(this).data('id');
+
+                if (selectedValue === 'Remove') {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "This action will delete the record permanently!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Send an AJAX request to delete the data
+                            $.ajax({
+                                url: "{{ route('remove_input_screen') }}", // Change this to your delete route
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}', // Laravel CSRF token
+                                    id: id // Pass the record ID dynamically
+                                },
+                                success: function(response) {
+                                    Swal.fire('Deleted!', 'The record has been deleted.', 'success');
+                                    selectElement.closest('tr').remove(); // Remove row from table if applicable
+                                },
+                                error: function() {
+                                    Swal.fire('Error!', 'Something went wrong.', 'error');
+                                }
+                            });
+                        } else {
+                            // Reset to the previous value if cancel is clicked
+                            selectElement.val(selectElement.data('previousValue'));
+                        }
+                    });
+                } else {
+                    // Store previous value before change
+                    $(this).data('previousValue', selectedValue);
                 }
             });
         });

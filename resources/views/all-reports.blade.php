@@ -176,13 +176,23 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                     <div class="parent-filter">
                         <select class="js-select2" id="filter">
                             <option value="All" selected>ALL SCHEDULE</option>
                             <option value="customer">CUSTOMER</option>
                             <option value="department">DEPARTMENT</option>
                             <option value="part_number">PART NUMBER</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="parent-filter">
+                        <select class="js-select2" id="part_number_filter">
+                            <option value="All" selected>ALL PART NUMBER</option>
+                            @foreach ($parts as $val)
+                                <option value="{{ $val->id }}">{{ $val->Part_Number }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -343,6 +353,11 @@
                             d.filter = filter;
                         }
 
+                        var partNumber = $('#part_number_filter').val();
+                        if (partNumber && partNumber !== "All") {
+                            d.part_number = partNumber;
+                        }
+
                     }
                 },
                 columns: [{
@@ -448,6 +463,10 @@
             });
 
             $('select.js-select2').change(function() {
+                table.draw();
+            });
+
+            $('#part_number_filter').change(function() {
                 table.draw();
             });
         });
