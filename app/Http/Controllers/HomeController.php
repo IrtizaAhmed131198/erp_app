@@ -163,7 +163,7 @@ class HomeController extends Controller
             });
         }
 
-        if (Auth::user()->role != 1) {
+        if (Auth::user()->role != 1 && $request->has('a_status') && $request->a_status == 'inactive') {
             $query->where('active', 1);
         }
 

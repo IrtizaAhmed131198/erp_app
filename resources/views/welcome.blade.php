@@ -328,6 +328,10 @@
                             <i class="fas fa-eye"></i>
                         </button>
                         <button onclick="exportTableToExcel()" class="btn btn-success mb-3"><i class="fa-solid fa-file-export"></i></button>
+
+                        <a href="{{ route('index', ['a_status' => 'inactive']) }}" id="filter-4" class="btn btn-primary ml-4">
+                            <i class="fas fa-eye"></i>
+                        </a>
                         <!-- Color Selection -->
                         <div class="custom-custom-picker">
                             <button type="button" id="btn_highlight_cell" class="btn ml-4"
