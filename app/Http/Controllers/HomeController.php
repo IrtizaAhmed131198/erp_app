@@ -160,6 +160,12 @@ class HomeController extends Controller
                 $query->orWhereHas('work_center_one', function ($q) use ($search) {
                     $q->where('com', 'LIKE', "%$search%");
                 });
+
+                if (strtolower($search) === 'active') {
+                    $query->orWhere('active', 1);
+                } elseif (strtolower($search) === 'inactive') {
+                    $query->orWhere('active', 0);
+                }
             });
         }
 
