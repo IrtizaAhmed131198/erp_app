@@ -115,6 +115,8 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('get-all-report/ajax', [HomeController::class, "ajax_report"])->name('ajax_report');
     Route::get('get-all-report/ajax-all', [HomeController::class, "ajax_report_all"])->name('ajax_report_all');
 
+    Route::post('remove-input-screen', [HomeController::class, "remove_input_screen"])->name('remove_input_screen');
+
 });
 #login route
 Route::get('login', [LoginController::class, 'login'])->name('login');
