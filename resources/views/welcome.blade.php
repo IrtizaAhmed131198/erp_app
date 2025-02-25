@@ -330,7 +330,7 @@
                         <button onclick="exportTableToExcel()" class="btn btn-success mb-3"><i class="fa-solid fa-file-export"></i></button>
 
                         <a href="{{ route('index', ['a_status' => 'inactive']) }}" id="filter-4" class="btn btn-primary ml-4">
-                            <i class="fas fa-eye"></i>
+                            show Inactive
                         </a>
                         <!-- Color Selection -->
                         <div class="custom-custom-picker">
@@ -1021,6 +1021,9 @@
                     },
                     success: function(response) {
                         console.log('Success:', response);
+                        if(field == 'active'){
+                            location.reload();
+                        }
                     },
                     error: function(error) {
                         console.error('Error:', error);
