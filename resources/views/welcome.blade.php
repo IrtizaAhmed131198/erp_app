@@ -278,6 +278,11 @@
             z-index: 5;
             padding: 0;
         }
+
+        .xls-file img {
+            width: 120px;
+            margin-bottom: 6px;
+        }
     </style>
 @endsection
 
@@ -330,11 +335,16 @@
                         <button onclick="exportTableToExcel()" class="btn btn-success mb-3"><i
                                 class="fa-solid fa-file-export"></i></button>
 
-                                <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="file" name="file" required>
-                                    <button type="submit">Import</button>
-                                </form>
+                        <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data" class="xls-file">
+                            @csrf
+                            <input type="file" name="file" id="fileInput" style="display: none;" required>
+
+                            <label for="fileInput" style="cursor: pointer;">
+                                <img src="{{ asset('images/xls.png') }}" class="img-fluid" alt="">
+                            </label>
+
+                            <button type="submit" style="display: none;"></button>
+                        </form>
 
 
                         @if (request('a_status') == 'inactive')
@@ -475,7 +485,8 @@
                                                 );
                                             @endphp
                                         @endfor
-                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE RAW
+                                        <th scope="col" class="toggleable-2 toggle-header-department" disabled>FUTURE
+                                            RAW
                                         </th>
                                         <th scope="col" class="toggleable-2 toggle-header-department" disabled>PRICE
                                             {{-- <span class="icon">▼</span> --}}</th>
@@ -1627,6 +1638,12 @@
                     }
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function() {
+            this.form.submit();
         });
     </script>
 @endsection

@@ -2024,9 +2024,13 @@ class HomeController extends Controller
 
     public function import(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
         // Read Excel file to an array
         $data = Excel::toArray([], $request->file('file'));

@@ -1,6 +1,7 @@
 <?php include 'include/header.php' ?>
 <?php include 'include/menu.php' ?>
 
+
     <section class="weekly-section">
         <div class="container bg-colored">
             <div class="row align-items-center">

@@ -52,6 +52,20 @@
         .weekly-section .parent-table {
             margin-top: 10px !important;
         }
+
+
+        .select2.select2-container .select2-selection {
+            margin: 0;
+        }
+
+        .custom-data button {
+            font-size: 13px;
+            padding: 3px 5px;
+        }
+
+        .custom-data {
+            margin: 0 !important;
+        }
     </style>
 @endsection
 
