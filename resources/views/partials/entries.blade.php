@@ -359,7 +359,7 @@
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
-                                {{ $data->out_source_one->in_process_outside }}</td>
+                                {{ $data->in_process_outside }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'on_order_raw_matl')
                         @php

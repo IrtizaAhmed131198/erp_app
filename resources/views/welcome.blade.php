@@ -330,6 +330,13 @@
                         <button onclick="exportTableToExcel()" class="btn btn-success mb-3"><i
                                 class="fa-solid fa-file-export"></i></button>
 
+                                <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="file" name="file" required>
+                                    <button type="submit">Import</button>
+                                </form>
+
+
                         @if (request('a_status') == 'inactive')
                             <a href="{{ route('index') }}" id="filter-4" class="btn btn-primary ml-4">
                                 Show Active

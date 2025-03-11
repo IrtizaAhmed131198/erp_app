@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Schema;
 use App\Events\StockUpdate;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -2019,6 +2020,140 @@ class HomeController extends Controller
                 return json_decode($row->week_values, true);
             })
             ->make(true);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        // Read Excel file to an array
+        $data = Excel::toArray([], $request->file('file'));
+        // dd($data);
+        $arr = [];
+
+        if (!empty($data) && isset($data[0])) {
+            $rows = array_slice($data[0], 1); // Skip the first row (header)
+
+            foreach ($rows as $row) {
+
+                $department = Department::firstOrCreate(
+                    ['name' => $row[4]],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
+
+                $parts = Parts::firstOrCreate(
+                    ['Part_Number' => $row[6]],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
+
+                $customers = Customer::firstOrCreate(
+                    ['CustomerName' => $row[7]],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
+
+                $material = Material::firstOrCreate(
+                    ['Package' => $row[20]],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
+
+                $departmentId = $department->id;
+                $partsId = $parts->id;
+                $customersId = $customers->id;
+                $materialId = $material->id;
+                // reqd_1_6_weeks -- $row[10];
+                // reqd_7_12_weeks -- $row[11];
+                // scheduled_total -- $row[12];
+                // wt_reqd_1_12_weeks -- $row[21];
+
+                $entries = new Entries();
+                $entries->active = ($row[0] == 'Active') ? 1 : 0;
+                $entries->planning = $row[1];
+                $entries->status = $row[2];
+                $entries->ids = $row[3];
+                $entries->department = $departmentId; //row[4]
+                $entries->part_number = $partsId;
+                $entries->customer = $customersId;
+                $entries->rev = $row[8];
+                $entries->process = $row[9];
+                $entries->in_stock_finish = $row[13];
+                $entries->live_inventory_finish = $row[14];
+                $entries->live_inventory_wip = $row[15];
+                $entries->in_process_outside = $row[16];
+                $entries->raw_mat = $row[17];
+                $entries->in_stock_live = $row[18];
+                $entries->wt_pc = $row[19];
+                $entries->material = $materialId;
+                $entries->safety = $row[22];
+                $entries->min_ship = $row[23];
+                $entries->order_notes = $row[24];
+                $entries->part_notes = $row[25];
+                $entries->future_raw = $row[51];
+                $entries->price = $row[52];
+                $entries->notes = $row[53];
+                $entries->save();
+
+                $work_center_select = WorkCenterSelec::firstOrCreate(
+                    ['name' => $row[5]],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
+
+                $selectId = $work_center_select->id;
+                $work_center = new WorkCenter();
+                $work_center->entry_id = $entries->id;
+                $work_center->com = $selectId;
+                $work_center->work_centre_id = 'work_centre_1';
+                $work_center->save();
+
+                //add weeks logic
+                $datesArray = [];
+
+                // Calculate the start date of the current week (Monday)
+                $today = date('Y-m-d');
+                $dayOfWeek = date('w', strtotime($today)); // 0 (Sunday) to 6 (Saturday)
+                $mondayOfWeek =
+                    $dayOfWeek == 0
+                        ? date('Y-m-d', strtotime('-6 days', strtotime($today))) // If Sunday, go back 6 days
+                        : date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($today))); // Else, go back to Monday
+
+                // Calculate the start date of week 16
+                $week16StartDate = date('Y-m-d', strtotime('+15 weeks', strtotime($mondayOfWeek)));
+
+                // Calculate the end date of week 16
+                $week16EndDate = date('Y-m-d', strtotime('+6 days', strtotime($week16StartDate)));
+
+                // Calculate the start date of month 5 (the day after week 16 ends)
+                $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
+
+                $data = new Weeks();
+                $data->user_id = Auth::user()->id;
+                $data->part_number = $partsId;
+                $data->past_due = $row[26];
+
+                for ($week = 1; $week <= 16; $week++) {
+                    $startOfWeek = date('Y-m-d', strtotime('+' . (($week - 1) * 7) . ' days', strtotime($mondayOfWeek)));
+                    $datesArray["week_$week"] = $startOfWeek;
+                    $data["week_$week"] = $row[26 + $week];
+                    $data["week_{$week}_date"] = date('Y-m-d', strtotime($startOfWeek)); // Ensure format
+                }
+
+                $count = 1;
+                for ($month = 5; $month <= 12; $month++) {
+                    $endOfMonth = date('Y-m-d', strtotime('+30 days', strtotime($month5StartDate)));
+                    $datesArray["month_$month"] = date('Y-m-d', strtotime($month5StartDate)); // Ensure format
+                    $data["month_$month"] = $row[42 + $count];
+                    $data["month_{$month}_date"] = date('Y-m-d', strtotime($month5StartDate)); // Ensure format
+                    $month5StartDate = date('Y-m-d', strtotime('+31 days', strtotime($month5StartDate)));
+                    $count++;
+                }
+
+                $data->save();
+
+            }
+        }
+
+        return back()->with('success', 'Data imported successfully!');
     }
 
     private function generateWeekColumns()

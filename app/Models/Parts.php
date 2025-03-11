@@ -11,4 +11,6 @@ class Parts extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "parts";
+
+    protected $fillable = ['Part_Number'];
 }

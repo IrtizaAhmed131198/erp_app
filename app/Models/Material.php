@@ -11,4 +11,6 @@ class Material extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "package";
+
+    protected $fillable = ['Package'];
 }

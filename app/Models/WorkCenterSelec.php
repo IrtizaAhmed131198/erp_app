@@ -11,4 +11,6 @@ class WorkCenterSelec extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "work_center_selector";
+
+    protected $fillable = ['name'];
 }
