@@ -54,9 +54,9 @@
                                     <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}
                                         style="background-color: #719ff4">Closed
                                     </option>
-                                    <option value="Neutral" {{ $data->status == 'Neutral' ? 'selected' : '' }}
+                                    {{-- <option value="Neutral" {{ $data->status == 'Neutral' ? 'selected' : '' }}
                                         style="background-color: #bfef72">Neutral
-                                    </option>
+                                    </option> --}}
                                 </select>
                             </td>
                         @else
@@ -166,7 +166,7 @@
                             $data_target = 'entries_' . $data->id . '_department';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable toggle-department" id="{{ $data_target }}">
+                            <td class="toggleable-1 toggle-department" id="{{ $data_target }}">
                                 <select name="department" id="department" data-id="{{ $data->id }}"
                                         onchange="sendAjaxRequest('department', this.value, event)" {!! isset($singleton) && $singleton == true && $index != 0 ? 'hidden' : '' !!}>
                                     <option value="" disabled>Select</option>
@@ -179,7 +179,7 @@
                                 </select>
                             </td>
                         @else
-                            <td class="toggleable toggle-department" id="{{ $data_target }}">
+                            <td class="toggleable-1 toggle-department" id="{{ $data_target }}">
                                 {{ $data->get_department->name }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'work_center')
@@ -187,7 +187,7 @@
                             $data_target = 'entries_' . $data->id . '_work_centre_1';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable toggle-work-center" id="{{ $data_target }}">
+                            <td class="toggleable-1 toggle-work-center" id="{{ $data_target }}">
                                 <select name="work-center" id="work-center" data-id="{{ $data->work_center_one->id }}"
                                         onchange="sendAjaxRequest2('com', this.value, event)">
                                     <option value="" disabled>Select</option>
@@ -200,7 +200,7 @@
                                 </select>
                             </td>
                         @else
-                            <td class="toggleable toggle-work-center" id="{{ $data_target }}">
+                            <td class="toggleable-1 toggle-work-center" id="{{ $data_target }}">
                                 {{ $data->work_center_one->com ?? 'N/A' }}</td>
                         @endif
                     @elseif($region_2_column_configuration_item->column == 'part_number')

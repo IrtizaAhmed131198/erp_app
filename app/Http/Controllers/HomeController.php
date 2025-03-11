@@ -1843,7 +1843,7 @@ class HomeController extends Controller
             }
 
             // Fetch the filtered records
-            $reports = $query->get();
+            $reports = $query->get()->sortBy('part_number_name');
 
             // Return the data as a DataTable response
             return DataTables::of($reports)->make(true);
@@ -1857,10 +1857,6 @@ class HomeController extends Controller
             'entry.get_customer',
             'entry.part'
         ])->select('weeks_history.*');
-
-        // if ($request->has('userId')) {
-        //     $query->where('weeks_history.user_id', $request->userId);
-        // }
 
         // Apply date range filter
         if ($request->has('start_date') && $request->has('end_date')) {
@@ -1876,7 +1872,7 @@ class HomeController extends Controller
         if ($request->has('filter') && $request->filter == 'customer') {
             $query->orderBy('weeks_history.customer', 'asc');
         } else if ($request->has('filter') && $request->filter == 'part_number') {
-            $query->orderBy('weeks_history.part_number', 'asc');
+            $query->orderBy('weeks_history.part_number', 'desc');
         } else if ($request->has('filter') && $request->filter == 'department') {
             $query->orderBy('weeks_history.department', 'asc');
         }
@@ -1886,6 +1882,8 @@ class HomeController extends Controller
                 $q->where('id', $request->part_number);
             });
         }
+
+        $query->orderBy('weeks_history.part_number', 'desc');
 
         return DataTables::of($query)
             ->addColumn('department', function ($row) {

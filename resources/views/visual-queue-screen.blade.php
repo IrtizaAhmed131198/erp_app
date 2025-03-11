@@ -30,39 +30,41 @@
                 <div class="col-lg-12">
                     <div class="parent-table all-one-tables">
                         @foreach ($visuals as $status => $entries)
-                            <table class="table table-hover table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" colspan="6">{{ strtoupper($status) }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Work Centre</strong></td>
-                                        <td><strong>Customer</strong></td>
-                                        <td><strong>Part Number</strong></td>
-                                        <td><strong>Quantity</strong></td>
-                                        <td><strong>Job #</strong></td>
-                                        <td><strong>LOT #</strong></td>
-                                    </tr>
-                                    @foreach ($entries as $entry)
+                            @if($status != 'Neutral')
+                                <table class="table table-hover table-bordered">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $entry->type }}</td>
-                                            <td>{{ $entry->customer }}</td>
-                                            <td>
-                                                {{-- @if ($status === 'Closed')
-                                                    <a href="{{ route('get_qa', $entry->part->id) }}">{{ $entry->part->Part_Number }}</a>
-                                                @else --}}
-                                                    {{ $entry->part->Part_Number ?? '' }}
-                                                {{-- @endif --}}
-                                            </td>
-                                            <td>{{ $entry->quantity }}</td>
-                                            <td>{{ $entry->job }}</td>
-                                            <td>{{ $entry->lot }}</td>
+                                            <th class="text-center" colspan="6">{{ strtoupper($status) }}</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Work Centre</strong></td>
+                                            <td><strong>Customer</strong></td>
+                                            <td><strong>Part Number</strong></td>
+                                            <td><strong>Quantity</strong></td>
+                                            <td><strong>Job #</strong></td>
+                                            <td><strong>LOT #</strong></td>
+                                        </tr>
+                                        @foreach ($entries as $entry)
+                                            <tr>
+                                                <td>{{ $entry->type }}</td>
+                                                <td>{{ $entry->customer }}</td>
+                                                <td>
+                                                    {{-- @if ($status === 'Closed')
+                                                        <a href="{{ route('get_qa', $entry->part->id) }}">{{ $entry->part->Part_Number }}</a>
+                                                    @else --}}
+                                                        {{ $entry->part->Part_Number ?? '' }}
+                                                    {{-- @endif --}}
+                                                </td>
+                                                <td>{{ $entry->quantity }}</td>
+                                                <td>{{ $entry->job }}</td>
+                                                <td>{{ $entry->lot }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
                         @endforeach
                     </div>
                 </div>
