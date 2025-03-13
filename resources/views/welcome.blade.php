@@ -317,7 +317,7 @@
         <div class="container-fluid bg-colored pt-0">
             {{-- <div class="row align-items-center custom-row justify-content-center">
                 <div class="col-lg-8 col-md-9 col-12">
-                   
+
                 </div>
             </div> --}}
             <div class="row align-items-base justify-content-end master-data-filter invoice-listing-select-bar">
@@ -352,7 +352,7 @@
                             <input type="file" name="file" id="fileInput" style="display: none;" required>
 
                             <label for="fileInput" style="cursor: pointer;">
-                                <img src="{{ asset('images/xls.png') }}" class="img-fluid" alt="">
+                                <img src="{{ asset('images/xls.png') }}" class="img-fluid" alt="" title="Import Excel">
                             </label>
 
                             <button type="submit" style="display: none;"></button>
@@ -447,8 +447,7 @@
                                         @endif
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
                                             @if ($region_1_column_configuration_item->visibility)
-                                                <th scope="col"
-                                                    id="column-{{ $region_1_column_configuration_item->column }}"
+                                                <th scope="col" id="column-{{ $region_1_column_configuration_item->column }}"
                                                     class="toggleable toggle-header-{{ $region_1_column_configuration_item->column }}">
                                                     {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
                                                     {{-- <span class="icon">▼</span> --}}
@@ -463,8 +462,7 @@
 
                                         @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                                             @if ($region_2_column_configuration_item->visibility)
-                                                <th scope="col"
-                                                    id="column-{{ $region_2_column_configuration_item->column }}"
+                                                <th scope="col" id="column-{{ $region_2_column_configuration_item->column }}"
                                                     class="toggleable-1 toggle-header-{{ $region_2_column_configuration_item->column }}">
                                                     {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
                                                     {{-- <span class="icon">▼</span> --}}
@@ -995,31 +993,6 @@
 
         });
 
-        // function sendAjaxRequest(field, value) {
-        //     var inputElement = event.target;
-        //     var dataId = inputElement.getAttribute('data-id');
-        //     var data = {
-        //         id: dataId,
-        //         field: field,
-        //         value: value
-        //     };
-
-        //     $.ajax({
-        //         url: "{{ route('manual_imput') }}",
-        //         method: 'POST',
-        //         data: data,
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: function(response) {
-        //             console.log('Success:', response);
-        //         },
-        //         error: function(error) {
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
-
         let typingTimer; // Timer variable
         let typingTimer2;
         let typingTimer3;
@@ -1030,11 +1003,10 @@
             const dataId = inputElement.getAttribute('data-id');
 
             const isDropdown = inputElement.tagName === 'SELECT';
-            console.log(isDropdown);
 
             if (field === 'planning' || field === 'live_inventory_wip' ||
-                field === 'live_inventory_finish' || field === 'in_stock_live' || 'wt_pc' ||
-                field === 'min_ship' || 'future_raw' || 'price') {
+                field === 'live_inventory_finish' || field === 'in_stock_live' || field === 'wt_pc' ||
+                field === 'min_ship' || field === 'future_raw' || field === 'price') {
                 const isNumeric = /^-?\d+(,\d{3})*(\.\d+)?$/.test(value);
 
                 if (isNumeric) {
@@ -1064,7 +1036,7 @@
                     },
                     success: function(response) {
                         console.log('Success:', response);
-                        if (field == 'active') {
+                        if (field == 'active' || value == "Neutral") {
                             location.reload();
                         }
                     },
@@ -1085,6 +1057,9 @@
                         },
                         success: function(response) {
                             console.log('Success:', response);
+                            if (value == "Neutral") {
+                                location.reload();
+                            }
                         },
                         error: function(error) {
                             console.error('Error:', error);
@@ -1093,6 +1068,7 @@
                 }, typingTimeout);
             }
         }
+
 
         function sendAjaxRequest2(field, value, event) {
             const inputElement = event.target;
@@ -1155,57 +1131,6 @@
                 });
             }, typingTimeout);
         }
-
-
-        // function sendAjaxRequest2(field, value) {
-        //     var inputElement = event.target;
-        //     var dataId = inputElement.getAttribute('data-id');
-        //     var data = {
-        //         id: dataId,
-        //         field: field,
-        //         value: value
-        //     };
-
-        //     $.ajax({
-        //         url: "{{ route('manual_imput_work') }}",
-        //         method: 'POST',
-        //         data: data,
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: function(response) {
-        //             console.log('Success:', response);
-        //         },
-        //         error: function(error) {
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
-
-        // function sendAjaxRequest3(field, value) {
-        //     var inputElement = event.target;
-        //     var dataId = inputElement.getAttribute('data-id');
-        //     var data = {
-        //         id: dataId,
-        //         field: field,
-        //         value: value
-        //     };
-
-        //     $.ajax({
-        //         url: "{{ route('manual_imput_out') }}",
-        //         method: 'POST',
-        //         data: data,
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: function(response) {
-        //             console.log('Success:', response);
-        //         },
-        //         error: function(error) {
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
 
         $(document).ready(function() {
             // Handle filter changes
@@ -1501,19 +1426,125 @@
             });
         });
 
-        $(document).ready(function() {
-            $("textarea, .custom-textarea").on("dblclick", function() {
-                let currentValue = $(this).val().trim() || $(this).text()
-                    .trim(); // Get the current textarea value
+        $(".custom-textarea").on("dblclick", function() {
+            let currentValue = $(this).val().trim() || $(this).text()
+                .trim(); // Get the current textarea value
 
-                Swal.fire({
-                    title: "Order Notes",
-                    text: currentValue || "No notes available.",
-                    icon: "info",
-                    confirmButtonText: "OK"
-                });
+            Swal.fire({
+                title: "Order Notes",
+                text: currentValue || "No notes available.",
+                icon: "info",
+                confirmButtonText: "OK"
             });
         });
+
+        // $(document).ready(function() {
+            $("textarea").on("dblclick", function () {
+                let $this = $(this);
+                let currentValue = $this.val().trim() || $this.text().trim(); // Get current value
+                let dataId = $this.data("id"); // Get data-id if available
+
+                Swal.fire({
+                    title: "Edit",
+                    input: "text",
+                    inputValue: currentValue,
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    preConfirm: (newValue) => {
+                        if (!newValue.trim()) {
+                            Swal.showValidationMessage("Input cannot be empty!");
+                            return false;
+                        }
+                        return newValue.trim();
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let updatedValue = result.value;
+
+                        // Update the input field or text area immediately
+                        if ($this.is("input, textarea")) {
+                            $this.val(updatedValue);
+                        } else {
+                            $this.text(updatedValue);
+                        }
+                        console.log($this.attr("id"), updatedValue, dataId)
+                        // Send AJAX request to update the value in the database
+                        sendAjaxRequestText($this.attr("id"), updatedValue, dataId);
+                    }
+                });
+            });
+
+            $("input[type='text']").on("dblclick", function () {
+                let $this = $(this);
+                let currentValue = $this.val().trim() || $this.text().trim(); // Get current value
+                let dataId = $this.attr("data-id"); // Use .attr() for consistency
+
+                Swal.fire({
+                    title: "Edit",
+                    input: "text",
+                    inputValue: currentValue,
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    inputAttributes: {
+                        maxlength: "15" // Limit input to 15 characters
+                    },
+                    preConfirm: (newValue) => {
+                        if (!newValue.trim()) {
+                            Swal.showValidationMessage("Input cannot be empty!");
+                            return false;
+                        }
+                        if (newValue.length > 15) {
+                            Swal.showValidationMessage("Input must be 15 characters or less!");
+                            return false;
+                        }
+                        return newValue.trim();
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let updatedValue = result.value;
+
+                        // Update the input field or text area immediately
+                        if ($this.is("input, textarea")) {
+                            $this.val(updatedValue);
+                        } else {
+                            $this.text(updatedValue);
+                        }
+
+                        console.log($this.attr("id"), updatedValue, dataId);
+                        // Send AJAX request to update the value in the database
+                        sendAjaxRequestText($this.attr("id"), updatedValue, dataId);
+                    }
+                });
+            });
+
+            function sendAjaxRequestText(field, value, dataId, text = '') {
+                const data = {
+                    id: dataId,
+                    field: field,
+                    value: value,
+                    text: text
+                };
+
+                if (value == "") {
+                    return false;
+                }
+
+                $.ajax({
+                    url: "{{ route('manual_imput') }}",
+                    method: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('Success:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        // });
 
 
         // function exportTableToExcel() {
@@ -1604,6 +1635,8 @@
             // Save the file
             XLSX.writeFile(wb, "table_data.xlsx");
         }
+
+
     </script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>

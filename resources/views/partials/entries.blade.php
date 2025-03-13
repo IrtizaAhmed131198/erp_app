@@ -54,9 +54,9 @@
                                     <option value="Closed" {{ $data->status == 'Closed' ? 'selected' : '' }}
                                         style="background-color: #719ff4">Closed
                                     </option>
-                                    {{-- <option value="Neutral" {{ $data->status == 'Neutral' ? 'selected' : '' }}
+                                    <option value="Neutral" {{ $data->status == 'Neutral' ? 'selected' : '' }}
                                         style="background-color: #bfef72">Neutral
-                                    </option> --}}
+                                    </option>
                                 </select>
                             </td>
                         @else
@@ -379,7 +379,7 @@
                             $data_target = 'entries_' . $data->id . '_in_stock_live';
                         @endphp
                         @if (Auth::user()->role == 1)
-                            <td class="toggleable-1" id="{{ $data_target }}">
+                            <td class="toggleable-1 in_stock_live" id="{{ $data_target }}">
                                 {{-- <input type="text" step="any" name="in_stock_live" id="in_stock_live"
                                     value="{{ number_format($data->in_stock_live) }}" data-id="{{ $data->id }}"
                                     onkeyup="sendAjaxRequest('in_stock_live', this.value, event)"
@@ -564,7 +564,7 @@
                     $data_target = 'entries_' . $data->id . '_notes';
                 @endphp
                 <td class="toggleable-2" id="{{ $data_target }}">
-                    <textarea name="notes" value="{{ $data->notes }}" data-id="{{ $data->id }}"
+                    <textarea name="notes" id="notes" value="{{ $data->notes }}" data-id="{{ $data->id }}"
                         onkeyup="sendAjaxRequest('notes', this.value, event)">{{ $data->notes }}</textarea>
                 </td>
             @else

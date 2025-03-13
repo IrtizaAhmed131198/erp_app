@@ -185,8 +185,7 @@ class HomeController extends Controller
             }
         }
 
-        $entries = $query->orderBy(
-                // This subquery selects the part number for the current entry
+        $entries = $query->where('status', '!=', 'Neutral')->orderBy(
                 Parts::select('Part_Number')
                     ->whereColumn('parts.id', 'entries.part_number')
                     ->limit(1)
@@ -2158,6 +2157,48 @@ class HomeController extends Controller
         }
 
         return back()->with('success', 'Data imported successfully!');
+    }
+
+    public function export()
+    {
+        $userId = Auth::id(); // Get the current user ID
+
+        // Fetch column configurations from the database
+        $region1Config = DB::table('user_configs')->where('user_id', $userId)->where('key', 'master_screen_region_1_column_configuration')->first();
+        $region2Config = DB::table('user_configs')->where('user_id', $userId)->where('key', 'master_screen_region_2_column_configuration')->first();
+
+        $region1ConfigArr = json_decode($region1Config->value ?? '[]', true);
+        $region2ConfigArr = json_decode($region2Config->value ?? '[]', true);
+
+        // Merge both region configurations
+        $columnsConfig = array_merge($region1ConfigArr ?? [], $region2ConfigArr ?? []);
+
+        // Filter only visible columns and sort by order
+        $columns = collect($columnsConfig)
+            ->where('visibility', true)
+            ->sortBy('order')
+            ->pluck('column')
+            ->toArray();
+
+        $columns = array_values(array_diff($columns, ["work_center", "reqd_1_6_weeks", "reqd_7_12_weeks", "scheduled_total", "wt_reqd_1_12_weeks"]));
+
+        $renameMappings = [
+            'planning_queue' => 'planning',
+            'material_sort' => 'material',
+            'in_stock_finished' => 'in_stock_finish',
+            'live_inventory_finished' => 'live_inventory_finish',
+            'in_process_out_side' => 'in_process_outside',
+            'on_order_raw_matl' => 'raw_mat',
+        ];
+
+        // Apply renaming
+        $renamedColumns = array_map(function ($column) use ($renameMappings) {
+            return $renameMappings[$column] ?? $column; // Rename if mapping exists, otherwise keep original
+        }, $columns);
+
+        return $query = Entries::select($renamedColumns)
+                ->orderBy('id', 'desc')
+                    ->get();
     }
 
     private function generateWeekColumns()
