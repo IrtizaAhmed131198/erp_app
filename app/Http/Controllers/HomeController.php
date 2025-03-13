@@ -795,10 +795,8 @@ class HomeController extends Controller
 
         $parts = Parts::get();
 
-<<<<<<< HEAD
         return view('input-screen', compact('com1', 'out1', 'customers', 'parts', 'data','department'));
-=======
->>>>>>> 18561aa (new commit)
+
     }
 
     // public function input_screen_department()
