@@ -34,7 +34,9 @@
 
         .weekly-section .parent-table {
             padding-right: 20px;
-            width: 21%;
+            width: 14%;
+            overflow: unset;
+
         }
 
         .parent-table.parent-table-calender.full-view-port.mt-4 {
@@ -92,13 +94,13 @@
 
         .collaps-count-show {
             display: flex;
-            width: 95%;
+            width: 100%;
             gap: 10px;
             align-items: flex-start;
         }
 
         .parent-button {
-            width: 31%;
+            width: 22%;
         }
     </style>
 @endsection

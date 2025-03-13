@@ -70,13 +70,13 @@
     }
 
     .weekly-section .table-striped tr th {
-        width: 110px;
+        width: 100px;
         padding: 5px 5px !important;
         white-space: nowrap;
     }
 
     .weekly-section .table-striped tr td {
-        width: 110px;
+        width: 100px;
         padding: 5px 5px !important;
         white-space: nowrap;
     }
@@ -85,7 +85,7 @@
         width: 100% !important;
     }
 
-    div#lastUpdateOrder {
+    .weekly-section .alert-info {
         font-size: 10px;
         padding: 4px 8px;
     }
@@ -101,7 +101,7 @@
     }
 
     .parent-button {
-        width: 33% !important;
+        width: 25% !important;
     }
 
     .parent-filter {
@@ -109,8 +109,9 @@
     }
 
     .weekly-section .parent-table {
-        width: 25% !important;
+        width: 19% !important;
         padding: 0 !important;
+        overflow: auto !important;
     }
 }
 
