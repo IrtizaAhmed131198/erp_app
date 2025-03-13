@@ -20,7 +20,8 @@ class Visual extends Model
         "lot",
         "type",
         "user_id",
-        "type_id"
+        "type_id",
+        "entry_id"
     ];
 
     public function part()

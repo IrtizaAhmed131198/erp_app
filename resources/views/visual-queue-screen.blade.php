@@ -27,11 +27,14 @@
                 <div class="col-lg-12">
                     <div class="parent-table all-one-tables">
                         @foreach ($visuals as $status => $entries)
-                            @if ($status != 'Neutral')
+                            @if ($status != 'Neutral' && $status != 'Pause')
                                 <table class="table table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" colspan="6">{{ strtoupper($status) }}</th>
+                                            <th class="text-center" colspan="6" style="
+                                                    background-color: {{ $status == 'Running' ? 'green' : ($status == 'Pending Order' ? 'yellow' : ($status == 'Closed' ? 'grey' : 'white')) }} !important;
+                                                    color: black;
+                                                ">{{ strtoupper($status) }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,13 +50,7 @@
                                             <tr>
                                                 <td>{{ $entry->type }}</td>
                                                 <td>{{ $entry->customer }}</td>
-                                                <td>
-                                                    {{-- @if ($status === 'Closed')
-                                                        <a href="{{ route('get_qa', $entry->part->id) }}">{{ $entry->part->Part_Number }}</a>
-                                                    @else --}}
-                                                    {{ $entry->part->Part_Number ?? '' }}
-                                                    {{-- @endif --}}
-                                                </td>
+                                                <td>{{ $entry->part->Part_Number ?? '' }}</td>
                                                 <td>{{ $entry->quantity }}</td>
                                                 <td>{{ $entry->job }}</td>
                                                 <td>{{ $entry->lot }}</td>
@@ -63,6 +60,7 @@
                                 </table>
                             @endif
                         @endforeach
+
                     </div>
                 </div>
             </div>

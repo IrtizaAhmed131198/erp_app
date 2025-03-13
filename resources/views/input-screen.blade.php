@@ -98,6 +98,7 @@
                                                     <tbody>
                                                         @foreach ($validEntries as $entry)
                                                             @php
+                                                                $entry_id = $entry['entries']['id'];
                                                                 $status = $entry['entries']['status'];
                                                                 $customer =
                                                                     $entry['entries']['get_customer']['CustomerName'] ??
@@ -164,6 +165,7 @@
                                                                 <td style="display: none" class="type">
                                                                     {{ $work_select }}</td>
                                                                 <td style="display: none">{{ $id }}</td>
+                                                                <td style="display: none">{{ $entry_id }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -234,6 +236,7 @@
                                                         <tbody>
                                                             @foreach ($entries as $entry)
                                                                 @php
+                                                                    $entry_id = $entry['entries_data']['id'] ?? null;
                                                                     $status = $entry['entries_data']['status'] ?? null;
                                                                     $customer =
                                                                         $entry['entries_data']['get_customer'][
@@ -316,6 +319,7 @@
                                                                         <td style="display: none" class="type">
                                                                             {{ $out_source }}</td>
                                                                         <td style="display: none">{{ $id }}</td>
+                                                                        <td style="display: none">{{ $entry_id }}</td>
                                                                     </tr>
                                                                 @endif
                                                             @endforeach
@@ -387,6 +391,7 @@
                                                         <tbody>
                                                             @foreach ($entries as $entry)
                                                                 @php
+                                                                    $entry_id = $entry['id'] ?? null;
                                                                     $status = $entry['status'] ?? null;
                                                                     $customer = $entry['get_customer']['CustomerName'] ?? null;
                                                                     $part_number = $entry['part']['Part_Number'] ?? null;
@@ -425,6 +430,7 @@
                                                                         </td>
                                                                         <td style="display: none" class="type">{{ $department }}</td>
                                                                         <td style="display: none">{{ $id }}</td>
+                                                                        <td style="display: none">{{ $entry_id }}</td>
                                                                     </tr>
                                                                 @endif
                                                             @endforeach
@@ -477,7 +483,8 @@
                             job: row.find('.job_val').val() ?? null,
                             lot: row.find('.lot_val').val() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
-                            type_id: row.find('td:eq(7)').text().trim()
+                            type_id: row.find('td:eq(7)').text().trim(),
+                            entry_id: row.find('td:eq(8)').text().trim()
                         };
                         tableData.push(entry);
                     });
@@ -534,7 +541,8 @@
                             job: row.find('.job_val').val() ?? null,
                             lot: row.find('.lot_val').val() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
-                            type_id: row.find('td:eq(7)').text().trim()
+                            type_id: row.find('td:eq(7)').text().trim(),
+                            entry_id: row.find('td:eq(8)').text().trim()
                         };
                         tableData.push(entry);
                     });

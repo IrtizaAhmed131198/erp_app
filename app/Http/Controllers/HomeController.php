@@ -843,6 +843,7 @@ class HomeController extends Controller
             'entries.*.lot' => 'nullable|string',
             'entries.*.type' => 'nullable|string',
             'entries.*.type_id' => 'nullable|string',
+            'entries.*.entry_id' => 'nullable',
         ]);
 
         foreach ($validated['entries'] as $entry) {
@@ -858,6 +859,7 @@ class HomeController extends Controller
             if ($existingRecord) {
                 // Update only the status if the record exists
                 $existingRecord->update([
+                    'entry_id' => $entry['entry_id'],
                     'status' => $entry['status'],
                     'customer' => $entry['customer'],
                     'part_number' => $entry['part_number'],
@@ -886,6 +888,7 @@ class HomeController extends Controller
             'entries_data.*.lot' => 'nullable|string',
             'entries_data.*.type' => 'nullable|string',
             'entries_data.*.type_id' => 'nullable|string',
+            'entries_data.*.entry_id' => 'nullable',
         ]);
 
         foreach ($validated['entries_data'] as $entry) {
@@ -901,6 +904,7 @@ class HomeController extends Controller
             if ($existingRecord) {
                 // Update only the status if the record exists
                 $existingRecord->update([
+                    'entry_id' => $entry['entry_id'],
                     'status' => $entry['status'],
                     'customer' => $entry['customer'],
                     'part_number' => $entry['part_number'],
