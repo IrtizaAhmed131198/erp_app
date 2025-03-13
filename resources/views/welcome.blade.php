@@ -1216,16 +1216,20 @@
                 const columnClass = "toggleable-1"; // Class of the cells in the column
                 const icon = this.querySelector(".icon"); // Dropdown icon
 
-                // Toggle the collapsible state of the column
-                const cells = document.querySelectorAll(`.${columnClass}`);
-                cells.forEach(cell => {
-                    cell.classList.toggle("collapsible");
+                // Toggle the collapsible state of the column, excluding specific columns
+                document.querySelectorAll(`.${columnClass}`).forEach(cell => {
+                    if (!cell.classList.contains("toggle-header-part_number") &&
+                        !cell.classList.contains("entries_part_number")) {
+                        // Exclude cells with 'toggle-header-part_number' or 'entries_part_number'
+                        cell.classList.toggle("collapsible");
+                    }
                 });
 
                 // Toggle the icon's rotation
                 icon.classList.toggle("collapsed");
             });
         });
+
     </script>
 
     <script>

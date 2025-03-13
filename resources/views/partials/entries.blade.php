@@ -157,8 +157,6 @@
                 // dd($sumWeeks1To6);
             @endphp
 
-
-
             @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
                 @if ($region_2_column_configuration_item->visibility)
                     @if ($region_2_column_configuration_item->column == 'department')
