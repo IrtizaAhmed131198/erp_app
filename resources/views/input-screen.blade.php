@@ -36,12 +36,10 @@
                             </a>
                             <div class="parent-filter" data-intro='Hello step one!'>
                                 <select class="js-select2" id="filter1">
-                                    <option value="All">ALL DEPARTMENT</option>
-                                    @foreach ($department as $dept)
-                                        <option value="{{ $dept->id }}">
-                                            {{ $dept->name }}
-                                        </option>
-                                    @endforeach
+                                    <option value="All">------SHOW ALL------</option>
+                                    <option value="work_center">Work Center</option>
+                                    <option value="out_side">Out Source Processing</option>
+                                    <option value="department">Department</option>
                                 </select>
                             </div>
                         </div>
@@ -51,7 +49,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="parent-table">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion work_center" id="accordionExample">
                             <h3 class="text-center mb-3">Work Center</h3>
                             @php
                                 // Group entries by 'work_select.name'
@@ -182,7 +180,7 @@
 
                         </div>
                         @if (!empty($out1) && count($out1) > 0)
-                            <div class="accordion" id="accordionExample1">
+                            <div class="accordion out_side" id="accordionExample1">
                                 <h3 class="text-center mb-3 mt-5">Out Source Processing</h3>
 
                                 @php
@@ -340,8 +338,8 @@
                         @endif
 
                         @if (!empty($data) && count($data) > 0)
-                            <div class="accordion" id="accordionExample1">
-                                <h3 class="text-center mb-3 mt-5">Department Processing</h3>
+                            <div class="accordion department" id="accordionExample1">
+                                <h3 class="text-center mb-3 mt-5">Department</h3>
 
                                 @foreach ($data as $departmentName => $entries)
                                     @php
@@ -632,6 +630,21 @@
             const value = element.value.replace(/[^0-9]/g, '');
             element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
+
+        $(document).ready(function () {
+            // $(".accordion").hide(); // Initially hide all divs
+
+            $("#filter1").change(function () {
+                var selectedValue = $(this).val();
+
+                if (selectedValue === "All") {
+                    $(".accordion").show(); // Show all if "All" is selected
+                } else {
+                    $(".accordion").hide(); // Hide all first
+                    $("." + selectedValue).show(); // Show the selected div
+                }
+            });
+        });
 
 
         // $(document).ready(function() {

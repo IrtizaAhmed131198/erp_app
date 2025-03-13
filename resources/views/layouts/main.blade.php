@@ -161,10 +161,10 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <script>
-        document.querySelector('form[role="search"]').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Add your custom search handling logic here
-        });
+        // document.querySelector('form[role="search"]').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+        //     // Add your custom search handling logic here
+        // });
     </script>
 
     @yield('js')
