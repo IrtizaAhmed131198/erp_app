@@ -772,19 +772,15 @@ class HomeController extends Controller
         }
 
         $com1 = WorkCenter::with(['entries.get_customer', 'entries.part', 'work_select'])
-            ->when(Auth::user()->role != 1, function ($query) {
-                return $query->whereHas('entries', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
-                });
-            })
+                ->whereHas('entries', function ($query) {
+                    return $query->whereNotIn('status', ['Neutral', 'Remove']);
+                })
             ->get();
 
         $out1 = OutSource::with(['entries_data.get_customer', 'entries_data.part', 'out_source'])
-            ->when(Auth::user()->role != 1, function ($query) {
-                return $query->whereHas('entries_data', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
-                });
-            })
+                ->whereHas('entries_data', function ($query) {
+                    return $query->whereNotIn('status', ['Neutral', 'Remove']);
+                })
             ->get();
 
         $customers = Customer::get();

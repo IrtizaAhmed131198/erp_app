@@ -53,7 +53,8 @@ class Entries extends Model
         'currency',
         'last_updated_by',
         'in_process_outside',
-        'active'
+        'active',
+        'status'
     ];
 
     protected static function boot()

@@ -101,12 +101,12 @@
                                                                         <option value="Closed"
                                                                             {{ $status == 'Closed' ? 'selected' : '' }}>
                                                                             Closed</option>
-                                                                        <option value="Neutral"
+                                                                        {{-- <option value="Neutral"
                                                                             {{ $status == 'Neutral' ? 'selected' : '' }}>
                                                                             Neutral</option>
                                                                         <option value="Remove"
                                                                             {{ $status == 'Remove' ? 'selected' : '' }}>
-                                                                            Remove</option>
+                                                                            Remove</option> --}}
                                                                     </select>
                                                                 </td>
                                                                 <td class="customer_val">{{ $customer }}</td>
@@ -242,12 +242,12 @@
                                                                                 <option value="Closed"
                                                                                     {{ $status == 'Closed' ? 'selected' : '' }}>
                                                                                     Closed</option>
-                                                                                <option value="Neutral"
+                                                                                {{-- <option value="Neutral"
                                                                                     {{ $status == 'Neutral' ? 'selected' : '' }}>
                                                                                     Neutral</option>
                                                                                 <option value="Remove"
                                                                                     {{ $status == 'Remove' ? 'selected' : '' }}>
-                                                                                    Remove</option>
+                                                                                    Remove</option> --}}
                                                                             </select>
                                                                         </td>
                                                                         <td class="customer_val">
