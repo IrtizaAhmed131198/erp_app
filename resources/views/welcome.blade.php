@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+
+@section('pg-title', 'Master Data')
+
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
     <style>
@@ -30,7 +33,9 @@
         }
 
         #filter-3 {
-            width: 10%;
+            width: 4%;
+            padding: 0;
+            height: 40px;
         }
 
         /*column config css*/
@@ -280,14 +285,25 @@
         }
 
         .xls-file img {
-            width: 120px;
+            width: 38px;
             margin-bottom: 6px;
+        }
+
+        span.select2.select2-container.select2-container--default {
+            width: 50% !important;
+        }
+
+        .parent-filter {
+            justify-content: end;
         }
     </style>
 @endsection
 
 
+
 @section('content')
+
+
     @php
         $highlighted_cell_identifiers = auth()->user()->highlighted_cell_identifiers();
         $highlighted_cell_colors = auth()->user()->highlighted_cell_colors();
@@ -299,17 +315,13 @@
     @endphp
     <section class="master-data-section">
         <div class="container-fluid bg-colored pt-0">
-            <div class="row align-items-center custom-row justify-content-center">
+            {{-- <div class="row align-items-center custom-row justify-content-center">
                 <div class="col-lg-8 col-md-9 col-12">
-                    <div class="title">
-                        <h1 class="heading-1 text-center">
-                            Master Data
-                        </h1>
-                    </div>
+                   
                 </div>
-            </div>
+            </div> --}}
             <div class="row align-items-base justify-content-end master-data-filter invoice-listing-select-bar">
-                <div class="col-xxl-3 col-xl-5 col-lg-5 col-md-12 col-12">
+                <div class="col-lg-4 col-md-4 col-12">
                     <div class="parent-filter" data-intro='Hello step one!'>
                         <select class="js-select2" id="filter1">
                             <option value="All">ALL DEPARTMENT</option>
@@ -321,14 +333,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-12 col-12">
+                <div class="col-lg-7 col-md-6 col-12">
                     <div class="parent-filter">
                         <select class="js-select2" id="filter2">
                             <option selected="">All</option>
                             <option value="pending">Pending orders</option>
                             <option value="prd">Parts req for PRD</option>
                         </select>
-                        <button type="button" id="filter-3" class="btn btn-primary ml-4" data-bs-toggle="modal"
+                        <button type="button" id="filter-3" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#filter3" title="Show/Hide Columns">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -434,12 +446,14 @@
                                             <th scope="col" class="toggleable toggle-header-active">Active/InActive</th>
                                         @endif
                                         @foreach ($region_1_column_configuration as $region_1_column_configuration_item)
-                                            <th scope="col" id="column-{{ $region_1_column_configuration_item->column }}"
-                                                class="toggleable toggle-header-{{ $region_1_column_configuration_item->column }}"
-                                                @if (!$region_1_column_configuration_item->visibility) hidden @endif>
-                                                {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
-                                                {{-- <span class="icon">▼</span> --}}
-                                            </th>
+                                            @if ($region_1_column_configuration_item->visibility)
+                                                <th scope="col"
+                                                    id="column-{{ $region_1_column_configuration_item->column }}"
+                                                    class="toggleable toggle-header-{{ $region_1_column_configuration_item->column }}">
+                                                    {{ strtoupper(get_column_label($region_1_column_configuration_item->column)) }}
+                                                    {{-- <span class="icon">▼</span> --}}
+                                                </th>
+                                            @endif
                                         @endforeach
                                     @endif
                                     @if (Auth::user()->View_2 == 1)
@@ -448,13 +462,16 @@
                                         </th>
 
                                         @foreach ($region_2_column_configuration as $region_2_column_configuration_item)
-                                            <th scope="col" id="column-{{ $region_2_column_configuration_item->column }}"
-                                                class="toggleable-1 toggle-header-{{ $region_2_column_configuration_item->column }}"
-                                                @if (!$region_2_column_configuration_item->visibility) hidden @endif>
-                                                {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
-                                                {{-- <span class="icon">▼</span> --}}
-                                            </th>
+                                            @if ($region_2_column_configuration_item->visibility)
+                                                <th scope="col"
+                                                    id="column-{{ $region_2_column_configuration_item->column }}"
+                                                    class="toggleable-1 toggle-header-{{ $region_2_column_configuration_item->column }}">
+                                                    {{ strtoupper(get_column_label($region_2_column_configuration_item->column)) }}
+                                                    {{-- <span class="icon">▼</span> --}}
+                                                </th>
+                                            @endif
                                         @endforeach
+
                                     @endif
                                     @if (Auth::user()->View_1 == 1)
                                         <th scope="col" class="highlighted toggle-header-2">
@@ -1527,30 +1544,32 @@
             let table = document.getElementById("entries-table");
             let clonedTable = table.cloneNode(true); // Clone table to avoid modifying the original
 
-            // Find column indexes to exclude
+            // Find column indexes to exclude (hidden columns)
             let headers = clonedTable.querySelectorAll("thead th");
             let excludeIndexes = [];
 
             headers.forEach((header, index) => {
-                // Exclude columns based on class or text content
                 if (
                     header.classList.contains("highlighted") ||
                     header.classList.contains("toggle-header") ||
                     header.classList.contains("toggle-header-1") ||
                     header.classList.contains("toggle-header-2") ||
-                    header.textContent.trim().toLowerCase() === "delete"
+                    header.textContent.trim().toLowerCase() === "delete" ||
+                    header.hasAttribute("hidden") ||
+                    getComputedStyle(header).display === "none"
                 ) {
-                    excludeIndexes.push(index); // Store column index to exclude
+                    excludeIndexes.push(index);
                 }
             });
 
-            // Process each row to remove unwanted columns
+            // Process each row (thead and tbody) to remove unwanted columns
             let rows = clonedTable.querySelectorAll("tr");
+
             rows.forEach(row => {
-                let cells = row.querySelectorAll("td, th");
+                let cells = Array.from(row.children); // Convert NodeList to Array for better handling
                 excludeIndexes.reverse().forEach(index => {
                     if (cells[index]) {
-                        cells[index].remove(); // Remove the unwanted columns
+                        cells[index].remove(); // Remove the unwanted columns properly
                     }
                 });
 
@@ -1559,14 +1578,14 @@
                     let hoverDiv = cell.querySelector(".custom-dropdown-menu");
                     if (hoverDiv) hoverDiv.remove();
 
-                    // Handle <select> dropdowns (extract selected value)
+                    // Extract <select> dropdown selected value
                     let select = cell.querySelector("select");
                     if (select) {
                         cell.textContent = select.options[select.selectedIndex].text;
                         return;
                     }
 
-                    // Handle <input> fields (extract input value)
+                    // Extract <input> field value
                     let input = cell.querySelector("input");
                     if (input) {
                         cell.textContent = input.value;

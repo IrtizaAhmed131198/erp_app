@@ -118,6 +118,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::post('remove-input-screen', [HomeController::class, "remove_input_screen"])->name('remove_input_screen');
 
     Route::post('import', [HomeController::class, 'import'])->name('import');
+    Route::get('export', [HomeController::class, 'export'])->name('export');
 
 });
 #login route

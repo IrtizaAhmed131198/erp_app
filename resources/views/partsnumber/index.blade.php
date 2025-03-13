@@ -1,4 +1,7 @@
 @extends('layouts.main')
+
+@section('pg-title', 'Tables')
+
 @section('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <style>
@@ -126,11 +129,6 @@
                                     Return To Master Data
                                 </span>
                             </a>
-                        </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                Tables
-                            </h1>
                         </div>
                     </div>
                 </div>

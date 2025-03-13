@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('pg-title', 'Visual Input Screen')
+
 @section('content')
     <section class="visual-queue-screen">
         <div class="container-fluid bg-colored">
@@ -18,11 +20,6 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                Visual Input Screen
-                            </h1>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -30,7 +27,7 @@
                 <div class="col-lg-12">
                     <div class="parent-table all-one-tables">
                         @foreach ($visuals as $status => $entries)
-                            @if($status != 'Neutral')
+                            @if ($status != 'Neutral')
                                 <table class="table table-hover table-bordered">
                                     <thead>
                                         <tr>
@@ -54,7 +51,7 @@
                                                     {{-- @if ($status === 'Closed')
                                                         <a href="{{ route('get_qa', $entry->part->id) }}">{{ $entry->part->Part_Number }}</a>
                                                     @else --}}
-                                                        {{ $entry->part->Part_Number ?? '' }}
+                                                    {{ $entry->part->Part_Number ?? '' }}
                                                     {{-- @endif --}}
                                                 </td>
                                                 <td>{{ $entry->quantity }}</td>

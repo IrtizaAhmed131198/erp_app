@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('pg-title', 'Users List')
+
 @section('css')
     <style>
         .select2-selection__arrow {
@@ -35,11 +37,6 @@
                                     Return To Master Data
                                 </span>
                             </a>
-                        </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                Users List
-                            </h1>
                         </div>
                     </div>
                 </div>

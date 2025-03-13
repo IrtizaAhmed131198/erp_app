@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+
+@section('pg-title', 'All Users Report')
+
 @section('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.4.1/css/rowGroup.dataTables.min.css">
@@ -88,6 +91,7 @@
             position: relative;
             z-index: 0;
         }
+
         .scroll_table td:nth-child(2) {
             position: sticky;
             left: 0px;
@@ -106,10 +110,11 @@
             position: relative;
             z-index: 0;
         }
+
         .dataTables_scrollBody {
-    height: 550px !important;
-    max-height: 550px !important;
-}
+            height: 550px !important;
+            max-height: 550px !important;
+        }
     </style>
 @endsection
 
@@ -130,11 +135,6 @@
                                     Return To Master Data
                                 </span>
                             </a>
-                        </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                All Users Report
-                            </h1>
                         </div>
                     </div>
                 </div>

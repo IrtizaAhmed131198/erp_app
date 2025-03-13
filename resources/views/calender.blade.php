@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('pg-title', 'Shipment & Production')
+
 @section('css')
     <style>
         div#collapseTwo table {
@@ -28,6 +30,15 @@
 
         .side_btn .custom-btn {
             margin: unset;
+        }
+
+        .weekly-section .parent-table {
+            padding-right: 20px;
+            width: 15%;
+        }
+
+        .parent-table.parent-table-calender.full-view-port.mt-4 {
+            width: 100%;
         }
 
         .weekly-section .parent-table tr th {
@@ -66,12 +77,24 @@
         .custom-data {
             margin: 0 !important;
         }
+
+        .custom-data {
+            gap: 10px;
+        }
+
+        table.master-data-to-screen.table.table-hover.table-striped {
+            width: unset;
+        }
+
+        div#lastUpdateOrder {
+            height: 100%;
+        }
     </style>
 @endsection
 
 @section('content')
     <section class="weekly-section">
-        <div class="container bg-colored">
+        <div class="container-fluid bg-colored">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="parent-pagination">
@@ -87,78 +110,73 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                Shipment & Production
-                            </h1>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="row align-items-center">
-                <div class="col-lg-3">
-                    <div class="parent-filter">
-                        <select class="js-select2" id="partNumberSelect">
-                            <option selected disabled>Select Part Number</option>
-                            @foreach ($parts as $item)
-                                <option value="{{ $item->part->id }}"
-                                    {{ request('part_number') == $item->part->Part_Number ? 'selected' : '' }}>
-                                    {{ $item->part->Part_Number }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <input type="hidden" name="part_no" id="part_no" value="">
-                    </div>
-                </div>
                 <div class="col-lg-12">
                     <div class="d-flex justify-content-start mb-3 custom-data">
-                        @if (Auth::user()->create_order == 1)
-                            <button class="btn btn-primary me-2" id="btn-create-order" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
-                                aria-controls="collapseOne" onclick="updateHeadingText(this)">
-                                Create/Update Order
-                            </button>
-                        @endif
+                        <div class="parent-button">
+                            <div class="parent-filter">
+                                <select class="js-select2" id="partNumberSelect">
+                                    <option selected disabled>Select Part Number</option>
+                                    @foreach ($parts as $item)
+                                        <option value="{{ $item->part->id }}"
+                                            {{ request('part_number') == $item->part->Part_Number ? 'selected' : '' }}>
+                                            {{ $item->part->Part_Number }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="part_no" id="part_no" value="">
+                            </div>
+                            <div class="d-flex justify-content-start mb-3 custom-data">
+                                @if (Auth::user()->create_order == 1)
+                                    <button class="btn btn-primary me-2" id="btn-create-order" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
+                                        aria-controls="collapseOne" onclick="updateHeadingText(this)">
+                                        Create/Update Order
+                                    </button>
+                                @endif
 
-                        @if (Auth::user()->stock_finished_column == 1)
-                            <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
-                                onclick="updateHeadingText(this)">
-                                Add Production
-                            </button>
-                        @endif
+                                @if (Auth::user()->stock_finished_column == 1)
+                                    <button class="btn btn-primary me-2" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                                        onclick="updateHeadingText(this)">
+                                        Add Production
+                                    </button>
+                                @endif
 
-                        @if (Auth::user()->calendar_column == 1)
-                            <button class="btn btn-primary" id="btn-add-shipment" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
-                                onclick="updateHeadingText(this)">
-                                Add Shipment
-                            </button>
-                        @endif
+                                @if (Auth::user()->calendar_column == 1)
+                                    <button class="btn btn-primary" id="btn-add-shipment" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree" onclick="updateHeadingText(this)">
+                                        Add Shipment
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                        <!-- add production form -->
+                        @include('partials.production_form')
+                        <table class="master-data-to-screen table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">REV</th>
+                                    <th scope="col">MOQ & SAFETY</th>
+                                    <th scope="col">MIN SHIP</th>
+                                    <th scope="col">PART NOTES</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-data">
+                            </tbody>
+                        </table>
+                        <div class="alert alert-info" role="alert" id="lastUpdateOrder">
+                            Last updated information:
+                        </div>
                     </div>
-
                     <div class="accordion" id="mainAccordion">
                         <!-- First Collapsible Content -->
                         <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body px-0">
-                                <div class="alert alert-info" role="alert" id="lastUpdateOrder">
-                                    Last updated information:
-                                </div>
-                                <div class="col-lg-12">
-                                    <table class="master-data-to-screen table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">REV</th>
-                                                <th scope="col">MOQ & SAFETY</th>
-                                                <th scope="col">MIN SHIP</th>
-                                                <th scope="col">PART NOTES</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-data">
-
-                                        </tbody>
-                                    </table>
-                                </div>
 
                                 @php
                                     $datesArray = [];
@@ -184,8 +202,7 @@
                                     $month5StartDate = date('Y-m-d', strtotime('+1 day', strtotime($week16EndDate)));
                                 @endphp
 
-                                <!-- add production form -->
-                                @include('partials.production_form')
+
 
                                 <div class="btn-custom-btn text-ceneter mt-5 side_btn">
                                     <button type="button" id="create-order" class="btn custom-btn">Submit</button>

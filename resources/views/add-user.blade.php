@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('pg-title','Add Users')
+
 @section('content')
     <section class="weekly-section">
         <div class="container-xl px-4 mt-4">
@@ -17,11 +19,6 @@
                                     Return To Master Data
                                 </span>
                             </a>
-                        </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                Add Users
-                            </h1>
                         </div>
                     </div>
                 </div>

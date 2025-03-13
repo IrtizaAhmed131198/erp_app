@@ -32,6 +32,15 @@
 <body>
 
 
+
+    <div class="page-title">
+        <div class="title">
+            <h1 class="heading-1 text-center">
+                @yield('pg-title')
+            </h1>
+        </div>
+    </div>
+
     <header>
         <div class="container">
             <div class="row">
@@ -41,15 +50,15 @@
                             {{--                            <a class="navbar-brand" href="index.php"> --}}
                             {{--                                <img src="{{ asset('images/sidebarlogo.png') }}" class="img-fluid" alt=""> --}}
                             {{--                            </a> --}}
-                            @if(Route::currentRouteName() === 'index')
+                            @if (Route::currentRouteName() === 'index')
                                 <form class="d-flex" role="search">
                                     <div class="parent-search-bar">
                                         <button>
                                             <img src="{{ asset('images/search-bar.png') }}" class="img-fluid"
                                                 alt="">
                                         </button>
-                                        <input class="form-control" type="search" id="search-input" placeholder="Search"
-                                            aria-label="Search">
+                                        <input class="form-control" type="search" id="search-input"
+                                            placeholder="Search" aria-label="Search">
                                     </div>
                                 </form>
                             @endif
@@ -90,7 +99,8 @@
                                                     </li>
                                                 @endif
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ route('get_all_report') }}">All User Reports</a>
+                                    <li><a class="dropdown-item" href="{{ route('get_all_report') }}">All User
+                                            Reports</a>
                                     </li>
                                     <li><a class="dropdown-item" href="{{ route('calender') }}">Shipment &
                                             Production</a>
@@ -110,8 +120,8 @@
                                     <li><a class="dropdown-item" href="{{ route('data_center') }}">Part Number
                                             Input</a></li>
                                     @if (Auth::user()->role == 1)
-                                    <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a>
-                                    </li>
+                                        <li><a class="dropdown-item" href="{{ route('partsnumber.index') }}">Tables</a>
+                                        </li>
                                     @endif
                                     {{-- <li><a class="dropdown-item" href="{{ route('report') }}">Report</a>
                                     </li> --}}

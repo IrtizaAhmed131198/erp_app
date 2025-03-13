@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('pg-title', 'Part Number Input')
+
 @section('css')
     <style>
         .select2-selection__arrow {
@@ -44,55 +46,55 @@
         .select2.select2-container .select2-selection .select2-selection__arrow {
             height: 22px;
         }
+
         /* The switch - the box around the slider */
         .switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 24px;
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
         }
 
         /* Hide default HTML checkbox */
         .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
 
         /* The slider */
         .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 24px;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
         }
 
         .slider:before {
-        position: absolute;
-        content: "";
-        height: 18px;
-        width: 18px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
 
         /* Toggle when checked */
-        input:checked + .slider {
-        background-color: #2196F3;
+        input:checked+.slider {
+            background-color: #2196F3;
         }
 
-        input:checked + .slider:before {
-        transform: translateX(26px);
+        input:checked+.slider:before {
+            transform: translateX(26px);
         }
-
     </style>
 @endsection
 
@@ -114,11 +116,6 @@
                                     Return To Master Data
                                 </span>
                             </a>
-                        </div>
-                        <div class="title">
-                            <h1 class="heading-1">
-                                Part Number Input
-                            </h1>
                         </div>
                     </div>
                 </div>
@@ -194,7 +191,8 @@
                                         <tr>
                                             <td>ID</td>
                                             <td>
-                                                <input type="text" name="ids" value="{{ old('ids') }}" id="">
+                                                <input type="text" name="ids" value="{{ old('ids') }}"
+                                                    id="">
                                             </td>
                                         </tr>
                                         <tr>
@@ -206,7 +204,8 @@
                                         </tr>
                                         <tr>
                                             @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
+                                                <td data-bs-toggle="modal" data-bs-target="#departmentModal">Department
+                                                    <span class="badge badge-sm bg-success bg-add-new">Add new</span></td>
                                             @else
                                                 <td>Department</td>
                                             @endif
@@ -224,31 +223,35 @@
                                             </td>
                                         </tr>
                                         @for ($i = 1; $i <= 7; $i++)
-                                        <tr>
-                                            @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="{{ $i == 1 ? '#workCenterModal' : '' }}" data-work-id="{{ $i }}">
-                                                    Work Centre {{ $i }}
-                                                    @if ($i == 1) <!-- Show "Add new" only for the first row -->
-                                                        <span class="badge badge-sm bg-success bg-add-new">Add new</span>
-                                                    @endif
+                                            <tr>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="{{ $i == 1 ? '#workCenterModal' : '' }}"
+                                                        data-work-id="{{ $i }}">
+                                                        Work Centre {{ $i }}
+                                                        @if ($i == 1)
+                                                            <!-- Show "Add new" only for the first row -->
+                                                            <span class="badge badge-sm bg-success bg-add-new">Add
+                                                                new</span>
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>Work Centre {{ $i }}</td>
+                                                @endif
+                                                <td>
+                                                    <select class="js-select2 select2-hidden-accessible work_centre_select"
+                                                        name="work_centre_{{ $i }}"
+                                                        aria-label="Default select example">
+                                                        <option value="" selected>Select</option>
+                                                        @foreach ($work_center_select as $center)
+                                                            <option value="{{ $center['id'] }}"
+                                                                {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
+                                                                {{ $center['name'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </td>
-                                            @else
-                                                <td>Work Centre {{ $i }}</td>
-                                            @endif
-                                            <td>
-                                                <select class="js-select2 select2-hidden-accessible work_centre_select"
-                                                    name="work_centre_{{ $i }}"
-                                                    aria-label="Default select example">
-                                                    <option value="" selected>Select</option>
-                                                    @foreach ($work_center_select as $center)
-                                                        <option value="{{ $center['id'] }}"
-                                                            {{ old('work_centre_' . $i) == $center['id'] ? 'selected' : '' }}>
-                                                            {{ $center['name'] }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endfor
                                         <tr>
                                             <td>Part Notes</td>
@@ -263,37 +266,41 @@
                                     </thead>
                                     <tbody>
                                         @for ($i = 1; $i <= 4; $i++)
-                                        <tr>
-                                            @if (Auth::user()->role == 1)
-                                                <td data-bs-toggle="modal" data-bs-target="{{ $i == 1 ? '#outsideProcessingModal' : '' }}" data-outside-id="{{ $i }}">
-                                                    Outside Processing {{ $i }}
-                                                    @if ($i == 1) <!-- Show "Add new" only for the first row -->
-                                                        <span class="badge badge-sm bg-success bg-add-new">Add new</span>
-                                                    @endif
+                                            <tr>
+                                                @if (Auth::user()->role == 1)
+                                                    <td data-bs-toggle="modal"
+                                                        data-bs-target="{{ $i == 1 ? '#outsideProcessingModal' : '' }}"
+                                                        data-outside-id="{{ $i }}">
+                                                        Outside Processing {{ $i }}
+                                                        @if ($i == 1)
+                                                            <!-- Show "Add new" only for the first row -->
+                                                            <span class="badge badge-sm bg-success bg-add-new">Add
+                                                                new</span>
+                                                        @endif
+                                                    </td>
+                                                @else
+                                                    <td>Outside Processing {{ $i }}</td>
+                                                @endif
+                                                <td>
+                                                    <div class="parent-inputs">
+                                                        <select class="js-select2 select2-hidden-accessible outside_select"
+                                                            name="outside_processing_{{ $i }}"
+                                                            aria-label="Default select example">
+                                                            <option value="" selected>Select</option>
+                                                            @foreach ($vendor as $v)
+                                                                <option value="{{ $v->id }}"
+                                                                    {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
+                                                                    {{ $v->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="text"
+                                                            name="outside_processing_text_{{ $i }}"
+                                                            value="{{ old('outside_processing_text_' . $i) }}"
+                                                            id="">
+                                                    </div>
                                                 </td>
-                                            @else
-                                                <td>Outside Processing {{ $i }}</td>
-                                            @endif
-                                            <td>
-                                                <div class="parent-inputs">
-                                                    <select class="js-select2 select2-hidden-accessible outside_select"
-                                                        name="outside_processing_{{ $i }}"
-                                                        aria-label="Default select example">
-                                                        <option value="" selected>Select</option>
-                                                        @foreach ($vendor as $v)
-                                                            <option value="{{ $v->id }}"
-                                                                {{ old('outside_processing_' . $i) == $v->id ? 'selected' : '' }}>
-                                                                {{ $v->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <input type="text"
-                                                        name="outside_processing_text_{{ $i }}"
-                                                        value="{{ old('outside_processing_text_' . $i) }}"
-                                                        id="">
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endfor
 
                                         <tr>
@@ -529,7 +536,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="workCenterModal" tabindex="-1" aria-labelledby="workCenterModalLabel" aria-hidden="true">
+    <div class="modal fade" id="workCenterModal" tabindex="-1" aria-labelledby="workCenterModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -540,7 +548,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="workCenterInput" class="form-label">Work Center Name</label>
-                            <input type="text" class="form-control" id="workCenterInput" placeholder="Enter work center name" required>
+                            <input type="text" class="form-control" id="workCenterInput"
+                                placeholder="Enter work center name" required>
                             <input type="hidden" id="workCenterId">
                         </div>
                     </div>
@@ -553,7 +562,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="outsideProcessingModal" tabindex="-1" aria-labelledby="outsideProcessingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="outsideProcessingModal" tabindex="-1" aria-labelledby="outsideProcessingModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -564,7 +574,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="outsideProcessingInput" class="form-label">Vendor Name</label>
-                            <input type="text" class="form-control" id="outsideProcessingInput" placeholder="Enter outside processing name" required>
+                            <input type="text" class="form-control" id="outsideProcessingInput"
+                                placeholder="Enter outside processing name" required>
                             <input type="hidden" id="outsideProcessingId">
                         </div>
                     </div>
