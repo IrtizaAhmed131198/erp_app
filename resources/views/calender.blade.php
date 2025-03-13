@@ -34,7 +34,7 @@
 
         .weekly-section .parent-table {
             padding-right: 20px;
-            width: 15%;
+            width: 21%;
         }
 
         .parent-table.parent-table-calender.full-view-port.mt-4 {
@@ -87,7 +87,18 @@
         }
 
         div#lastUpdateOrder {
-            height: 100%;
+            /* height: 100%; */
+        }
+
+        .collaps-count-show {
+            display: flex;
+            width: 95%;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .parent-button {
+            width: 31%;
         }
     </style>
 @endsection
@@ -157,20 +168,63 @@
                         </div>
                         <!-- add production form -->
                         @include('partials.production_form')
-                        <table class="master-data-to-screen table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">REV</th>
-                                    <th scope="col">MOQ & SAFETY</th>
-                                    <th scope="col">MIN SHIP</th>
-                                    <th scope="col">PART NOTES</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-data">
-                            </tbody>
-                        </table>
-                        <div class="alert alert-info" role="alert" id="lastUpdateOrder">
-                            Last updated information:
+                        <div class="first_collaps_show" style="display: none">
+                            <div class="collaps-count-show">
+                                <table class="master-data-to-screen table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">REV</th>
+                                            <th scope="col">MOQ & SAFETY</th>
+                                            <th scope="col">MIN SHIP</th>
+                                            <th scope="col">PART NOTES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-data">
+                                    </tbody>
+                                </table>
+                                <div class="alert alert-info" role="alert" id="lastUpdateOrder">
+                                    Last updated information:
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second_collaps_show" style="display: none">
+                            <div class="collaps-count-show">
+                                <table class="master-data-to-screen table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">REV</th>
+                                            <th scope="col">MOQ & SAFETY</th>
+                                            <th scope="col">MIN SHIP</th>
+                                            <th scope="col">PART NOTES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-data">
+
+                                    </tbody>
+                                </table>
+                                <div class="alert alert-info" role="alert" id="lastUpdateProduction">
+                                    Last updated information:
+                                </div>
+                            </div>
+                        </div>
+                        <div class="third_collaps_show" style="display: none">
+                            <div class="collaps-count-show">
+                                <table class="master-data-to-screen table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">REV</th>
+                                            <th scope="col">MOQ & SAFETY</th>
+                                            <th scope="col">MIN SHIP</th>
+                                            <th scope="col">PART NOTES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-data">
+                                    </tbody>
+                                </table>
+                                <div class="alert alert-info" role="alert" id="lastUpdateShipment">
+                                    Last updated information:
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="accordion" id="mainAccordion">
@@ -349,29 +403,9 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Second Collapsible Content -->
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
-                                <div class="alert alert-info" role="alert" id="lastUpdateProduction">
-                                    Last updated information:
-                                </div>
-                                <div class="col-lg-12">
-                                    <table class="master-data-to-screen table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">REV</th>
-                                                <th scope="col">MOQ & SAFETY</th>
-                                                <th scope="col">MIN SHIP</th>
-                                                <th scope="col">PART NOTES</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-data">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
                                 <!-- add production form -->
                                 <div class="parent-table" style="height: auto">
                                     <div class="btn-custom-btn add-btn-close text-ceneter">
@@ -412,23 +446,7 @@
                         <!-- Third Collapsible Content -->
                         <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
                             <div class="accordion-body">
-                                <div class="alert alert-info" role="alert" id="lastUpdateShipment">
-                                    Last updated information:
-                                </div>
-                                <div class="col-lg-12">
-                                    <table class="master-data-to-screen table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">REV</th>
-                                                <th scope="col">MOQ & SAFETY</th>
-                                                <th scope="col">MIN SHIP</th>
-                                                <th scope="col">PART NOTES</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-data">
-                                        </tbody>
-                                    </table>
-                                </div>
+
 
                                 @php
                                     $datesArray1 = [];
@@ -1405,6 +1423,38 @@
             });
 
 
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            if ($('#collapseOne')) {
+                $('#collapseOne').on('shown.bs.collapse', function() {
+                    $('.first_collaps_show').css('display', 'block');
+                });
+
+                $('#collapseOne').on('hidden.bs.collapse', function() {
+                    $('.first_collaps_show').css('display', 'none');
+                });
+            }
+            if ($('#collapseTwo')) {
+                $('#collapseTwo').on('shown.bs.collapse', function() {
+                    $('.second_collaps_show').css('display', 'block');
+                });
+
+                $('#collapseTwo').on('hidden.bs.collapse', function() {
+                    $('.second_collaps_show').css('display', 'none');
+                });
+            }
+            if ($('#collapseThree')) {
+                $('#collapseThree').on('shown.bs.collapse', function() {
+                    $('.third_collaps_show').css('display', 'block');
+                });
+
+                $('#collapseThree').on('hidden.bs.collapse', function() {
+                    $('.third_collaps_show').css('display', 'none');
+                });
+            }
         });
     </script>
 @endsection

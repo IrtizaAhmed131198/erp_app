@@ -791,10 +791,11 @@ class HomeController extends Controller
             ->get();
 
         $customers = Customer::get();
+        $department = Department::get();
 
         $parts = Parts::get();
 
-        return view('input-screen', compact('com1', 'out1', 'customers', 'parts', 'data'));
+        return view('input-screen', compact('com1', 'out1', 'customers', 'parts','department'));
     }
 
     // public function input_screen_department()

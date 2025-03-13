@@ -64,8 +64,53 @@
     #filter-3 {
         width: 6% !important;
     }
+
     .master-data-filter {
         padding-right: 0;
+    }
+
+    .weekly-section .table-striped tr th {
+        width: 110px;
+        padding: 5px 5px !important;
+        white-space: nowrap;
+    }
+
+    .weekly-section .table-striped tr td {
+        width: 110px;
+        padding: 5px 5px !important;
+        white-space: nowrap;
+    }
+
+    section.weekly-section span.select2.select2-container.select2-container--default {
+        width: 100% !important;
+    }
+
+    div#lastUpdateOrder {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    .custom-data {
+        gap: 0 !important;
+        padding: 0;
+    }
+
+    .parent-button .custom-data button {
+        padding: 6px 4px;
+        font-size: 10px;
+    }
+
+    .parent-button {
+        width: 33% !important;
+    }
+
+    .parent-filter {
+        width: 92%;
+    }
+
+    .weekly-section .parent-table {
+        width: 25% !important;
+        padding: 0 !important;
     }
 }
 

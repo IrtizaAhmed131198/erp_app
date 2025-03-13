@@ -2,6 +2,21 @@
 
 @section('pg-title', ' Input Screen')
 
+@section('css')
+    <style>
+        .parent-pagination .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .parent-pagination .select2.select2-container .select2-selection {
+            margin: 0;
+        }
+    </style>
+@endsection
+
 @section('content')
     <section class="visual-queue-screen">
         <div class="container bg-colored">
@@ -19,6 +34,16 @@
                                     Return To Master Data
                                 </span>
                             </a>
+                            <div class="parent-filter" data-intro='Hello step one!'>
+                                <select class="js-select2" id="filter1">
+                                    <option value="All">ALL DEPARTMENT</option>
+                                    @foreach ($department as $dept)
+                                        <option value="{{ $dept->id }}">
+                                            {{ $dept->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
