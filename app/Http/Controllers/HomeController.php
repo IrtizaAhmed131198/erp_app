@@ -771,6 +771,13 @@ class HomeController extends Controller
             abort(403, 'You do not have permission to access this resource.');
         }
 
+        $data = Entries::with(['get_department', 'get_customer', 'part'])
+            ->whereNotIn('status', ['Neutral', 'Remove'])
+            ->get()
+            ->groupBy(function ($entry) {
+                return $entry->get_department ? $entry->get_department->name : 'Unknown';
+            });
+
         $com1 = WorkCenter::with(['entries.get_customer', 'entries.part', 'work_select'])
                 ->whereHas('entries', function ($query) {
                     return $query->whereNotIn('status', ['Neutral', 'Remove']);
@@ -787,8 +794,40 @@ class HomeController extends Controller
 
         $parts = Parts::get();
 
-        return view('input-screen', compact('com1', 'out1', 'customers', 'parts'));
+        return view('input-screen', compact('com1', 'out1', 'customers', 'parts', 'data'));
     }
+
+    // public function input_screen_department()
+    // {
+    //     if (Auth::user()->input_screen_column == 0) {
+    //         abort(403, 'You do not have permission to access this resource.');
+    //     }
+
+    //     return $data = Entries::with(['get_department', 'get_customer', 'part'])
+    //         ->whereNotIn('status', ['Neutral', 'Remove'])
+    //         ->get()
+    //         ->groupBy(function ($entry) {
+    //             return $entry->get_department ? $entry->get_department->name : 'Unknown';
+    //         });
+
+    //     return $com1 = WorkCenter::with(['entries.get_customer', 'entries.part', 'work_select'])
+    //             ->whereHas('entries', function ($query) {
+    //                 return $query->whereNotIn('status', ['Neutral', 'Remove']);
+    //             })
+    //         ->get();
+
+    //     $out1 = OutSource::with(['entries_data.get_customer', 'entries_data.part', 'out_source'])
+    //             ->whereHas('entries_data', function ($query) {
+    //                 return $query->whereNotIn('status', ['Neutral', 'Remove']);
+    //             })
+    //         ->get();
+
+    //     $customers = Customer::get();
+
+    //     $parts = Parts::get();
+
+    //     return view('input-screen', compact('com1', 'out1', 'customers', 'parts'));
+    // }
 
     public function save_table_data(Request $request)
     {
@@ -797,7 +836,7 @@ class HomeController extends Controller
             'entries.*.status' => 'required|string',
             'entries.*.customer' => 'nullable|string',
             'entries.*.part_number' => 'nullable|string',
-            'entries.*.quantity' => 'nullable|integer',
+            'entries.*.quantity' => 'nullable|string',
             'entries.*.job' => 'nullable|string',
             'entries.*.lot' => 'nullable|string',
             'entries.*.type' => 'nullable|string',
@@ -806,6 +845,8 @@ class HomeController extends Controller
 
         foreach ($validated['entries'] as $entry) {
             $entry['user_id'] = Auth::user()->id;
+
+            $entry['quantity'] = isset($entry['quantity']) ? str_replace(',', '', $entry['quantity']) : null;
 
             // Check if the record exists based on unique conditions
             $existingRecord = Visual::where([
@@ -818,7 +859,7 @@ class HomeController extends Controller
                     'status' => $entry['status'],
                     'customer' => $entry['customer'],
                     'part_number' => $entry['part_number'],
-                    'quantity' => $entry['quantity'],
+                    'quantity' => str_replace(',', '', $entry['quantity']),
                     'job' => $entry['job'],
                     'lot' => $entry['lot'],
                 ]);
@@ -838,7 +879,7 @@ class HomeController extends Controller
             'entries_data.*.status' => 'required|string',
             'entries_data.*.customer' => 'nullable|string',
             'entries_data.*.part_number' => 'nullable|string',
-            'entries_data.*.quantity' => 'nullable|integer',
+            'entries_data.*.quantity' => 'nullable|string',
             'entries_data.*.job' => 'nullable|string',
             'entries_data.*.lot' => 'nullable|string',
             'entries_data.*.type' => 'nullable|string',
@@ -847,6 +888,8 @@ class HomeController extends Controller
 
         foreach ($validated['entries_data'] as $entry) {
             $entry['user_id'] = Auth::user()->id;
+
+            $entry['quantity'] = isset($entry['quantity']) ? str_replace(',', '', $entry['quantity']) : null;
 
             // Check if the record exists based on unique conditions
             $existingRecord = Visual::where([

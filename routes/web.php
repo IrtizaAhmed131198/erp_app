@@ -25,6 +25,7 @@ Route::middleware(['auth', 'config.check'])->group(function () {
     Route::get('data-center/{id}', [HomeController::class, 'data_center_edit'])->name('data_center_edit');
     Route::get('shipment-and-production', [HomeController::class, 'calender'])->name('calender');
     Route::get('input-screen', [HomeController::class, 'input_screen'])->name('input_screen');
+    Route::get('input-screen-department', [HomeController::class, 'input_screen_department'])->name('input_screen_department');
     Route::get('notifications', [HomeController::class, 'notifications'])->name('notifications');
     Route::get('visual-queue-screen', [HomeController::class, 'visual_screen'])->name('visual_screen');
     Route::get('visual-queue-screen-1', [HomeController::class, 'visual_screen_1'])->name('visual_screen_1');

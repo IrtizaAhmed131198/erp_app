@@ -115,7 +115,11 @@
                                                                             type="hidden" name="part"
                                                                             value="{{ $entry['entries']['part_number'] }}">{{ $part_number }}</a>
                                                                 </td>
-                                                                <td class="quantity_val">{{ $planning }}</td>
+                                                                <td>
+                                                                    <input type="text" name="quantity"
+                                                                        class="quantity quantity_val" oninput="formatNumberWithCommas(this)"
+                                                                        value="{{ $planning }}">
+                                                                </td>
                                                                 <td>
                                                                     {{-- @if (Auth::user()->role == 1) --}}
                                                                     <input type="text" name="job" class="job job_val"
@@ -261,8 +265,10 @@
                                                                                 {{ $part_number }}
                                                                             </a>
                                                                         </td>
-                                                                        <td class="quantity_val">
-                                                                            {{ $planning }}
+                                                                        <td>
+                                                                            <input type="text" name="quantity"
+                                                                                class="quantity quantity_val" oninput="formatNumberWithCommas(this)"
+                                                                                value="{{ $planning }}">
                                                                         </td>
                                                                         <td>
                                                                             {{-- @if (Auth::user()->role == 1) --}}
@@ -303,6 +309,115 @@
 
                             </div>
                         @endif
+
+                        @if (!empty($data) && count($data) > 0)
+                            <div class="accordion" id="accordionExample1">
+                                <h3 class="text-center mb-3 mt-5">Department Processing</h3>
+
+                                @foreach ($data as $departmentName => $entries)
+                                    @php
+                                        $hasValidEntry = false;
+                                        foreach ($entries as $entry) {
+                                            $status = $entry['status'] ?? null;
+                                            $job = $entry['job'] ?? null;
+                                            $lot = $entry['lot'] ?? null;
+                                            $planning = $entry['planning'] ?? null;
+
+                                            if ($status !== null && $planning !== null) {
+                                                $hasValidEntry = true;
+                                                break; // Exit loop once a valid entry is found
+                                            }
+                                        }
+                                    @endphp
+
+                                    @if ($hasValidEntry)
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading{{ \Str::slug($departmentName) }}">
+                                                <button class="accordion-button {{ $loop->first ? 'collapsed' : 'show' }}"
+                                                    type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse{{ \Str::slug($departmentName) }}"
+                                                    aria-expanded="{{ $loop->first ? 'false' : 'true' }}"
+                                                    aria-controls="collapse{{ \Str::slug($departmentName) }}">
+                                                    <strong>
+                                                        {{ $departmentName }}
+                                                    </strong>
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{ \Str::slug($departmentName) }}"
+                                                class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+                                                aria-labelledby="heading{{ \Str::slug($departmentName) }}"
+                                                data-bs-parent="#accordionExample1">
+                                                <div class="accordion-body">
+                                                    <table class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Status</th>
+                                                                <th>Customer</th>
+                                                                <th>Part Number</th>
+                                                                <th>Quantity</th>
+                                                                <th>Job #</th>
+                                                                <th>LOT #</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($entries as $entry)
+                                                                @php
+                                                                    $status = $entry['status'] ?? null;
+                                                                    $customer = $entry['get_customer']['CustomerName'] ?? null;
+                                                                    $part_number = $entry['part']['Part_Number'] ?? null;
+                                                                    $planning = $entry['planning'] ?? null;
+                                                                    $job = $entry['job'] ?? null;
+                                                                    $lot = $entry['lot'] ?? null;
+                                                                    $id = $entry['id'] ?? null;
+                                                                    $department = $entry['get_department']['name'] ?? null;
+                                                                @endphp
+                                                                @if ($status !== null && $planning !== null)
+                                                                    <tr>
+                                                                        <td>
+                                                                            <select name="status" id="status" data-id="{{ $id }}">
+                                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
+                                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
+                                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
+                                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                            </select>
+                                                                        </td>
+                                                                        <td class="customer_val">{{ $customer }}</td>
+                                                                        <td class="part_number_val">
+                                                                            <a href="{{ route('get_qa', $entry['part_number']) }}">
+                                                                                <input type="hidden" name="part" value="{{ $entry['part_number'] }}">
+                                                                                {{ $part_number }}
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="quantity" class="quantity quantity_val"
+                                                                                oninput="formatNumberWithCommas(this)" value="{{ $planning }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="job" class="job job_val" value="{{ $job }}">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="lot" class="lot lot_val" value="{{ $lot }}">
+                                                                        </td>
+                                                                        <td style="display: none" class="type">{{ $department }}</td>
+                                                                        <td style="display: none">{{ $id }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="btn-custom-btn text-center mt-3 mb-3">
+                                                    <button class="btn custom-btn submit-table-data-2"
+                                                        data-id="collapse{{ Str::slug($departmentName) }}">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+
+
                     </div>
                     <div class="btn-custom-btn text-ceneter mt-3 mb-3">
                         <a href="{{ route('visual_screen') }}" class="btn custom-btn" target="_blank">Visual Screen</a>
@@ -333,7 +448,7 @@
                             status: row.find('select[name="status"]').val(),
                             customer: row.find('.customer_val').text() ?? null,
                             part_number: row.find('[name="part"]').val() ?? null,
-                            quantity: row.find('.quantity_val').text() ?? null,
+                            quantity: row.find('.quantity_val').val() ?? null,
                             job: row.find('.job_val').val() ?? null,
                             lot: row.find('.lot_val').val() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
@@ -390,7 +505,7 @@
                             status: row.find('select[name="status"]').val(),
                             customer: row.find('.customer_val').text() ?? null,
                             part_number: row.find('[name="part"]').val() ?? null,
-                            quantity: row.find('.quantity_val').text() ?? null,
+                            quantity: row.find('.quantity_val').val() ?? null,
                             job: row.find('.job_val').val() ?? null,
                             lot: row.find('.lot_val').val() ?? null,
                             type: row.find('td:eq(6)').text().trim(),
@@ -479,6 +594,11 @@
                 }
             });
         });
+
+        function formatNumberWithCommas(element) {
+            const value = element.value.replace(/[^0-9]/g, '');
+            element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
 
 
         // $(document).ready(function() {
