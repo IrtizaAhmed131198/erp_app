@@ -113,6 +113,11 @@
         padding: 0 !important;
         overflow: auto !important;
     }
+
+    table.table.table-hover.table-bordered tr th,
+    td {
+        font-size: 10px;
+    }
 }
 
 @media (max-width: 1199px) {}

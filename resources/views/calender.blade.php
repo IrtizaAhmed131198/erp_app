@@ -40,7 +40,7 @@
         }
 
         .parent-table.parent-table-calender.full-view-port.mt-4 {
-            width: 100%;
+            width: 100% !important;
         }
 
         .weekly-section .parent-table tr th {
