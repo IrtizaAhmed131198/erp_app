@@ -5,7 +5,7 @@
 @section('content')
     <section class="visual-queue-screen">
         <div class="container-fluid bg-colored">
-            <div class="row align-items-center mb-5">
+            <div class="row align-items-center">
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="parent-pagination">
                         <div class="pagination">
@@ -31,10 +31,12 @@
                                 <table class="table table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" colspan="6" style="
+                                            <th class="text-center" colspan="6"
+                                                style="
                                                     background-color: {{ $status == 'Running' ? 'green' : ($status == 'Pending Order' ? 'yellow' : ($status == 'Closed' ? 'grey' : 'white')) }} !important;
                                                     color: black;
-                                                ">{{ strtoupper($status) }}</th>
+                                                ">
+                                                {{ strtoupper($status) }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>

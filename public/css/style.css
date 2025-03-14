@@ -1249,4 +1249,15 @@ td.in_stock_live {
     font-size: 15px !important;
 }
 
+div#collapseTwo .parent-table {
+    width: 100% !important;
+}
+
+.btn-custom-btn.text-ceneter.mt-5.side_btn .custom-btn {
+    width: 80px;
+    height: 25px;
+    font-size: 14px;
+}
+
+
 /* 3/13/2025  header css */
