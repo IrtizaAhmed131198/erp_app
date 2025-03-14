@@ -1701,5 +1701,15 @@
         document.getElementById('fileInput').addEventListener('change', function() {
             this.form.submit();
         });
+        document.getElementById('in_process_outside').addEventListener('input', function () {
+            if (this.value.length > 15) {
+                this.value = this.value.slice(0, 15);
+            }
+        });
+        document.getElementById('raw_mat').addEventListener('input', function () {
+            if (this.value.length > 15) {
+                this.value = this.value.slice(0, 15);
+            }
+        });
     </script>
 @endsection

@@ -353,7 +353,7 @@
                             <td class="toggleable-1" id="{{ $data_target }}">
                                 <input type="text" name="in_process_outside" id="in_process_outside"
                                     value="{{ $data->in_process_outside ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('in_process_outside', this.value, event)">
+                                    onkeyup="sendAjaxRequest('in_process_outside', this.value, event)" maxlength="15">
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">
@@ -367,7 +367,7 @@
                             <td class="toggleable-1" id="{{ $data_target }}">
                                 <input type="text" name="raw_mat" id="raw_mat"
                                     value="{{ $data->raw_mat ?? '' }}" data-id="{{ $data->id }}"
-                                    onkeyup="sendAjaxRequest('raw_mat', this.value, event)">
+                                    onkeyup="sendAjaxRequest('raw_mat', this.value, event)" maxlength="15">
                             </td>
                         @else
                             <td class="toggleable-1" id="{{ $data_target }}">{{ $data->raw_mat }}</td>
