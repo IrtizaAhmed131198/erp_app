@@ -871,6 +871,15 @@ class HomeController extends Controller
                 // Create a new record if it doesn't exist
                 Visual::create($entry);
             }
+
+            if (!empty($entry['entry_id'])) {
+                Entries::where('id', $entry['entry_id'])->update([
+                    'status' => $entry['status'],
+                    'planning' => $entry['quantity'],
+                    'job' => $entry['job'],
+                    'lot' => $entry['lot'],
+                ]);
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Data saved successfully!']);
@@ -915,6 +924,15 @@ class HomeController extends Controller
             } else {
                 // Create a new record if it doesn't exist
                 Visual::create($entry);
+            }
+
+            if (!empty($entry['entry_id'])) {
+                Entries::where('id', $entry['entry_id'])->update([
+                    'status' => $entry['status'],
+                    'planning' => $entry['quantity'],
+                    'job' => $entry['job'],
+                    'lot' => $entry['lot'],
+                ]);
             }
         }
 

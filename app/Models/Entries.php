@@ -54,7 +54,8 @@ class Entries extends Model
         'last_updated_by',
         'in_process_outside',
         'active',
-        'status'
+        'status',
+        'planning'
     ];
 
     protected static function boot()
