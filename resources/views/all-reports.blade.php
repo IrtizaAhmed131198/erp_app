@@ -11,9 +11,9 @@
 
 
     <style>
-        .report_sec {
+        /* .report_sec {
             padding: 50px 0px;
-        }
+        } */
 
         .control-table {
             overflow: hidden;
@@ -121,7 +121,7 @@
 @section('content')
     <section class="visual-queue-screen">
         <div class="container-fluid bg-colored">
-            <div class="row align-items-center mb-5">
+            <div class="row align-items-center mb-1">
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="parent-pagination">
                         <div class="pagination">

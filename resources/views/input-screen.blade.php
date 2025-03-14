@@ -20,7 +20,7 @@
 @section('content')
     <section class="visual-queue-screen">
         <div class="container bg-colored">
-            <div class="row align-items-center mb-5">
+            <div class="row align-items-center">
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="parent-pagination">
                         <div class="pagination">
