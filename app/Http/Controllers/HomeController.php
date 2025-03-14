@@ -185,7 +185,7 @@ class HomeController extends Controller
             }
         }
 
-        $entries = $query->where('status', '!=', 'Neutral')->orderBy(
+        $entries = $query->orderBy(
                 Parts::select('Part_Number')
                     ->whereColumn('parts.id', 'entries.part_number')
                     ->limit(1)

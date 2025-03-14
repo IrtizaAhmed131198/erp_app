@@ -1036,7 +1036,7 @@
                     },
                     success: function(response) {
                         console.log('Success:', response);
-                        if (field == 'active' || value == "Neutral") {
+                        if (field == 'active' || value == "Neutral123") {
                             location.reload();
                         }
                     },
