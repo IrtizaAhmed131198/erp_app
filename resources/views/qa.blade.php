@@ -204,7 +204,7 @@
                                     <td>{{ $query->job }}</td>
                                     <td>{{ $query->lot }}</td>
                                     <td>{{ $query->ids }}</td>
-                                    <td>{{ $query->part_number }}</td>
+                                    <td>{{ $query->part->Part_Number }}</td>
                                     <td>{{ $query->get_customer->CustomerName }}</td>
                                     <td>{{ $query->revision }}</td>
                                     <td>{{ $query->process }}</td>
@@ -242,12 +242,12 @@
                                     <td>{{ number_format($sumWeeks7To12) }}</td>
                                     <td>{{ number_format($sum1_12) }}</td>
                                     <td>{{ number_format($query->in_stock_finish) }}</td>
-                                    <td>{{ $query->live_inventory_finish }}</td>
-                                    <td>{{ $query->live_inventory_wip }}</td>
+                                    <td>{{ $query->live_inventory_finish ?? 0 }}</td>
+                                    <td>{{ $query->live_inventory_wip ?? 0 }}</td>
                                     <td>{{ $query->in_process_outside }}</td>
                                     <td>{{ $query->raw_mat }}</td>
-                                    <td>{{ $query->in_stock_live }}</td>
-                                    <td>{{ $query->wt_pc }}</td>
+                                    <td>{{ $query->in_stock_live ?? 0 }}</td>
+                                    <td>{{ number_format($query->wt_pc, 3, '.', ',') }}</td>
                                     <td>{{ $query->get_material->Package }}</td>
                                     <td>{{ $sum1_12 - $query->in_stock_finish > 0 ? number_format(($sum1_12 - $query->in_stock_finish) * $query->wt_pc, 2) : 0 }}</td>
                                     <td>{{ number_format($query->safety) }}</td>
