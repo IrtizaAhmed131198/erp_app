@@ -2104,6 +2104,11 @@ class HomeController extends Controller
 
             foreach ($rows as $row) {
 
+                $row[4] = str_replace(',', '', $row[4]);
+                $row[6] = str_replace(',', '', $row[6]);
+                $row[7] = str_replace(',', '', $row[7]);
+                $row[20] = str_replace(',', '', $row[20]);
+
                 $department = Department::firstOrCreate(
                     ['name' => $row[4]],
                     ['created_at' => now(), 'updated_at' => now()]
