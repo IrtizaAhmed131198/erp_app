@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('pg-title', 'Notifications')
+
 @section('css')
     <style>
         .profile-img-container {
@@ -254,7 +256,7 @@
 
 @section('js')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             function fetchNotifications() {
                 const userId = $('#userFilter').val();
                 const status = $('#statusFilter').val();
@@ -268,10 +270,10 @@
                         status: status,
                         search: searchQuery
                     },
-                    success: function (response) {
+                    success: function(response) {
                         $('#notificationContainer').html(response.html);
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error('Error fetching notifications:', error);
                         $('#notificationContainer').html(
                             '<p class="text-center p-3 text-danger">Failed to load notifications.</p>'
@@ -281,11 +283,10 @@
             }
 
             $('#userFilter, #statusFilter').on('change', fetchNotifications);
-            $('.search-form').on('submit', function (e) {
+            $('.search-form').on('submit', function(e) {
                 e.preventDefault(); // Prevent full-page reload
                 fetchNotifications();
             });
         });
-
     </script>
 @endsection
