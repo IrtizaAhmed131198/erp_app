@@ -18,7 +18,7 @@
 @endsection
 
 @section('content')
-    <section class="visual-queue-screen">
+    <section class="visual-queue-screen input-screen-data">
         <div class="container bg-colored">
             <div class="row align-items-center">
                 <div class="col-lg-12 col-md-12 col-12">
@@ -34,20 +34,21 @@
                                     Return To Master Data
                                 </span>
                             </a>
-                            <div class="parent-filter" data-intro='Hello step one!'>
-                                <select class="js-select2" id="filter1">
-                                    <option value="All">------SHOW ALL------</option>
-                                    <option value="work_center">Work Center</option>
-                                    <option value="out_side">Out Source Processing</option>
-                                    <option value="department">Department</option>
-                                </select>
-                            </div>
+                        </div>
+                        <div class="parent-filter" data-intro='Hello step one!'>
+                            <select class="js-select2" id="filter1">
+                                <option value="All">------SHOW ALL------</option>
+                                <option value="work_center">Work Center</option>
+                                <option value="out_side">Out Source Processing</option>
+                                <option value="department">Department</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row align-items-center">
                 <div class="col-lg-12">
+
                     <div class="parent-table">
                         <div class="accordion work_center" id="accordionExample">
                             <h3 class="text-center mb-3">Work Center</h3>
@@ -141,7 +142,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" name="quantity"
-                                                                        class="quantity quantity_val" oninput="formatNumberWithCommas(this)"
+                                                                        class="quantity quantity_val"
+                                                                        oninput="formatNumberWithCommas(this)"
                                                                         value="{{ $planning }}">
                                                                 </td>
                                                                 <td>
@@ -293,7 +295,8 @@
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" name="quantity"
-                                                                                class="quantity quantity_val" oninput="formatNumberWithCommas(this)"
+                                                                                class="quantity quantity_val"
+                                                                                oninput="formatNumberWithCommas(this)"
                                                                                 value="{{ $planning }}">
                                                                         </td>
                                                                         <td>
@@ -391,42 +394,63 @@
                                                                 @php
                                                                     $entry_id = $entry['id'] ?? null;
                                                                     $status = $entry['status'] ?? null;
-                                                                    $customer = $entry['get_customer']['CustomerName'] ?? null;
-                                                                    $part_number = $entry['part']['Part_Number'] ?? null;
+                                                                    $customer =
+                                                                        $entry['get_customer']['CustomerName'] ?? null;
+                                                                    $part_number =
+                                                                        $entry['part']['Part_Number'] ?? null;
                                                                     $planning = $entry['planning'] ?? null;
                                                                     $job = $entry['job'] ?? null;
                                                                     $lot = $entry['lot'] ?? null;
                                                                     $id = $entry['id'] ?? null;
-                                                                    $department = $entry['get_department']['name'] ?? null;
+                                                                    $department =
+                                                                        $entry['get_department']['name'] ?? null;
                                                                 @endphp
                                                                 @if ($status !== null && $planning !== null)
                                                                     <tr>
                                                                         <td>
-                                                                            <select name="status" id="status" data-id="{{ $id }}">
-                                                                                <option value="Running" {{ $status == 'Running' ? 'selected' : '' }}>Running</option>
-                                                                                <option value="Pending Order" {{ $status == 'Pending Order' ? 'selected' : '' }}>Pending Order</option>
-                                                                                <option value="Pause" {{ $status == 'Pause' ? 'selected' : '' }}>Pause</option>
-                                                                                <option value="Closed" {{ $status == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                                                            <select name="status" id="status"
+                                                                                data-id="{{ $id }}">
+                                                                                <option value="Running"
+                                                                                    {{ $status == 'Running' ? 'selected' : '' }}>
+                                                                                    Running</option>
+                                                                                <option value="Pending Order"
+                                                                                    {{ $status == 'Pending Order' ? 'selected' : '' }}>
+                                                                                    Pending Order</option>
+                                                                                <option value="Pause"
+                                                                                    {{ $status == 'Pause' ? 'selected' : '' }}>
+                                                                                    Pause</option>
+                                                                                <option value="Closed"
+                                                                                    {{ $status == 'Closed' ? 'selected' : '' }}>
+                                                                                    Closed</option>
                                                                             </select>
                                                                         </td>
                                                                         <td class="customer_val">{{ $customer }}</td>
                                                                         <td class="part_number_val">
-                                                                            <a href="{{ route('get_qa', $entry['part_number']) }}">
-                                                                                <input type="hidden" name="part" value="{{ $entry['part_number'] }}">
+                                                                            <a
+                                                                                href="{{ route('get_qa', $entry['part_number']) }}">
+                                                                                <input type="hidden" name="part"
+                                                                                    value="{{ $entry['part_number'] }}">
                                                                                 {{ $part_number }}
                                                                             </a>
                                                                         </td>
                                                                         <td>
-                                                                            <input type="text" name="quantity" class="quantity quantity_val"
-                                                                                oninput="formatNumberWithCommas(this)" value="{{ $planning }}">
+                                                                            <input type="text" name="quantity"
+                                                                                class="quantity quantity_val"
+                                                                                oninput="formatNumberWithCommas(this)"
+                                                                                value="{{ $planning }}">
                                                                         </td>
                                                                         <td>
-                                                                            <input type="text" name="job" class="job job_val" value="{{ $job }}">
+                                                                            <input type="text" name="job"
+                                                                                class="job job_val"
+                                                                                value="{{ $job }}">
                                                                         </td>
                                                                         <td>
-                                                                            <input type="text" name="lot" class="lot lot_val" value="{{ $lot }}">
+                                                                            <input type="text" name="lot"
+                                                                                class="lot lot_val"
+                                                                                value="{{ $lot }}">
                                                                         </td>
-                                                                        <td style="display: none" class="type">{{ $department }}</td>
+                                                                        <td style="display: none" class="type">
+                                                                            {{ $department }}</td>
                                                                         <td style="display: none">{{ $id }}</td>
                                                                         <td style="display: none">{{ $entry_id }}</td>
                                                                     </tr>
@@ -445,8 +469,6 @@
                                 @endforeach
                             </div>
                         @endif
-
-
                     </div>
                     <div class="btn-custom-btn text-ceneter mt-3 mb-3">
                         <a href="{{ route('visual_screen') }}" class="btn custom-btn" target="_blank">Visual Screen</a>
@@ -631,10 +653,10 @@
             element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             // $(".accordion").hide(); // Initially hide all divs
 
-            $("#filter1").change(function () {
+            $("#filter1").change(function() {
                 var selectedValue = $(this).val();
 
                 if (selectedValue === "All") {

@@ -106,7 +106,7 @@
 @endsection
 
 @section('content')
-    <section class="weekly-section">
+    <section class="weekly-section shipment-data">
         <div class="container-fluid bg-colored">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-12 col-md-12 col-12">

@@ -21,7 +21,7 @@
 
 
 @section('content')
-    <section class="users-data">
+    <section class="users-data user_data">
         <div class="container">
             <div class="row align-items-center mb-2">
                 <div class="col-lg-12 col-md-12 col-12">

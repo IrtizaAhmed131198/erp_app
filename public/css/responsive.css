@@ -34,6 +34,7 @@
 
     .weekly-section.data-center .parent-table {
         padding-right: 12rem;
+        width: 100% !important;
     }
 
     .side_btn {
@@ -104,8 +105,9 @@
         width: 25% !important;
     }
 
-    .parent-filter {
-        width: 92%;
+    .master-data-section .parent-filter {
+        width: 100%;
+        margin: 0;
     }
 
     .weekly-section .parent-table {
@@ -121,6 +123,81 @@
 
     section.weekly-section .row.align-items-center.mb-5 {
         margin: 0 !important;
+    }
+
+    .parent-search-bar button img {
+        width: 12px;
+    }
+
+    .profile-detail a {
+        height: 35px;
+        width: 35px;
+    }
+
+    .bell-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .bell-icon::before {
+        top: 5px;
+        right: 6px;
+    }
+
+    .bell-icon img {
+        width: 18px !important;
+        height: 20px !important;
+    }
+
+    .parent-search-bar input {
+        height: 25px;
+    }
+
+    header {
+        height: 70px;
+    }
+
+    .parent-search-bar button {
+        top: -1px;
+    }
+
+    .page-title {
+        top: 15px;
+    }
+
+    .parent-pagination .pagination {
+        bottom: 20px;
+        top: unset;
+    }
+
+    .weekly-section .parent-pagination .pagination {
+        bottom: 45px;
+    }
+
+    .shipment-data .parent-pagination .pagination {
+        bottom: 20px;
+    }
+
+    .input-screen-data .parent-pagination .pagination {
+        bottom: 90px;
+        width: auto;
+    }
+
+    .input-screen-data .parent-filter {
+        justify-content: end;
+        width: 60%;
+        margin-left: auto;
+    }
+
+    .weekly-section.data-center .pagination {
+        bottom: 25px;
+    }
+
+    .users-data .pagination {
+        bottom: 70px;
+    }
+    .user_data .pagination {
+        bottom: 20px;
     }
 }
 
